@@ -1,0 +1,60 @@
+name: Publicar libro con Quarto en GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: quarto-publish
+  cancel-in-progress: false
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Configurar R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - name: Instalar paquetes de R usados en el libro
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages: |
+            any::car
+            any::dplyr
+            any::ggplot2
+            any::lmtest
+            any::multiColl
+            any::plotly
+            any::quantmod
+            any::readxl
+            any::rvif
+            any::sandwich
+            any::strucchange
+            any::rmarkdown
+            any::knitr
+
+      # El libro publicado en Pages solo necesita el formato HTML;
+      # se evita renderizar el PDF (xelatex) para no instalar TinyTeX en CI.
+      - name: Renderizar el libro (HTML)
+        run: quarto render --to html
+
+      - name: Publicar en la rama gh-pages
+        uses: quarto-dev/quarto-actions/publish@v2
+        with:
+          target: gh-pages
+          render: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

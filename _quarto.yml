@@ -29,6 +29,7 @@ resources:
     
 bibliography:
   - book.bib
+  - packages.bib
 link-citations: true
 
 format:

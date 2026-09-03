@@ -8,7 +8,7 @@ lang: es
 book:
   title: "Econometría para Finanzas y Contabilidad con R"
   author: "Catalina B. García-García y Román Salmerón-Gómez"
-  page-navigation: false
+  page-navigation: true
   repo-url: https://github.com/cbgarciaugr/EconometriaBasica
   repo-actions: [edit]
   chapters:

@@ -61,7 +61,26 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -82,7 +101,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-c117ac82edef17e21c58c619b1d4b9e4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-3dac5e246fdd9bdc5e35d09ab9b42ca8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -221,6 +240,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Apéndice. Distribuciones estadísticas y valores críticos</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referencias</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -236,15 +261,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#top-100-empresas-andaluzas-del-transporte" id="toc-top-100-empresas-andaluzas-del-transporte" class="nav-link active" data-scroll-target="#top-100-empresas-andaluzas-del-transporte"><span class="header-section-number">A.1</span> Top 100 empresas andaluzas del transporte</a></li>
   <li><a href="#el-ibex35-frente-a-otros-índices-bursátiles" id="toc-el-ibex35-frente-a-otros-índices-bursátiles" class="nav-link" data-scroll-target="#el-ibex35-frente-a-otros-índices-bursátiles"><span class="header-section-number">A.2</span> El IBEX35 frente a otros índices bursátiles</a></li>
   <li><a href="#tipos-de-interés-precios-e-indicadores-macroeconómicos-de-la-eurozona" id="toc-tipos-de-interés-precios-e-indicadores-macroeconómicos-de-la-eurozona" class="nav-link" data-scroll-target="#tipos-de-interés-precios-e-indicadores-macroeconómicos-de-la-eurozona"><span class="header-section-number">A.3</span> Tipos de interés, precios e indicadores macroeconómicos de la Eurozona</a></li>
-  <li><a href="#función-de-producción-greene-2003" id="toc-función-de-producción-greene-2003" class="nav-link" data-scroll-target="#función-de-producción-greene-2003"><span class="header-section-number">A.4</span> Función de producción (Greene, 2003)</a></li>
-  <li><a href="#gasto-en-alimentación-de-los-hogares-uriel-2019" id="toc-gasto-en-alimentación-de-los-hogares-uriel-2019" class="nav-link" data-scroll-target="#gasto-en-alimentación-de-los-hogares-uriel-2019"><span class="header-section-number">A.5</span> Gasto en alimentación de los hogares (Uriel, 2019)</a></li>
-  <li><a href="#curva-de-phillips-en-españa" id="toc-curva-de-phillips-en-españa" class="nav-link" data-scroll-target="#curva-de-phillips-en-españa"><span class="header-section-number">A.6</span> Curva de Phillips en España</a></li>
-  <li><a href="#esperanza-de-vida-y-gasto-sanitario-en-españa" id="toc-esperanza-de-vida-y-gasto-sanitario-en-españa" class="nav-link" data-scroll-target="#esperanza-de-vida-y-gasto-sanitario-en-españa"><span class="header-section-number">A.7</span> Esperanza de vida y gasto sanitario en España</a></li>
-  <li><a href="#consumo-eléctrico-en-españa" id="toc-consumo-eléctrico-en-españa" class="nav-link" data-scroll-target="#consumo-eléctrico-en-españa"><span class="header-section-number">A.8</span> Consumo eléctrico en España</a></li>
-  <li><a href="#ingresos-de-abogados-jóvenes" id="toc-ingresos-de-abogados-jóvenes" class="nav-link" data-scroll-target="#ingresos-de-abogados-jóvenes"><span class="header-section-number">A.9</span> Ingresos de abogados jóvenes</a></li>
-  <li><a href="#tipos-de-interés-wooldridge" id="toc-tipos-de-interés-wooldridge" class="nav-link" data-scroll-target="#tipos-de-interés-wooldridge"><span class="header-section-number">A.10</span> Tipos de interés (Wooldridge)</a></li>
-  <li><a href="#precio-del-helado-ramanathan" id="toc-precio-del-helado-ramanathan" class="nav-link" data-scroll-target="#precio-del-helado-ramanathan"><span class="header-section-number">A.11</span> Precio del helado (Ramanathan)</a></li>
-  <li><a href="#modelo-stirpat-para-china" id="toc-modelo-stirpat-para-china" class="nav-link" data-scroll-target="#modelo-stirpat-para-china"><span class="header-section-number">A.12</span> Modelo STIRPAT para China</a></li>
+  <li><a href="#gasto-en-alimentación-de-los-hogares-uriel-2019" id="toc-gasto-en-alimentación-de-los-hogares-uriel-2019" class="nav-link" data-scroll-target="#gasto-en-alimentación-de-los-hogares-uriel-2019"><span class="header-section-number">A.4</span> Gasto en alimentación de los hogares (Uriel, 2019)</a></li>
+  <li><a href="#curva-de-phillips-en-españa" id="toc-curva-de-phillips-en-españa" class="nav-link" data-scroll-target="#curva-de-phillips-en-españa"><span class="header-section-number">A.5</span> Curva de Phillips en España</a></li>
+  <li><a href="#consumo-eléctrico-en-españa" id="toc-consumo-eléctrico-en-españa" class="nav-link" data-scroll-target="#consumo-eléctrico-en-españa"><span class="header-section-number">A.6</span> Consumo eléctrico en España</a></li>
+  <li><a href="#ingresos-de-abogados-jóvenes" id="toc-ingresos-de-abogados-jóvenes" class="nav-link" data-scroll-target="#ingresos-de-abogados-jóvenes"><span class="header-section-number">A.7</span> Ingresos de abogados jóvenes</a></li>
+  <li><a href="#tipos-de-interés-wooldridge" id="toc-tipos-de-interés-wooldridge" class="nav-link" data-scroll-target="#tipos-de-interés-wooldridge"><span class="header-section-number">A.8</span> Tipos de interés (Wooldridge)</a></li>
+  <li><a href="#precio-del-helado-ramanathan" id="toc-precio-del-helado-ramanathan" class="nav-link" data-scroll-target="#precio-del-helado-ramanathan"><span class="header-section-number">A.9</span> Precio del helado (Ramanathan)</a></li>
+  <li><a href="#modelo-stirpat-para-china" id="toc-modelo-stirpat-para-china" class="nav-link" data-scroll-target="#modelo-stirpat-para-china"><span class="header-section-number">A.10</span> Modelo STIRPAT para China</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cbgarciaugr/EconometriaBasica/edit/main/chapters/apendice-basesdatos.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li></ul></div></nav>
     </div>
@@ -300,9 +323,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 84%">
+<col style="width: 24%">
+<col style="width: 62%">
 <col style="width: 12%">
-<col style="width: 2%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -357,26 +380,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: left;">Provincia andaluza en la que radica la empresa</td>
 <td style="text-align: left;">-</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Nota</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Corte transversal de 100 empresas (anonimas, sin identificador), sector transporte, Andalucia, ejercicio 2024.</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">ACTUALIZACION: esta exportacion (SABI) sustituye a la version anterior. Cambios respecto al diccionario previo: se anadieron VENTAS y PROVINCIA; LIQUIDEZ_INMEDIATA se desdobla de LIQUIDEZ_GENERAL (antes solo existia LIQUIDEZ); EBITDA fue sustituido por EBIT; RENT_ECONOMICA y RENT_FINANCIERA ya no estan en esta exportacion.</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -400,9 +403,9 @@ No procede un script reproducible: los datos se exportaron manualmente desde la 
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 50%">
-<col style="width: 44%">
-<col style="width: 5%">
+<col style="width: 21%">
+<col style="width: 69%">
+<col style="width: 8%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -447,27 +450,12 @@ No procede un script reproducible: los datos se exportaron manualmente desde la 
 <td style="text-align: left;">Rendimiento mensual del S&amp;P 500</td>
 <td style="text-align: left;">%</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Nota</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Serie mensual, 71 observaciones, octubre 2020 - agosto 2026.</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-</tr>
 </tbody>
 </table>
 </div>
 </div>
 <p><strong>Código de generación</strong><br>
-Adaptado y ampliado a partir de <code>Construccion Base de Datos Financiera.R</code> (que en su versión original solo descargaba el IBEX35) para cubrir los tres índices del fichero. Antes de darlo por definitivo, ejecútalo y comprueba que reproduce exactamente los valores de <code>BD_IBEX.xlsx</code>:</p>
+No procede. Se adjunta código de descarga desde <code>yahoo</code>:</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Código</summary>
@@ -516,9 +504,9 @@ Adaptado y ampliado a partir de <code>Construccion Base de Datos Financiera.R</c
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 51%">
-<col style="width: 40%">
 <col style="width: 7%">
+<col style="width: 77%">
+<col style="width: 14%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -553,37 +541,14 @@ Adaptado y ampliado a partir de <code>Construccion Base de Datos Financiera.R</c
 <td style="text-align: left;">Deficit publico, cuentas no financieras netas (Government Deficit, net non-financial accounts)</td>
 <td style="text-align: left;">millones EUR</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Nota</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Fuente: Eurostat (2018) y EMMI (2018). Serie trimestral desestacionalizada, 47 observaciones, enero 2002 - julio 2013.</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Usada en Computational Statistics (2020) 35:647-666, https://doi.org/10.1007/s00180-019-00922-x</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-</tr>
 </tbody>
 </table>
 </div>
 </div>
 <p><strong>Código de generación</strong><br>
-No procede: datos descargados manualmente de los portales de Eurostat y EMMI. No existe actualmente un script de descarga automatizada en el repositorio.</p>
-</section>
-<section id="función-de-producción-greene-2003" class="level2" data-number="A.4">
-<h2 data-number="A.4" class="anchored" data-anchor-id="función-de-producción-greene-2003"><span class="header-section-number">A.4</span> Función de producción (Greene, 2003)</h2>
+No procede: datos descargados manualmente de los portales de Eurostat y EMMI. ## Función de producción (Greene, 2003)</p>
 <p><strong>Fichero:</strong> <code>BD_FUNCIONPRODUCCION.xlsx</code> (hoja <code>greene8_3</code>)<br>
-<strong>Fuente:</strong> <span class="citation" data-cites="Greene2003">(<a href="#ref-Greene2003" role="doc-biblioref"><strong>Greene2003?</strong></a>)</span>, <em>Econometric Analysis</em> (5.ª edición), tabla 8.3<br>
+<strong>Fuente:</strong> <span class="citation" data-cites="Greene2003">William H (<a href="references.html#ref-Greene2003" role="doc-biblioref">2003</a>)</span>, <em>Econometric Analysis</em> (5.ª edición), tabla 8.3<br>
 <strong>Tipo de datos:</strong> serie temporal<br>
 <strong>Periodo / unidad de observación:</strong> anual, 1909 – 1949 (41 observaciones)<br>
 <strong>Usado en:</strong> Tema 2, Tema 3</p>
@@ -622,10 +587,10 @@ No procede: datos descargados manualmente de los portales de Eurostat y EMMI. No
 <p><strong>Código de generación</strong><br>
 No procede: datos transcritos directamente de la tabla 8.3 del manual de Greene (2003).</p>
 </section>
-<section id="gasto-en-alimentación-de-los-hogares-uriel-2019" class="level2" data-number="A.5">
-<h2 data-number="A.5" class="anchored" data-anchor-id="gasto-en-alimentación-de-los-hogares-uriel-2019"><span class="header-section-number">A.5</span> Gasto en alimentación de los hogares (Uriel, 2019)</h2>
+<section id="gasto-en-alimentación-de-los-hogares-uriel-2019" class="level2" data-number="A.4">
+<h2 data-number="A.4" class="anchored" data-anchor-id="gasto-en-alimentación-de-los-hogares-uriel-2019"><span class="header-section-number">A.4</span> Gasto en alimentación de los hogares (Uriel, 2019)</h2>
 <p><strong>Fichero:</strong> <code>bd3_demand.xlsx</code> (hoja <code>Hoja1</code>)<br>
-<strong>Fuente:</strong> <span class="citation" data-cites="Uriel2019">(<a href="#ref-Uriel2019" role="doc-biblioref"><strong>Uriel2019?</strong></a>)</span>, <em>Introducción a la Econometría</em><br>
+<strong>Fuente:</strong> <span class="citation" data-cites="Uriel2019">Uriel Jiménez (<a href="references.html#ref-Uriel2019" role="doc-biblioref">2019</a>)</span>, <em>Introducción a la Econometría</em><br>
 <strong>Tipo de datos:</strong> corte transversal<br>
 <strong>Periodo / unidad de observación:</strong> 40 hogares<br>
 <strong>Usado en:</strong> Tema 2</p>
@@ -634,8 +599,8 @@ No procede: datos transcritos directamente de la tabla 8.3 del manual de Greene 
 <p><strong>Código de generación</strong><br>
 No procede: fichero de datos que acompaña al manual de Uriel (2019).</p>
 </section>
-<section id="curva-de-phillips-en-españa" class="level2" data-number="A.6">
-<h2 data-number="A.6" class="anchored" data-anchor-id="curva-de-phillips-en-españa"><span class="header-section-number">A.6</span> Curva de Phillips en España</h2>
+<section id="curva-de-phillips-en-españa" class="level2" data-number="A.5">
+<h2 data-number="A.5" class="anchored" data-anchor-id="curva-de-phillips-en-españa"><span class="header-section-number">A.5</span> Curva de Phillips en España</h2>
 <p><strong>Fichero:</strong> <code>BD_PHILIPS.xlsx</code> (hoja <code>Hoja1</code>)<br>
 <strong>Fuente:</strong> Instituto Nacional de Estadística (INE) y statista.com<br>
 <strong>Tipo de datos:</strong> serie temporal<br>
@@ -674,12 +639,9 @@ No procede: fichero de datos que acompaña al manual de Uriel (2019).</p>
 </tbody>
 </table>
 <p><strong>Código de generación</strong><br>
-No procede: datos compilados manualmente a partir de las series públicas del INE y de statista.com. No existe un script de descarga en el repositorio.</p>
-</section>
-<section id="esperanza-de-vida-y-gasto-sanitario-en-españa" class="level2" data-number="A.7">
-<h2 data-number="A.7" class="anchored" data-anchor-id="esperanza-de-vida-y-gasto-sanitario-en-españa"><span class="header-section-number">A.7</span> Esperanza de vida y gasto sanitario en España</h2>
+No procede: datos compilados manualmente a partir de las series públicas del INE y de statista.com. ## Esperanza de vida y gasto sanitario en España</p>
 <p><strong>Fichero:</strong> <code>bd6_esperanza.xlsx</code> (hoja <code>Hoja1</code>)<br>
-<strong>Fuente:</strong> <em>pendiente de confirmar</em> — no se especifica en el texto del libro<br>
+<strong>Fuente:</strong> Elaboración propia a partir del Instituto Nacional de Estadística<br>
 <strong>Tipo de datos:</strong> serie temporal<br>
 <strong>Periodo / unidad de observación:</strong> anual, España, 1990 – 2024 (35 observaciones)<br>
 <strong>Usado en:</strong> Tema 2 (ejercicio propuesto), ejercicios propuestos parte I</p>
@@ -721,12 +683,12 @@ No procede: datos compilados manualmente a partir de las series públicas del IN
 </tbody>
 </table>
 <p><strong>Código de generación</strong><br>
-No procede: no hay script de descarga en el repositorio.</p>
+No procede.</p>
 </section>
-<section id="consumo-eléctrico-en-españa" class="level2" data-number="A.8">
-<h2 data-number="A.8" class="anchored" data-anchor-id="consumo-eléctrico-en-españa"><span class="header-section-number">A.8</span> Consumo eléctrico en España</h2>
+<section id="consumo-eléctrico-en-españa" class="level2" data-number="A.6">
+<h2 data-number="A.6" class="anchored" data-anchor-id="consumo-eléctrico-en-españa"><span class="header-section-number">A.6</span> Consumo eléctrico en España</h2>
 <p><strong>Fichero:</strong> <code>BD_CONSUMOELECTRICO.xlsx</code> (hoja <code>consumo_energia_espana_1990_202</code>)<br>
-<strong>Fuente:</strong> <em>pendiente de confirmar</em> — no se especifica en el texto del libro<br>
+<strong>Fuente:</strong> Elaboración propia a partir del Instituto Nacional de Estadística<br>
 <strong>Tipo de datos:</strong> serie temporal<br>
 <strong>Periodo / unidad de observación:</strong> anual, España, 1990 – 2024 (35 observaciones)<br>
 <strong>Usado en:</strong> Tema 3</p>
@@ -783,12 +745,12 @@ No procede: no hay script de descarga en el repositorio.</p>
 </tbody>
 </table>
 <p><strong>Código de generación</strong><br>
-No procede: no hay script de descarga en el repositorio.</p>
+No procede.</p>
 </section>
-<section id="ingresos-de-abogados-jóvenes" class="level2" data-number="A.9">
-<h2 data-number="A.9" class="anchored" data-anchor-id="ingresos-de-abogados-jóvenes"><span class="header-section-number">A.9</span> Ingresos de abogados jóvenes</h2>
+<section id="ingresos-de-abogados-jóvenes" class="level2" data-number="A.7">
+<h2 data-number="A.7" class="anchored" data-anchor-id="ingresos-de-abogados-jóvenes"><span class="header-section-number">A.7</span> Ingresos de abogados jóvenes</h2>
 <p><strong>Fichero:</strong> <code>BD_ABOGADOS.xlsx</code> (hoja <code>base_econometrica_abogados_40</code>)<br>
-<strong>Fuente:</strong> <em>pendiente de confirmar</em> — el texto no cita una fuente externa; podría tratarse de datos simulados con fines docentes<br>
+<strong>Fuente:</strong> Datos simulados con fines docentes<br>
 <strong>Tipo de datos:</strong> corte transversal<br>
 <strong>Periodo / unidad de observación:</strong> 40 abogados<br>
 <strong>Usado en:</strong> Tema 3</p>
@@ -830,10 +792,10 @@ No procede: no hay script de descarga en el repositorio.</p>
 </tbody>
 </table>
 <p><strong>Código de generación</strong><br>
-No procede: no hay script de generación en el repositorio.</p>
+No procede.</p>
 </section>
-<section id="tipos-de-interés-wooldridge" class="level2" data-number="A.10">
-<h2 data-number="A.10" class="anchored" data-anchor-id="tipos-de-interés-wooldridge"><span class="header-section-number">A.10</span> Tipos de interés (Wooldridge)</h2>
+<section id="tipos-de-interés-wooldridge" class="level2" data-number="A.8">
+<h2 data-number="A.8" class="anchored" data-anchor-id="tipos-de-interés-wooldridge"><span class="header-section-number">A.8</span> Tipos de interés (Wooldridge)</h2>
 <p><strong>Fichero:</strong> <code>WooldrigdeTI.txt</code><br>
 <strong>Fuente:</strong> Wooldridge (citado en el texto como <code>@Wooldrigde2000</code>)<br>
 <strong>Tipo de datos:</strong> serie temporal<br>
@@ -868,22 +830,9 @@ No procede: no hay script de generación en el repositorio.</p>
 </table>
 <p><strong>Código de generación</strong><br>
 No procede: fichero de datos que acompaña al manual de Wooldridge.</p>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Advertencia
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>La cita <code>@Wooldrigde2000</code> usada en 04-tema4.qmd no tiene entrada correspondiente en <code>book.bib</code> — al renderizar ese capítulo aparecerá como referencia rota. Conviene añadir la entrada bibliográfica completa antes de publicar el libro.</p>
-</div>
-</div>
 </section>
-<section id="precio-del-helado-ramanathan" class="level2" data-number="A.11">
-<h2 data-number="A.11" class="anchored" data-anchor-id="precio-del-helado-ramanathan"><span class="header-section-number">A.11</span> Precio del helado (Ramanathan)</h2>
+<section id="precio-del-helado-ramanathan" class="level2" data-number="A.9">
+<h2 data-number="A.9" class="anchored" data-anchor-id="precio-del-helado-ramanathan"><span class="header-section-number">A.9</span> Precio del helado (Ramanathan)</h2>
 <p><strong>Fichero:</strong> <code>data9-1.txt</code><br>
 <strong>Fuente:</strong> Ramanathan, ejemplo 9.1<br>
 <strong>Tipo de datos:</strong> serie temporal<br>
@@ -924,10 +873,10 @@ Advertencia
 <p><strong>Código de generación</strong><br>
 No procede: fichero de datos que acompaña al ejemplo de Ramanathan.</p>
 </section>
-<section id="modelo-stirpat-para-china" class="level2" data-number="A.12">
-<h2 data-number="A.12" class="anchored" data-anchor-id="modelo-stirpat-para-china"><span class="header-section-number">A.12</span> Modelo STIRPAT para China</h2>
+<section id="modelo-stirpat-para-china" class="level2" data-number="A.10">
+<h2 data-number="A.10" class="anchored" data-anchor-id="modelo-stirpat-para-china"><span class="header-section-number">A.10</span> Modelo STIRPAT para China</h2>
 <p><strong>Fichero:</strong> <code>stirpattchina.csv</code><br>
-<strong>Fuente:</strong> <em>pendiente de confirmar</em> — no se especifica en el texto del libro (las variables son compatibles con series del Banco Mundial, <em>World Development Indicators</em>)<br>
+<strong>Fuente:</strong> Elaboración propia a partir de datos del Banco Mundial (World Bank)<br>
 <strong>Tipo de datos:</strong> serie temporal<br>
 <strong>Periodo / unidad de observación:</strong> anual, China, 1990 – 2014 (25 observaciones)<br>
 <strong>Usado en:</strong> Tema 4 (ejercicios propuestos)</p>
@@ -979,24 +928,19 @@ No procede: fichero de datos que acompaña al ejemplo de Ramanathan.</p>
 </tbody>
 </table>
 <p><strong>Código de generación</strong><br>
-No procede: no hay script de descarga en el repositorio.</p>
-<div class="callout callout-style-default callout-warning callout-titled" title="Pendiente de revisión">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Advertencia</span>Pendiente de revisión
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Cuatro de las bases de datos anteriores (esperanza de vida y gasto sanitario, consumo eléctrico, ingresos de abogados y STIRPAT China) no tienen una fuente citada explícitamente en el texto del libro. Antes de publicar este apéndice, confirma su procedencia real (¿son datos oficiales, adaptados de otra fuente, o simulados con fines docentes?) para poder documentarla correctamente.</p>
-</div>
-</div>
+No procede.</p>
 
 
 <!-- -->
 
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-Uriel2019" class="csl-entry" role="listitem">
+Uriel Jiménez, E. 2019. <em>Introducción a la Econometría</em>. Universidad de Valencia.
+</div>
+<div id="ref-Greene2003" class="csl-entry" role="listitem">
+William H, Greene. 2003. <em>ECONOMETRIC ANALYSIS FIFTH EDITION</em>.
+</div>
+</div>
 </section>
 
 </main> <!-- /main -->
@@ -1508,7 +1452,7 @@ No procede: no hay script de descarga en el repositorio.</p>
 <span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>**Código de generación**\</span>
-<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>Adaptado y ampliado a partir de <span class="in">`Construccion Base de Datos Financiera.R`</span> (que en su versión original solo descargaba el IBEX35) para cubrir los tres índices del fichero. Antes de darlo por definitivo, ejecútalo y comprueba que reproduce exactamente los valores de <span class="in">`BD_IBEX.xlsx`</span>:</span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>No procede. Se adjunta código de descarga desde <span class="in">`yahoo`</span>:</span>
 <span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
@@ -1555,196 +1499,187 @@ No procede: no hay script de descarga en el repositorio.</p>
 <span id="cb5-100"><a href="#cb5-100" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb5-101"><a href="#cb5-101" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-102"><a href="#cb5-102" aria-hidden="true" tabindex="-1"></a>**Código de generación**\</span>
-<span id="cb5-103"><a href="#cb5-103" aria-hidden="true" tabindex="-1"></a>No procede: datos descargados manualmente de los portales de Eurostat y EMMI. No existe actualmente un script de descarga automatizada en el repositorio.</span>
-<span id="cb5-104"><a href="#cb5-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-105"><a href="#cb5-105" aria-hidden="true" tabindex="-1"></a><span class="fu">## Función de producción (Greene, 2003)</span></span>
-<span id="cb5-106"><a href="#cb5-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-107"><a href="#cb5-107" aria-hidden="true" tabindex="-1"></a>**Fichero:** <span class="in">`BD_FUNCIONPRODUCCION.xlsx`</span> (hoja <span class="in">`greene8_3`</span>)\</span>
-<span id="cb5-108"><a href="#cb5-108" aria-hidden="true" tabindex="-1"></a>**Fuente:** @Greene2003, *Econometric Analysis* (5.ª edición), tabla 8.3\</span>
-<span id="cb5-109"><a href="#cb5-109" aria-hidden="true" tabindex="-1"></a>**Tipo de datos:** serie temporal\</span>
-<span id="cb5-110"><a href="#cb5-110" aria-hidden="true" tabindex="-1"></a>**Periodo / unidad de observación:** anual, 1909 -- 1949 (41 observaciones)\</span>
-<span id="cb5-111"><a href="#cb5-111" aria-hidden="true" tabindex="-1"></a>**Usado en:** Tema 2, Tema 3</span>
-<span id="cb5-112"><a href="#cb5-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-113"><a href="#cb5-113" aria-hidden="true" tabindex="-1"></a>**Variables**</span>
-<span id="cb5-114"><a href="#cb5-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-115"><a href="#cb5-115" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Variable <span class="pp">|</span> Descripción <span class="pp">|</span> Unidad <span class="pp">|</span></span>
-<span id="cb5-116"><a href="#cb5-116" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
-<span id="cb5-117"><a href="#cb5-117" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`year`</span> <span class="pp">|</span> Año de la observación <span class="pp">|</span> -- <span class="pp">|</span></span>
-<span id="cb5-118"><a href="#cb5-118" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`q`</span> <span class="pp">|</span> Producción <span class="pp">|</span> índice <span class="pp">|</span></span>
-<span id="cb5-119"><a href="#cb5-119" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`k`</span> <span class="pp">|</span> Capital <span class="pp">|</span> índice <span class="pp">|</span></span>
-<span id="cb5-120"><a href="#cb5-120" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`A`</span> <span class="pp">|</span> Índice de progreso técnico <span class="pp">|</span> índice <span class="pp">|</span></span>
-<span id="cb5-121"><a href="#cb5-121" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-122"><a href="#cb5-122" aria-hidden="true" tabindex="-1"></a>**Código de generación**\</span>
-<span id="cb5-123"><a href="#cb5-123" aria-hidden="true" tabindex="-1"></a>No procede: datos transcritos directamente de la tabla 8.3 del manual de Greene (2003).</span>
-<span id="cb5-124"><a href="#cb5-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-125"><a href="#cb5-125" aria-hidden="true" tabindex="-1"></a><span class="fu">## Gasto en alimentación de los hogares (Uriel, 2019)</span></span>
-<span id="cb5-126"><a href="#cb5-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-127"><a href="#cb5-127" aria-hidden="true" tabindex="-1"></a>**Fichero:** <span class="in">`bd3_demand.xlsx`</span> (hoja <span class="in">`Hoja1`</span>)\</span>
-<span id="cb5-128"><a href="#cb5-128" aria-hidden="true" tabindex="-1"></a>**Fuente:** @Uriel2019, *Introducción a la Econometría*\</span>
-<span id="cb5-129"><a href="#cb5-129" aria-hidden="true" tabindex="-1"></a>**Tipo de datos:** corte transversal\</span>
-<span id="cb5-130"><a href="#cb5-130" aria-hidden="true" tabindex="-1"></a>**Periodo / unidad de observación:** 40 hogares\</span>
-<span id="cb5-131"><a href="#cb5-131" aria-hidden="true" tabindex="-1"></a>**Usado en:** Tema 2</span>
-<span id="cb5-132"><a href="#cb5-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-133"><a href="#cb5-133" aria-hidden="true" tabindex="-1"></a>**Variables**</span>
-<span id="cb5-134"><a href="#cb5-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-135"><a href="#cb5-135" aria-hidden="true" tabindex="-1"></a>Encuesta de gasto en 19 grupos de alimentos (<span class="in">`ALCOHOL`</span>, <span class="in">`BREAD`</span>, <span class="in">`COFFEE`</span>, <span class="in">`DAIRY`</span>, <span class="in">`EGGS`</span>, <span class="in">`FISH`</span>, <span class="in">`FOODTOT`</span>, <span class="in">`FRUIT`</span>, <span class="in">`MEAT`</span>, <span class="in">`NONALCH`</span>, <span class="in">`OIL`</span>, <span class="in">`OTHFOOD`</span>, <span class="in">`SUGAR`</span>, <span class="in">`VEGETABL`</span>, en unidades monetarias) más las variables sociodemográficas <span class="in">`HHSIZE`</span> (tamaño del hogar), <span class="in">`INC`</span> (renta disponible), <span class="in">`PUNDER5`</span> (proporción de menores de 5 años), <span class="in">`SECSTUD`</span>/<span class="in">`SUPSTUD`</span> (nivel de estudios) y <span class="in">`URBAN`</span> (zona urbana/rural).</span>
-<span id="cb5-136"><a href="#cb5-136" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-137"><a href="#cb5-137" aria-hidden="true" tabindex="-1"></a>**Código de generación**\</span>
-<span id="cb5-138"><a href="#cb5-138" aria-hidden="true" tabindex="-1"></a>No procede: fichero de datos que acompaña al manual de Uriel (2019).</span>
-<span id="cb5-139"><a href="#cb5-139" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-140"><a href="#cb5-140" aria-hidden="true" tabindex="-1"></a><span class="fu">## Curva de Phillips en España</span></span>
-<span id="cb5-141"><a href="#cb5-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-142"><a href="#cb5-142" aria-hidden="true" tabindex="-1"></a>**Fichero:** <span class="in">`BD_PHILIPS.xlsx`</span> (hoja <span class="in">`Hoja1`</span>)\</span>
-<span id="cb5-143"><a href="#cb5-143" aria-hidden="true" tabindex="-1"></a>**Fuente:** Instituto Nacional de Estadística (INE) y statista.com\</span>
-<span id="cb5-144"><a href="#cb5-144" aria-hidden="true" tabindex="-1"></a>**Tipo de datos:** serie temporal\</span>
-<span id="cb5-145"><a href="#cb5-145" aria-hidden="true" tabindex="-1"></a>**Periodo / unidad de observación:** anual, España, 2006 -- 2024 (19 observaciones)\</span>
-<span id="cb5-146"><a href="#cb5-146" aria-hidden="true" tabindex="-1"></a>**Usado en:** Tema 2</span>
-<span id="cb5-147"><a href="#cb5-147" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-148"><a href="#cb5-148" aria-hidden="true" tabindex="-1"></a>**Variables**</span>
-<span id="cb5-149"><a href="#cb5-149" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-150"><a href="#cb5-150" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Variable <span class="pp">|</span> Descripción <span class="pp">|</span> Unidad <span class="pp">|</span></span>
-<span id="cb5-151"><a href="#cb5-151" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
-<span id="cb5-152"><a href="#cb5-152" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`YEAR`</span> <span class="pp">|</span> Año de la observación <span class="pp">|</span> -- <span class="pp">|</span></span>
-<span id="cb5-153"><a href="#cb5-153" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`Inflacion`</span> <span class="pp">|</span> Tasa de inflación <span class="pp">|</span> % <span class="pp">|</span></span>
-<span id="cb5-154"><a href="#cb5-154" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`Desempleo`</span> <span class="pp">|</span> Tasa de desempleo <span class="pp">|</span> % <span class="pp">|</span></span>
-<span id="cb5-155"><a href="#cb5-155" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`PrecioEnergia`</span> <span class="pp">|</span> Precio de la energía <span class="pp">|</span> €/MWh <span class="pp">|</span></span>
-<span id="cb5-156"><a href="#cb5-156" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-157"><a href="#cb5-157" aria-hidden="true" tabindex="-1"></a>**Código de generación**\</span>
-<span id="cb5-158"><a href="#cb5-158" aria-hidden="true" tabindex="-1"></a>No procede: datos compilados manualmente a partir de las series públicas del INE y de statista.com. No existe un script de descarga en el repositorio.</span>
+<span id="cb5-103"><a href="#cb5-103" aria-hidden="true" tabindex="-1"></a>No procede: datos descargados manualmente de los portales de Eurostat y EMMI. </span>
+<span id="cb5-104"><a href="#cb5-104" aria-hidden="true" tabindex="-1"></a><span class="fu">## Función de producción (Greene, 2003)</span></span>
+<span id="cb5-105"><a href="#cb5-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-106"><a href="#cb5-106" aria-hidden="true" tabindex="-1"></a>**Fichero:** <span class="in">`BD_FUNCIONPRODUCCION.xlsx`</span> (hoja <span class="in">`greene8_3`</span>)\</span>
+<span id="cb5-107"><a href="#cb5-107" aria-hidden="true" tabindex="-1"></a>**Fuente:** @Greene2003, *Econometric Analysis* (5.ª edición), tabla 8.3\</span>
+<span id="cb5-108"><a href="#cb5-108" aria-hidden="true" tabindex="-1"></a>**Tipo de datos:** serie temporal\</span>
+<span id="cb5-109"><a href="#cb5-109" aria-hidden="true" tabindex="-1"></a>**Periodo / unidad de observación:** anual, 1909 -- 1949 (41 observaciones)\</span>
+<span id="cb5-110"><a href="#cb5-110" aria-hidden="true" tabindex="-1"></a>**Usado en:** Tema 2, Tema 3</span>
+<span id="cb5-111"><a href="#cb5-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-112"><a href="#cb5-112" aria-hidden="true" tabindex="-1"></a>**Variables**</span>
+<span id="cb5-113"><a href="#cb5-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-114"><a href="#cb5-114" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Variable <span class="pp">|</span> Descripción <span class="pp">|</span> Unidad <span class="pp">|</span></span>
+<span id="cb5-115"><a href="#cb5-115" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb5-116"><a href="#cb5-116" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`year`</span> <span class="pp">|</span> Año de la observación <span class="pp">|</span> -- <span class="pp">|</span></span>
+<span id="cb5-117"><a href="#cb5-117" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`q`</span> <span class="pp">|</span> Producción <span class="pp">|</span> índice <span class="pp">|</span></span>
+<span id="cb5-118"><a href="#cb5-118" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`k`</span> <span class="pp">|</span> Capital <span class="pp">|</span> índice <span class="pp">|</span></span>
+<span id="cb5-119"><a href="#cb5-119" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`A`</span> <span class="pp">|</span> Índice de progreso técnico <span class="pp">|</span> índice <span class="pp">|</span></span>
+<span id="cb5-120"><a href="#cb5-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-121"><a href="#cb5-121" aria-hidden="true" tabindex="-1"></a>**Código de generación**\</span>
+<span id="cb5-122"><a href="#cb5-122" aria-hidden="true" tabindex="-1"></a>No procede: datos transcritos directamente de la tabla 8.3 del manual de Greene (2003).</span>
+<span id="cb5-123"><a href="#cb5-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-124"><a href="#cb5-124" aria-hidden="true" tabindex="-1"></a><span class="fu">## Gasto en alimentación de los hogares (Uriel, 2019)</span></span>
+<span id="cb5-125"><a href="#cb5-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-126"><a href="#cb5-126" aria-hidden="true" tabindex="-1"></a>**Fichero:** <span class="in">`bd3_demand.xlsx`</span> (hoja <span class="in">`Hoja1`</span>)\</span>
+<span id="cb5-127"><a href="#cb5-127" aria-hidden="true" tabindex="-1"></a>**Fuente:** @Uriel2019, *Introducción a la Econometría*\</span>
+<span id="cb5-128"><a href="#cb5-128" aria-hidden="true" tabindex="-1"></a>**Tipo de datos:** corte transversal\</span>
+<span id="cb5-129"><a href="#cb5-129" aria-hidden="true" tabindex="-1"></a>**Periodo / unidad de observación:** 40 hogares\</span>
+<span id="cb5-130"><a href="#cb5-130" aria-hidden="true" tabindex="-1"></a>**Usado en:** Tema 2</span>
+<span id="cb5-131"><a href="#cb5-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-132"><a href="#cb5-132" aria-hidden="true" tabindex="-1"></a>**Variables**</span>
+<span id="cb5-133"><a href="#cb5-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-134"><a href="#cb5-134" aria-hidden="true" tabindex="-1"></a>Encuesta de gasto en 19 grupos de alimentos (<span class="in">`ALCOHOL`</span>, <span class="in">`BREAD`</span>, <span class="in">`COFFEE`</span>, <span class="in">`DAIRY`</span>, <span class="in">`EGGS`</span>, <span class="in">`FISH`</span>, <span class="in">`FOODTOT`</span>, <span class="in">`FRUIT`</span>, <span class="in">`MEAT`</span>, <span class="in">`NONALCH`</span>, <span class="in">`OIL`</span>, <span class="in">`OTHFOOD`</span>, <span class="in">`SUGAR`</span>, <span class="in">`VEGETABL`</span>, en unidades monetarias) más las variables sociodemográficas <span class="in">`HHSIZE`</span> (tamaño del hogar), <span class="in">`INC`</span> (renta disponible), <span class="in">`PUNDER5`</span> (proporción de menores de 5 años), <span class="in">`SECSTUD`</span>/<span class="in">`SUPSTUD`</span> (nivel de estudios) y <span class="in">`URBAN`</span> (zona urbana/rural).</span>
+<span id="cb5-135"><a href="#cb5-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-136"><a href="#cb5-136" aria-hidden="true" tabindex="-1"></a>**Código de generación**\</span>
+<span id="cb5-137"><a href="#cb5-137" aria-hidden="true" tabindex="-1"></a>No procede: fichero de datos que acompaña al manual de Uriel (2019).</span>
+<span id="cb5-138"><a href="#cb5-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-139"><a href="#cb5-139" aria-hidden="true" tabindex="-1"></a><span class="fu">## Curva de Phillips en España</span></span>
+<span id="cb5-140"><a href="#cb5-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-141"><a href="#cb5-141" aria-hidden="true" tabindex="-1"></a>**Fichero:** <span class="in">`BD_PHILIPS.xlsx`</span> (hoja <span class="in">`Hoja1`</span>)\</span>
+<span id="cb5-142"><a href="#cb5-142" aria-hidden="true" tabindex="-1"></a>**Fuente:** Instituto Nacional de Estadística (INE) y statista.com\</span>
+<span id="cb5-143"><a href="#cb5-143" aria-hidden="true" tabindex="-1"></a>**Tipo de datos:** serie temporal\</span>
+<span id="cb5-144"><a href="#cb5-144" aria-hidden="true" tabindex="-1"></a>**Periodo / unidad de observación:** anual, España, 2006 -- 2024 (19 observaciones)\</span>
+<span id="cb5-145"><a href="#cb5-145" aria-hidden="true" tabindex="-1"></a>**Usado en:** Tema 2</span>
+<span id="cb5-146"><a href="#cb5-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-147"><a href="#cb5-147" aria-hidden="true" tabindex="-1"></a>**Variables**</span>
+<span id="cb5-148"><a href="#cb5-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-149"><a href="#cb5-149" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Variable <span class="pp">|</span> Descripción <span class="pp">|</span> Unidad <span class="pp">|</span></span>
+<span id="cb5-150"><a href="#cb5-150" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb5-151"><a href="#cb5-151" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`YEAR`</span> <span class="pp">|</span> Año de la observación <span class="pp">|</span> -- <span class="pp">|</span></span>
+<span id="cb5-152"><a href="#cb5-152" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`Inflacion`</span> <span class="pp">|</span> Tasa de inflación <span class="pp">|</span> % <span class="pp">|</span></span>
+<span id="cb5-153"><a href="#cb5-153" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`Desempleo`</span> <span class="pp">|</span> Tasa de desempleo <span class="pp">|</span> % <span class="pp">|</span></span>
+<span id="cb5-154"><a href="#cb5-154" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`PrecioEnergia`</span> <span class="pp">|</span> Precio de la energía <span class="pp">|</span> €/MWh <span class="pp">|</span></span>
+<span id="cb5-155"><a href="#cb5-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-156"><a href="#cb5-156" aria-hidden="true" tabindex="-1"></a>**Código de generación**\</span>
+<span id="cb5-157"><a href="#cb5-157" aria-hidden="true" tabindex="-1"></a>No procede: datos compilados manualmente a partir de las series públicas del INE y de statista.com. </span>
+<span id="cb5-158"><a href="#cb5-158" aria-hidden="true" tabindex="-1"></a><span class="fu">## Esperanza de vida y gasto sanitario en España</span></span>
 <span id="cb5-159"><a href="#cb5-159" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-160"><a href="#cb5-160" aria-hidden="true" tabindex="-1"></a><span class="fu">## Esperanza de vida y gasto sanitario en España</span></span>
-<span id="cb5-161"><a href="#cb5-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-162"><a href="#cb5-162" aria-hidden="true" tabindex="-1"></a>**Fichero:** <span class="in">`bd6_esperanza.xlsx`</span> (hoja <span class="in">`Hoja1`</span>)\</span>
-<span id="cb5-163"><a href="#cb5-163" aria-hidden="true" tabindex="-1"></a>**Fuente:** *pendiente de confirmar* — no se especifica en el texto del libro\</span>
-<span id="cb5-164"><a href="#cb5-164" aria-hidden="true" tabindex="-1"></a>**Tipo de datos:** serie temporal\</span>
-<span id="cb5-165"><a href="#cb5-165" aria-hidden="true" tabindex="-1"></a>**Periodo / unidad de observación:** anual, España, 1990 -- 2024 (35 observaciones)\</span>
-<span id="cb5-166"><a href="#cb5-166" aria-hidden="true" tabindex="-1"></a>**Usado en:** Tema 2 (ejercicio propuesto), ejercicios propuestos parte I</span>
+<span id="cb5-160"><a href="#cb5-160" aria-hidden="true" tabindex="-1"></a>**Fichero:** <span class="in">`bd6_esperanza.xlsx`</span> (hoja <span class="in">`Hoja1`</span>)\</span>
+<span id="cb5-161"><a href="#cb5-161" aria-hidden="true" tabindex="-1"></a>**Fuente:** Elaboración propia a partir del Instituto Nacional de Estadística\</span>
+<span id="cb5-162"><a href="#cb5-162" aria-hidden="true" tabindex="-1"></a>**Tipo de datos:** serie temporal\</span>
+<span id="cb5-163"><a href="#cb5-163" aria-hidden="true" tabindex="-1"></a>**Periodo / unidad de observación:** anual, España, 1990 -- 2024 (35 observaciones)\</span>
+<span id="cb5-164"><a href="#cb5-164" aria-hidden="true" tabindex="-1"></a>**Usado en:** Tema 2 (ejercicio propuesto), ejercicios propuestos parte I</span>
+<span id="cb5-165"><a href="#cb5-165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-166"><a href="#cb5-166" aria-hidden="true" tabindex="-1"></a>**Variables**</span>
 <span id="cb5-167"><a href="#cb5-167" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-168"><a href="#cb5-168" aria-hidden="true" tabindex="-1"></a>**Variables**</span>
-<span id="cb5-169"><a href="#cb5-169" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-170"><a href="#cb5-170" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Variable <span class="pp">|</span> Descripción <span class="pp">|</span> Unidad <span class="pp">|</span></span>
-<span id="cb5-171"><a href="#cb5-171" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
-<span id="cb5-172"><a href="#cb5-172" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`Año`</span> <span class="pp">|</span> Año de la observación <span class="pp">|</span> -- <span class="pp">|</span></span>
-<span id="cb5-173"><a href="#cb5-173" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`Gasto`</span> <span class="pp">|</span> Gasto sanitario público <span class="pp">|</span> millones EUR <span class="pp">|</span></span>
-<span id="cb5-174"><a href="#cb5-174" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`GastoPIB`</span> <span class="pp">|</span> Gasto sanitario público sobre el PIB <span class="pp">|</span> proporción <span class="pp">|</span></span>
-<span id="cb5-175"><a href="#cb5-175" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`Renta`</span> <span class="pp">|</span> Renta per cápita <span class="pp">|</span> EUR <span class="pp">|</span></span>
-<span id="cb5-176"><a href="#cb5-176" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`Esperanza`</span> <span class="pp">|</span> Esperanza de vida al nacer <span class="pp">|</span> años <span class="pp">|</span></span>
-<span id="cb5-177"><a href="#cb5-177" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-178"><a href="#cb5-178" aria-hidden="true" tabindex="-1"></a>**Código de generación**\</span>
-<span id="cb5-179"><a href="#cb5-179" aria-hidden="true" tabindex="-1"></a>No procede: no hay script de descarga en el repositorio.</span>
+<span id="cb5-168"><a href="#cb5-168" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Variable <span class="pp">|</span> Descripción <span class="pp">|</span> Unidad <span class="pp">|</span></span>
+<span id="cb5-169"><a href="#cb5-169" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb5-170"><a href="#cb5-170" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`Año`</span> <span class="pp">|</span> Año de la observación <span class="pp">|</span> -- <span class="pp">|</span></span>
+<span id="cb5-171"><a href="#cb5-171" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`Gasto`</span> <span class="pp">|</span> Gasto sanitario público <span class="pp">|</span> millones EUR <span class="pp">|</span></span>
+<span id="cb5-172"><a href="#cb5-172" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`GastoPIB`</span> <span class="pp">|</span> Gasto sanitario público sobre el PIB <span class="pp">|</span> proporción <span class="pp">|</span></span>
+<span id="cb5-173"><a href="#cb5-173" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`Renta`</span> <span class="pp">|</span> Renta per cápita <span class="pp">|</span> EUR <span class="pp">|</span></span>
+<span id="cb5-174"><a href="#cb5-174" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`Esperanza`</span> <span class="pp">|</span> Esperanza de vida al nacer <span class="pp">|</span> años <span class="pp">|</span></span>
+<span id="cb5-175"><a href="#cb5-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-176"><a href="#cb5-176" aria-hidden="true" tabindex="-1"></a>**Código de generación**\</span>
+<span id="cb5-177"><a href="#cb5-177" aria-hidden="true" tabindex="-1"></a>No procede. </span>
+<span id="cb5-178"><a href="#cb5-178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-179"><a href="#cb5-179" aria-hidden="true" tabindex="-1"></a><span class="fu">## Consumo eléctrico en España</span></span>
 <span id="cb5-180"><a href="#cb5-180" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-181"><a href="#cb5-181" aria-hidden="true" tabindex="-1"></a><span class="fu">## Consumo eléctrico en España</span></span>
-<span id="cb5-182"><a href="#cb5-182" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-183"><a href="#cb5-183" aria-hidden="true" tabindex="-1"></a>**Fichero:** <span class="in">`BD_CONSUMOELECTRICO.xlsx`</span> (hoja <span class="in">`consumo_energia_espana_1990_202`</span>)\</span>
-<span id="cb5-184"><a href="#cb5-184" aria-hidden="true" tabindex="-1"></a>**Fuente:** *pendiente de confirmar* — no se especifica en el texto del libro\</span>
-<span id="cb5-185"><a href="#cb5-185" aria-hidden="true" tabindex="-1"></a>**Tipo de datos:** serie temporal\</span>
-<span id="cb5-186"><a href="#cb5-186" aria-hidden="true" tabindex="-1"></a>**Periodo / unidad de observación:** anual, España, 1990 -- 2024 (35 observaciones)\</span>
-<span id="cb5-187"><a href="#cb5-187" aria-hidden="true" tabindex="-1"></a>**Usado en:** Tema 3</span>
+<span id="cb5-181"><a href="#cb5-181" aria-hidden="true" tabindex="-1"></a>**Fichero:** <span class="in">`BD_CONSUMOELECTRICO.xlsx`</span> (hoja <span class="in">`consumo_energia_espana_1990_202`</span>)\</span>
+<span id="cb5-182"><a href="#cb5-182" aria-hidden="true" tabindex="-1"></a>**Fuente:** Elaboración propia a partir del Instituto Nacional de Estadística\</span>
+<span id="cb5-183"><a href="#cb5-183" aria-hidden="true" tabindex="-1"></a>**Tipo de datos:** serie temporal\</span>
+<span id="cb5-184"><a href="#cb5-184" aria-hidden="true" tabindex="-1"></a>**Periodo / unidad de observación:** anual, España, 1990 -- 2024 (35 observaciones)\</span>
+<span id="cb5-185"><a href="#cb5-185" aria-hidden="true" tabindex="-1"></a>**Usado en:** Tema 3</span>
+<span id="cb5-186"><a href="#cb5-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-187"><a href="#cb5-187" aria-hidden="true" tabindex="-1"></a>**Variables**</span>
 <span id="cb5-188"><a href="#cb5-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-189"><a href="#cb5-189" aria-hidden="true" tabindex="-1"></a>**Variables**</span>
-<span id="cb5-190"><a href="#cb5-190" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-191"><a href="#cb5-191" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Variable <span class="pp">|</span> Descripción <span class="pp">|</span> Unidad <span class="pp">|</span></span>
-<span id="cb5-192"><a href="#cb5-192" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
-<span id="cb5-193"><a href="#cb5-193" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`Año`</span> <span class="pp">|</span> Año de la observación <span class="pp">|</span> -- <span class="pp">|</span></span>
-<span id="cb5-194"><a href="#cb5-194" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`Consumo_electrico`</span> <span class="pp">|</span> Consumo eléctrico <span class="pp">|</span> GWh <span class="pp">|</span></span>
-<span id="cb5-195"><a href="#cb5-195" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`Renta`</span> <span class="pp">|</span> Renta per cápita <span class="pp">|</span> EUR <span class="pp">|</span></span>
-<span id="cb5-196"><a href="#cb5-196" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`Crisis`</span> <span class="pp">|</span> Variable dicotómica: 1 en años de crisis económica, 0 en caso contrario <span class="pp">|</span> -- <span class="pp">|</span></span>
-<span id="cb5-197"><a href="#cb5-197" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`Pib`</span> <span class="pp">|</span> Tasa de crecimiento del PIB <span class="pp">|</span> % <span class="pp">|</span></span>
-<span id="cb5-198"><a href="#cb5-198" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`D_PIB`</span> <span class="pp">|</span> Variable dicotómica asociada al crecimiento del PIB <span class="pp">|</span> -- <span class="pp">|</span></span>
-<span id="cb5-199"><a href="#cb5-199" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`gobierno`</span> <span class="pp">|</span> Variable dicotómica: 1 si gobierna el Partido Popular, 0 en caso contrario <span class="pp">|</span> -- <span class="pp">|</span></span>
-<span id="cb5-200"><a href="#cb5-200" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-201"><a href="#cb5-201" aria-hidden="true" tabindex="-1"></a>**Código de generación**\</span>
-<span id="cb5-202"><a href="#cb5-202" aria-hidden="true" tabindex="-1"></a>No procede: no hay script de descarga en el repositorio.</span>
+<span id="cb5-189"><a href="#cb5-189" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Variable <span class="pp">|</span> Descripción <span class="pp">|</span> Unidad <span class="pp">|</span></span>
+<span id="cb5-190"><a href="#cb5-190" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb5-191"><a href="#cb5-191" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`Año`</span> <span class="pp">|</span> Año de la observación <span class="pp">|</span> -- <span class="pp">|</span></span>
+<span id="cb5-192"><a href="#cb5-192" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`Consumo_electrico`</span> <span class="pp">|</span> Consumo eléctrico <span class="pp">|</span> GWh <span class="pp">|</span></span>
+<span id="cb5-193"><a href="#cb5-193" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`Renta`</span> <span class="pp">|</span> Renta per cápita <span class="pp">|</span> EUR <span class="pp">|</span></span>
+<span id="cb5-194"><a href="#cb5-194" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`Crisis`</span> <span class="pp">|</span> Variable dicotómica: 1 en años de crisis económica, 0 en caso contrario <span class="pp">|</span> -- <span class="pp">|</span></span>
+<span id="cb5-195"><a href="#cb5-195" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`Pib`</span> <span class="pp">|</span> Tasa de crecimiento del PIB <span class="pp">|</span> % <span class="pp">|</span></span>
+<span id="cb5-196"><a href="#cb5-196" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`D_PIB`</span> <span class="pp">|</span> Variable dicotómica asociada al crecimiento del PIB <span class="pp">|</span> -- <span class="pp">|</span></span>
+<span id="cb5-197"><a href="#cb5-197" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`gobierno`</span> <span class="pp">|</span> Variable dicotómica: 1 si gobierna el Partido Popular, 0 en caso contrario <span class="pp">|</span> -- <span class="pp">|</span></span>
+<span id="cb5-198"><a href="#cb5-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-199"><a href="#cb5-199" aria-hidden="true" tabindex="-1"></a>**Código de generación**\</span>
+<span id="cb5-200"><a href="#cb5-200" aria-hidden="true" tabindex="-1"></a>No procede.</span>
+<span id="cb5-201"><a href="#cb5-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-202"><a href="#cb5-202" aria-hidden="true" tabindex="-1"></a><span class="fu">## Ingresos de abogados jóvenes</span></span>
 <span id="cb5-203"><a href="#cb5-203" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-204"><a href="#cb5-204" aria-hidden="true" tabindex="-1"></a><span class="fu">## Ingresos de abogados jóvenes</span></span>
-<span id="cb5-205"><a href="#cb5-205" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-206"><a href="#cb5-206" aria-hidden="true" tabindex="-1"></a>**Fichero:** <span class="in">`BD_ABOGADOS.xlsx`</span> (hoja <span class="in">`base_econometrica_abogados_40`</span>)\</span>
-<span id="cb5-207"><a href="#cb5-207" aria-hidden="true" tabindex="-1"></a>**Fuente:** *pendiente de confirmar* — el texto no cita una fuente externa; podría tratarse de datos simulados con fines docentes\</span>
-<span id="cb5-208"><a href="#cb5-208" aria-hidden="true" tabindex="-1"></a>**Tipo de datos:** corte transversal\</span>
-<span id="cb5-209"><a href="#cb5-209" aria-hidden="true" tabindex="-1"></a>**Periodo / unidad de observación:** 40 abogados\</span>
-<span id="cb5-210"><a href="#cb5-210" aria-hidden="true" tabindex="-1"></a>**Usado en:** Tema 3</span>
+<span id="cb5-204"><a href="#cb5-204" aria-hidden="true" tabindex="-1"></a>**Fichero:** <span class="in">`BD_ABOGADOS.xlsx`</span> (hoja <span class="in">`base_econometrica_abogados_40`</span>)\</span>
+<span id="cb5-205"><a href="#cb5-205" aria-hidden="true" tabindex="-1"></a>**Fuente:** Datos simulados con fines docentes\</span>
+<span id="cb5-206"><a href="#cb5-206" aria-hidden="true" tabindex="-1"></a>**Tipo de datos:** corte transversal\</span>
+<span id="cb5-207"><a href="#cb5-207" aria-hidden="true" tabindex="-1"></a>**Periodo / unidad de observación:** 40 abogados\</span>
+<span id="cb5-208"><a href="#cb5-208" aria-hidden="true" tabindex="-1"></a>**Usado en:** Tema 3</span>
+<span id="cb5-209"><a href="#cb5-209" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-210"><a href="#cb5-210" aria-hidden="true" tabindex="-1"></a>**Variables**</span>
 <span id="cb5-211"><a href="#cb5-211" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-212"><a href="#cb5-212" aria-hidden="true" tabindex="-1"></a>**Variables**</span>
-<span id="cb5-213"><a href="#cb5-213" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-214"><a href="#cb5-214" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Variable <span class="pp">|</span> Descripción <span class="pp">|</span> Unidad <span class="pp">|</span></span>
-<span id="cb5-215"><a href="#cb5-215" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
-<span id="cb5-216"><a href="#cb5-216" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`Y`</span> <span class="pp">|</span> Ingreso mensual del abogado <span class="pp">|</span> € <span class="pp">|</span></span>
-<span id="cb5-217"><a href="#cb5-217" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`X1`</span> <span class="pp">|</span> Años de experiencia profesional <span class="pp">|</span> años <span class="pp">|</span></span>
-<span id="cb5-218"><a href="#cb5-218" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`X2`</span> <span class="pp">|</span> Horas medias trabajadas por semana <span class="pp">|</span> horas <span class="pp">|</span></span>
-<span id="cb5-219"><a href="#cb5-219" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`D1`</span> <span class="pp">|</span> Variable dicotómica: 1 si está especializado en derecho mercantil/empresarial, 0 en caso contrario <span class="pp">|</span> -- <span class="pp">|</span></span>
-<span id="cb5-220"><a href="#cb5-220" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-221"><a href="#cb5-221" aria-hidden="true" tabindex="-1"></a>**Código de generación**\</span>
-<span id="cb5-222"><a href="#cb5-222" aria-hidden="true" tabindex="-1"></a>No procede: no hay script de generación en el repositorio.</span>
+<span id="cb5-212"><a href="#cb5-212" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Variable <span class="pp">|</span> Descripción <span class="pp">|</span> Unidad <span class="pp">|</span></span>
+<span id="cb5-213"><a href="#cb5-213" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb5-214"><a href="#cb5-214" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`Y`</span> <span class="pp">|</span> Ingreso mensual del abogado <span class="pp">|</span> € <span class="pp">|</span></span>
+<span id="cb5-215"><a href="#cb5-215" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`X1`</span> <span class="pp">|</span> Años de experiencia profesional <span class="pp">|</span> años <span class="pp">|</span></span>
+<span id="cb5-216"><a href="#cb5-216" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`X2`</span> <span class="pp">|</span> Horas medias trabajadas por semana <span class="pp">|</span> horas <span class="pp">|</span></span>
+<span id="cb5-217"><a href="#cb5-217" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`D1`</span> <span class="pp">|</span> Variable dicotómica: 1 si está especializado en derecho mercantil/empresarial, 0 en caso contrario <span class="pp">|</span> -- <span class="pp">|</span></span>
+<span id="cb5-218"><a href="#cb5-218" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-219"><a href="#cb5-219" aria-hidden="true" tabindex="-1"></a>**Código de generación**\</span>
+<span id="cb5-220"><a href="#cb5-220" aria-hidden="true" tabindex="-1"></a>No procede.</span>
+<span id="cb5-221"><a href="#cb5-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-222"><a href="#cb5-222" aria-hidden="true" tabindex="-1"></a><span class="fu">## Tipos de interés (Wooldridge)</span></span>
 <span id="cb5-223"><a href="#cb5-223" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-224"><a href="#cb5-224" aria-hidden="true" tabindex="-1"></a><span class="fu">## Tipos de interés (Wooldridge)</span></span>
-<span id="cb5-225"><a href="#cb5-225" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-226"><a href="#cb5-226" aria-hidden="true" tabindex="-1"></a>**Fichero:** <span class="in">`WooldrigdeTI.txt`</span>\</span>
-<span id="cb5-227"><a href="#cb5-227" aria-hidden="true" tabindex="-1"></a>**Fuente:** Wooldridge (citado en el texto como <span class="in">`@Wooldrigde2000`</span>)\</span>
-<span id="cb5-228"><a href="#cb5-228" aria-hidden="true" tabindex="-1"></a>**Tipo de datos:** serie temporal\</span>
-<span id="cb5-229"><a href="#cb5-229" aria-hidden="true" tabindex="-1"></a>**Periodo / unidad de observación:** 124 observaciones; el fichero no incluye columna de fecha\</span>
-<span id="cb5-230"><a href="#cb5-230" aria-hidden="true" tabindex="-1"></a>**Usado en:** Tema 4 (ejercicios propuestos)</span>
+<span id="cb5-224"><a href="#cb5-224" aria-hidden="true" tabindex="-1"></a>**Fichero:** <span class="in">`WooldrigdeTI.txt`</span>\</span>
+<span id="cb5-225"><a href="#cb5-225" aria-hidden="true" tabindex="-1"></a>**Fuente:** Wooldridge (citado en el texto como <span class="in">`@Wooldrigde2000`</span>)\</span>
+<span id="cb5-226"><a href="#cb5-226" aria-hidden="true" tabindex="-1"></a>**Tipo de datos:** serie temporal\</span>
+<span id="cb5-227"><a href="#cb5-227" aria-hidden="true" tabindex="-1"></a>**Periodo / unidad de observación:** 124 observaciones; el fichero no incluye columna de fecha\</span>
+<span id="cb5-228"><a href="#cb5-228" aria-hidden="true" tabindex="-1"></a>**Usado en:** Tema 4 (ejercicios propuestos)</span>
+<span id="cb5-229"><a href="#cb5-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-230"><a href="#cb5-230" aria-hidden="true" tabindex="-1"></a>**Variables**</span>
 <span id="cb5-231"><a href="#cb5-231" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-232"><a href="#cb5-232" aria-hidden="true" tabindex="-1"></a>**Variables**</span>
-<span id="cb5-233"><a href="#cb5-233" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-234"><a href="#cb5-234" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Variable <span class="pp">|</span> Descripción <span class="pp">|</span> Unidad <span class="pp">|</span></span>
-<span id="cb5-235"><a href="#cb5-235" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
-<span id="cb5-236"><a href="#cb5-236" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`r12`</span> <span class="pp">|</span> Tipo de interés a 12 meses <span class="pp">|</span> % <span class="pp">|</span></span>
-<span id="cb5-237"><a href="#cb5-237" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`r3`</span> <span class="pp">|</span> Tipo de interés a 3 meses <span class="pp">|</span> % <span class="pp">|</span></span>
-<span id="cb5-238"><a href="#cb5-238" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`r6`</span> <span class="pp">|</span> Tipo de interés a 6 meses <span class="pp">|</span> % <span class="pp">|</span></span>
-<span id="cb5-239"><a href="#cb5-239" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-240"><a href="#cb5-240" aria-hidden="true" tabindex="-1"></a>**Código de generación**\</span>
-<span id="cb5-241"><a href="#cb5-241" aria-hidden="true" tabindex="-1"></a>No procede: fichero de datos que acompaña al manual de Wooldridge.</span>
-<span id="cb5-242"><a href="#cb5-242" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-243"><a href="#cb5-243" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
-<span id="cb5-244"><a href="#cb5-244" aria-hidden="true" tabindex="-1"></a>La cita <span class="in">`@Wooldrigde2000`</span> usada en 04-tema4.qmd no tiene entrada correspondiente en <span class="in">`book.bib`</span> — al renderizar ese capítulo aparecerá como referencia rota. Conviene añadir la entrada bibliográfica completa antes de publicar el libro.</span>
-<span id="cb5-245"><a href="#cb5-245" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb5-246"><a href="#cb5-246" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-247"><a href="#cb5-247" aria-hidden="true" tabindex="-1"></a><span class="fu">## Precio del helado (Ramanathan)</span></span>
-<span id="cb5-248"><a href="#cb5-248" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-249"><a href="#cb5-249" aria-hidden="true" tabindex="-1"></a>**Fichero:** <span class="in">`data9-1.txt`</span>\</span>
-<span id="cb5-250"><a href="#cb5-250" aria-hidden="true" tabindex="-1"></a>**Fuente:** Ramanathan, ejemplo 9.1\</span>
-<span id="cb5-251"><a href="#cb5-251" aria-hidden="true" tabindex="-1"></a>**Tipo de datos:** serie temporal\</span>
-<span id="cb5-252"><a href="#cb5-252" aria-hidden="true" tabindex="-1"></a>**Periodo / unidad de observación:** periodos de cuatro semanas, del 18 de marzo de 1951 al 11 de julio de 1953 (30 observaciones)\</span>
-<span id="cb5-253"><a href="#cb5-253" aria-hidden="true" tabindex="-1"></a>**Usado en:** Tema 4 (ejercicios propuestos)</span>
-<span id="cb5-254"><a href="#cb5-254" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-255"><a href="#cb5-255" aria-hidden="true" tabindex="-1"></a>**Variables**</span>
-<span id="cb5-256"><a href="#cb5-256" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-257"><a href="#cb5-257" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Variable <span class="pp">|</span> Descripción <span class="pp">|</span> Unidad <span class="pp">|</span></span>
-<span id="cb5-258"><a href="#cb5-258" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
-<span id="cb5-259"><a href="#cb5-259" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`demand`</span> <span class="pp">|</span> Consumo per cápita de helado <span class="pp">|</span> pintas <span class="pp">|</span></span>
-<span id="cb5-260"><a href="#cb5-260" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`income`</span> <span class="pp">|</span> Ingreso familiar semanal <span class="pp">|</span> $ <span class="pp">|</span></span>
-<span id="cb5-261"><a href="#cb5-261" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`price`</span> <span class="pp">|</span> Precio del helado <span class="pp">|</span> $/pinta <span class="pp">|</span></span>
-<span id="cb5-262"><a href="#cb5-262" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`temp`</span> <span class="pp">|</span> Temperatura media <span class="pp">|</span> °F <span class="pp">|</span></span>
+<span id="cb5-232"><a href="#cb5-232" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Variable <span class="pp">|</span> Descripción <span class="pp">|</span> Unidad <span class="pp">|</span></span>
+<span id="cb5-233"><a href="#cb5-233" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb5-234"><a href="#cb5-234" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`r12`</span> <span class="pp">|</span> Tipo de interés a 12 meses <span class="pp">|</span> % <span class="pp">|</span></span>
+<span id="cb5-235"><a href="#cb5-235" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`r3`</span> <span class="pp">|</span> Tipo de interés a 3 meses <span class="pp">|</span> % <span class="pp">|</span></span>
+<span id="cb5-236"><a href="#cb5-236" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`r6`</span> <span class="pp">|</span> Tipo de interés a 6 meses <span class="pp">|</span> % <span class="pp">|</span></span>
+<span id="cb5-237"><a href="#cb5-237" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-238"><a href="#cb5-238" aria-hidden="true" tabindex="-1"></a>**Código de generación**\</span>
+<span id="cb5-239"><a href="#cb5-239" aria-hidden="true" tabindex="-1"></a>No procede: fichero de datos que acompaña al manual de Wooldridge.</span>
+<span id="cb5-240"><a href="#cb5-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-241"><a href="#cb5-241" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-242"><a href="#cb5-242" aria-hidden="true" tabindex="-1"></a><span class="fu">## Precio del helado (Ramanathan)</span></span>
+<span id="cb5-243"><a href="#cb5-243" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-244"><a href="#cb5-244" aria-hidden="true" tabindex="-1"></a>**Fichero:** <span class="in">`data9-1.txt`</span>\</span>
+<span id="cb5-245"><a href="#cb5-245" aria-hidden="true" tabindex="-1"></a>**Fuente:** Ramanathan, ejemplo 9.1\</span>
+<span id="cb5-246"><a href="#cb5-246" aria-hidden="true" tabindex="-1"></a>**Tipo de datos:** serie temporal\</span>
+<span id="cb5-247"><a href="#cb5-247" aria-hidden="true" tabindex="-1"></a>**Periodo / unidad de observación:** periodos de cuatro semanas, del 18 de marzo de 1951 al 11 de julio de 1953 (30 observaciones)\</span>
+<span id="cb5-248"><a href="#cb5-248" aria-hidden="true" tabindex="-1"></a>**Usado en:** Tema 4 (ejercicios propuestos)</span>
+<span id="cb5-249"><a href="#cb5-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-250"><a href="#cb5-250" aria-hidden="true" tabindex="-1"></a>**Variables**</span>
+<span id="cb5-251"><a href="#cb5-251" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-252"><a href="#cb5-252" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Variable <span class="pp">|</span> Descripción <span class="pp">|</span> Unidad <span class="pp">|</span></span>
+<span id="cb5-253"><a href="#cb5-253" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb5-254"><a href="#cb5-254" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`demand`</span> <span class="pp">|</span> Consumo per cápita de helado <span class="pp">|</span> pintas <span class="pp">|</span></span>
+<span id="cb5-255"><a href="#cb5-255" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`income`</span> <span class="pp">|</span> Ingreso familiar semanal <span class="pp">|</span> $ <span class="pp">|</span></span>
+<span id="cb5-256"><a href="#cb5-256" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`price`</span> <span class="pp">|</span> Precio del helado <span class="pp">|</span> $/pinta <span class="pp">|</span></span>
+<span id="cb5-257"><a href="#cb5-257" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`temp`</span> <span class="pp">|</span> Temperatura media <span class="pp">|</span> °F <span class="pp">|</span></span>
+<span id="cb5-258"><a href="#cb5-258" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-259"><a href="#cb5-259" aria-hidden="true" tabindex="-1"></a>**Código de generación**\</span>
+<span id="cb5-260"><a href="#cb5-260" aria-hidden="true" tabindex="-1"></a>No procede: fichero de datos que acompaña al ejemplo de Ramanathan.</span>
+<span id="cb5-261"><a href="#cb5-261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-262"><a href="#cb5-262" aria-hidden="true" tabindex="-1"></a><span class="fu">## Modelo STIRPAT para China</span></span>
 <span id="cb5-263"><a href="#cb5-263" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-264"><a href="#cb5-264" aria-hidden="true" tabindex="-1"></a>**Código de generación**\</span>
-<span id="cb5-265"><a href="#cb5-265" aria-hidden="true" tabindex="-1"></a>No procede: fichero de datos que acompaña al ejemplo de Ramanathan.</span>
-<span id="cb5-266"><a href="#cb5-266" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-267"><a href="#cb5-267" aria-hidden="true" tabindex="-1"></a><span class="fu">## Modelo STIRPAT para China</span></span>
-<span id="cb5-268"><a href="#cb5-268" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-269"><a href="#cb5-269" aria-hidden="true" tabindex="-1"></a>**Fichero:** <span class="in">`stirpattchina.csv`</span>\</span>
-<span id="cb5-270"><a href="#cb5-270" aria-hidden="true" tabindex="-1"></a>**Fuente:** *pendiente de confirmar* — no se especifica en el texto del libro (las variables son compatibles con series del Banco Mundial, *World Development Indicators*)\</span>
-<span id="cb5-271"><a href="#cb5-271" aria-hidden="true" tabindex="-1"></a>**Tipo de datos:** serie temporal\</span>
-<span id="cb5-272"><a href="#cb5-272" aria-hidden="true" tabindex="-1"></a>**Periodo / unidad de observación:** anual, China, 1990 -- 2014 (25 observaciones)\</span>
-<span id="cb5-273"><a href="#cb5-273" aria-hidden="true" tabindex="-1"></a>**Usado en:** Tema 4 (ejercicios propuestos)</span>
-<span id="cb5-274"><a href="#cb5-274" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-275"><a href="#cb5-275" aria-hidden="true" tabindex="-1"></a>**Variables**</span>
-<span id="cb5-276"><a href="#cb5-276" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-277"><a href="#cb5-277" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Variable <span class="pp">|</span> Descripción <span class="pp">|</span> Unidad <span class="pp">|</span></span>
-<span id="cb5-278"><a href="#cb5-278" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
-<span id="cb5-279"><a href="#cb5-279" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`time`</span> <span class="pp">|</span> Año de la observación <span class="pp">|</span> -- <span class="pp">|</span></span>
-<span id="cb5-280"><a href="#cb5-280" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`PIB_cte`</span> <span class="pp">|</span> PIB a precios constantes <span class="pp">|</span> billones USD (2010) <span class="pp">|</span></span>
-<span id="cb5-281"><a href="#cb5-281" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`PIBpc_cte`</span> <span class="pp">|</span> PIB per cápita a precios constantes <span class="pp">|</span> miles USD (2010) <span class="pp">|</span></span>
-<span id="cb5-282"><a href="#cb5-282" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`Pop`</span> <span class="pp">|</span> Población total <span class="pp">|</span> miles de millones <span class="pp">|</span></span>
-<span id="cb5-283"><a href="#cb5-283" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`CarbonDiox`</span> <span class="pp">|</span> Emisiones de CO2 <span class="pp">|</span> -- <span class="pp">|</span></span>
-<span id="cb5-284"><a href="#cb5-284" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`EnergyIntens`</span> <span class="pp">|</span> Intensidad energética <span class="pp">|</span> -- <span class="pp">|</span></span>
-<span id="cb5-285"><a href="#cb5-285" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`Indust`</span> <span class="pp">|</span> Industrialización (% del PIB) <span class="pp">|</span> % <span class="pp">|</span></span>
-<span id="cb5-286"><a href="#cb5-286" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-287"><a href="#cb5-287" aria-hidden="true" tabindex="-1"></a>**Código de generación**\</span>
-<span id="cb5-288"><a href="#cb5-288" aria-hidden="true" tabindex="-1"></a>No procede: no hay script de descarga en el repositorio.</span>
-<span id="cb5-289"><a href="#cb5-289" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-290"><a href="#cb5-290" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title="Pendiente de revisión"}</span>
-<span id="cb5-291"><a href="#cb5-291" aria-hidden="true" tabindex="-1"></a>Cuatro de las bases de datos anteriores (esperanza de vida y gasto sanitario, consumo eléctrico, ingresos de abogados y STIRPAT China) no tienen una fuente citada explícitamente en el texto del libro. Antes de publicar este apéndice, confirma su procedencia real (¿son datos oficiales, adaptados de otra fuente, o simulados con fines docentes?) para poder documentarla correctamente.</span>
-<span id="cb5-292"><a href="#cb5-292" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb5-264"><a href="#cb5-264" aria-hidden="true" tabindex="-1"></a>**Fichero:** <span class="in">`stirpattchina.csv`</span>\</span>
+<span id="cb5-265"><a href="#cb5-265" aria-hidden="true" tabindex="-1"></a>**Fuente:** Elaboración propia a partir de datos del Banco Mundial (World Bank)\</span>
+<span id="cb5-266"><a href="#cb5-266" aria-hidden="true" tabindex="-1"></a>**Tipo de datos:** serie temporal\</span>
+<span id="cb5-267"><a href="#cb5-267" aria-hidden="true" tabindex="-1"></a>**Periodo / unidad de observación:** anual, China, 1990 -- 2014 (25 observaciones)\</span>
+<span id="cb5-268"><a href="#cb5-268" aria-hidden="true" tabindex="-1"></a>**Usado en:** Tema 4 (ejercicios propuestos)</span>
+<span id="cb5-269"><a href="#cb5-269" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-270"><a href="#cb5-270" aria-hidden="true" tabindex="-1"></a>**Variables**</span>
+<span id="cb5-271"><a href="#cb5-271" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-272"><a href="#cb5-272" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Variable <span class="pp">|</span> Descripción <span class="pp">|</span> Unidad <span class="pp">|</span></span>
+<span id="cb5-273"><a href="#cb5-273" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb5-274"><a href="#cb5-274" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`time`</span> <span class="pp">|</span> Año de la observación <span class="pp">|</span> -- <span class="pp">|</span></span>
+<span id="cb5-275"><a href="#cb5-275" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`PIB_cte`</span> <span class="pp">|</span> PIB a precios constantes <span class="pp">|</span> billones USD (2010) <span class="pp">|</span></span>
+<span id="cb5-276"><a href="#cb5-276" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`PIBpc_cte`</span> <span class="pp">|</span> PIB per cápita a precios constantes <span class="pp">|</span> miles USD (2010) <span class="pp">|</span></span>
+<span id="cb5-277"><a href="#cb5-277" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`Pop`</span> <span class="pp">|</span> Población total <span class="pp">|</span> miles de millones <span class="pp">|</span></span>
+<span id="cb5-278"><a href="#cb5-278" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`CarbonDiox`</span> <span class="pp">|</span> Emisiones de CO2 <span class="pp">|</span> -- <span class="pp">|</span></span>
+<span id="cb5-279"><a href="#cb5-279" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`EnergyIntens`</span> <span class="pp">|</span> Intensidad energética <span class="pp">|</span> -- <span class="pp">|</span></span>
+<span id="cb5-280"><a href="#cb5-280" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`Indust`</span> <span class="pp">|</span> Industrialización (% del PIB) <span class="pp">|</span> % <span class="pp">|</span></span>
+<span id="cb5-281"><a href="#cb5-281" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-282"><a href="#cb5-282" aria-hidden="true" tabindex="-1"></a>**Código de generación**\</span>
+<span id="cb5-283"><a href="#cb5-283" aria-hidden="true" tabindex="-1"></a>No procede.</span>
 </code></pre></div><button title="Copiar al portapapeles" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

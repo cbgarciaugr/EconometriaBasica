@@ -82,7 +82,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-c117ac82edef17e21c58c619b1d4b9e4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-3dac5e246fdd9bdc5e35d09ab9b42ca8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -250,6 +250,12 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Apéndice. Distribuciones estadísticas y valores críticos</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referencias</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -271,10 +277,11 @@ window.Quarto = {
   <li><a href="#procedimientos-de-detección" id="toc-procedimientos-de-detección" class="nav-link" data-scroll-target="#procedimientos-de-detección"><span class="header-section-number">5.2</span> Procedimientos de detección</a>
   <ul class="collapse">
   <li><a href="#métodos-gráficos" id="toc-métodos-gráficos" class="nav-link" data-scroll-target="#métodos-gráficos"><span class="header-section-number">5.2.1</span> Métodos gráficos</a></li>
+  <li><a href="#qué-debemos-buscar-en-un-gráfico" id="toc-qué-debemos-buscar-en-un-gráfico" class="nav-link" data-scroll-target="#qué-debemos-buscar-en-un-gráfico">¿Qué debemos buscar en un gráfico?</a></li>
   <li><a href="#contrastes-de-heteroscedasticidad" id="toc-contrastes-de-heteroscedasticidad" class="nav-link" data-scroll-target="#contrastes-de-heteroscedasticidad"><span class="header-section-number">5.2.2</span> Contrastes de heteroscedasticidad</a></li>
-  <li><a href="#test-de-white" id="toc-test-de-white" class="nav-link" data-scroll-target="#test-de-white"><span class="header-section-number">5.2.3</span> Test de White</a></li>
-  <li><a href="#test-de-breusch-pagan" id="toc-test-de-breusch-pagan" class="nav-link" data-scroll-target="#test-de-breusch-pagan"><span class="header-section-number">5.2.4</span> Test de Breusch-Pagan</a></li>
-  <li><a href="#método-de-glejser" id="toc-método-de-glejser" class="nav-link" data-scroll-target="#método-de-glejser"><span class="header-section-number">5.2.5</span> Método de Glejser</a></li>
+  <li><a href="#test-de-white" id="toc-test-de-white" class="nav-link" data-scroll-target="#test-de-white">Test de White</a></li>
+  <li><a href="#test-de-breusch-pagan" id="toc-test-de-breusch-pagan" class="nav-link" data-scroll-target="#test-de-breusch-pagan">Test de Breusch-Pagan</a></li>
+  <li><a href="#método-de-glejser" id="toc-método-de-glejser" class="nav-link" data-scroll-target="#método-de-glejser">Método de Glejser</a></li>
   </ul></li>
   <li><a href="#estimación-de-modelos-con-heteroscedasticidad" id="toc-estimación-de-modelos-con-heteroscedasticidad" class="nav-link" data-scroll-target="#estimación-de-modelos-con-heteroscedasticidad"><span class="header-section-number">5.3</span> Estimación de modelos con heteroscedasticidad</a>
   <ul class="collapse">
@@ -283,6 +290,8 @@ window.Quarto = {
   <li><a href="#mínimos-cuadrados-generalizados-factibles" id="toc-mínimos-cuadrados-generalizados-factibles" class="nav-link" data-scroll-target="#mínimos-cuadrados-generalizados-factibles"><span class="header-section-number">5.3.3</span> Mínimos cuadrados generalizados factibles</a></li>
   <li><a href="#estimación-con-errores-estándar-robustos" id="toc-estimación-con-errores-estándar-robustos" class="nav-link" data-scroll-target="#estimación-con-errores-estándar-robustos"><span class="header-section-number">5.3.4</span> Estimación con errores estándar robustos</a></li>
   </ul></li>
+  <li><a href="#practicas-resueltas" id="toc-practicas-resueltas" class="nav-link" data-scroll-target="#practicas-resueltas"><span class="header-section-number">5.4</span> Practicas resueltas</a></li>
+  <li><a href="#practicas-propuestas" id="toc-practicas-propuestas" class="nav-link" data-scroll-target="#practicas-propuestas"><span class="header-section-number">5.5</span> Practicas propuestas</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cbgarciaugr/EconometriaBasica/edit/main/chapters/05-tema5.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li></ul></div></nav>
     </div>
@@ -359,7 +368,7 @@ Var(u_i \mid X)=\sigma_i^2,
 <div class="callout-body-container callout-body">
 <p>Para ilustrar este concepto, consideremos el modelo utilizado para explicar la rentabilidad económica de las empresas:</p>
 <p><span class="math display">\[
-ROA_i=\beta_0+\beta_1LIQUIDEZ\_INMEDIATA_i+\beta_2ENDEUDAMIENTO_i+\beta_3EMPLEADOS_i+u_i.
+ROA_i=\beta_0+\beta_1LIQ_i+\beta_2LEV_i+\beta_3EMP_i+u_i.
 \]</span> En este modelo, el término de perturbación <span class="math inline">\(u_i\)</span> recoge todos aquellos factores que afectan al ROA de la empresa <span class="math inline">\(i\)</span> y que no están incluidos explícitamente en el modelo. Si se cumple el supuesto de homocedasticidad, estamos suponiendo que la variabilidad de estos factores no observados es similar para todas las empresas. Es decir, una empresa pequeña y una empresa grande presentarían, en términos generales, una dispersión similar de sus errores alrededor del valor de ROA explicado por el modelo.</p>
 <p>Sin embargo, esta hipótesis puede resultar poco realista en datos empresariales. Las empresas pueden presentar diferencias importantes en su tamaño, estructura financiera, actividad o capacidad de gestión. Por ejemplo, es posible que los errores de predicción sean relativamente pequeños para empresas de características similares, mientras que presenten una mayor dispersión entre empresas de mayor tamaño o con estructuras financieras más heterogéneas. En este caso, la varianza de la perturbación podría aumentar con alguna de las variables explicativas o con el propio nivel de la variable dependiente. Gráficamente, esto podría dar lugar a una nube de residuos cuya dispersión aumenta o disminuye a medida que aumenta el valor de una variable.</p>
 <p>Como primera aproximación al análisis de la posible presencia de heterocedasticidad, se representa el ROA en función de la LIQUIDEZ_INMEDIATA. En la representación se observa que, para valores de liquidez próximos a cero, los valores del ROA presentan una dispersión relativamente reducida, mientras que, a medida que aumenta la liquidez, la dispersión de los valores del ROA parece incrementarse. Este patrón podría ser indicativo de una varianza no constante de la variable dependiente a lo largo de los distintos niveles de liquidez y, por tanto, constituye una primera evidencia visual compatible con la presencia de heterocedasticidad. No obstante, esta apreciación debe contrastarse posteriormente mediante procedimientos gráficos y contrastes estadísticos específicos.</p>
@@ -406,33 +415,33 @@ Var(\mathbf{u}\mid X)=\sigma^2 I_n,
 <ul>
 <li><strong>Naturaleza de las variables.</strong> La heterocedasticidad es especialmente frecuente cuando se trabaja con datos de sección cruzada, ya que las unidades analizadas pueden presentar diferencias importantes en sus características y, por tanto, en la variabilidad de la variable dependiente.</li>
 </ul>
-<p>En el modelo <span class="math inline">\(ROA_i=\beta_0+\beta_1LIQUIDEZ_i+  \beta_2ENDEUDAMIENTO_i+  \beta_3EMPLEADOS_i+u_i\)</span>, es posible que la variabilidad de los factores no observados que afectan al ROA no sea la misma para todas las empresasas empresas, por ejemplo que las de mayor tamaño pueden presentar una mayor diversidad en sus resultados y, en consecuencia, una mayor dispersión de los residuos.</p>
+<p>En el modelo <span class="math inline">\(ROA_i=\beta_0+\beta_1LIQ_i+  \beta_2LEV_i+  \beta_3EMP_i+u_i\)</span>, es posible que la variabilidad de los factores no observados que afectan al ROA no sea la misma para todas las empresasas empresas, por ejemplo que las de mayor tamaño pueden presentar una mayor diversidad en sus resultados y, en consecuencia, una mayor dispersión de los residuos.</p>
 <ul>
 <li><p><strong>Uso de una forma funcional incorrecta.</strong> La heterocedasticidad también puede ser consecuencia de especificar incorrectamente la relación entre la variable dependiente y las variables explicativas. En particular, puede ocurrir que se suponga una relación lineal cuando la relación verdadera presenta una forma no lineal.</p></li>
 <li><p><strong>Uso de datos agregados.</strong> La heterocedasticidad puede aparecer cuando las observaciones utilizadas en el análisis son valores agregados correspondientes a grupos de distinto tamaño. En estos casos, la precisión o variabilidad de las observaciones puede depender del número de elementos que componen cada grupo. Por ejemplo, si se analiza la rentabilidad media de empresas de diferentes provincias o sectores, los grupos pueden presentar tamaños muy distintos. Una media calculada a partir de un número reducido de empresas puede presentar una variabilidad diferente de otra obtenida a partir de un grupo mucho más numeroso.</p></li>
 <li><p><strong>Omisión de variables relevantes.</strong> Otra posible causa de heterocedasticidad es la omisión de variables relevantes que afectan a la variable dependiente. Cuando una variable relevante no se incluye explícitamente en el modelo, su efecto queda incorporado a la perturbación aleatoria. Si, además, esta variable omitida está relacionada con alguna de las variables incluidas en el modelo, la varianza de la perturbación puede dejar de ser constante.</p>
 <p>Para ilustrarlo, supongamos que el verdadero modelo que explica el ROA es:</p>
 <p><span class="math display">\[
-ROA_i=\beta_0+\beta_1LIQUIDEZ_i+
-\beta_2ENDEUDAMIENTO_i+
-\beta_3TAMAÑO_i+u_i,
+ROA_i=\beta_0+\beta_1LIQ_i+
+\beta_2LEV_i+
+\beta_3EMP_i+u_i,
 \]</span></p>
 <p>pero se estima un modelo en el que se omite el tamaño de la empresa:</p>
 <p><span class="math display">\[
-ROA_i=\alpha_0+\alpha_1LIQUIDEZ_i+
-\alpha_2ENDEUDAMIENTO_i+v_i.
+ROA_i=\alpha_0+\alpha_1LIQ_i+
+\alpha_2LEV_i+v_i.
 \]</span></p>
 <p>La perturbación del modelo estimado recogerá ahora tanto los factores no observados <span class="math inline">\(u_i\)</span> como el efecto de la variable omitida:</p>
 <p><span class="math display">\[
-v_i=u_i+\beta_3TAMAÑO_i.
+v_i=u_i+\beta_3EMP_i.
 \]</span></p>
 <p>Suponiendo que <span class="math inline">\(E(u_i)=0\)</span>, <span class="math inline">\(Var(u_i)=\sigma^2\)</span> y que se cumplen las condiciones habituales de exogeneidad, se obtiene:</p>
 <p><span class="math display">\[
 \begin{aligned}
 Var(v_i)
 &amp;=E[v_i^2]\\
-&amp;=E[(u_i+\beta_3TAMAÑO_i)^2]\\
-&amp;=\sigma^2+\beta_3^2TAMAÑO_i^2.
+&amp;=E[(u_i+\beta_3EMP_i)^2]\\
+&amp;=\sigma^2+\beta_3^2EMP_i^2.
 \end{aligned}
 \]</span></p>
 <p>Por tanto, la varianza de la perturbación dependerá del tamaño de la empresa y, en consecuencia, no será constante entre las observaciones.</p></li>
@@ -473,8 +482,8 @@ Var(v_i)
 <p>Los métodos gráficos proporcionan una primera aproximación intuitiva a la existencia de heterocedasticidad. Su principal utilidad consiste en analizar si la <strong>dispersión de los residuos cambia sistemáticamente</strong> a medida que varía una determinada variable o a lo largo de las observaciones.</p>
 <p>Es importante señalar que un gráfico, por sí solo, <strong>no permite concluir formalmente que existe heterocedasticidad</strong>. La interpretación puede depender de la escala utilizada y, en ocasiones, el patrón observado puede resultar difícil de distinguir visualmente. Por este motivo, las conclusiones obtenidas mediante gráficos deben complementarse posteriormente con un contraste analítico.</p>
 <p>Dentro de los procedimientos gráficos pueden distinguirse los siguientes.</p>
-<section id="gráfico-de-los-residuos-frente-al-orden-de-las-observaciones" class="level4" data-number="5.2.1.1">
-<h4 data-number="5.2.1.1" class="anchored" data-anchor-id="gráfico-de-los-residuos-frente-al-orden-de-las-observaciones"><span class="header-section-number">5.2.1.1</span> Gráfico de los residuos frente al orden de las observaciones</h4>
+<section id="gráfico-de-los-residuos-frente-al-orden-de-las-observaciones" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="gráfico-de-los-residuos-frente-al-orden-de-las-observaciones">Gráfico de los residuos frente al orden de las observaciones</h4>
 <p>Una primera posibilidad consiste en representar los residuos estimados <span class="math inline">\(e_i\)</span> o sus cuadrados <span class="math inline">\(e_i^2\)</span> frente al número de observación <span class="math inline">\(i\)</span>.</p>
 <p>El objetivo es comprobar si la dispersión de los residuos parece mantenerse aproximadamente constante a lo largo de la muestra. Si se observan zonas en las que los residuos presentan una dispersión claramente diferente de otras, puede existir evidencia gráfica de heterocedasticidad.</p>
 <p>Por ejemplo, si al avanzar en las observaciones los residuos pasan de estar muy concentrados alrededor de cero a presentar una dispersión cada vez mayor, podría aparecer un patrón similar a un <strong>abanico</strong>, lo que constituiría una primera indicación de que la varianza de la perturbación no es constante.</p>
@@ -527,8 +536,8 @@ Var(v_i)
 </div>
 </div>
 </section>
-<section id="gráfico-de-los-residuos-frente-a-las-variables-explicativas" class="level4" data-number="5.2.1.2">
-<h4 data-number="5.2.1.2" class="anchored" data-anchor-id="gráfico-de-los-residuos-frente-a-las-variables-explicativas"><span class="header-section-number">5.2.1.2</span> Gráfico de los residuos frente a las variables explicativas</h4>
+<section id="gráfico-de-los-residuos-frente-a-las-variables-explicativas" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="gráfico-de-los-residuos-frente-a-las-variables-explicativas">Gráfico de los residuos frente a las variables explicativas</h4>
 <p>Una herramienta especialmente útil consiste en representar los residuos estimados, o sus cuadrados, frente a cada una de las variables explicativas del modelo. Esta representación permite analizar no solo si existe heterocedasticidad, sino también obtener una primera indicación sobre <strong>qué variable puede estar relacionada con el cambio en la varianza de los residuos</strong>.</p>
 <div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
 <div class="callout-header d-flex align-content-center">
@@ -542,9 +551,9 @@ Var(v_i)
 <div class="callout-body-container callout-body">
 <p>Por ejemplo, consideremos el modelo utilizado para explicar la rentabilidad empresarial:</p>
 <p><span class="math display">\[
-ROA_i=\beta_0+\beta_1LIQUIDEZ\_INMEDIATA_i+
-\beta_2ENDEUDAMIENTO_i+
-\beta_3EMPLEADOS_i+u_i.
+ROA_i=\beta_0+\beta_1LIQ_i+
+\beta_2LEV_i+
+\beta_3EMP_i+u_i.
 \]</span> Podemos representar los residuos frente a la variable <strong>LIQUIDEZ_INMEDIATA</strong>. Si la dispersión de los residuos permanece aproximadamente constante para todos los niveles de liquidez, no se apreciaría un patrón claro de heterocedasticidad. Por el contrario, si la dispersión aumenta conforme aumenta la liquidez, podría existir una relación entre la varianza de la perturbación y esta variable.</p>
 <div class="cell">
 <details class="code-fold">
@@ -604,8 +613,9 @@ ROA_i=\beta_0+\beta_1LIQUIDEZ\_INMEDIATA_i+
 </div>
 </div>
 </section>
-<section id="qué-debemos-buscar-en-un-gráfico" class="level4" data-number="5.2.1.3">
-<h4 data-number="5.2.1.3" class="anchored" data-anchor-id="qué-debemos-buscar-en-un-gráfico"><span class="header-section-number">5.2.1.3</span> ¿Qué debemos buscar en un gráfico?</h4>
+</section>
+<section id="qué-debemos-buscar-en-un-gráfico" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="qué-debemos-buscar-en-un-gráfico">¿Qué debemos buscar en un gráfico?</h3>
 <p>Al analizar estos gráficos, no debemos centrarnos únicamente en si los residuos están próximos o alejados de cero. Lo que interesa fundamentalmente es comprobar si <strong>la amplitud de la nube de puntos cambia sistemáticamente</strong>. Así, podemos encontrar diferentes situaciones:</p>
 <ul>
 <li><strong>Dispersión aproximadamente constante:</strong> la amplitud de los residuos es similar para los distintos valores de <span class="math inline">\(X\)</span>. Esto es compatible con el supuesto de homocedasticidad.</li>
@@ -614,7 +624,6 @@ ROA_i=\beta_0+\beta_1LIQUIDEZ\_INMEDIATA_i+
 <li><strong>Patrones diferenciados por grupos:</strong> algunos grupos de observaciones presentan una dispersión claramente diferente de otros. También puede ser una señal de heterocedasticidad.</li>
 </ul>
 <p>No obstante, los métodos gráficos presentan una limitación importante: <strong>la decisión sobre la existencia de heterocedasticidad puede ser subjetiva</strong>. Dos investigadores podrían interpretar de manera diferente un mismo gráfico. Por ello, la evidencia gráfica debe considerarse como un diagnóstico inicial y debe complementarse con <strong>contrastes estadísticos formales</strong>, que permitirán determinar si existen evidencias suficientes para rechazar la hipótesis de homocedasticidad.</p>
-</section>
 </section>
 <section id="contrastes-de-heteroscedasticidad" class="level3" data-number="5.2.2">
 <h3 data-number="5.2.2" class="anchored" data-anchor-id="contrastes-de-heteroscedasticidad"><span class="header-section-number">5.2.2</span> Contrastes de heteroscedasticidad</h3>
@@ -641,9 +650,9 @@ H_1:\operatorname{Var}(u_i)\neq\sigma^2.
 <p>Permite analizar situaciones en las que se sospecha que la varianza de las perturbaciones cambia de forma <strong>monótona</strong> con respecto a una variable explicativa determinada. Por tanto, resulta especialmente apropiado cuando los gráficos sugieren que la dispersión de los residuos aumenta o disminuye conforme aumenta una determinada variable.</p>
 <p>Por ejemplo, en el modelo de rentabilidad empresarial:</p>
 <p><span class="math display">\[
-ROA_i=\beta_0+\beta_1LIQUIDEZ\_INMEDIATA_i+
-\beta_2ENDEUDAMIENTO_i+
-\beta_3EMPLEADOS_i+u_i,
+ROA_i=\beta_0+\beta_1LIQ_i+
+\beta_2LEV_i+
+\beta_3EMP_i+u_i,
 \]</span></p>
 <p>podríamos sospechar que la variabilidad del ROA aumenta con la <strong>LIQUIDEZ_INMEDIATA</strong>. El test de Goldfeld-Quandt permite contrastar formalmente esta posibilidad.</p>
 <p>El procedimiento consta de las siguientes etapas:</p>
@@ -705,21 +714,21 @@ alternative hypothesis: variance increases from segment 1 to 2</code></pre>
 </div>
 </section>
 </section>
-<section id="test-de-white" class="level3" data-number="5.2.3">
-<h3 data-number="5.2.3" class="anchored" data-anchor-id="test-de-white"><span class="header-section-number">5.2.3</span> Test de White</h3>
+<section id="test-de-white" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="test-de-white">Test de White</h3>
 <p>Constituye una alternativa más general, ya que no requiere especificar previamente una variable concreta como causante de la heteroscedasticidad ni asumir una forma funcional determinada para la varianza. La idea consiste en analizar si los <strong>residuos al cuadrado</strong> pueden explicarse mediante las variables explicativas del modelo, sus cuadrados y sus productos cruzados. Para el modelo:</p>
 <p><span class="math display">\[
-ROA_i=\beta_0+\beta_1LIQUIDEZ_i+
-\beta_2ENDEUDAMIENTO_i+u_i,
+ROA_i=\beta_0+\beta_1LIQ_i+
+\beta_2LEV_i+u_i,
 \]</span></p>
 <p>la regresión auxiliar incluiría, de forma simplificada, términos como:</p>
 <p><span class="math display">\[
 \hat e_i^2=
-\alpha_0+\alpha_1LIQUIDEZ_i+
-\alpha_2ENDEUDAMIENTO_i+
-\alpha_3LIQUIDEZ_i^2+
-\alpha_4ENDEUDAMIENTO_i^2+
-\alpha_5LIQUIDEZ_iENDEUDAMIENTO_i+\cdots+v_i.
+\alpha_0+\alpha_1LIQ_i+
+\alpha_2LEV_i+
+\alpha_3LIQ_i^2+
+\alpha_4LEV_i^2+
+\alpha_5LIQ_iLEV_i+v_i.
 \]</span></p>
 <p>El contraste parte de la hipótesis:</p>
 <p><span class="math display">\[
@@ -783,8 +792,8 @@ BP = 3.735, df = 2, p-value = 0.1545</code></pre>
 </div>
 </div>
 </section>
-<section id="test-de-breusch-pagan" class="level3" data-number="5.2.4">
-<h3 data-number="5.2.4" class="anchored" data-anchor-id="test-de-breusch-pagan"><span class="header-section-number">5.2.4</span> Test de Breusch-Pagan</h3>
+<section id="test-de-breusch-pagan" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="test-de-breusch-pagan">Test de Breusch-Pagan</h3>
 <p>Parte de una hipótesis alternativa más específica que la de White. En este caso se supone que la varianza de las perturbaciones puede explicarse mediante una <strong>relación lineal con un conjunto de variables</strong>. En términos generales, se supone que:</p>
 <p><span class="math display">\[
 \sigma_i^2=
@@ -865,8 +874,8 @@ BP = 3.0002, df = 3, p-value = 0.3916</code></pre>
 </div>
 </div>
 </section>
-<section id="método-de-glejser" class="level3" data-number="5.2.5">
-<h3 data-number="5.2.5" class="anchored" data-anchor-id="método-de-glejser"><span class="header-section-number">5.2.5</span> Método de Glejser</h3>
+<section id="método-de-glejser" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="método-de-glejser">Método de Glejser</h3>
 <p>El método de <strong>Glejser</strong> presenta un planteamiento diferente. Su objetivo no es únicamente detectar la existencia de heteroscedasticidad, sino también obtener información sobre la <strong>posible forma funcional de la varianza</strong>. El procedimiento parte de los residuos del modelo original y analiza si su valor absoluto puede explicarse mediante una variable que se sospecha que está relacionada con la heteroscedasticidad.</p>
 <p>La regresión auxiliar adopta la forma:</p>
 <p><span class="math display">\[
@@ -1112,36 +1121,36 @@ Var(u_i)=\sigma^2w_i,
 <div class="callout-body-container callout-body">
 <p>Consideremos nuevamente el modelo utilizado a lo largo del tema:</p>
 <p><span class="math display">\[
-ROA_i=\beta_0+\beta_1LIQUIDEZ\_INMEDIATA_i+\beta_2ENDEUDAMIENTO_i+\beta_3EMPLEADOS_i+u_i.
+ROA_i=\beta_0+\beta_1LIQ_i+\beta_2LEV_i+\beta_3EMP_i+u_i.
 \]</span></p>
 <p>Supongamos que, a partir del análisis realizado previamente, se considera que el esquema de heteroscedasticidad viene determinado directamente por la variable <strong>LIQUIDEZ_INMEDIATA</strong>, de modo que:</p>
-<p><span class="math display">\[Var(u_i)=\sigma^2LIQUIDEZ\_INMEDIATA_i^2.\]</span></p>
+<p><span class="math display">\[Var(u_i)=\sigma^2LIQ_i^2.\]</span></p>
 <p>En este caso, el esquema de heteroscedasticidad viene determinado por <span class="math inline">\(w_i=LIQUIDEZ\_INMEDIATA_i^2\)</span>. Para eliminar la heteroscedasticidad debemos dividir todas las variables del modelo por:</p>
 <p><span class="math display">\[
-\sqrt{w_i}=\sqrt{LIQUIDEZ\_INMEDIATA_i^2}=LIQUIDEZ\_INMEDIATA_i
+\sqrt{w_i}=\sqrt{LIQ_i^2}=LIQ_i
 \]</span></p>
 <p>Por tanto, el modelo transformado se obtiene dividiendo <strong>todas las variables por LIQUIDEZ_INMEDIATA</strong>, incluido el término independiente:</p>
 <p><span class="math display">\[
-\frac{ROA_i}{LIQUIDEZ\_INMEDIATA_i}=
-\beta_0\frac{1}{LIQUIDEZ\_INMEDIATA_i}
+\frac{ROA_i}{LIQ_i}=
+\beta_0\frac{1}{LIQ_i}
 +
-\beta_1\frac{LIQUIDEZ\_INMEDIATA_i}{LIQUIDEZ\_INMEDIATA_i}
+\beta_1\frac{LIQ_i}{LIQ_i}
 +
-\beta_2\frac{ENDEUDAMIENTO_i}{LIQUIDEZ\_INMEDIATA_i}
+\beta_2\frac{LEV_i}{LIQ_i}
 +
-\beta_3\frac{EMPLEADOS_i}{LIQUIDEZ\_INMEDIATA_i}
+\beta_3\frac{EMP_i}{LIQ_i}
 +
-\frac{u_i}{LIQUIDEZ\_INMEDIATA_i}.
+\frac{u_i}{LIQ_i}.
 \]</span></p>
 <p>Por tanto:</p>
 <p><span class="math display">\[
-\frac{ROA_i}{LIQUIDEZ\_INMEDIATA_i}=\beta_0\frac{1}{LIQUIDEZ\_INMEDIATA_i}+\beta_1+\beta_2\frac{ENDEUDAMIENTO_i}{LIQUIDEZ\_INMEDIATA_i}+\beta_3\frac{EMPLEADOS_i}{LIQUIDEZ\_INMEDIATA_i}+u_i^*,
+\frac{ROA_i}{LIQ_i}=\beta_0\frac{1}{LIQ_i}+\beta_1+\beta_2\frac{LEV_i}{LIQ_i}+\beta_3\frac{EMP_i}{LIQ_i}+u_i^*,
 \]</span></p>
 <p>donde <span class="math inline">\(u_i^*=\frac{u_i}{LIQUIDEZ\_INMEDIATA_i}\)</span></p>
 <p>Es importante destacar que <strong>el término independiente también debe transformarse</strong>. Por ello, en la regresión transformada no aparece una constante convencional, sino la variable <span class="math inline">\(\frac{1}{LIQUIDEZ\_INMEDIATA_i}\)</span>.</p>
 <p>La transformación consigue que la perturbación transformada sea homocedástica:</p>
 <p><span class="math display">\[
-Var(u_i^*)= Var\left(\frac{u_i}{LIQUIDEZ\_INMEDIATA_i}\right)=\frac{Var(u_i)}{LIQUIDEZ\_INMEDIATA_i^2}=\frac{\sigma^2LIQUIDEZ\_INMEDIATA_i^2}{LIQUIDEZ\_INMEDIATA_i^2}=\sigma^2.
+Var(u_i^*)= Var\left(\frac{u_i}{LIQ_i}\right)=\frac{Var(u_i)}{LIQ_i^2}=\frac{\sigma^2LIQ_i^2}{LIQ_i^2}=\sigma^2.
 \]</span></p>
 <p>Por tanto, podemos estimar el modelo transformado mediante MCO. Para ello, en primer lugar creamos las variables transformadas:</p>
 <div class="cell">
@@ -1151,7 +1160,7 @@ Var(u_i^*)= Var\left(\frac{u_i}{LIQUIDEZ\_INMEDIATA_i}\right)=\frac{Var(u_i)}{LI
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>datos<span class="sc">$</span>inv_LIQ <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> datos<span class="sc">$</span>LIQUIDEZ_INMEDIATA</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>datos<span class="sc">$</span>LIQ_t <span class="ot">&lt;-</span> datos<span class="sc">$</span>LIQUIDEZ_INMEDIATA <span class="sc">/</span> datos<span class="sc">$</span>LIQUIDEZ_INMEDIATA</span>
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>datos<span class="sc">$</span>ENDEUD_t <span class="ot">&lt;-</span> datos<span class="sc">$</span>ENDEUDAMIENTO <span class="sc">/</span> datos<span class="sc">$</span>LIQUIDEZ_INMEDIATA</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>datos<span class="sc">$</span>EMPLEADOS_t <span class="ot">&lt;-</span> datos<span class="sc">$</span>EMPLEADOS <span class="sc">/</span> datos<span class="sc">$</span>LIQUIDEZ_INMEDIATA</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>datos<span class="sc">$</span>EMP_t <span class="ot">&lt;-</span> datos<span class="sc">$</span>EMPLEADOS <span class="sc">/</span> datos<span class="sc">$</span>LIQUIDEZ_INMEDIATA</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>Como <span class="math inline">\(\frac{LIQUIDEZ\_INMEDIATA_i}{LIQUIDEZ\_INMEDIATA_i}=1\)</span> la variable <code>LIQ_t</code> toma el valor 1 para todas las observaciones. Por tanto, esta variable actúa como el <strong>término independiente</strong> del modelo transformado.</p>
@@ -1191,8 +1200,8 @@ F-statistic:  51.2 on 3 and 90 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <p>Este modelo es equivalente a estimar:</p>
 <p><span class="math display">\[
-\frac{ROA_i}{LIQUIDEZ\_INMEDIATA_i}=\beta_0\frac{1}{LIQUIDEZ\_INMEDIATA_i}+\beta_1+\beta_2\frac{ENDEUDAMIENTO_i}{LIQUIDEZ\_INMEDIATA_i}+
-\beta_3\frac{EMPLEADOS_i}{LIQUIDEZ\_INMEDIATA_i}+u_i^*.
+\frac{ROA_i}{LIQ_i}=\beta_0\frac{1}{LIQ_i}+\beta_1+\beta_2\frac{ENDEUDAMIENTO_i}{LIQ_i}+
+\beta_3\frac{EMP_i}{LIQ_i}+u_i^*.
 \]</span></p>
 <p>En este caso, estamos aplicando <strong>mínimos cuadrados ponderados (MCP)</strong>, donde el peso asociado a cada observación es inversamente proporcional a la varianza de su perturbación <span class="math inline">\(w_i^{MCP}=\frac{1}{LIQUIDEZ\_INMEDIATA_i^2}\)</span>. Así, las observaciones que presentan una mayor varianza esperada reciben un menor peso en la estimación.</p>
 </div>
@@ -1240,11 +1249,46 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <li>Con <strong>errores estándar robustos</strong>, no es necesario especificar la forma de la heteroscedasticidad. Se mantiene el modelo MCO original y se corrige la inferencia estadística.</li>
 </ul>
 <p>Por tanto, si se dispone de información suficiente para justificar el esquema de la varianza, los mínimos cuadrados ponderados pueden aprovechar esa información. Si no se conoce adecuadamente la estructura de la heteroscedasticidad, los errores estándar robustos proporcionan una alternativa más flexible para realizar inferencia válida.</p>
+</section>
+</section>
+<section id="practicas-resueltas" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="practicas-resueltas"><span class="header-section-number">5.4</span> Practicas resueltas</h2>
+</section>
+<section id="practicas-propuestas" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="practicas-propuestas"><span class="header-section-number">5.5</span> Practicas propuestas</h2>
+<ol type="1">
+<li>La inmobiliaria InmoGranada S.A. desea realizar un estudio sobre el valor de la vivienda en la ciudad de Granada, con el objetivo de orientar futuras inversiones y decisiones comerciales. Para ello, ha recogido la siguiente información de las transacciones del último mes: el precio de venta en miles de euros (<span class="math inline">\(precio_i\)</span>), el número de habitaciónes (<span class="math inline">\(nhab_i\)</span>) y una variable que toma el valor 1 si la vivienda tiene una antigüedad de más de 10 años (<span class="math inline">\(ant_i\)</span>), especificando el siguiente modelo:</li>
+</ol>
+<p><span class="math display">\[precio_i=\beta_1+\beta_2nhab_i+\beta_3ant_i+u_i\]</span> A partir de la siguiente información:</p>
+<p><span class="math display">\[(X'X)^{-1}=\left(
+  \begin{array}{ccc}
+   0.6657&amp;-0.1424&amp;-0.2994\\
+  -0.1424&amp; 0.0610&amp; -0.0145\\
+  - 0.2994&amp; -0.0145&amp; 0.4796\\
+  \end{array}
+\right); X'y=\left(
+  \begin{array}{c}
+    2057.88\\
+    5374.84\\
+    1307.88\\
+  \end{array}
+\right);\sum_{i=1}^{n=10} precio_i^2=455.396,079\]</span> Se pide:</p>
+<ol type="a">
+<li><p>Obtener los estimadores de los parámetros del modelo e interpretarlos.</p></li>
+<li><p>Realice el contraste de significación global del modelo y construya la Tabla Anova.</p></li>
+</ol>
+<p>Para profundizar en el estudio anterior, la inmobiliaria InmoGranada S.A. ha contactado con la consultora en la que usted trabaja y le ha propuesto ampliar el modelo a 50 observaciones y añadir como variable adicional la superficie medida en metros cuadrados (<span class="math inline">\(sup_i\)</span>) ndo lugar al siguiente modelo estimado:</p>
+<p><span class="math display">\[\hat{precio}\_i=23.5156+1.8161sup_i-4.3921nhab_i-24.8294ant_i;
+R^2=0.8441\]</span></p>
+<ol start="3" type="a">
+<li><p>Compare este modelo con el anterior en terminos de bondad del ajuste.</p></li>
+<li><p>Sospechan que la inclusión de la variable superficie en el modelo ha generado que la <strong>varianza de las perturbaciones del modelo no sea constante</strong>. Para analizarlo, ordenan los datos de menor a mayor en función de la variable <em>superficie</em>, eliminan 18 observaciones centrales y realizan una regresión para cada una de las submuestras resultantes, obteniendo los siguientes resultados:</p>
+<p><span class="math display">\[i=1-16: \hat{precio}=41.1831+1.1278superficie-0.3728nhab-4.765ant; R^2=0.4266;SCT=6193.02\]</span> <span class="math display">\[i=35-50: \hat{precio}=129.8725+1.2084superficie-9.99nhab-36.8128ant; R^2=0.6237;SCT=16613\]</span> Realice el contraste necesario y obtenga las conclusiones al 95% de confianza.</p></li>
+</ol>
 
 
 <!-- -->
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -1773,7 +1817,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <span id="cb33-60"><a href="#cb33-60" aria-hidden="true" tabindex="-1"></a>Para ilustrar este concepto, consideremos el modelo utilizado para explicar la rentabilidad económica de las empresas:</span>
 <span id="cb33-61"><a href="#cb33-61" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-62"><a href="#cb33-62" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb33-63"><a href="#cb33-63" aria-hidden="true" tabindex="-1"></a>ROA_i=\beta_0+\beta_1LIQUIDEZ<span class="sc">\_</span>INMEDIATA_i+\beta_2ENDEUDAMIENTO_i+\beta_3EMPLEADOS_i+u_i.</span>
+<span id="cb33-63"><a href="#cb33-63" aria-hidden="true" tabindex="-1"></a>ROA_i=\beta_0+\beta_1LIQ_i+\beta_2LEV_i+\beta_3EMP_i+u_i.</span>
 <span id="cb33-64"><a href="#cb33-64" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb33-65"><a href="#cb33-65" aria-hidden="true" tabindex="-1"></a>En este modelo, el término de perturbación $u_i$ recoge todos aquellos factores que afectan al ROA de la empresa $i$ y que no están incluidos explícitamente en el modelo.  Si se cumple el supuesto de homocedasticidad, estamos suponiendo que la variabilidad de estos factores no observados es similar para todas las empresas. Es decir, una empresa pequeña y una empresa grande presentarían, en términos generales, una dispersión similar de sus errores alrededor del valor de ROA explicado por el modelo.</span>
 <span id="cb33-66"><a href="#cb33-66" aria-hidden="true" tabindex="-1"></a></span>
@@ -1821,7 +1865,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <span id="cb33-110"><a href="#cb33-110" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-111"><a href="#cb33-111" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>**Naturaleza de las variables.** La heterocedasticidad es especialmente frecuente cuando se trabaja con datos de sección cruzada, ya que las unidades analizadas pueden presentar diferencias importantes en sus características y, por tanto, en la variabilidad de la variable dependiente.</span>
 <span id="cb33-112"><a href="#cb33-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-113"><a href="#cb33-113" aria-hidden="true" tabindex="-1"></a>En el modelo $ROA_i=\beta_0+\beta_1LIQUIDEZ_i+  \beta_2ENDEUDAMIENTO_i+  \beta_3EMPLEADOS_i+u_i$, es posible que la variabilidad de los factores no observados que afectan al ROA no sea la misma para todas las empresasas empresas, por ejemplo que las de mayor tamaño pueden presentar una mayor diversidad en sus resultados y, en consecuencia, una mayor dispersión de los residuos.</span>
+<span id="cb33-113"><a href="#cb33-113" aria-hidden="true" tabindex="-1"></a>En el modelo $ROA_i=\beta_0+\beta_1LIQ_i+  \beta_2LEV_i+  \beta_3EMP_i+u_i$, es posible que la variabilidad de los factores no observados que afectan al ROA no sea la misma para todas las empresasas empresas, por ejemplo que las de mayor tamaño pueden presentar una mayor diversidad en sus resultados y, en consecuencia, una mayor dispersión de los residuos.</span>
 <span id="cb33-114"><a href="#cb33-114" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-115"><a href="#cb33-115" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>**Uso de una forma funcional incorrecta.** La heterocedasticidad también puede ser consecuencia de especificar incorrectamente la relación entre la variable dependiente y las variables explicativas. En particular, puede ocurrir que se suponga una relación lineal cuando la relación verdadera presenta una forma no lineal.   </span>
 <span id="cb33-116"><a href="#cb33-116" aria-hidden="true" tabindex="-1"></a></span>
@@ -1832,22 +1876,22 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <span id="cb33-121"><a href="#cb33-121" aria-hidden="true" tabindex="-1"></a>  Para ilustrarlo, supongamos que el verdadero modelo que explica el ROA es:</span>
 <span id="cb33-122"><a href="#cb33-122" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-123"><a href="#cb33-123" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb33-124"><a href="#cb33-124" aria-hidden="true" tabindex="-1"></a>  ROA_i=\beta_0+\beta_1LIQUIDEZ_i+</span>
-<span id="cb33-125"><a href="#cb33-125" aria-hidden="true" tabindex="-1"></a>  \beta_2ENDEUDAMIENTO_i+</span>
-<span id="cb33-126"><a href="#cb33-126" aria-hidden="true" tabindex="-1"></a>  \beta_3TAMAÑO_i+u_i,</span>
+<span id="cb33-124"><a href="#cb33-124" aria-hidden="true" tabindex="-1"></a>  ROA_i=\beta_0+\beta_1LIQ_i+</span>
+<span id="cb33-125"><a href="#cb33-125" aria-hidden="true" tabindex="-1"></a>  \beta_2LEV_i+</span>
+<span id="cb33-126"><a href="#cb33-126" aria-hidden="true" tabindex="-1"></a>  \beta_3EMP_i+u_i,</span>
 <span id="cb33-127"><a href="#cb33-127" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb33-128"><a href="#cb33-128" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-129"><a href="#cb33-129" aria-hidden="true" tabindex="-1"></a>  pero se estima un modelo en el que se omite el tamaño de la empresa:</span>
 <span id="cb33-130"><a href="#cb33-130" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-131"><a href="#cb33-131" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb33-132"><a href="#cb33-132" aria-hidden="true" tabindex="-1"></a>  ROA_i=\alpha_0+\alpha_1LIQUIDEZ_i+</span>
-<span id="cb33-133"><a href="#cb33-133" aria-hidden="true" tabindex="-1"></a>  \alpha_2ENDEUDAMIENTO_i+v_i.</span>
+<span id="cb33-132"><a href="#cb33-132" aria-hidden="true" tabindex="-1"></a>  ROA_i=\alpha_0+\alpha_1LIQ_i+</span>
+<span id="cb33-133"><a href="#cb33-133" aria-hidden="true" tabindex="-1"></a>  \alpha_2LEV_i+v_i.</span>
 <span id="cb33-134"><a href="#cb33-134" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb33-135"><a href="#cb33-135" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-136"><a href="#cb33-136" aria-hidden="true" tabindex="-1"></a>  La perturbación del modelo estimado recogerá ahora tanto los factores no observados $u_i$ como el efecto de la variable omitida:</span>
 <span id="cb33-137"><a href="#cb33-137" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-138"><a href="#cb33-138" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb33-139"><a href="#cb33-139" aria-hidden="true" tabindex="-1"></a>  v_i=u_i+\beta_3TAMAÑO_i.</span>
+<span id="cb33-139"><a href="#cb33-139" aria-hidden="true" tabindex="-1"></a>  v_i=u_i+\beta_3EMP_i.</span>
 <span id="cb33-140"><a href="#cb33-140" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb33-141"><a href="#cb33-141" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-142"><a href="#cb33-142" aria-hidden="true" tabindex="-1"></a>  Suponiendo que $E(u_i)=0$, $Var(u_i)=\sigma^2$ y que se cumplen las condiciones habituales de exogeneidad, se obtiene:</span>
@@ -1856,8 +1900,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <span id="cb33-145"><a href="#cb33-145" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
 <span id="cb33-146"><a href="#cb33-146" aria-hidden="true" tabindex="-1"></a>  Var(v_i)</span>
 <span id="cb33-147"><a href="#cb33-147" aria-hidden="true" tabindex="-1"></a>  &amp;=E<span class="co">[</span><span class="ot">v_i^2</span><span class="co">]</span><span class="sc">\\</span></span>
-<span id="cb33-148"><a href="#cb33-148" aria-hidden="true" tabindex="-1"></a>  &amp;=E<span class="co">[</span><span class="ot">(u_i+\beta_3TAMAÑO_i)^2</span><span class="co">]</span><span class="sc">\\</span></span>
-<span id="cb33-149"><a href="#cb33-149" aria-hidden="true" tabindex="-1"></a>  &amp;=\sigma^2+\beta_3^2TAMAÑO_i^2.</span>
+<span id="cb33-148"><a href="#cb33-148" aria-hidden="true" tabindex="-1"></a>  &amp;=E<span class="co">[</span><span class="ot">(u_i+\beta_3EMP_i)^2</span><span class="co">]</span><span class="sc">\\</span></span>
+<span id="cb33-149"><a href="#cb33-149" aria-hidden="true" tabindex="-1"></a>  &amp;=\sigma^2+\beta_3^2EMP_i^2.</span>
 <span id="cb33-150"><a href="#cb33-150" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
 <span id="cb33-151"><a href="#cb33-151" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb33-152"><a href="#cb33-152" aria-hidden="true" tabindex="-1"></a></span>
@@ -1912,7 +1956,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <span id="cb33-201"><a href="#cb33-201" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-202"><a href="#cb33-202" aria-hidden="true" tabindex="-1"></a>Dentro de los procedimientos gráficos pueden distinguirse los siguientes.</span>
 <span id="cb33-203"><a href="#cb33-203" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-204"><a href="#cb33-204" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Gráfico de los residuos frente al orden de las observaciones</span></span>
+<span id="cb33-204"><a href="#cb33-204" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Gráfico de los residuos frente al orden de las observaciones {.unnumbered} </span></span>
 <span id="cb33-205"><a href="#cb33-205" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-206"><a href="#cb33-206" aria-hidden="true" tabindex="-1"></a>Una primera posibilidad consiste en representar los residuos estimados $e_i$ o sus cuadrados $e_i^2$ frente al número de observación $i$.</span>
 <span id="cb33-207"><a href="#cb33-207" aria-hidden="true" tabindex="-1"></a></span>
@@ -1940,7 +1984,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <span id="cb33-233"><a href="#cb33-233" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-234"><a href="#cb33-234" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb33-235"><a href="#cb33-235" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-236"><a href="#cb33-236" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Gráfico de los residuos frente a las variables explicativas</span></span>
+<span id="cb33-236"><a href="#cb33-236" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Gráfico de los residuos frente a las variables explicativas {.unnumbered} </span></span>
 <span id="cb33-237"><a href="#cb33-237" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-238"><a href="#cb33-238" aria-hidden="true" tabindex="-1"></a>Una herramienta especialmente útil consiste en representar los residuos estimados, o sus cuadrados, frente a cada una de las variables explicativas del modelo. Esta representación permite analizar no solo si existe heterocedasticidad, sino también obtener una primera indicación sobre **qué variable puede estar relacionada con el cambio en la varianza de los residuos**.</span>
 <span id="cb33-239"><a href="#cb33-239" aria-hidden="true" tabindex="-1"></a></span>
@@ -1948,9 +1992,9 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <span id="cb33-241"><a href="#cb33-241" aria-hidden="true" tabindex="-1"></a>Por ejemplo, consideremos el modelo utilizado para explicar la rentabilidad empresarial:</span>
 <span id="cb33-242"><a href="#cb33-242" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-243"><a href="#cb33-243" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb33-244"><a href="#cb33-244" aria-hidden="true" tabindex="-1"></a>ROA_i=\beta_0+\beta_1LIQUIDEZ<span class="sc">\_</span>INMEDIATA_i+</span>
-<span id="cb33-245"><a href="#cb33-245" aria-hidden="true" tabindex="-1"></a>\beta_2ENDEUDAMIENTO_i+</span>
-<span id="cb33-246"><a href="#cb33-246" aria-hidden="true" tabindex="-1"></a>\beta_3EMPLEADOS_i+u_i.</span>
+<span id="cb33-244"><a href="#cb33-244" aria-hidden="true" tabindex="-1"></a>ROA_i=\beta_0+\beta_1LIQ_i+</span>
+<span id="cb33-245"><a href="#cb33-245" aria-hidden="true" tabindex="-1"></a>\beta_2LEV_i+</span>
+<span id="cb33-246"><a href="#cb33-246" aria-hidden="true" tabindex="-1"></a>\beta_3EMP_i+u_i.</span>
 <span id="cb33-247"><a href="#cb33-247" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb33-248"><a href="#cb33-248" aria-hidden="true" tabindex="-1"></a>Podemos representar los residuos frente a la variable **LIQUIDEZ_INMEDIATA**. Si la dispersión de los residuos permanece aproximadamente constante para todos los niveles de liquidez, no se apreciaría un patrón claro de heterocedasticidad. Por el contrario, si la dispersión aumenta conforme aumenta la liquidez, podría existir una relación entre la varianza de la perturbación y esta variable.</span>
 <span id="cb33-249"><a href="#cb33-249" aria-hidden="true" tabindex="-1"></a></span>
@@ -1985,7 +2029,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <span id="cb33-284"><a href="#cb33-284" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-285"><a href="#cb33-285" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-286"><a href="#cb33-286" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-287"><a href="#cb33-287" aria-hidden="true" tabindex="-1"></a><span class="fu">#### ¿Qué debemos buscar en un gráfico?</span></span>
+<span id="cb33-287"><a href="#cb33-287" aria-hidden="true" tabindex="-1"></a><span class="fu">### ¿Qué debemos buscar en un gráfico? {.unnumbered} </span></span>
 <span id="cb33-288"><a href="#cb33-288" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-289"><a href="#cb33-289" aria-hidden="true" tabindex="-1"></a>Al analizar estos gráficos, no debemos centrarnos únicamente en si los residuos están próximos o alejados de cero. Lo que interesa fundamentalmente es comprobar si **la amplitud de la nube de puntos cambia sistemáticamente**. Así, podemos encontrar diferentes situaciones:</span>
 <span id="cb33-290"><a href="#cb33-290" aria-hidden="true" tabindex="-1"></a></span>
@@ -2030,9 +2074,9 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <span id="cb33-329"><a href="#cb33-329" aria-hidden="true" tabindex="-1"></a>Por ejemplo, en el modelo de rentabilidad empresarial:</span>
 <span id="cb33-330"><a href="#cb33-330" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-331"><a href="#cb33-331" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb33-332"><a href="#cb33-332" aria-hidden="true" tabindex="-1"></a>ROA_i=\beta_0+\beta_1LIQUIDEZ<span class="sc">\_</span>INMEDIATA_i+</span>
-<span id="cb33-333"><a href="#cb33-333" aria-hidden="true" tabindex="-1"></a>\beta_2ENDEUDAMIENTO_i+</span>
-<span id="cb33-334"><a href="#cb33-334" aria-hidden="true" tabindex="-1"></a>\beta_3EMPLEADOS_i+u_i,</span>
+<span id="cb33-332"><a href="#cb33-332" aria-hidden="true" tabindex="-1"></a>ROA_i=\beta_0+\beta_1LIQ_i+</span>
+<span id="cb33-333"><a href="#cb33-333" aria-hidden="true" tabindex="-1"></a>\beta_2LEV_i+</span>
+<span id="cb33-334"><a href="#cb33-334" aria-hidden="true" tabindex="-1"></a>\beta_3EMP_i+u_i,</span>
 <span id="cb33-335"><a href="#cb33-335" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb33-336"><a href="#cb33-336" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-337"><a href="#cb33-337" aria-hidden="true" tabindex="-1"></a>podríamos sospechar que la variabilidad del ROA aumenta con la **LIQUIDEZ_INMEDIATA**. El test de Goldfeld-Quandt permite contrastar formalmente esta posibilidad.</span>
@@ -2071,24 +2115,24 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <span id="cb33-374"><a href="#cb33-374" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-375"><a href="#cb33-375" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb33-376"><a href="#cb33-376" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-377"><a href="#cb33-377" aria-hidden="true" tabindex="-1"></a><span class="fu">### Test de White</span></span>
+<span id="cb33-377"><a href="#cb33-377" aria-hidden="true" tabindex="-1"></a><span class="fu">### Test de White {.unnumbered} </span></span>
 <span id="cb33-378"><a href="#cb33-378" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-379"><a href="#cb33-379" aria-hidden="true" tabindex="-1"></a>Constituye una alternativa más general, ya que no requiere especificar previamente una variable concreta como causante de la heteroscedasticidad ni asumir una forma funcional determinada para la varianza. La idea consiste en analizar si los **residuos al cuadrado** pueden explicarse mediante las variables explicativas del modelo, sus cuadrados y sus productos cruzados. Para el modelo:</span>
 <span id="cb33-380"><a href="#cb33-380" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-381"><a href="#cb33-381" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb33-382"><a href="#cb33-382" aria-hidden="true" tabindex="-1"></a>ROA_i=\beta_0+\beta_1LIQUIDEZ_i+</span>
-<span id="cb33-383"><a href="#cb33-383" aria-hidden="true" tabindex="-1"></a>\beta_2ENDEUDAMIENTO_i+u_i,</span>
+<span id="cb33-382"><a href="#cb33-382" aria-hidden="true" tabindex="-1"></a>ROA_i=\beta_0+\beta_1LIQ_i+</span>
+<span id="cb33-383"><a href="#cb33-383" aria-hidden="true" tabindex="-1"></a>\beta_2LEV_i+u_i,</span>
 <span id="cb33-384"><a href="#cb33-384" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb33-385"><a href="#cb33-385" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-386"><a href="#cb33-386" aria-hidden="true" tabindex="-1"></a>la regresión auxiliar incluiría, de forma simplificada, términos como:</span>
 <span id="cb33-387"><a href="#cb33-387" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-388"><a href="#cb33-388" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb33-389"><a href="#cb33-389" aria-hidden="true" tabindex="-1"></a>\hat e_i^2=</span>
-<span id="cb33-390"><a href="#cb33-390" aria-hidden="true" tabindex="-1"></a>\alpha_0+\alpha_1LIQUIDEZ_i+</span>
-<span id="cb33-391"><a href="#cb33-391" aria-hidden="true" tabindex="-1"></a>\alpha_2ENDEUDAMIENTO_i+</span>
-<span id="cb33-392"><a href="#cb33-392" aria-hidden="true" tabindex="-1"></a>\alpha_3LIQUIDEZ_i^2+</span>
-<span id="cb33-393"><a href="#cb33-393" aria-hidden="true" tabindex="-1"></a>\alpha_4ENDEUDAMIENTO_i^2+</span>
-<span id="cb33-394"><a href="#cb33-394" aria-hidden="true" tabindex="-1"></a>\alpha_5LIQUIDEZ_iENDEUDAMIENTO_i+\cdots+v_i.</span>
+<span id="cb33-390"><a href="#cb33-390" aria-hidden="true" tabindex="-1"></a>\alpha_0+\alpha_1LIQ_i+</span>
+<span id="cb33-391"><a href="#cb33-391" aria-hidden="true" tabindex="-1"></a>\alpha_2LEV_i+</span>
+<span id="cb33-392"><a href="#cb33-392" aria-hidden="true" tabindex="-1"></a>\alpha_3LIQ_i^2+</span>
+<span id="cb33-393"><a href="#cb33-393" aria-hidden="true" tabindex="-1"></a>\alpha_4LEV_i^2+</span>
+<span id="cb33-394"><a href="#cb33-394" aria-hidden="true" tabindex="-1"></a>\alpha_5LIQ_iLEV_i+v_i.</span>
 <span id="cb33-395"><a href="#cb33-395" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb33-396"><a href="#cb33-396" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-397"><a href="#cb33-397" aria-hidden="true" tabindex="-1"></a>El contraste parte de la hipótesis:</span>
@@ -2134,7 +2178,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <span id="cb33-441"><a href="#cb33-441" aria-hidden="true" tabindex="-1"></a>Se observa que no se puede rechazar la hipótesis nula de homocesdasticidad a los distintos niveles de confianza habituales.</span>
 <span id="cb33-442"><a href="#cb33-442" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb33-443"><a href="#cb33-443" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-444"><a href="#cb33-444" aria-hidden="true" tabindex="-1"></a><span class="fu">### Test de Breusch-Pagan</span></span>
+<span id="cb33-444"><a href="#cb33-444" aria-hidden="true" tabindex="-1"></a><span class="fu">### Test de Breusch-Pagan {.unnumbered} </span></span>
 <span id="cb33-445"><a href="#cb33-445" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-446"><a href="#cb33-446" aria-hidden="true" tabindex="-1"></a>Parte de una hipótesis alternativa más específica que la de White. En este caso se supone que la varianza de las perturbaciones puede explicarse mediante una **relación lineal con un conjunto de variables**. En términos generales, se supone que:</span>
 <span id="cb33-447"><a href="#cb33-447" aria-hidden="true" tabindex="-1"></a></span>
@@ -2184,7 +2228,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <span id="cb33-497"><a href="#cb33-497" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb33-498"><a href="#cb33-498" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-499"><a href="#cb33-499" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-500"><a href="#cb33-500" aria-hidden="true" tabindex="-1"></a><span class="fu">### Método de Glejser</span></span>
+<span id="cb33-500"><a href="#cb33-500" aria-hidden="true" tabindex="-1"></a><span class="fu">### Método de Glejser {.unnumbered} </span></span>
 <span id="cb33-501"><a href="#cb33-501" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-502"><a href="#cb33-502" aria-hidden="true" tabindex="-1"></a>El método de **Glejser** presenta un planteamiento diferente. Su objetivo no es únicamente detectar la existencia de heteroscedasticidad, sino también obtener información sobre la **posible forma funcional de la varianza**. El procedimiento parte de los residuos del modelo original y analiza si su valor absoluto puede explicarse mediante una variable que se sospecha que está relacionada con la heteroscedasticidad.</span>
 <span id="cb33-503"><a href="#cb33-503" aria-hidden="true" tabindex="-1"></a></span>
@@ -2396,38 +2440,38 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <span id="cb33-715"><a href="#cb33-715" aria-hidden="true" tabindex="-1"></a>Consideremos nuevamente el modelo utilizado a lo largo del tema:</span>
 <span id="cb33-716"><a href="#cb33-716" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-717"><a href="#cb33-717" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb33-718"><a href="#cb33-718" aria-hidden="true" tabindex="-1"></a>ROA_i=\beta_0+\beta_1LIQUIDEZ<span class="sc">\_</span>INMEDIATA_i+\beta_2ENDEUDAMIENTO_i+\beta_3EMPLEADOS_i+u_i.</span>
+<span id="cb33-718"><a href="#cb33-718" aria-hidden="true" tabindex="-1"></a>ROA_i=\beta_0+\beta_1LIQ_i+\beta_2LEV_i+\beta_3EMP_i+u_i.</span>
 <span id="cb33-719"><a href="#cb33-719" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb33-720"><a href="#cb33-720" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-721"><a href="#cb33-721" aria-hidden="true" tabindex="-1"></a>Supongamos que, a partir del análisis realizado previamente, se considera que el esquema de heteroscedasticidad viene determinado directamente por la variable **LIQUIDEZ_INMEDIATA**, de modo que:</span>
 <span id="cb33-722"><a href="#cb33-722" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-723"><a href="#cb33-723" aria-hidden="true" tabindex="-1"></a>$$Var(u_i)=\sigma^2LIQUIDEZ<span class="sc">\_</span>INMEDIATA_i^2.$$</span>
+<span id="cb33-723"><a href="#cb33-723" aria-hidden="true" tabindex="-1"></a>$$Var(u_i)=\sigma^2LIQ_i^2.$$</span>
 <span id="cb33-724"><a href="#cb33-724" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-725"><a href="#cb33-725" aria-hidden="true" tabindex="-1"></a>En este caso, el esquema de heteroscedasticidad viene determinado por $w_i=LIQUIDEZ<span class="sc">\_</span>INMEDIATA_i^2$. Para eliminar la heteroscedasticidad debemos dividir todas las variables del modelo por:</span>
 <span id="cb33-726"><a href="#cb33-726" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-727"><a href="#cb33-727" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb33-728"><a href="#cb33-728" aria-hidden="true" tabindex="-1"></a>\sqrt{w_i}=\sqrt{LIQUIDEZ<span class="sc">\_</span>INMEDIATA_i^2}=LIQUIDEZ<span class="sc">\_</span>INMEDIATA_i</span>
+<span id="cb33-728"><a href="#cb33-728" aria-hidden="true" tabindex="-1"></a>\sqrt{w_i}=\sqrt{LIQ_i^2}=LIQ_i</span>
 <span id="cb33-729"><a href="#cb33-729" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb33-730"><a href="#cb33-730" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-731"><a href="#cb33-731" aria-hidden="true" tabindex="-1"></a>Por tanto, el modelo transformado se obtiene dividiendo **todas las variables por LIQUIDEZ_INMEDIATA**, incluido el término independiente:</span>
 <span id="cb33-732"><a href="#cb33-732" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-733"><a href="#cb33-733" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb33-734"><a href="#cb33-734" aria-hidden="true" tabindex="-1"></a>\frac{ROA_i}{LIQUIDEZ<span class="sc">\_</span>INMEDIATA_i}=</span>
-<span id="cb33-735"><a href="#cb33-735" aria-hidden="true" tabindex="-1"></a>\beta_0\frac{1}{LIQUIDEZ<span class="sc">\_</span>INMEDIATA_i}</span>
+<span id="cb33-734"><a href="#cb33-734" aria-hidden="true" tabindex="-1"></a>\frac{ROA_i}{LIQ_i}=</span>
+<span id="cb33-735"><a href="#cb33-735" aria-hidden="true" tabindex="-1"></a>\beta_0\frac{1}{LIQ_i}</span>
 <span id="cb33-736"><a href="#cb33-736" aria-hidden="true" tabindex="-1"></a>+</span>
-<span id="cb33-737"><a href="#cb33-737" aria-hidden="true" tabindex="-1"></a>\beta_1\frac{LIQUIDEZ<span class="sc">\_</span>INMEDIATA_i}{LIQUIDEZ<span class="sc">\_</span>INMEDIATA_i}</span>
+<span id="cb33-737"><a href="#cb33-737" aria-hidden="true" tabindex="-1"></a>\beta_1\frac{LIQ_i}{LIQ_i}</span>
 <span id="cb33-738"><a href="#cb33-738" aria-hidden="true" tabindex="-1"></a>+</span>
-<span id="cb33-739"><a href="#cb33-739" aria-hidden="true" tabindex="-1"></a>\beta_2\frac{ENDEUDAMIENTO_i}{LIQUIDEZ<span class="sc">\_</span>INMEDIATA_i}</span>
+<span id="cb33-739"><a href="#cb33-739" aria-hidden="true" tabindex="-1"></a>\beta_2\frac{LEV_i}{LIQ_i}</span>
 <span id="cb33-740"><a href="#cb33-740" aria-hidden="true" tabindex="-1"></a>+</span>
-<span id="cb33-741"><a href="#cb33-741" aria-hidden="true" tabindex="-1"></a>\beta_3\frac{EMPLEADOS_i}{LIQUIDEZ<span class="sc">\_</span>INMEDIATA_i}</span>
+<span id="cb33-741"><a href="#cb33-741" aria-hidden="true" tabindex="-1"></a>\beta_3\frac{EMP_i}{LIQ_i}</span>
 <span id="cb33-742"><a href="#cb33-742" aria-hidden="true" tabindex="-1"></a>+</span>
-<span id="cb33-743"><a href="#cb33-743" aria-hidden="true" tabindex="-1"></a>\frac{u_i}{LIQUIDEZ<span class="sc">\_</span>INMEDIATA_i}.</span>
+<span id="cb33-743"><a href="#cb33-743" aria-hidden="true" tabindex="-1"></a>\frac{u_i}{LIQ_i}.</span>
 <span id="cb33-744"><a href="#cb33-744" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb33-745"><a href="#cb33-745" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-746"><a href="#cb33-746" aria-hidden="true" tabindex="-1"></a>Por tanto:</span>
 <span id="cb33-747"><a href="#cb33-747" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-748"><a href="#cb33-748" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb33-749"><a href="#cb33-749" aria-hidden="true" tabindex="-1"></a>\frac{ROA_i}{LIQUIDEZ<span class="sc">\_</span>INMEDIATA_i}=\beta_0\frac{1}{LIQUIDEZ<span class="sc">\_</span>INMEDIATA_i}+\beta_1+\beta_2\frac{ENDEUDAMIENTO_i}{LIQUIDEZ<span class="sc">\_</span>INMEDIATA_i}+\beta_3\frac{EMPLEADOS_i}{LIQUIDEZ<span class="sc">\_</span>INMEDIATA_i}+u_i^*,</span>
+<span id="cb33-749"><a href="#cb33-749" aria-hidden="true" tabindex="-1"></a>\frac{ROA_i}{LIQ_i}=\beta_0\frac{1}{LIQ_i}+\beta_1+\beta_2\frac{LEV_i}{LIQ_i}+\beta_3\frac{EMP_i}{LIQ_i}+u_i^*,</span>
 <span id="cb33-750"><a href="#cb33-750" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb33-751"><a href="#cb33-751" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-752"><a href="#cb33-752" aria-hidden="true" tabindex="-1"></a>donde $u_i^*=\frac{u_i}{LIQUIDEZ<span class="sc">\_</span>INMEDIATA_i}$</span>
@@ -2437,7 +2481,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <span id="cb33-756"><a href="#cb33-756" aria-hidden="true" tabindex="-1"></a>La transformación consigue que la perturbación transformada sea homocedástica:</span>
 <span id="cb33-757"><a href="#cb33-757" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-758"><a href="#cb33-758" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb33-759"><a href="#cb33-759" aria-hidden="true" tabindex="-1"></a>Var(u_i^*)= Var\left(\frac{u_i}{LIQUIDEZ<span class="sc">\_</span>INMEDIATA_i}\right)=\frac{Var(u_i)}{LIQUIDEZ<span class="sc">\_</span>INMEDIATA_i^2}=\frac{\sigma^2LIQUIDEZ<span class="sc">\_</span>INMEDIATA_i^2}{LIQUIDEZ<span class="sc">\_</span>INMEDIATA_i^2}=\sigma^2.</span>
+<span id="cb33-759"><a href="#cb33-759" aria-hidden="true" tabindex="-1"></a>Var(u_i^*)= Var\left(\frac{u_i}{LIQ_i}\right)=\frac{Var(u_i)}{LIQ_i^2}=\frac{\sigma^2LIQ_i^2}{LIQ_i^2}=\sigma^2.</span>
 <span id="cb33-760"><a href="#cb33-760" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb33-761"><a href="#cb33-761" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-762"><a href="#cb33-762" aria-hidden="true" tabindex="-1"></a>Por tanto, podemos estimar el modelo transformado mediante MCO. Para ello, en primer lugar creamos las variables transformadas:</span>
@@ -2447,7 +2491,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <span id="cb33-768"><a href="#cb33-768" aria-hidden="true" tabindex="-1"></a>datos<span class="sc">$</span>inv_LIQ <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> datos<span class="sc">$</span>LIQUIDEZ_INMEDIATA</span>
 <span id="cb33-769"><a href="#cb33-769" aria-hidden="true" tabindex="-1"></a>datos<span class="sc">$</span>LIQ_t <span class="ot">&lt;-</span> datos<span class="sc">$</span>LIQUIDEZ_INMEDIATA <span class="sc">/</span> datos<span class="sc">$</span>LIQUIDEZ_INMEDIATA</span>
 <span id="cb33-770"><a href="#cb33-770" aria-hidden="true" tabindex="-1"></a>datos<span class="sc">$</span>ENDEUD_t <span class="ot">&lt;-</span> datos<span class="sc">$</span>ENDEUDAMIENTO <span class="sc">/</span> datos<span class="sc">$</span>LIQUIDEZ_INMEDIATA</span>
-<span id="cb33-771"><a href="#cb33-771" aria-hidden="true" tabindex="-1"></a>datos<span class="sc">$</span>EMPLEADOS_t <span class="ot">&lt;-</span> datos<span class="sc">$</span>EMPLEADOS <span class="sc">/</span> datos<span class="sc">$</span>LIQUIDEZ_INMEDIATA</span>
+<span id="cb33-771"><a href="#cb33-771" aria-hidden="true" tabindex="-1"></a>datos<span class="sc">$</span>EMP_t <span class="ot">&lt;-</span> datos<span class="sc">$</span>EMPLEADOS <span class="sc">/</span> datos<span class="sc">$</span>LIQUIDEZ_INMEDIATA</span>
 <span id="cb33-772"><a href="#cb33-772" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb33-773"><a href="#cb33-773" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-774"><a href="#cb33-774" aria-hidden="true" tabindex="-1"></a>Como $\frac{LIQUIDEZ<span class="sc">\_</span>INMEDIATA_i}{LIQUIDEZ<span class="sc">\_</span>INMEDIATA_i}=1$ la variable <span class="in">`LIQ_t`</span> toma el valor 1 para todas las observaciones. Por tanto, esta variable actúa como el **término independiente** del modelo transformado.</span>
@@ -2466,8 +2510,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <span id="cb33-789"><a href="#cb33-789" aria-hidden="true" tabindex="-1"></a>Este modelo es equivalente a estimar:</span>
 <span id="cb33-790"><a href="#cb33-790" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-791"><a href="#cb33-791" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb33-792"><a href="#cb33-792" aria-hidden="true" tabindex="-1"></a>\frac{ROA_i}{LIQUIDEZ<span class="sc">\_</span>INMEDIATA_i}=\beta_0\frac{1}{LIQUIDEZ<span class="sc">\_</span>INMEDIATA_i}+\beta_1+\beta_2\frac{ENDEUDAMIENTO_i}{LIQUIDEZ<span class="sc">\_</span>INMEDIATA_i}+</span>
-<span id="cb33-793"><a href="#cb33-793" aria-hidden="true" tabindex="-1"></a>\beta_3\frac{EMPLEADOS_i}{LIQUIDEZ<span class="sc">\_</span>INMEDIATA_i}+u_i^*.</span>
+<span id="cb33-792"><a href="#cb33-792" aria-hidden="true" tabindex="-1"></a>\frac{ROA_i}{LIQ_i}=\beta_0\frac{1}{LIQ_i}+\beta_1+\beta_2\frac{ENDEUDAMIENTO_i}{LIQ_i}+</span>
+<span id="cb33-793"><a href="#cb33-793" aria-hidden="true" tabindex="-1"></a>\beta_3\frac{EMP_i}{LIQ_i}+u_i^*.</span>
 <span id="cb33-794"><a href="#cb33-794" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb33-795"><a href="#cb33-795" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-796"><a href="#cb33-796" aria-hidden="true" tabindex="-1"></a>En este caso, estamos aplicando **mínimos cuadrados ponderados (MCP)**, donde el peso asociado a cada observación es inversamente proporcional a la varianza de su perturbación $w_i^{MCP}=\frac{1}{LIQUIDEZ<span class="sc">\_</span>INMEDIATA_i^2}$.</span>
@@ -2504,6 +2548,48 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <span id="cb33-831"><a href="#cb33-831" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Con **errores estándar robustos**, no es necesario especificar la forma de la heteroscedasticidad. Se mantiene el modelo MCO original y se corrige la inferencia estadística.</span>
 <span id="cb33-832"><a href="#cb33-832" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-833"><a href="#cb33-833" aria-hidden="true" tabindex="-1"></a>Por tanto, si se dispone de información suficiente para justificar el esquema de la varianza, los mínimos cuadrados ponderados pueden aprovechar esa información. Si no se conoce adecuadamente la estructura de la heteroscedasticidad, los errores estándar robustos proporcionan una alternativa más flexible para realizar inferencia válida.</span>
+<span id="cb33-834"><a href="#cb33-834" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-835"><a href="#cb33-835" aria-hidden="true" tabindex="-1"></a><span class="fu">## Practicas resueltas</span></span>
+<span id="cb33-836"><a href="#cb33-836" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-837"><a href="#cb33-837" aria-hidden="true" tabindex="-1"></a><span class="fu">## Practicas propuestas</span></span>
+<span id="cb33-838"><a href="#cb33-838" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-839"><a href="#cb33-839" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>La inmobiliaria InmoGranada S.A. desea realizar un estudio sobre el valor de la vivienda en la ciudad de Granada, con el objetivo de orientar futuras inversiones y decisiones comerciales. Para ello, ha recogido la siguiente información de las transacciones del último mes:</span>
+<span id="cb33-840"><a href="#cb33-840" aria-hidden="true" tabindex="-1"></a>el precio de venta en miles de euros ($precio_i$), el número de</span>
+<span id="cb33-841"><a href="#cb33-841" aria-hidden="true" tabindex="-1"></a>habitaciónes ($nhab_i$) y una variable que toma el valor 1 si la vivienda tiene una antigüedad de más de 10 años ($ant_i$), especificando el siguiente modelo:</span>
+<span id="cb33-842"><a href="#cb33-842" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-843"><a href="#cb33-843" aria-hidden="true" tabindex="-1"></a>$$precio_i=\beta_1+\beta_2nhab_i+\beta_3ant_i+u_i$$ A partir de la siguiente información:</span>
+<span id="cb33-844"><a href="#cb33-844" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-845"><a href="#cb33-845" aria-hidden="true" tabindex="-1"></a>$$(X'X)^{-1}=\left(</span>
+<span id="cb33-846"><a href="#cb33-846" aria-hidden="true" tabindex="-1"></a>  \begin{array}{ccc}</span>
+<span id="cb33-847"><a href="#cb33-847" aria-hidden="true" tabindex="-1"></a>   0.6657&amp;-0.1424&amp;-0.2994<span class="sc">\\</span></span>
+<span id="cb33-848"><a href="#cb33-848" aria-hidden="true" tabindex="-1"></a>  -0.1424&amp; 0.0610&amp; -0.0145<span class="sc">\\</span></span>
+<span id="cb33-849"><a href="#cb33-849" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>0.2994&amp; -0.0145&amp; 0.4796<span class="sc">\\</span></span>
+<span id="cb33-850"><a href="#cb33-850" aria-hidden="true" tabindex="-1"></a>  \end{array}</span>
+<span id="cb33-851"><a href="#cb33-851" aria-hidden="true" tabindex="-1"></a>\right); X'y=\left(</span>
+<span id="cb33-852"><a href="#cb33-852" aria-hidden="true" tabindex="-1"></a>  \begin{array}{c}</span>
+<span id="cb33-853"><a href="#cb33-853" aria-hidden="true" tabindex="-1"></a>    2057.88<span class="sc">\\</span></span>
+<span id="cb33-854"><a href="#cb33-854" aria-hidden="true" tabindex="-1"></a>    5374.84<span class="sc">\\</span></span>
+<span id="cb33-855"><a href="#cb33-855" aria-hidden="true" tabindex="-1"></a>    1307.88<span class="sc">\\</span></span>
+<span id="cb33-856"><a href="#cb33-856" aria-hidden="true" tabindex="-1"></a>  \end{array}</span>
+<span id="cb33-857"><a href="#cb33-857" aria-hidden="true" tabindex="-1"></a>\right);\sum_{i=1}^{n=10} precio_i^2=455.396,079$$ Se pide:</span>
+<span id="cb33-858"><a href="#cb33-858" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-859"><a href="#cb33-859" aria-hidden="true" tabindex="-1"></a>a. Obtener los estimadores de los parámetros del modelo e interpretarlos.</span>
+<span id="cb33-860"><a href="#cb33-860" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-861"><a href="#cb33-861" aria-hidden="true" tabindex="-1"></a>b. Realice el contraste de significación global del modelo y construya la Tabla Anova.</span>
+<span id="cb33-862"><a href="#cb33-862" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-863"><a href="#cb33-863" aria-hidden="true" tabindex="-1"></a>Para profundizar en el estudio anterior, la inmobiliaria InmoGranada S.A. ha contactado con la consultora en la que usted trabaja y le ha propuesto ampliar el modelo a 50 observaciones y añadir como variable adicional la superficie medida en metros cuadrados ($sup_i$) ndo lugar al siguiente modelo estimado:</span>
+<span id="cb33-864"><a href="#cb33-864" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-865"><a href="#cb33-865" aria-hidden="true" tabindex="-1"></a>$$\hat{precio}<span class="sc">\_</span>i=23.5156+1.8161sup_i-4.3921nhab_i-24.8294ant_i;</span>
+<span id="cb33-866"><a href="#cb33-866" aria-hidden="true" tabindex="-1"></a>R^2=0.8441$$</span>
+<span id="cb33-867"><a href="#cb33-867" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-868"><a href="#cb33-868" aria-hidden="true" tabindex="-1"></a>c. Compare este modelo con el anterior en terminos de bondad del ajuste.</span>
+<span id="cb33-869"><a href="#cb33-869" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-870"><a href="#cb33-870" aria-hidden="true" tabindex="-1"></a>d. Sospechan que la inclusión de la variable superficie en el modelo ha generado que la **varianza de las perturbaciones del modelo no sea constante**. Para analizarlo, ordenan los datos de menor a mayor en función de la variable *superficie*, eliminan 18  observaciones centrales y realizan una regresión para cada una de  las submuestras resultantes, obteniendo los siguientes resultados:</span>
+<span id="cb33-871"><a href="#cb33-871" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-872"><a href="#cb33-872" aria-hidden="true" tabindex="-1"></a><span class="in">    $$i=1-16: \hat{precio}=41.1831+1.1278superficie-0.3728nhab-4.765ant; R^2=0.4266;SCT=6193.02$$</span></span>
+<span id="cb33-873"><a href="#cb33-873" aria-hidden="true" tabindex="-1"></a><span class="in">    $$i=35-50: \hat{precio}=129.8725+1.2084superficie-9.99nhab-36.8128ant; R^2=0.6237;SCT=16613$$</span></span>
+<span id="cb33-874"><a href="#cb33-874" aria-hidden="true" tabindex="-1"></a><span class="in">    Realice el contraste necesario y obtenga las conclusiones al 95% de</span></span>
+<span id="cb33-875"><a href="#cb33-875" aria-hidden="true" tabindex="-1"></a><span class="in">    confianza.</span></span>
 </code></pre></div><button title="Copiar al portapapeles" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

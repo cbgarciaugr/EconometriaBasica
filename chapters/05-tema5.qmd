@@ -730,11 +730,11 @@ $$
 Por tanto, podemos estimar el modelo transformado mediante MCO. Para ello, en primer lugar creamos las variables transformadas:
 
 ```{r}
-datos$ROA_t <- datos$ROA / datos$LIQ
-datos$inv_LIQ <- 1 / datos$LIQ
-datos$LIQ_t <- datos$LIQ / datos$LIQ
-datos$LEV_t <- datos$LEV / datos$LIQ
-datos$EMP_t <- datos$EMP / datos$LIQ
+datos$ROA_t <- datos$ROA / datos$LIQUIDEZ_INMEDIATA
+datos$inv_LIQ <- 1 / datos$LIQUIDEZ_INMEDIATA
+datos$LIQ_t <- datos$LIQUIDEZ_INMEDIATA / datos$LIQUIDEZ_INMEDIATA
+datos$ENDEUD_t <- datos$ENDEUDAMIENTO / datos$LIQUIDEZ_INMEDIATA
+datos$EMP_t <- datos$EMPLEADOS / datos$LIQUIDEZ_INMEDIATA
 ```
 
 Como $\frac{LIQUIDEZ\_INMEDIATA_i}{LIQUIDEZ\_INMEDIATA_i}=1$ la variable `LIQ_t` toma el valor 1 para todas las observaciones. Por tanto, esta variable actúa como el **término independiente** del modelo transformado.
@@ -824,28 +824,6 @@ b. Realice el contraste de significación global del modelo y construya la Tabla
 
 Para profundizar en el estudio anterior, la inmobiliaria InmoGranada S.A. ha contactado con la consultora en la que usted trabaja y le ha propuesto ampliar el modelo a 50 observaciones y añadir como variable adicional la superficie medida en metros cuadrados ($sup_i$) ndo lugar al siguiente modelo estimado:
 
-```{r , echo=FALSE, include=FALSE}
-library(readxl)
-datos <- read_excel("viviendas_granada.xlsx")
-norte <- ifelse(datos$zona == "Norte", 1, 0)
-este <- ifelse(datos$zona == "Este", 1, 0)
-oeste <- ifelse(datos$zona == "Oeste", 1, 0)
-sur <- ifelse(datos$zona == "Sur", 1, 0)
-data_df <- data.frame(
-  superficie = datos$superficie,
-  numhab = datos$num_hab,
-  ant = datos$ant,
-  norte = norte,
-  este = este,
-  oeste = oeste,
-  precio = datos$precio/1000
-)
-modelo1=lm(precio~ log(superficie)+numhab+ant, data=data_df)
-summary(modelo1)
-modelo2=lm(precio~ superficie+numhab+ant, data=data_df)
-summary(modelo2)
-```
-getwd()
 $$\hat{precio}\_i=23.5156+1.8161sup_i-4.3921nhab_i-24.8294ant_i;
 R^2=0.8441$$
 

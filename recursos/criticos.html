@@ -1,0 +1,703 @@
+<title>Explorador de valores críticos</title>
+<style>
+  :root{
+    --bg:#EDF0F4;
+    --surface:#FFFFFF;
+    --surface-2:#F6F7F9;
+    --ink:#1B2333;
+    --ink-soft:#525C70;
+    --ink-faint:#8791A3;
+    --line:#D7DCE3;
+    --line-strong:#B7BFCB;
+    --accent:#2B4C7E;
+    --accent-soft:#6E8AB3;
+    --accent-wash:rgba(43,76,126,0.08);
+    --reject:#A6334A;
+    --reject-wash:rgba(166,51,74,0.20);
+    --reject-line:rgba(166,51,74,0.55);
+    --pvalue:#B8791B;
+    --pvalue-wash:rgba(184,121,27,0.28);
+    --good:#2E7D5B;
+    --good-wash:rgba(46,125,91,0.14);
+    --font-display:Georgia,'Iowan Old Style','Palatino Linotype','Times New Roman',serif;
+    --font-body:-apple-system,'Segoe UI',Roboto,system-ui,sans-serif;
+    --font-mono:'Cambria Math',ui-monospace,'SFMono-Regular',Consolas,monospace;
+    --radius:10px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#12161F;
+      --surface:#1A202C;
+      --surface-2:#212836;
+      --ink:#E8EAF0;
+      --ink-soft:#AAB2C2;
+      --ink-faint:#78829A;
+      --line:#2B3242;
+      --line-strong:#3A4356;
+      --accent:#8AA6D6;
+      --accent-soft:#5E7AA8;
+      --accent-wash:rgba(138,166,214,0.10);
+      --reject:#E3899E;
+      --reject-wash:rgba(224,120,146,0.22);
+      --reject-line:rgba(224,120,146,0.6);
+      --pvalue:#E3B15C;
+      --pvalue-wash:rgba(227,177,92,0.28);
+      --good:#6FCBA0;
+      --good-wash:rgba(111,203,160,0.14);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12161F; --surface:#1A202C; --surface-2:#212836; --ink:#E8EAF0; --ink-soft:#AAB2C2; --ink-faint:#78829A;
+    --line:#2B3242; --line-strong:#3A4356; --accent:#8AA6D6; --accent-soft:#5E7AA8; --accent-wash:rgba(138,166,214,0.10);
+    --reject:#E3899E; --reject-wash:rgba(224,120,146,0.22); --reject-line:rgba(224,120,146,0.6);
+    --pvalue:#E3B15C; --pvalue-wash:rgba(227,177,92,0.28); --good:#6FCBA0; --good-wash:rgba(111,203,160,0.14);
+  }
+  :root[data-theme="light"]{
+    --bg:#EDF0F4; --surface:#FFFFFF; --surface-2:#F6F7F9; --ink:#1B2333; --ink-soft:#525C70; --ink-faint:#8791A3;
+    --line:#D7DCE3; --line-strong:#B7BFCB; --accent:#2B4C7E; --accent-soft:#6E8AB3; --accent-wash:rgba(43,76,126,0.08);
+    --reject:#A6334A; --reject-wash:rgba(166,51,74,0.20); --reject-line:rgba(166,51,74,0.55);
+    --pvalue:#B8791B; --pvalue-wash:rgba(184,121,27,0.28); --good:#2E7D5B; --good-wash:rgba(46,125,91,0.14);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;}
+  .app{
+    font-family:var(--font-body);
+    color:var(--ink);
+    background:var(--bg);
+    padding:28px clamp(14px,3vw,32px) 40px;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+    min-height:100%;
+  }
+  .app-header{max-width:760px;}
+  .eyebrow{
+    font-size:12px; letter-spacing:.09em; text-transform:uppercase;
+    color:var(--accent-soft); margin:0 0 6px; font-weight:600;
+  }
+  h1{
+    font-family:var(--font-display);
+    font-size:clamp(24px,3vw,32px);
+    margin:0 0 8px;
+    text-wrap:balance;
+    font-weight:400;
+    letter-spacing:-0.01em;
+  }
+  .subtitle{margin:0; color:var(--ink-soft); font-size:14.5px; line-height:1.55; max-width:62ch;}
+  .layout{
+    display:grid;
+    grid-template-columns:290px 1fr;
+    gap:18px;
+    align-items:start;
+  }
+  @media (max-width:760px){ .layout{grid-template-columns:1fr;} }
+  .panel{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:18px 18px 20px;
+  }
+  .controls{display:flex; flex-direction:column; gap:16px;}
+  .field{display:flex; flex-direction:column; gap:6px;}
+  .field label{font-size:12px; font-weight:600; color:var(--ink-soft); letter-spacing:.02em;}
+  .field-hint{font-size:11.5px; color:var(--ink-faint); margin-top:-2px;}
+  select, input[type="number"]{
+    font-family:var(--font-body);
+    font-size:14px;
+    padding:8px 10px;
+    border-radius:7px;
+    border:1px solid var(--line-strong);
+    background:var(--surface-2);
+    color:var(--ink);
+    width:100%;
+  }
+  select:focus, input:focus{ outline:2px solid var(--accent-soft); outline-offset:1px; }
+  input[type="range"]{ width:100%; accent-color:var(--accent); }
+  .df-row{display:flex; gap:10px;}
+  .df-row .field{flex:1;}
+  .segmented{
+    display:flex; border:1px solid var(--line-strong); border-radius:7px; overflow:hidden;
+  }
+  .segmented button{
+    flex:1; padding:8px 6px; font-size:12.5px; font-family:var(--font-body);
+    background:var(--surface-2); color:var(--ink-soft); border:none; cursor:pointer;
+    border-right:1px solid var(--line-strong);
+  }
+  .segmented button:last-child{border-right:none;}
+  .segmented button.active{ background:var(--accent); color:#fff; font-weight:600; }
+  .segmented button:focus-visible{ outline:2px solid var(--accent-soft); outline-offset:-2px; }
+  .checkline{ display:flex; align-items:center; gap:8px; font-size:13px; color:var(--ink-soft); cursor:pointer; }
+  .checkline input{ width:15px; height:15px; accent-color:var(--accent); }
+  hr.sep{ border:none; border-top:1px solid var(--line); margin:2px 0; }
+  .plot-panel{ display:flex; flex-direction:column; gap:10px; }
+  .plot-head{ display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px; }
+  .plot-title{ font-family:var(--font-display); font-size:17px; color:var(--ink); }
+  .plot-title .sym{ font-family:var(--font-mono); color:var(--accent); }
+  .legend{ display:flex; gap:14px; font-size:11.5px; color:var(--ink-soft); flex-wrap:wrap; }
+  .legend span{ display:inline-flex; align-items:center; gap:5px; }
+  .swatch{ width:11px; height:11px; border-radius:2px; display:inline-block; }
+  svg#plot{ width:100%; height:auto; display:block; }
+  .axis-label{ font-size:11px; fill:var(--ink-faint); font-family:var(--font-body); }
+  .curve{ fill:none; stroke:var(--accent); stroke-width:2; }
+  .baseline{ stroke:var(--line-strong); stroke-width:1; }
+  .crit-line{ stroke:var(--reject); stroke-width:1.4; stroke-dasharray:4 3; }
+  .crit-label{ font-family:var(--font-mono); font-size:12px; fill:var(--reject); font-weight:600; }
+  .stat-line{ stroke:var(--pvalue); stroke-width:1.6; }
+  .stat-label{ font-family:var(--font-mono); font-size:12px; fill:var(--pvalue); font-weight:600; }
+  .results{ display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:18px; }
+  .result-block h3{
+    margin:0 0 8px; font-size:11.5px; text-transform:uppercase; letter-spacing:.08em;
+    color:var(--ink-faint); font-weight:600;
+  }
+  .crit-values{ font-family:var(--font-mono); font-size:22px; color:var(--reject); font-variant-numeric:tabular-nums; }
+  .rule-text{ font-size:14px; line-height:1.5; color:var(--ink); }
+  .rule-text .sym{ font-family:var(--font-mono); color:var(--accent); }
+  .badge{
+    display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:20px;
+    font-size:12.5px; font-weight:600;
+  }
+  .badge.reject{ background:var(--reject-wash); color:var(--reject); }
+  .badge.accept{ background:var(--good-wash); color:var(--good); }
+  .pvalue-num{ font-family:var(--font-mono); font-size:20px; color:var(--pvalue); font-variant-numeric:tabular-nums; }
+  footer.credit{ font-size:11.5px; color:var(--ink-faint); text-align:center; margin-top:4px; }
+</style>
+
+<div class="app">
+  <header class="app-header">
+    <p class="eyebrow">Inferencia estadística</p>
+    <h1>Explorador de valores críticos</h1>
+    <p class="subtitle">Elige una distribución muestral, sus grados de libertad, el nivel de significación y el tipo de contraste. La región de rechazo se sombrea automáticamente sobre la curva.</p>
+  </header>
+
+  <div class="layout">
+    <aside class="panel controls">
+      <div class="field">
+        <label for="dist">Distribución</label>
+        <select id="dist">
+          <option value="normal">Normal (Z)</option>
+          <option value="chi2">Chi-cuadrado (χ²)</option>
+          <option value="t">t de Student</option>
+          <option value="f">F de Snedecor</option>
+        </select>
+      </div>
+
+      <div class="field" id="df-block">
+        <label id="df-label">Grados de libertad</label>
+        <div class="df-row" id="df-row">
+          <div class="field">
+            <input type="number" id="df1" min="1" max="200" step="1" value="10">
+            <input type="range" id="df1-range" min="1" max="60" step="1" value="10">
+          </div>
+          <div class="field" id="df2-field" style="display:none;">
+            <input type="number" id="df2" min="1" max="200" step="1" value="15">
+            <input type="range" id="df2-range" min="1" max="60" step="1" value="15">
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="alpha">Nivel de significación α</label>
+        <select id="alpha">
+          <option value="0.10">0.10</option>
+          <option value="0.05" selected>0.05</option>
+          <option value="0.025">0.025</option>
+          <option value="0.01">0.01</option>
+          <option value="0.005">0.005</option>
+          <option value="0.001">0.001</option>
+          <option value="custom">Personalizado…</option>
+        </select>
+        <input type="number" id="alpha-custom" min="0.0001" max="0.5" step="0.001" value="0.05" style="display:none;">
+      </div>
+
+      <div class="field">
+        <label>Tipo de contraste</label>
+        <div class="segmented" id="tail-seg">
+          <button data-tail="two" class="active">Bilateral</button>
+          <button data-tail="right">Cola derecha</button>
+          <button data-tail="left">Cola izquierda</button>
+        </div>
+        <p class="field-hint" id="tail-hint"></p>
+      </div>
+
+      <hr class="sep">
+
+      <label class="checkline">
+        <input type="checkbox" id="stat-toggle">
+        Marcar un estadístico observado
+      </label>
+      <div class="field" id="stat-field" style="display:none;">
+        <label for="stat-value">Valor del estadístico</label>
+        <input type="number" id="stat-value" step="0.01" value="0">
+      </div>
+    </aside>
+
+    <main class="panel plot-panel">
+      <div class="plot-head">
+        <div class="plot-title">Curva de densidad — <span class="sym" id="dist-symbol">Z</span></div>
+        <div class="legend">
+          <span><span class="swatch" style="background:var(--accent)"></span>Densidad</span>
+          <span><span class="swatch" style="background:var(--reject-wash);border:1px solid var(--reject-line)"></span>Región de rechazo (α)</span>
+          <span id="legend-p" style="display:none;"><span class="swatch" style="background:var(--pvalue-wash);border:1px solid var(--pvalue)"></span>Zona del p-valor</span>
+        </div>
+      </div>
+      <svg id="plot" viewBox="0 0 640 380" preserveAspectRatio="xMidYMid meet"></svg>
+    </main>
+  </div>
+
+  <section class="panel results">
+    <div class="result-block">
+      <h3>Valor(es) crítico(s)</h3>
+      <div class="crit-values" id="crit-values">—</div>
+    </div>
+    <div class="result-block">
+      <h3>Regla de decisión</h3>
+      <div class="rule-text" id="rule-text">—</div>
+    </div>
+    <div class="result-block" id="stat-result" style="display:none;">
+      <h3>Estadístico observado</h3>
+      <div class="pvalue-num" id="pvalue-num">—</div>
+      <div style="margin-top:8px;" id="decision-badge"></div>
+    </div>
+  </section>
+
+  <footer class="credit">Herramienta interactiva para el estudio de contrastes de hipótesis · valores calculados numéricamente en el navegador</footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- núcleo matemático ---------- */
+  const LANCZOS_G = 7;
+  const LANCZOS_COEF = [
+    0.99999999999980993, 676.5203681218851, -1259.1392167224028,
+    771.32342877765313, -176.61502916214059, 12.507343278686905,
+    -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7
+  ];
+  function logGamma(x){
+    if (x < 0.5) return Math.log(Math.PI / Math.sin(Math.PI * x)) - logGamma(1 - x);
+    x -= 1;
+    let a = LANCZOS_COEF[0];
+    const t = x + LANCZOS_G + 0.5;
+    for (let i = 1; i < LANCZOS_COEF.length; i++) a += LANCZOS_COEF[i] / (x + i);
+    return 0.5 * Math.log(2 * Math.PI) + (x + 0.5) * Math.log(t) - t + Math.log(a);
+  }
+
+  function gammainc(a, x) {
+    if (x <= 0) return 0;
+    if (x < a + 1) {
+      let sum = 1 / a, term = sum, ap = a;
+      for (let n = 1; n < 500; n++) {
+        ap += 1; term *= x / ap; sum += term;
+        if (Math.abs(term) < Math.abs(sum) * 1e-15) break;
+      }
+      return sum * Math.exp(-x + a * Math.log(x) - logGamma(a));
+    } else {
+      let b = x + 1 - a, c = 1e300, d = 1 / b, h = d;
+      for (let i = 1; i < 500; i++) {
+        const an = -i * (i - a);
+        b += 2; d = an * d + b;
+        if (Math.abs(d) < 1e-300) d = 1e-300;
+        c = b + an / c;
+        if (Math.abs(c) < 1e-300) c = 1e-300;
+        d = 1 / d;
+        const del = d * c; h *= del;
+        if (Math.abs(del - 1) < 1e-15) break;
+      }
+      const Q = Math.exp(-x + a * Math.log(x) - logGamma(a)) * h;
+      return 1 - Q;
+    }
+  }
+
+  function betacf(a, b, x) {
+    const MAXIT = 500, EPS = 3e-16, FPMIN = 1e-300;
+    const qab = a + b, qap = a + 1, qam = a - 1;
+    let c = 1, d = 1 - qab * x / qap;
+    if (Math.abs(d) < FPMIN) d = FPMIN;
+    d = 1 / d; let h = d;
+    for (let m = 1; m <= MAXIT; m++) {
+      const m2 = 2 * m;
+      let aa = m * (b - m) * x / ((qam + m2) * (a + m2));
+      d = 1 + aa * d; if (Math.abs(d) < FPMIN) d = FPMIN;
+      c = 1 + aa / c; if (Math.abs(c) < FPMIN) c = FPMIN;
+      d = 1 / d; h *= d * c;
+      aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2));
+      d = 1 + aa * d; if (Math.abs(d) < FPMIN) d = FPMIN;
+      c = 1 + aa / c; if (Math.abs(c) < FPMIN) c = FPMIN;
+      d = 1 / d;
+      const del = d * c; h *= del;
+      if (Math.abs(del - 1) < EPS) break;
+    }
+    return h;
+  }
+  function betainc(x, a, b) {
+    if (x <= 0) return 0;
+    if (x >= 1) return 1;
+    const bt = Math.exp(logGamma(a + b) - logGamma(a) - logGamma(b) + a * Math.log(x) + b * Math.log(1 - x));
+    if (x < (a + 1) / (a + b + 2)) return bt * betacf(a, b, x) / a;
+    return 1 - bt * betacf(b, a, 1 - x) / b;
+  }
+
+  function erf(x) {
+    const sign = x < 0 ? -1 : 1; x = Math.abs(x);
+    const a1=0.254829592,a2=-0.284496736,a3=1.421413741,a4=-1.453152027,a5=1.061405429,p=0.3275911;
+    const t = 1 / (1 + p * x);
+    const y = 1 - (((((a5*t+a4)*t)+a3)*t+a2)*t+a1)*t*Math.exp(-x*x);
+    return sign * y;
+  }
+  function normalCDF(x){ return 0.5*(1+erf(x/Math.SQRT2)); }
+  function normalPDF(x){ return Math.exp(-x*x/2)/Math.sqrt(2*Math.PI); }
+  function normalQuantile(p){
+    if (p<=0) return -Infinity;
+    if (p>=1) return Infinity;
+    const a=[-3.969683028665376e+01,2.209460984245205e+02,-2.759285104469687e+02,1.383577518672690e+02,-3.066479806614716e+01,2.506628277459239e+00];
+    const b=[-5.447609879822406e+01,1.615858368580409e+02,-1.556989798598866e+02,6.680131188771972e+01,-1.328068155288572e+01];
+    const c=[-7.784894002430293e-03,-3.223964580411365e-01,-2.400758277161838e+00,-2.549732539343734e+00,4.374664141464968e+00,2.938163982698783e+00];
+    const d=[7.784695709041462e-03,3.224671290700398e-01,2.445134137142996e+00,3.754408661907416e+00];
+    const plow=0.02425, phigh=1-plow;
+    let q,r;
+    if (p<plow){
+      q=Math.sqrt(-2*Math.log(p));
+      return (((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5]) / ((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);
+    } else if (p<=phigh) {
+      q=p-0.5; r=q*q;
+      return (((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q / (((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1);
+    } else {
+      q=Math.sqrt(-2*Math.log(1-p));
+      return -(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5]) / ((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);
+    }
+  }
+
+  function chi2CDF(x,k){ return x<=0?0:gammainc(k/2, x/2); }
+  function chi2PDF(x,k){ if(x<=0) return 0; return Math.exp((k/2-1)*Math.log(x) - x/2 - (k/2)*Math.log(2) - logGamma(k/2)); }
+  function chi2Quantile(p,k){
+    if (p<=0) return 0; if (p>=1) return Infinity;
+    let hi=Math.max(k,1);
+    while (chi2CDF(hi,k) < p) hi*=2;
+    let lo=0;
+    for (let i=0;i<100;i++){ const mid=(lo+hi)/2; if (chi2CDF(mid,k)<p) lo=mid; else hi=mid; }
+    return (lo+hi)/2;
+  }
+
+  function tCDF(t,v){
+    const x = v/(v+t*t);
+    const ib = betainc(x, v/2, 0.5);
+    return t>=0 ? 1-0.5*ib : 0.5*ib;
+  }
+  function tPDF(t,v){
+    return Math.exp(logGamma((v+1)/2)-logGamma(v/2)) / Math.sqrt(v*Math.PI) * Math.pow(1+t*t/v, -(v+1)/2);
+  }
+  function tQuantile(p,v){
+    if (p===0.5) return 0;
+    if (p<0.5) return -tQuantile(1-p,v);
+    let hi=1;
+    while (tCDF(hi,v) < p) hi*=2;
+    let lo=0;
+    for (let i=0;i<100;i++){ const mid=(lo+hi)/2; if (tCDF(mid,v)<p) lo=mid; else hi=mid; }
+    return (lo+hi)/2;
+  }
+
+  function fCDF(x,d1,d2){ if (x<=0) return 0; const y=d1*x/(d1*x+d2); return betainc(y, d1/2, d2/2); }
+  function fPDF(x,d1,d2){
+    if (x<=0) return 0;
+    const logB = logGamma(d1/2)+logGamma(d2/2)-logGamma((d1+d2)/2);
+    const logf = (d1/2)*Math.log(d1/d2) + (d1/2-1)*Math.log(x) - ((d1+d2)/2)*Math.log(1+(d1/d2)*x) - logB;
+    return Math.exp(logf);
+  }
+  function fQuantile(p,d1,d2){
+    if (p<=0) return 0; if (p>=1) return Infinity;
+    let hi=1;
+    while (fCDF(hi,d1,d2) < p) hi*=2;
+    let lo=0;
+    for (let i=0;i<100;i++){ const mid=(lo+hi)/2; if (fCDF(mid,d1,d2)<p) lo=mid; else hi=mid; }
+    return (lo+hi)/2;
+  }
+
+  /* ---------- capa de distribución ---------- */
+  const DIST = {
+    normal:{
+      symbol:'Z', name:'Normal estándar',
+      pdf:(x)=>normalPDF(x), cdf:(x)=>normalCDF(x), q:(p)=>normalQuantile(p),
+      domain:()=>({xMin:-4,xMax:4})
+    },
+    chi2:{
+      symbol:'χ²', name:'Chi-cuadrado',
+      pdf:(x,pr)=>chi2PDF(x,pr.df1), cdf:(x,pr)=>chi2CDF(x,pr.df1), q:(p,pr)=>chi2Quantile(p,pr.df1),
+      domain:(pr)=>({xMin:0,xMax:Math.max(chi2Quantile(0.995,pr.df1), pr.df1+4)})
+    },
+    t:{
+      symbol:'t', name:'t de Student',
+      pdf:(x,pr)=>tPDF(x,pr.df1), cdf:(x,pr)=>tCDF(x,pr.df1), q:(p,pr)=>tQuantile(p,pr.df1),
+      domain:(pr)=>{ let xMax=Math.min(tQuantile(0.999,pr.df1),12); xMax=Math.max(xMax,3); return {xMin:-xMax,xMax}; }
+    },
+    f:{
+      symbol:'F', name:'F de Snedecor',
+      pdf:(x,pr)=>fPDF(x,pr.df1,pr.df2), cdf:(x,pr)=>fCDF(x,pr.df1,pr.df2), q:(p,pr)=>fQuantile(p,pr.df1,pr.df2),
+      domain:(pr)=>({xMin:0,xMax:Math.max(fQuantile(0.99,pr.df1,pr.df2), 4)})
+    }
+  };
+
+  /* ---------- estado ---------- */
+  let state = { dist:'normal', df1:10, df2:15, alpha:0.05, tail:'two', showStat:false, stat:0 };
+
+  const el = id => document.getElementById(id);
+  const distSel = el('dist'), df1In=el('df1'), df1Range=el('df1-range'),
+        df2Field=el('df2-field'), df2In=el('df2'), df2Range=el('df2-range'),
+        dfLabel=el('df-label'), alphaSel=el('alpha'), alphaCustom=el('alpha-custom'),
+        tailSeg=el('tail-seg'), tailHint=el('tail-hint'), statToggle=el('stat-toggle'),
+        statField=el('stat-field'), statValue=el('stat-value');
+
+  function syncPair(numEl,rangeEl,onChange){
+    numEl.addEventListener('input',()=>{ rangeEl.value=numEl.value; onChange(); });
+    rangeEl.addEventListener('input',()=>{ numEl.value=rangeEl.value; onChange(); });
+  }
+
+  distSel.addEventListener('change', ()=>{
+    state.dist = distSel.value;
+    const showTwoDf = state.dist==='f';
+    const showDf = state.dist!=='normal';
+    el('df-block').style.display = showDf ? '' : 'none';
+    df2Field.style.display = showTwoDf ? '' : 'none';
+    dfLabel.textContent = state.dist==='f' ? 'Grados de libertad (num., denom.)' : 'Grados de libertad';
+    el('dist-symbol').textContent = DIST[state.dist].symbol;
+    updateTailLabels();
+    render();
+  });
+
+  syncPair(df1In, df1Range, ()=>{ state.df1=Math.max(1,parseInt(df1In.value)||1); render(); });
+  syncPair(df2In, df2Range, ()=>{ state.df2=Math.max(1,parseInt(df2In.value)||1); render(); });
+
+  alphaSel.addEventListener('change', ()=>{
+    if (alphaSel.value==='custom'){ alphaCustom.style.display=''; state.alpha=parseFloat(alphaCustom.value); }
+    else { alphaCustom.style.display='none'; state.alpha=parseFloat(alphaSel.value); }
+    render();
+  });
+  alphaCustom.addEventListener('input', ()=>{
+    let v=parseFloat(alphaCustom.value);
+    if (!isFinite(v)) v=0.05;
+    v=Math.min(0.5,Math.max(0.0001,v));
+    state.alpha=v; render();
+  });
+
+  tailSeg.addEventListener('click', (e)=>{
+    const btn=e.target.closest('button'); if(!btn) return;
+    [...tailSeg.children].forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    state.tail=btn.dataset.tail;
+    updateTailLabels();
+    render();
+  });
+
+  function updateTailLabels(){
+    const sym = DIST[state.dist].symbol;
+    const asym = state.dist==='chi2'||state.dist==='f';
+    const hints = {
+      two: asym ? `Dos valores críticos acotan la región central (útil p.ej. para intervalos de varianza).`
+                 : `Se rechaza en ambos extremos de la distribución de ${sym}.`,
+      right: `Se rechaza cuando ${sym} supera el valor crítico.`,
+      left: `Se rechaza cuando ${sym} es inferior al valor crítico.`
+    };
+    tailHint.textContent = hints[state.tail];
+  }
+
+  statToggle.addEventListener('change', ()=>{
+    state.showStat = statToggle.checked;
+    statField.style.display = state.showStat ? '' : 'none';
+    el('stat-result').style.display = state.showStat ? '' : 'none';
+    el('legend-p').style.display = state.showStat ? '' : 'none';
+    render();
+  });
+  statValue.addEventListener('input', ()=>{ state.stat=parseFloat(statValue.value)||0; render(); });
+
+  /* ---------- render ---------- */
+  const svg = el('plot');
+  const SVG_NS = "http://www.w3.org/2000/svg";
+  const W=640,H=380, PAD_L=46, PAD_R=20, PAD_T=18, PAD_B=40;
+  const plotW = W-PAD_L-PAD_R, plotH = H-PAD_T-PAD_B;
+
+  function fmt(n, d){
+    if (!isFinite(n)) return '∞';
+    return n.toFixed(d==null?4:d);
+  }
+
+  function render(){
+    const d = DIST[state.dist];
+    const params = { df1: state.dist==='f' ? Math.max(1,state.df1) : Math.max(1,state.df1), df2: Math.max(1,state.df2) };
+    if (state.dist==='normal'){ /* no df needed */ }
+
+    let {xMin,xMax} = d.domain(params);
+    const extra = [];
+    let crit = {};
+    if (state.tail==='two'){
+      crit.lower = d.q(state.alpha/2, params);
+      crit.upper = d.q(1-state.alpha/2, params);
+      extra.push(crit.lower, crit.upper);
+    } else if (state.tail==='right'){
+      crit.upper = d.q(1-state.alpha, params);
+      extra.push(crit.upper);
+    } else {
+      crit.lower = d.q(state.alpha, params);
+      extra.push(crit.lower);
+    }
+    if (state.showStat) extra.push(state.stat);
+    extra.forEach(v=>{
+      if (v!=null && isFinite(v)){
+        if (v > xMax) xMax = v*1.12;
+        if (v < xMin) xMin = v*1.12;
+      }
+    });
+
+    const N=420;
+    const pts=[];
+    let yMax=0;
+    for (let i=0;i<=N;i++){
+      const x = xMin + (xMax-xMin)*i/N;
+      let y = d.pdf(x, params);
+      if (!isFinite(y) || y<0) y=0;
+      pts.push([x,y]);
+      if (y>yMax) yMax=y;
+    }
+    yMax *= 1.18;
+
+    const sx = x => PAD_L + (x-xMin)/(xMax-xMin)*plotW;
+    const sy = y => PAD_T + plotH - (y/yMax)*plotH;
+
+    // build svg
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+
+    function pathFor(xa,xb){
+      // clipped polygon path under curve between xa,xb (data coords)
+      let d0 = `M ${sx(xa).toFixed(2)} ${sy(0).toFixed(2)} `;
+      const steps=80;
+      for (let i=0;i<=steps;i++){
+        const x = xa + (xb-xa)*i/steps;
+        const y = Math.max(0, d.pdf(x, params));
+        d0 += `L ${sx(x).toFixed(2)} ${sy(y).toFixed(2)} `;
+      }
+      d0 += `L ${sx(xb).toFixed(2)} ${sy(0).toFixed(2)} Z`;
+      return d0;
+    }
+
+    function addPath(dAttr, cls, fill, opacity){
+      const p = document.createElementNS(SVG_NS,'path');
+      p.setAttribute('d', dAttr);
+      if (cls) p.setAttribute('class', cls);
+      if (fill) p.setAttribute('fill', fill);
+      if (opacity!=null) p.setAttribute('opacity', opacity);
+      svg.appendChild(p);
+      return p;
+    }
+    function addLine(x1,y1,x2,y2,cls){
+      const l=document.createElementNS(SVG_NS,'line');
+      l.setAttribute('x1',x1); l.setAttribute('y1',y1); l.setAttribute('x2',x2); l.setAttribute('y2',y2);
+      l.setAttribute('class',cls);
+      svg.appendChild(l);
+      return l;
+    }
+    function addText(x,y,text,cls,anchor){
+      const t=document.createElementNS(SVG_NS,'text');
+      t.setAttribute('x',x); t.setAttribute('y',y); t.setAttribute('class',cls);
+      t.setAttribute('text-anchor', anchor||'middle');
+      t.textContent=text;
+      svg.appendChild(t);
+      return t;
+    }
+
+    // reject shading
+    if (state.tail==='two'){
+      addPath(pathFor(xMin, crit.lower), null, 'var(--reject-wash)');
+      addPath(pathFor(crit.upper, xMax), null, 'var(--reject-wash)');
+    } else if (state.tail==='right'){
+      addPath(pathFor(crit.upper, xMax), null, 'var(--reject-wash)');
+    } else {
+      addPath(pathFor(xMin, crit.lower), null, 'var(--reject-wash)');
+    }
+
+    // p-value shading (observed statistic)
+    let pval=null;
+    if (state.showStat){
+      const s = state.stat;
+      const cdfS = d.cdf(s, params);
+      if (state.tail==='right'){
+        pval = 1-cdfS;
+        addPath(pathFor(s, xMax), null, 'var(--pvalue-wash)', 0.85);
+      } else if (state.tail==='left'){
+        pval = cdfS;
+        addPath(pathFor(xMin, s), null, 'var(--pvalue-wash)', 0.85);
+      } else {
+        const tailp = Math.min(cdfS, 1-cdfS);
+        pval = 2*tailp;
+        const symmetric = state.dist==='normal'||state.dist==='t';
+        if (symmetric){
+          const a=Math.abs(s);
+          addPath(pathFor(xMin, -a), null, 'var(--pvalue-wash)', 0.85);
+          addPath(pathFor(a, xMax), null, 'var(--pvalue-wash)', 0.85);
+        } else {
+          if (cdfS < 0.5) addPath(pathFor(xMin, s), null, 'var(--pvalue-wash)', 0.85);
+          else addPath(pathFor(s, xMax), null, 'var(--pvalue-wash)', 0.85);
+        }
+      }
+    }
+
+    // curve
+    let dcurve = `M ${sx(pts[0][0]).toFixed(2)} ${sy(pts[0][1]).toFixed(2)} `;
+    for (let i=1;i<pts.length;i++) dcurve += `L ${sx(pts[i][0]).toFixed(2)} ${sy(pts[i][1]).toFixed(2)} `;
+    addPath(dcurve, 'curve');
+
+    // baseline / x-axis
+    addLine(PAD_L, sy(0), W-PAD_R, sy(0), 'baseline');
+
+    // x ticks (nice round numbers)
+    const tickCount=6;
+    for (let i=0;i<=tickCount;i++){
+      const x = xMin + (xMax-xMin)*i/tickCount;
+      const px = sx(x);
+      addLine(px, sy(0), px, sy(0)+5, 'baseline');
+      addText(px, sy(0)+18, x.toFixed(state.dist==='normal'||state.dist==='t'?1:1), 'axis-label');
+    }
+
+    // critical lines + labels
+    function critMark(v){
+      if (v==null || !isFinite(v)) return;
+      const px = sx(v);
+      addLine(px, PAD_T, px, sy(0), 'crit-line');
+      addText(px, PAD_T-4, v.toFixed(3), 'crit-label');
+    }
+    if (crit.lower!=null) critMark(crit.lower);
+    if (crit.upper!=null) critMark(crit.upper);
+
+    // observed statistic marker
+    if (state.showStat && isFinite(state.stat)){
+      const px = sx(state.stat);
+      addLine(px, PAD_T, px, sy(0), 'stat-line');
+      addText(px, sy(0)+32, `obs = ${state.stat}`, 'stat-label');
+    }
+
+    /* ---------- resultados textuales ---------- */
+    const sym = d.symbol;
+    let critText='';
+    if (state.tail==='two') critText = `${fmt(crit.lower)}  y  ${fmt(crit.upper)}`;
+    else if (state.tail==='right') critText = fmt(crit.upper);
+    else critText = fmt(crit.lower);
+    el('crit-values').textContent = critText;
+
+    let ruleText='';
+    if (state.tail==='two') ruleText = `Se rechaza H₀ si <span class="sym">${sym} < ${fmt(crit.lower)}</span> o <span class="sym">${sym} > ${fmt(crit.upper)}</span>`;
+    else if (state.tail==='right') ruleText = `Se rechaza H₀ si <span class="sym">${sym} > ${fmt(crit.upper)}</span>`;
+    else ruleText = `Se rechaza H₀ si <span class="sym">${sym} < ${fmt(crit.lower)}</span>`;
+    ruleText += ` &nbsp;(α = ${state.alpha})`;
+    el('rule-text').innerHTML = ruleText;
+
+    if (state.showStat && pval!=null){
+      const twoTailNote = state.tail==='two' ? ' (2 × cola)' : '';
+      el('pvalue-num').textContent = `p = ${fmt(pval,4)}${twoTailNote}`;
+      const reject = pval < state.alpha;
+      el('decision-badge').innerHTML = `<span class="badge ${reject?'reject':'accept'}">${reject?'Rechaza H₀':'No rechaza H₀'}</span>`;
+    }
+  }
+
+  updateTailLabels();
+  render();
+})();
+</script>

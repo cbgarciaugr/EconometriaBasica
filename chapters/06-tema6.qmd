@@ -1,0 +1,500 @@
+```{r}
+#| include: false
+library(readxl)
+library(dplyr)
+library(ggplot2)
+library(car)
+library(strucchange)
+
+datos <- read_excel("data/BD_IBEX.xlsx", sheet = "Datos")
+modelo_ibex <- lm(
+  Rend_IBEX ~ Rend_SP500 + Rend_EUROSTOXX50,
+  data = datos
+)
+residuos <- residuals(modelo_ibex)
+```
+
+# Autocorrelación
+
+::: {.callout-important title="Objetivos de aprendizaje"}
+
+Al finalizar este tema, el estudiante será capaz de:
+
+- Comprender qué es la **autocorrelación** y por qué supone una vulneración de los supuestos clásicos del modelo de regresión lineal.
+- Identificar las principales causas de autocorrelación en modelos con datos de series temporales.
+- Comprender las consecuencias de la autocorrelación sobre los estimadores MCO, sus varianzas y los contrastes de hipótesis.
+- Detectar indicios de autocorrelación mediante el análisis gráfico de los residuos.
+- Aplicar e interpretar los principales contrastes de autocorrelación, especialmente **Durbin-Watson** y **Ljung-Box**.
+- Comprender el supuesto de autocorrelación **AR(1)** y su relación con la matriz de varianzas y covarianzas de las perturbaciones.
+- Entender la lógica de las transformaciones utilizadas para obtener perturbaciones incorreladas.
+- Aplicar en R procedimientos para detectar y corregir la autocorrelación.
+- Comprender el funcionamiento básico de los procedimientos de **Cochrane-Orcutt** y **Prais-Winsten**.
+- Interpretar los resultados obtenidos en un contexto económico y financiero.
+::: 
+
+### Concepto, causas y consecuencias de autocorrelación
+
+En el modelo lineal general,
+
+$$
+\mathbf{y} = \mathbf{X}\boldsymbol{\beta}+\mathbf{u},
+$$
+
+uno de los supuestos clásicos establece que las perturbaciones aleatorias de distintas observaciones no están correlacionadas entre sí. En concreto, suponemos que $Var(\mathbf{u})=\sigma^2\mathbf{I}$ que implica tres condiciones:
+
+1. Las perturbaciones tienen media cero: $E(u_t)=0$
+
+2. Las perturbaciones presentan una varianza constante $Var(u_t)=\sigma^2$
+
+3. Las perturbaciones correspondientes a diferentes observaciones están incorrelacionadas: $Cov(u_t,u_s)=0\qquad t\neq s.$
+
+La tercera condición es especialmente importante cuando trabajamos con **datos de series temporales**, donde las observaciones están ordenadas cronológicamente.
+
+#### Concepto de la autocorrelación {.unnumbered}
+
+Existe **autocorrelación** cuando las perturbaciones correspondientes a distintos momentos del tiempo están correlacionadas: $Cov(u_t,u_{t-k})\neq 0,\qquad k>0.$
+
+Por tanto, mientras que en la heteroscedasticidad estudiábamos una modificación de la **varianza** de las perturbaciones, en la autocorrelación estudiamos una modificación de las **covarianzas entre perturbaciones de distintos períodos**.
+
+En presencia de autocorrelación podemos escribir:
+
+$$
+Var(\mathbf{u})=\sigma^2\mathbf{\Omega},
+$$
+
+donde $\mathbf{\Omega}$ recoge la estructura de covarianzas entre las perturbaciones.
+
+Por ejemplo:
+
+$$
+Var(\mathbf{u})=
+\begin{pmatrix}
+\sigma^2 & \sigma_{12} & \cdots & \sigma_{1n}\\
+\sigma_{21} & \sigma^2 & \cdots & \sigma_{2n}\\
+\vdots & \vdots & \ddots & \vdots\\
+\sigma_{n1} & \sigma_{n2} & \cdots & \sigma^2
+\end{pmatrix}.
+$$
+
+La diagonal principal recoge las varianzas de las perturbaciones, mientras que los elementos situados fuera de la diagonal representan sus covarianzas.
+
+- En ausencia de autocorrelación $\sigma_{ij}=0\qquad i\neq j.$
+
+- En presencia de autocorrelación, algunas de estas covarianzas serán diferentes de cero.
+
+El problema es que una matriz completamente general requeriría estimar un número muy elevado de parámetros. Por ello, al igual que ocurre con la heteroscedasticidad, es necesario **especificar una estructura concreta para las covarianzas**. La estructura más sencilla que estudiaremos será la correspondiente a un proceso autorregresivo de primer orden, **AR(1)** que consiste en que las perturbaciones de un momento temporal dependen del momento temporal anterior. 
+
+#### Causas de la autocorrelación {.unnumbered}
+
+La autocorrelación aparece fundamentalmente en modelos estimados con datos de series temporales. Sin embargo, su origen puede encontrarse tanto en la propia naturaleza del fenómeno como en una especificación incorrecta del modelo.
+
+- Cuando trabajamos con variables económicas y financieras observadas a lo largo del tiempo, es habitual que exista cierta persistencia. Por ejemplo, la rentabilidad del IBEX 35 de hoy puede estar relacionada con las condiciones existentes en el mercado durante los días anteriores. Del mismo modo, determinadas variables macroeconómicas o financieras presentan una evolución gradual y no cambian completamente de un período a otro.
+
+Esto puede provocar que los factores no incluidos explícitamente en el modelo también presenten persistencia temporal y, por tanto, que las perturbaciones estén correlacionadas.
+
+**Ejemplo**: Supongamos que analizamos la evolución del IBEX 35 y omitimos factores como la incertidumbre internacional, la evolución de los tipos de interés o las expectativas de los inversores. Aunque estas variables no aparezcan explícitamente en el modelo, sus efectos pueden persistir durante varios días. En consecuencia, pueden generar un patrón temporal en los residuos.
+
+- Omisión de variables relevantes: Otra causa frecuente es la omisión de variables relevantes. Supongamos que el modelo correcto es:
+
+$$
+Y_t=\beta_1+\beta_2X_{2t}+\beta_3X_{3t}+u_t,
+$$
+
+pero estimamos:
+
+$$
+Y_t=\alpha_1+\alpha_2X_{2t}+v_t.
+$$
+
+La variable $X_{3t}$ queda incorporada en la perturbación:
+
+$$
+v_t=\beta_3X_{3t}+u_t.
+$$
+
+Si $X_{3t}$ presenta dependencia temporal, la perturbación $v_t$ también la presentará.
+
+Por tanto, una variable relevante omitida puede generar autocorrelación incluso cuando la perturbación del modelo correctamente especificado sea incorrelacionada.
+
+- Especificación incorrecta de la forma funcional: También puede aparecer autocorrelación cuando la relación entre las variables no se especifica correctamente. Por ejemplo, si la relación verdadera entre una variable financiera y una variable explicativa presenta una tendencia no lineal y estimamos únicamente una relación lineal, parte de esa estructura quedará recogida en los residuos. Si además esa estructura presenta un patrón temporal, los residuos pueden mostrar autocorrelación.
+
+- Transformaciones y manipulación de los datos: La construcción de variables mediante medias, interpolaciones, agregaciones o determinadas técnicas de suavizado puede introducir relaciones artificiales entre observaciones consecutivas. Por ello, antes de interpretar una autocorrelación como un fenómeno económico, conviene comprobar también cómo se han construido y transformado los datos.
+
+- Variables dependientes retardadas: La inclusión de retardos de la variable dependiente es habitual en modelos económicos y financieros: $Y_t=\alpha+\beta X_t+\gamma Y_{t-1}+u_t.$ Este tipo de modelos introduce explícitamente una relación temporal y requiere especial atención en los procedimientos de detección de autocorrelación.
+
+
+#### Consecuencias de la autocorrelación {.unnumbered}
+
+La autocorrelación, al igual que la heteroscedasticidad, no implica necesariamente que los estimadores MCO dejen de ser insesgados bajo los supuestos adecuados de exogeneidad. Sin embargo, dejan de ser **eficientes** dentro de la clase de estimadores lineales e insesgados.
+
+Las principales consecuencias son:
+
+- Los estimadores MCO pueden seguir siendo **lineales, insesgados y consistentes**, pero dejan de ser eficientes.
+- La expresión habitual de la matriz de varianzas-covarianzas de los estimadores MCO deja de ser válida cuando ignora la autocorrelación.
+- Los errores estándar calculados convencionalmente pueden estar mal estimados.
+- Como consecuencia, los contrastes $t$ y $F$ pueden conducir a conclusiones incorrectas.
+- La significación estadística de las variables puede estar sobreestimada o subestimada.
+- Las predicciones y los intervalos de confianza pueden resultar poco fiables.
+
+En consecuencia, la presencia de autocorrelación no debe interpretarse únicamente como un problema de los coeficientes estimados. **El problema fundamental para la inferencia está en la estimación incorrecta de sus varianzas.**
+
+
+## Detección de la autocorrelación
+
+La detección de la autocorrelación puede abordarse mediante:
+
+1. métodos gráficos;
+2. contrastes estadísticos.
+
+Los métodos gráficos permiten obtener una primera impresión sobre el comportamiento temporal de los residuos, mientras que los contrastes permiten formalizar estadísticamente la existencia de autocorrelación.
+
+### Métodos gráficos
+
+- Gráfico temporal de los residuos: Una primera aproximación consiste en representar los residuos frente al tiempo. Si los residuos están incorrelacionados, esperamos encontrar una sucesión aproximadamente aleatoria de valores alrededor de cero.
+
+Por el contrario, pueden aparecer:
+
+- **Rachas de residuos del mismo signo**, compatibles con autocorrelación positiva.
+- **Alternancia sistemática de signos**, compatible con autocorrelación negativa.
+
+::: {.callout-tip appearance="simple" icon=false title="Base de datos 2: El IBEX35"}
+
+Una vez estimado el modelo correspondiente, podemos representar sus residuos mediante:
+
+```{r}
+plot(
+  residuos,
+  type = "l",
+  main = "Residuos del modelo del IBEX 35",
+  xlab = "Tiempo",
+  ylab = "Residuo"
+)
+
+abline(h = 0, lty = 2)
+```
+
+La interpretación debe hacerse con cautela. El gráfico permite detectar patrones, pero no constituye por sí mismo una prueba estadística de autocorrelación.
+
+:::
+
+- Gráfico de residuos frente a su primer retardo: Otra posibilidad consiste en representar $e_t$ frente a $
+e_{t-1}$. 
+
+  - Una nube de puntos sin estructura clara es compatible con la ausencia de autocorrelación.
+
+  - Una tendencia creciente sería indicativa de autocorrelación positiva, mientras que una tendencia   decreciente sería compatible con autocorrelación negativa.
+
+::: {.callout-tip appearance="simple" icon=false title="Base de datos 2: El IBEX35"}
+
+Una vez estimado el modelo correspondiente, podemos representar sus residuos mediante:
+
+```{r}
+datos <- read_excel("data/BD_IBEX.xlsx", sheet = "Datos")
+modelo_ibex <- lm(
+    Rend_IBEX ~ Rend_SP500+ Rend_EUROSTOXX50,
+    data = datos
+)
+residuos <- residuals(modelo_ibex)
+
+plot(
+  residuos[-1],
+  residuos[-length(residuos)],
+  xlab = expression(e[t-1]),
+  ylab = expression(e[t]),
+  main = "Residuos frente a su primer retardo"
+)
+
+abline(h = 0, v = 0, lty = 2)
+```
+
+La interpretación debe hacerse con cautela. El gráfico permite detectar patrones, pero no constituye por sí mismo una prueba estadística de autocorrelación.
+
+:::
+
+
+### Contrastes estadísticos
+
+#### Contraste de Durbin-Watson {.unnumbered}
+
+El contraste de Durbin-Watson es uno de los procedimientos clásicos para detectar autocorrelación de primer orden. Se parte del modelo $u_t=\rho u_{t-1}+v_t$ donde $v_t$ es una perturbación incorrelacionada. El contraste plantea:
+
+$$
+H_0:\rho=0
+$$
+
+frente a las alternativas:
+
+$$
+H_1:\rho>0
+$$
+
+para autocorrelación positiva, o
+
+$$
+H_1:\rho<0
+$$
+
+para autocorrelación negativa.
+
+El estadístico de Durbin-Watson es:
+
+$$
+d=
+\frac{\sum_{t=2}^{n}(e_t-e_{t-1})^2}
+{\sum_{t=1}^{n}e_t^2}.
+$$
+
+De forma aproximada:
+
+$$
+d\approx2(1-\hat{\rho}).
+$$
+
+Por tanto:
+
+- $d\approx 2$: ausencia de autocorrelación.
+- $d<2$: autocorrelación positiva.
+- $d>2$: autocorrelación negativa.
+- $d\approx 0$: autocorrelación positiva muy elevada.
+- $d\approx 4$: autocorrelación negativa muy elevada.
+
+El paquete `lmtest` proporciona la función `dwtest()`.
+
+::: {.callout-tip appearance="simple" icon=false title="Base de datos 2: El IBEX35"}
+
+Una vez estimado el modelo correspondiente, podemos representar sus residuos mediante:
+
+```{r}
+library(lmtest)
+
+dwtest(modelo_ibex)
+```
+:::
+
+
+#### Contraste de Ljung-Box {.unnumbered}
+
+El contraste de Ljung-Box permite analizar conjuntamente varias autocorrelaciones. Mientras que Durbin-Watson se centra en la autocorrelación de primer orden, Ljung-Box permite comprobar si existe autocorrelación hasta un determinado número de retardos. La hipótesis nula es:
+
+$$
+H_0:
+\rho_1=\rho_2=\cdots=\rho_m=0.
+$$
+
+La alternativa establece que al menos una de esas autocorrelaciones es diferente de cero.
+
+
+::: {.callout-tip appearance="simple" icon=false title="Base de datos 2: El IBEX35"}
+En R podemos utilizar:
+
+```{r}
+Box.test(
+  residuos,
+  lag = 10,
+  type = "Ljung-Box"
+)
+```
+
+El parámetro `lag = 10` indica que se están considerando conjuntamente los diez primeros retardos. La elección de `lag` debe responder a la frecuencia de los datos y al objetivo del análisis, por lo que no debe entenderse como un valor universal.
+:::
+
+
+## Estimación de modelos con autocorrelación
+
+Para modelizar la autocorrelación utilizaremos como referencia un proceso autorregresivo de primer orden:
+
+$$
+u_t=\rho u_{t-1}+v_t,
+$$
+
+donde:
+
+$$
+E(v_t)=0,
+\qquad
+Var(v_t)=\sigma^2,
+$$
+
+y las perturbaciones $v_t$ están incorrelacionadas.
+
+El parámetro $\rho$ mide la intensidad de la dependencia entre perturbaciones consecutivas.
+
+Si $|\rho|<1$, se obtiene:
+
+$$
+Cov(u_t,u_{t-k})=\rho^k\sigma^2.
+$$
+
+Por tanto, las correlaciones entre perturbaciones separadas por varios períodos disminuyen con la distancia temporal:
+
+$$
+\rho,\quad \rho^2,\quad \rho^3,\quad \ldots
+$$
+
+La matriz de correlaciones correspondiente es:
+
+$$
+\mathbf{\Omega}=
+\begin{pmatrix}
+1 & \rho & \rho^2 & \cdots & \rho^{n-1}\\
+\rho & 1 & \rho & \cdots & \rho^{n-2}\\
+\rho^2 & \rho & 1 & \cdots & \rho^{n-3}\\
+\vdots & \vdots & \vdots & \ddots & \vdots\\
+\rho^{n-1} & \rho^{n-2} & \rho^{n-3} & \cdots & 1
+\end{pmatrix}.
+$$
+
+Esta parametrización simplifica considerablemente el problema, ya que en lugar de tener que estimar todas las covarianzas de la matriz, únicamente necesitamos estimar $\rho$ y $\sigma^2$, además de los parámetros del modelo.
+
+
+Una vez identificada la estructura de autocorrelación, podemos transformar el modelo para obtener perturbaciones incorrelacionadas. Partimos de:
+
+$$
+Y_t=
+\beta_1+\beta_2X_{2t}+\cdots+\beta_kX_{kt}+u_t
+$$
+
+y suponemos $u_t=\rho u_{t-1}+v_t$. Multiplicando el modelo retardado por $\rho$ y restándolo del modelo original obtenemos:
+
+$$
+Y_t-\rho Y_{t-1}=\beta_1(1-\rho)+\beta_2(X_{2t}-\rho X_{2,t-1})+\cdots+\beta_k(X_{kt}-\rho X_{k,t-1})
++v_t.
+$$
+
+Como: $u_t-\rho u_{t-1}=v_t,$ las perturbaciones del modelo transformado son incorrelacionadas.
+
+Para $t>1$: 
+
+$Y_t^*=Y_t-\rho Y_{t-1},$
+
+$X_{jt}^*=X_{jt}-\rho X_{j,t-1}.$
+
+El término independiente también debe transformarse: $1^*=1-\rho.$
+
+Este último punto es importante: **no se debe mantener el término independiente sin transformar** cuando se aplica esta transformación al modelo.
+
+#### Cochrane-Orcutt {.unnumbered}
+
+En la práctica, $\rho$ es desconocido y debe estimarse. El procedimiento iterativo de Cochrane-Orcutt sigue, de forma simplificada, los siguientes pasos:
+
+1. Estimar el modelo original mediante MCO.
+2. Obtener los residuos.
+3. Estimar $\rho$ a partir de los residuos.
+4. Transformar las variables utilizando $\hat{\rho}$.
+5. Estimar nuevamente el modelo transformado.
+6. Repetir el procedimiento hasta que las estimaciones sucesivas de $\rho$ sean suficientemente próximas.
+
+Una estimación inicial habitual de $\rho$ es:
+
+$$
+\hat{\rho}=\frac{\sum_{t=2}^{n}e_te_{t-1}}{\sum_{t=1}^{n}e_t^2}.
+$$
+
+A continuación se implementa el procedimiento directamente en R, siguiendo paso a paso las etapas anteriores:
+
+```{r}
+Y <- datos$Rend_IBEX
+X1 <- datos$Rend_SP500
+X2 <- datos$Rend_EUROSTOXX50
+n <- length(Y)
+
+rho_hat <- 0
+modelo_ibex_co <- modelo_ibex
+
+for (iter in 1:50) {
+  e <- residuals(modelo_ibex_co)
+  rho_nuevo <- sum(e[-1] * e[-length(e)]) / sum(e^2)
+
+  Y_t <- Y[-1] - rho_nuevo * Y[-n]
+  X1_t <- X1[-1] - rho_nuevo * X1[-n]
+  X2_t <- X2[-1] - rho_nuevo * X2[-n]
+
+  modelo_ibex_co <- lm(Y_t ~ X1_t + X2_t)
+
+  if (abs(rho_nuevo - rho_hat) < 1e-6) break
+  rho_hat <- rho_nuevo
+}
+
+rho_hat
+summary(modelo_ibex_co)
+```
+
+El bucle repite la transformación hasta que dos estimaciones sucesivas de $\rho$ difieren en menos de una tolerancia prefijada (`1e-6`), tal como se ha descrito en el procedimiento de Cochrane-Orcutt. El resultado permite comparar los coeficientes obtenidos mediante MCO con los obtenidos después de corregir la autocorrelación. Nótese que el intercepto del modelo transformado corresponde a $\beta_1(1-\rho)$, tal como se explicó anteriormente.
+
+#### Prais-Winsten {.unnumbered}
+
+Una limitación del procedimiento de Cochrane-Orcutt es que pierde la primera observación. El procedimiento de Prais-Winsten modifica la transformación de la primera observación para conservarla.
+
+Para $t>1$ se mantiene:
+
+$Y_t^*=Y_t-\rho Y_{t-1},$
+
+mientras que la primera observación recibe una transformación específica.
+
+Este procedimiento resulta especialmente útil cuando la muestra no es muy grande y la pérdida de una observación puede ser relevante.
+
+::: {.callout-tip appearance="simple" icon=false title="Base de datos 2: El IBEX35"}
+
+El análisis de autocorrelación resulta especialmente natural en el ámbito financiero porque muchas variables se observan a lo largo del tiempo.
+
+Supongamos que disponemos de datos diarios del IBEX 35 y queremos estudiar la relación entre su rentabilidad y determinadas variables financieras.
+
+Un primer modelo podría ser:
+
+$$
+R_t=
+\beta_1+\beta_2X_{2t}+\beta_3X_{3t}+u_t.
+$$
+
+En R:
+
+```{r}
+modelo_ibex <- lm(
+  Rend_IBEX ~ Rend_SP500 + Rend_EUROSTOXX50,
+  data = datos
+)
+
+summary(modelo_ibex)
+```
+
+Una vez estimado el modelo, podemos estudiar los residuos:
+
+```{r}
+residuos_ibex <- residuals(modelo_ibex)
+
+plot(
+  residuos_ibex,
+  type = "l",
+  main = "Residuos del modelo del IBEX 35",
+  xlab = "Observación",
+  ylab = "Residuo"
+)
+
+abline(h = 0, lty = 2)
+```
+
+A continuación podemos aplicar Durbin-Watson:
+
+```{r}
+library(lmtest)
+
+dwtest(modelo_ibex)
+```
+
+y Ljung-Box:
+
+```{r}
+Box.test(
+  residuos_ibex,
+  lag = 10,
+  type = "Ljung-Box"
+)
+```
+
+La combinación de los gráficos y los contrastes permite obtener un diagnóstico más completo que la utilización aislada de un único indicador.
+
+:::
+
+## Prácticas resueltas
+
+## Prácticas propuestas

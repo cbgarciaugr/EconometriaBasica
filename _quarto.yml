@@ -1,0 +1,52 @@
+project:
+  type: book
+  output-dir: docs
+  execute-dir: project
+
+lang: es
+
+book:
+  title: "Econometría para Finanzas y Contabilidad con R"
+  author: "Catalina B. García-García y Román Salmerón-Gómez"
+  page-navigation: true
+  repo-url: https://github.com/cbgarciaugr/EconometriaBasica
+  repo-actions: [edit]
+  chapters:
+    - chapters/index.qmd
+    - chapters/01-tema1.qmd
+    - chapters/02-tema2.qmd
+    - chapters/03-tema3.qmd
+    - chapters/04-tema4.qmd
+    - chapters/05-tema5.qmd
+    - chapters/06-tema6.qmd
+  appendices:
+    - chapters/apendice-basesdatos.qmd
+    - chapters/apendicematrices.qmd
+    - chapters/apendicedistribuciones.qmd
+
+resources:
+    - recursos/criticos.html
+    
+bibliography:
+  - book.bib
+  - packages.bib
+link-citations: true
+
+format:
+  html:
+    theme: flatly
+    css: style.css
+    toc: true
+    code-fold: true
+    code-tools: true
+  pdf:
+    documentclass: book
+    include-in-header: preamble.tex
+    pdf-engine: xelatex
+    toc: true
+    toc-depth: 3
+    geometry:
+      - left=2.5cm
+      - right=2.5cm
+      - top=2.5cm
+      - bottom=2.5cm

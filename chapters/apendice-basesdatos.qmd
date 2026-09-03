@@ -1,0 +1,282 @@
+# Apéndice: Bases de datos utilizadas en el libro {#sec-apendice-basesdatos}
+
+```{r}
+#| include: false
+library(readxl)
+```
+
+En este apéndice se documentan todas las bases de datos empleadas a lo largo del manual: su fuente, el periodo y la unidad de observación, las variables que contienen y, cuando existe, el código con el que se han generado o importado. El objetivo es que cualquier lector pueda reproducir los ejemplos y prácticas del libro a partir de los ficheros disponibles en el repositorio.
+
+::: {.callout-important title="Nota sobre uso y licencia"}
+Los ficheros `BD_SABI.xlsx` y `BD_ContabilidadCompleta.xlsx` contienen datos extraídos de la base de datos comercial **SABI** (Sistema de Análisis de Balances Ibéricos, Informa/Moody's). Antes de distribuir estos ficheros en un repositorio público, se recomienda confirmar con el servicio de licencias de la universidad que la redistribución de datos exportados de SABI —aunque estén agregados o anonimizados— está permitida por el contrato de acceso institucional.
+:::
+
+## Top 100 empresas andaluzas del transporte
+
+**Fichero:** `BD_SABI.xlsx` (hoja `Datos`)\
+**Fuente:** SABI — Sistema de Análisis de Balances Ibéricos (Informa/Moody's)\
+**Tipo de datos:** corte transversal\
+**Periodo / unidad de observación:** ejercicio 2024, 100 empresas\
+**Usado en:** Introducción, Tema 1, Tema 2, Tema 4
+
+**Variables**
+
+```{r}
+knitr::kable(read_excel("data/BD_SABI.xlsx", sheet = "Diccionario"))
+```
+
+**Código de generación**\
+No procede un script reproducible: los datos se exportaron manualmente desde la plataforma SABI aplicando los filtros *sector = transporte*, *región = Andalucía*, seleccionando las 100 primeras empresas por tamaño de activo. El fichero `BD_ContabilidadCompleta.xlsx` conserva la estrategia de búsqueda y los metadatos de la consulta original tal como los genera SABI, por si se necesita repetir o auditar la extracción.
+
+## El IBEX35 frente a otros índices bursátiles
+
+**Fichero:** `BD_IBEX.xlsx` (hoja `Datos`)\
+**Fuente:** Yahoo Finance, vía el paquete `quantmod`\
+**Tipo de datos:** serie temporal\
+**Periodo / unidad de observación:** mensual, octubre 2020 -- agosto 2026 (71 observaciones)\
+**Usado en:** Tema 2
+
+**Variables**
+
+```{r}
+knitr::kable(read_excel("data/BD_IBEX.xlsx", sheet = "Diccionario"))
+```
+
+**Código de generación**\
+Adaptado y ampliado a partir de `Construccion Base de Datos Financiera.R` (que en su versión original solo descargaba el IBEX35) para cubrir los tres índices del fichero. Antes de darlo por definitivo, ejecútalo y comprueba que reproduce exactamente los valores de `BD_IBEX.xlsx`:
+
+```{r}
+#| eval: false
+library(quantmod)
+library(dplyr)
+
+# Descargar precios de cierre diarios de los tres índices
+getSymbols("^IBEX", src = "yahoo")
+getSymbols("^STOXX50E", src = "yahoo")
+getSymbols("^GSPC", src = "yahoo")
+
+# Precio de cierre mensual de cada índice
+ibex_mensual <- Cl(to.monthly(IBEX, indexAt = "lastof", OHLC = FALSE))
+eurostoxx_mensual <- Cl(to.monthly(STOXX50E, indexAt = "lastof", OHLC = FALSE))
+sp500_mensual <- Cl(to.monthly(GSPC, indexAt = "lastof", OHLC = FALSE))
+
+# Unir los tres índices por fecha
+datos_ibex <- merge(ibex_mensual, eurostoxx_mensual, sp500_mensual, join = "inner")
+colnames(datos_ibex) <- c("IBEX", "EUROSTOXX50", "SP500")
+
+# Convertir a data.frame, calcular rendimientos y quedarnos con los últimos 71 meses
+datos_ibex <- data.frame(Fecha = index(datos_ibex), coredata(datos_ibex)) %>%
+  mutate(
+    Rend_IBEX = 100 * log(IBEX / lag(IBEX)),
+    Rend_EUROSTOXX50 = 100 * log(EUROSTOXX50 / lag(EUROSTOXX50)),
+    Rend_SP500 = 100 * log(SP500 / lag(SP500))
+  ) %>%
+  tail(71)
+```
+
+## Tipos de interés, precios e indicadores macroeconómicos de la Eurozona
+
+**Fichero:** `BD_EURIBOR.xlsx` (hoja `Datos`)\
+**Fuente:** Eurostat (2018) y EMMI (2018)\
+**Tipo de datos:** serie temporal\
+**Periodo / unidad de observación:** trimestral, desestacionalizada, enero 2002 -- julio 2013 (47 observaciones)\
+**Usado en:** disponible para uso futuro; aún no aparece en ningún capítulo del libro\
+**Referencia académica:** utilizada en *Computational Statistics* (2020) 35:647--666, <https://doi.org/10.1007/s00180-019-00922-x>
+
+**Variables**
+
+```{r}
+knitr::kable(read_excel("data/BD_EURIBOR.xlsx", sheet = "Diccionario"))
+```
+
+**Código de generación**\
+No procede: datos descargados manualmente de los portales de Eurostat y EMMI. No existe actualmente un script de descarga automatizada en el repositorio.
+
+## Función de producción (Greene, 2003)
+
+**Fichero:** `BD_FUNCIONPRODUCCION.xlsx` (hoja `greene8_3`)\
+**Fuente:** @Greene2003, *Econometric Analysis* (5.ª edición), tabla 8.3\
+**Tipo de datos:** serie temporal\
+**Periodo / unidad de observación:** anual, 1909 -- 1949 (41 observaciones)\
+**Usado en:** Tema 2, Tema 3
+
+**Variables**
+
+| Variable | Descripción | Unidad |
+|---|---|---|
+| `year` | Año de la observación | -- |
+| `q` | Producción | índice |
+| `k` | Capital | índice |
+| `A` | Índice de progreso técnico | índice |
+
+**Código de generación**\
+No procede: datos transcritos directamente de la tabla 8.3 del manual de Greene (2003).
+
+## Gasto en alimentación de los hogares (Uriel, 2019)
+
+**Fichero:** `bd3_demand.xlsx` (hoja `Hoja1`)\
+**Fuente:** @Uriel2019, *Introducción a la Econometría*\
+**Tipo de datos:** corte transversal\
+**Periodo / unidad de observación:** 40 hogares\
+**Usado en:** Tema 2
+
+**Variables**
+
+Encuesta de gasto en 19 grupos de alimentos (`ALCOHOL`, `BREAD`, `COFFEE`, `DAIRY`, `EGGS`, `FISH`, `FOODTOT`, `FRUIT`, `MEAT`, `NONALCH`, `OIL`, `OTHFOOD`, `SUGAR`, `VEGETABL`, en unidades monetarias) más las variables sociodemográficas `HHSIZE` (tamaño del hogar), `INC` (renta disponible), `PUNDER5` (proporción de menores de 5 años), `SECSTUD`/`SUPSTUD` (nivel de estudios) y `URBAN` (zona urbana/rural).
+
+**Código de generación**\
+No procede: fichero de datos que acompaña al manual de Uriel (2019).
+
+## Curva de Phillips en España
+
+**Fichero:** `BD_PHILIPS.xlsx` (hoja `Hoja1`)\
+**Fuente:** Instituto Nacional de Estadística (INE) y statista.com\
+**Tipo de datos:** serie temporal\
+**Periodo / unidad de observación:** anual, España, 2006 -- 2024 (19 observaciones)\
+**Usado en:** Tema 2
+
+**Variables**
+
+| Variable | Descripción | Unidad |
+|---|---|---|
+| `YEAR` | Año de la observación | -- |
+| `Inflacion` | Tasa de inflación | % |
+| `Desempleo` | Tasa de desempleo | % |
+| `PrecioEnergia` | Precio de la energía | €/MWh |
+
+**Código de generación**\
+No procede: datos compilados manualmente a partir de las series públicas del INE y de statista.com. No existe un script de descarga en el repositorio.
+
+## Esperanza de vida y gasto sanitario en España
+
+**Fichero:** `bd6_esperanza.xlsx` (hoja `Hoja1`)\
+**Fuente:** *pendiente de confirmar* — no se especifica en el texto del libro\
+**Tipo de datos:** serie temporal\
+**Periodo / unidad de observación:** anual, España, 1990 -- 2024 (35 observaciones)\
+**Usado en:** Tema 2 (ejercicio propuesto), ejercicios propuestos parte I
+
+**Variables**
+
+| Variable | Descripción | Unidad |
+|---|---|---|
+| `Año` | Año de la observación | -- |
+| `Gasto` | Gasto sanitario público | millones EUR |
+| `GastoPIB` | Gasto sanitario público sobre el PIB | proporción |
+| `Renta` | Renta per cápita | EUR |
+| `Esperanza` | Esperanza de vida al nacer | años |
+
+**Código de generación**\
+No procede: no hay script de descarga en el repositorio.
+
+## Consumo eléctrico en España
+
+**Fichero:** `BD_CONSUMOELECTRICO.xlsx` (hoja `consumo_energia_espana_1990_202`)\
+**Fuente:** *pendiente de confirmar* — no se especifica en el texto del libro\
+**Tipo de datos:** serie temporal\
+**Periodo / unidad de observación:** anual, España, 1990 -- 2024 (35 observaciones)\
+**Usado en:** Tema 3
+
+**Variables**
+
+| Variable | Descripción | Unidad |
+|---|---|---|
+| `Año` | Año de la observación | -- |
+| `Consumo_electrico` | Consumo eléctrico | GWh |
+| `Renta` | Renta per cápita | EUR |
+| `Crisis` | Variable dicotómica: 1 en años de crisis económica, 0 en caso contrario | -- |
+| `Pib` | Tasa de crecimiento del PIB | % |
+| `D_PIB` | Variable dicotómica asociada al crecimiento del PIB | -- |
+| `gobierno` | Variable dicotómica: 1 si gobierna el Partido Popular, 0 en caso contrario | -- |
+
+**Código de generación**\
+No procede: no hay script de descarga en el repositorio.
+
+## Ingresos de abogados jóvenes
+
+**Fichero:** `BD_ABOGADOS.xlsx` (hoja `base_econometrica_abogados_40`)\
+**Fuente:** *pendiente de confirmar* — el texto no cita una fuente externa; podría tratarse de datos simulados con fines docentes\
+**Tipo de datos:** corte transversal\
+**Periodo / unidad de observación:** 40 abogados\
+**Usado en:** Tema 3
+
+**Variables**
+
+| Variable | Descripción | Unidad |
+|---|---|---|
+| `Y` | Ingreso mensual del abogado | € |
+| `X1` | Años de experiencia profesional | años |
+| `X2` | Horas medias trabajadas por semana | horas |
+| `D1` | Variable dicotómica: 1 si está especializado en derecho mercantil/empresarial, 0 en caso contrario | -- |
+
+**Código de generación**\
+No procede: no hay script de generación en el repositorio.
+
+## Tipos de interés (Wooldridge)
+
+**Fichero:** `WooldrigdeTI.txt`\
+**Fuente:** Wooldridge (citado en el texto como `@Wooldrigde2000`)\
+**Tipo de datos:** serie temporal\
+**Periodo / unidad de observación:** 124 observaciones; el fichero no incluye columna de fecha\
+**Usado en:** Tema 4 (ejercicios propuestos)
+
+**Variables**
+
+| Variable | Descripción | Unidad |
+|---|---|---|
+| `r12` | Tipo de interés a 12 meses | % |
+| `r3` | Tipo de interés a 3 meses | % |
+| `r6` | Tipo de interés a 6 meses | % |
+
+**Código de generación**\
+No procede: fichero de datos que acompaña al manual de Wooldridge.
+
+::: {.callout-warning}
+La cita `@Wooldrigde2000` usada en 04-tema4.qmd no tiene entrada correspondiente en `book.bib` — al renderizar ese capítulo aparecerá como referencia rota. Conviene añadir la entrada bibliográfica completa antes de publicar el libro.
+:::
+
+## Precio del helado (Ramanathan)
+
+**Fichero:** `data9-1.txt`\
+**Fuente:** Ramanathan, ejemplo 9.1\
+**Tipo de datos:** serie temporal\
+**Periodo / unidad de observación:** periodos de cuatro semanas, del 18 de marzo de 1951 al 11 de julio de 1953 (30 observaciones)\
+**Usado en:** Tema 4 (ejercicios propuestos)
+
+**Variables**
+
+| Variable | Descripción | Unidad |
+|---|---|---|
+| `demand` | Consumo per cápita de helado | pintas |
+| `income` | Ingreso familiar semanal | $ |
+| `price` | Precio del helado | $/pinta |
+| `temp` | Temperatura media | °F |
+
+**Código de generación**\
+No procede: fichero de datos que acompaña al ejemplo de Ramanathan.
+
+## Modelo STIRPAT para China
+
+**Fichero:** `stirpattchina.csv`\
+**Fuente:** *pendiente de confirmar* — no se especifica en el texto del libro (las variables son compatibles con series del Banco Mundial, *World Development Indicators*)\
+**Tipo de datos:** serie temporal\
+**Periodo / unidad de observación:** anual, China, 1990 -- 2014 (25 observaciones)\
+**Usado en:** Tema 4 (ejercicios propuestos)
+
+**Variables**
+
+| Variable | Descripción | Unidad |
+|---|---|---|
+| `time` | Año de la observación | -- |
+| `PIB_cte` | PIB a precios constantes | billones USD (2010) |
+| `PIBpc_cte` | PIB per cápita a precios constantes | miles USD (2010) |
+| `Pop` | Población total | miles de millones |
+| `CarbonDiox` | Emisiones de CO2 | -- |
+| `EnergyIntens` | Intensidad energética | -- |
+| `Indust` | Industrialización (% del PIB) | % |
+
+**Código de generación**\
+No procede: no hay script de descarga en el repositorio.
+
+::: {.callout-warning title="Pendiente de revisión"}
+Cuatro de las bases de datos anteriores (esperanza de vida y gasto sanitario, consumo eléctrico, ingresos de abogados y STIRPAT China) no tienen una fuente citada explícitamente en el texto del libro. Antes de publicar este apéndice, confirma su procedencia real (¿son datos oficiales, adaptados de otra fuente, o simulados con fines docentes?) para poder documentarla correctamente.
+:::

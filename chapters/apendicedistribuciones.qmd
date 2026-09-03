@@ -1,0 +1,632 @@
+```{r}
+#| include: false
+library(plotly)
+library(ggplot2)
+```
+
+# Apéndice. Distribuciones estadísticas y valores críticos {#apendice-distribuciones}
+
+## Introducción
+
+En los temas anteriores hemos utilizado diferentes distribuciones estadísticas para realizar contrastes de hipótesis y construir intervalos de confianza. Entre las más importantes se encuentran la **distribución normal**, la **distribución t de Student**, la **distribución F de Snedecor** y la **distribución chi-cuadrado**.
+
+Estas distribuciones permiten determinar qué valores del estadístico de contraste son suficientemente extremos como para rechazar una hipótesis nula.
+
+La idea fundamental puede resumirse de la siguiente manera: Un contraste de hipótesis compara el valor observado de un estadístico con uno o varios **valores críticos** determinados a partir de una distribución de probabilidad.
+
+## Funciones de las distribuciones en `R`
+
+Antes de estudiar cada distribución conviene distinguir cuatro tipos de funciones.
+
+En `R` se utilizan habitualmente las letras:
+
+* `d` para la **función de densidad**.
+* `p` para la **función de distribución acumulada**.
+* `q` para obtener **cuantiles o valores críticos**.
+* `r` para generar **observaciones aleatorias**.
+
+Por ejemplo, para la distribución normal:
+
+```{r}
+#| eval: false
+dnorm()
+pnorm()
+qnorm()
+rnorm()
+```
+
+La función que nos interesa especialmente para obtener **valores críticos** es la función `q`, ya que permite obtener el cuantil correspondiente a una determinada probabilidad acumulada.
+
+Por ejemplo:
+
+```{r}
+qnorm(0.975)
+```
+
+
+Por tanto, el valor crítico positivo de una normal estándar para un contraste bilateral con $\alpha=0,05$ es aproximadamente: $z_{0,975}=1,96.$
+
+
+## Distribución normal
+
+La distribución normal es una de las distribuciones más importantes de la estadística. Se caracteriza por ser simétrica respecto a su media y quedar completamente determinada por dos parámetros:
+
+$$
+X\sim N(\mu,\sigma^2).
+$$
+
+Cuando la media es cero y la varianza es uno tenemos la **normal estándar**:
+
+$$
+Z\sim N(0,1).
+$$
+
+La distribución normal estándar es especialmente importante porque muchos estadísticos de contraste siguen, bajo determinadas hipótesis, una distribución normal o convergen asintóticamente a ella.
+
+### Valores críticos de la normal
+
+Supongamos un contraste bilateral con $\alpha=0,05.$ Como el contraste es bilateral, dividimos el nivel de significación entre las dos colas: $\frac{\alpha}{2}=0,025.$
+
+Por tanto, buscamos el valor que deja una probabilidad acumulada de $1-\frac{\alpha}{2}=0,975.$
+
+En `R`:
+
+```{r}
+qnorm(0.975)
+```
+
+Por tanto: $z_{0,975}\simeq 1,96.$
+
+La región crítica es:
+
+$$
+Z<-1,96
+\qquad\text{o}\qquad
+Z>1,96.
+$$
+### Visualización 
+
+El siguiente gráfico permite modificar el nivel de significación y observar cómo cambia la región crítica.
+
+```{r}
+#| label: fig-normal-interactiva
+#| fig-cap: "Distribución normal estándar y regiones críticas"
+#| eval: !expr knitr::is_html_output()
+
+library(plotly)
+
+alpha_values <- c(0.10, 0.05, 0.01)
+
+x <- seq(-4, 4, length.out = 1000)
+densidad <- dnorm(x)
+
+fig <- plot_ly(
+  x = x,
+  y = densidad,
+  type = "scatter",
+  mode = "lines",
+  name = "Densidad normal"
+)
+
+for (a in alpha_values) {
+
+  critico <- qnorm(1 - a/2)
+
+  x_izq <- x[x <= -critico]
+  y_izq <- dnorm(x_izq)
+
+  x_der <- x[x >= critico]
+  y_der <- dnorm(x_der)
+
+  fig <- fig %>%
+    add_trace(
+      x = x_izq,
+      y = y_izq,
+      type = "scatter",
+      mode = "lines",
+      fill = "tozeroy",
+      name = paste0("Región crítica α = ", a),
+      visible = ifelse(a == 0.05, TRUE, FALSE)
+    ) %>%
+    add_trace(
+      x = x_der,
+      y = y_der,
+      type = "scatter",
+      mode = "lines",
+      fill = "tozeroy",
+      name = paste0("Región crítica α = ", a),
+      visible = ifelse(a == 0.05, TRUE, FALSE)
+    )
+}
+
+fig
+```
+
+```{r}
+#| label: fig-normal-estatica
+#| fig-cap: "Distribución normal estándar y región crítica ($\\alpha$ = 0,05)"
+#| eval: !expr knitr::is_latex_output()
+
+x <- seq(-4, 4, length.out = 1000)
+datos_normal <- data.frame(x = x, densidad = dnorm(x))
+critico <- qnorm(1 - 0.05 / 2)
+
+ggplot(datos_normal, aes(x = x, y = densidad)) +
+  geom_line() +
+  geom_area(
+    data = subset(datos_normal, x <= -critico),
+    fill = "steelblue", alpha = 0.5
+  ) +
+  geom_area(
+    data = subset(datos_normal, x >= critico),
+    fill = "steelblue", alpha = 0.5
+  ) +
+  labs(
+    title = "Distribución normal estándar y región crítica (α = 0,05)",
+    x = "z", y = "Densidad"
+  ) +
+  theme_minimal()
+```
+
+El resultado permite observar visualmente una idea fundamental: Cuanto menor es el nivel de significación $\alpha$, más alejados de cero se encuentran los valores críticos. Por ejemplo:
+
+| $\alpha$ | Valor crítico bilateral |
+| -------: | ----------------------: |
+|     0,10 |                   1,645 |
+|     0,05 |                   1,960 |
+|     0,01 |                   2,576 |
+
+Estos valores pueden obtenerse directamente en `R`:
+
+```{r}
+qnorm(1 - 0.10/2)
+qnorm(1 - 0.05/2)
+qnorm(1 - 0.01/2)
+```
+
+## Distribución t de Student
+
+La distribución t de Student aparece especialmente cuando se trabaja con muestras pequeñas y la varianza poblacional es desconocida. Su forma depende de los **grados de libertad**, que denotaremos por $\nu$. Podemos escribir:
+
+$$
+T\sim t_{\nu}.
+$$
+
+La distribución t es simétrica alrededor de cero, pero presenta colas más pesadas que la distribución normal. A medida que aumentan los grados de libertad, la distribución t se aproxima a la distribución normal estándar.
+
+### Valores críticos
+
+Supongamos que disponemos de $n=20$ observaciones y necesitamos realizar un contraste sobre la media. Los grados de libertad serán: $\nu=n-1=19.$ Para un contraste bilateral con $\alpha=0,05$: $t_{0,975;19}.$
+
+En `R`:
+
+```{r}
+qt(0.975, df = 19)
+```
+
+Por tanto, la región crítica será:
+
+$$
+T<-2,093
+\qquad\text{o}\qquad
+T>2,093.
+$$
+### Visualización 
+
+Podemos visualizar cómo cambia la distribución t cuando aumentan los grados de libertad.
+
+```{r}
+#| label: fig-t-critica
+#| fig-cap: "Región crítica bilateral de la distribución t"
+#| eval: !expr knitr::is_html_output()
+
+alpha <- 0.05
+df <- 19
+
+critico <- qt(1 - alpha/2, df = df)
+
+x <- seq(-4, 4, length.out = 1000)
+y <- dt(x, df = df)
+
+fig <- plot_ly(
+  x = x,
+  y = y,
+  type = "scatter",
+  mode = "lines",
+  name = "t de Student"
+)
+
+x_izq <- x[x <= -critico]
+x_der <- x[x >= critico]
+
+fig %>%
+  add_trace(
+    x = x_izq,
+    y = dt(x_izq, df),
+    fill = "tozeroy",
+    mode = "lines",
+    name = "Región crítica"
+  ) %>%
+  add_trace(
+    x = x_der,
+    y = dt(x_der, df),
+    fill = "tozeroy",
+    mode = "lines",
+    name = "Región crítica"
+  )
+```
+
+```{r}
+#| label: fig-t-critica-estatica
+#| fig-cap: "Región crítica bilateral de la distribución t"
+#| eval: !expr knitr::is_latex_output()
+
+alpha <- 0.05
+df <- 19
+critico <- qt(1 - alpha / 2, df = df)
+
+x <- seq(-4, 4, length.out = 1000)
+datos_t2 <- data.frame(x = x, densidad = dt(x, df = df))
+
+ggplot(datos_t2, aes(x = x, y = densidad)) +
+  geom_line() +
+  geom_area(
+    data = subset(datos_t2, x <= -critico),
+    fill = "steelblue", alpha = 0.5
+  ) +
+  geom_area(
+    data = subset(datos_t2, x >= critico),
+    fill = "steelblue", alpha = 0.5
+  ) +
+  labs(
+    title = "Región crítica bilateral de la distribución t (gl = 19)",
+    x = "t", y = "Densidad"
+  ) +
+  theme_minimal()
+```
+
+## Distribución F de Snedecor
+
+La distribución F de Snedecor aparece fundamentalmente en contrastes relacionados con **varianzas** y, de manera especialmente importante en econometría, en los **contrastes conjuntos de significación**.
+
+La distribución F depende de dos parámetros: $F\sim F_{\nu_1,\nu_2},$ donde:
+
+* $\nu_1$ son los grados de libertad del numerador;
+* $\nu_2$ son los grados de libertad del denominador.
+
+A diferencia de las distribuciones normal y t, la distribución F solamente toma valores positivos: $F>0.$ Además, no es simétrica.
+
+### Valores críticos
+
+Supongamos que tenemos: $\nu_1=3$ y $\nu_2=20.$ Para un contraste con: $\alpha=0,05,$ el valor crítico se obtiene mediante:
+
+```{r}
+qf(0.95, df1 = 3, df2 = 20)
+```
+
+### Visualización 
+
+```{r}
+#| label: fig-f-critica
+#| fig-cap: "Distribución F y región crítica"
+#| eval: !expr knitr::is_html_output()
+
+alpha <- 0.05
+df1 <- 3
+df2 <- 20
+
+critico <- qf(1 - alpha, df1 = df1, df2 = df2)
+
+x <- seq(0, 8, length.out = 1000)
+y <- df(x, df1 = df1, df2 = df2)
+
+fig <- plot_ly(
+  x = x,
+  y = y,
+  type = "scatter",
+  mode = "lines",
+  name = "F de Snedecor"
+)
+
+x_crit <- x[x >= critico]
+
+fig %>%
+  add_trace(
+    x = x_crit,
+    y = df(x_crit, df1, df2),
+    type = "scatter",
+    mode = "lines",
+    fill = "tozeroy",
+    name = "Región crítica"
+  )
+```
+
+```{r}
+#| label: fig-f-critica-estatica
+#| fig-cap: "Distribución F y región crítica"
+#| eval: !expr knitr::is_latex_output()
+
+alpha <- 0.05
+df1 <- 3
+df2 <- 20
+critico <- qf(1 - alpha, df1 = df1, df2 = df2)
+
+x <- seq(0, 8, length.out = 1000)
+datos_f <- data.frame(x = x, densidad = df(x, df1 = df1, df2 = df2))
+
+ggplot(datos_f, aes(x = x, y = densidad)) +
+  geom_line() +
+  geom_area(
+    data = subset(datos_f, x >= critico),
+    fill = "steelblue", alpha = 0.5
+  ) +
+  labs(
+    title = "Distribución F y región crítica (df1 = 3, df2 = 20)",
+    x = "F", y = "Densidad"
+  ) +
+  theme_minimal()
+```
+
+En los contrastes F habituales la región crítica se encuentra en la **cola derecha**.
+
+## Distribución chi-cuadrado
+
+La distribución chi-cuadrado aparece en numerosos procedimientos de inferencia estadística. Entre otros usos, se emplea en:
+
+* contrastes sobre varianzas;
+* contrastes de independencia;
+* contrastes de bondad de ajuste;
+* algunos procedimientos relacionados con modelos de regresión.
+
+La distribución depende de un único parámetro:
+
+$$
+\chi^2_{\nu},
+$$
+
+donde $\nu$ representa los grados de libertad.
+
+Al igual que la distribución F, solamente puede tomar valores positivos:
+
+$$
+\chi^2>0.
+$$
+
+La distribución es asimétrica para pocos grados de libertad, aunque se aproxima progresivamente a una distribución más simétrica cuando estos aumentan.
+
+### Valores críticos
+
+Supongamos que tenemos: $\nu=10$ grados de libertad y un nivel de significación: $\alpha=0,05.$
+
+El valor crítico se obtiene mediante: 
+
+```{r}
+qchisq(0.95, df = 10)
+```
+Por tanto, para un contraste de cola derecha, la región crítica será:
+
+$$
+\chi^2>18,307.
+$$
+
+### Visualización
+
+```{r}
+#| label: fig-chi-critica
+#| fig-cap: "Distribución chi-cuadrado y región crítica"
+#| eval: !expr knitr::is_html_output()
+
+alpha <- 0.05
+df <- 10
+
+critico <- qchisq(1 - alpha, df = df)
+
+x <- seq(0, 35, length.out = 1000)
+y <- dchisq(x, df = df)
+
+fig <- plot_ly(
+  x = x,
+  y = y,
+  type = "scatter",
+  mode = "lines",
+  name = "Chi-cuadrado"
+)
+
+x_crit <- x[x >= critico]
+
+fig %>%
+  add_trace(
+    x = x_crit,
+    y = dchisq(x_crit, df),
+    type = "scatter",
+    mode = "lines",
+    fill = "tozeroy",
+    name = "Región crítica"
+  )
+```
+
+```{r}
+#| label: fig-chi-critica-estatica
+#| fig-cap: "Distribución chi-cuadrado y región crítica"
+#| eval: !expr knitr::is_latex_output()
+
+alpha <- 0.05
+df <- 10
+critico <- qchisq(1 - alpha, df = df)
+
+x <- seq(0, 35, length.out = 1000)
+datos_chi <- data.frame(x = x, densidad = dchisq(x, df = df))
+
+ggplot(datos_chi, aes(x = x, y = densidad)) +
+  geom_line() +
+  geom_area(
+    data = subset(datos_chi, x >= critico),
+    fill = "steelblue", alpha = 0.5
+  ) +
+  labs(
+    title = "Distribución chi-cuadrado y región crítica (df = 10)",
+    x = expression(chi^2), y = "Densidad"
+  ) +
+  theme_minimal()
+```
+
+## Uso de las tablas estadísticas
+
+Antes de la generalización de los programas estadísticos, los valores críticos se obtenían habitualmente mediante **tablas estadísticas**.
+
+Estas tablas no contienen todos los posibles valores de las distribuciones, sino únicamente una selección de cuantiles.
+
+Por ejemplo, una tabla de la distribución normal estándar puede contener:
+
+| $\alpha/2$ | $1-\alpha/2$ | Valor crítico |
+| ---------: | -----------: | ------------: |
+|       0,10 |         0,90 |         1,282 |
+|       0,05 |         0,95 |         1,645 |
+|      0,025 |        0,975 |         1,960 |
+|       0,01 |         0,99 |         2,326 |
+|      0,005 |        0,995 |         2,576 |
+
+Es importante prestar atención a la forma en que está construida cada tabla. Algunas tablas proporcionan directamente:
+
+$$
+P(Z\leq z),
+$$
+
+mientras que otras proporcionan la probabilidad acumulada desde cero hasta $z$ o la probabilidad correspondiente a una cola.
+
+Por este motivo, **antes de utilizar una tabla es necesario conocer qué representa exactamente cada una de sus columnas o filas**.
+
+La utilización de `R` evita algunas de las limitaciones de las tablas estadísticas.
+
+Por ejemplo, si queremos calcular el valor crítico de una normal estándar para:
+
+$$
+\alpha=0,05,
+$$
+
+podemos utilizar:
+
+```{r}
+qnorm(1 - 0.05/2)
+```
+
+En cambio, si queremos utilizar una tabla, normalmente tendremos que localizar el valor correspondiente a:
+
+$$
+0,975.
+$$
+
+En `R` podemos obtener directamente el resultado con toda la precisión numérica disponible.
+
+Las principales funciones que utilizaremos son:
+
+| Distribución  | Función de cuantiles |
+| ------------- | -------------------- |
+| Normal        | `qnorm()`            |
+| t de Student  | `qt()`               |
+| F de Snedecor | `qf()`               |
+| Chi-cuadrado  | `qchisq()`           |
+
+Por tanto, podemos resumir:
+
+```{r}
+# Normal
+qnorm(0.975)
+
+# t de Student
+qt(0.975, df = 19)
+
+# F de Snedecor
+qf(0.95, df1 = 3, df2 = 20)
+
+# Chi-cuadrado
+qchisq(0.95, df = 10)
+```
+
+## Ejemplos
+
+Supongamos que queremos obtener los valores críticos correspondientes a un nivel de significación del 5 %.
+
+```{r}
+alpha <- 0.05
+
+# Normal estándar
+z <- qnorm(1 - alpha/2)
+
+# t de Student con 19 grados de libertad
+t <- qt(1 - alpha/2, df = 19)
+
+# F de Snedecor con 3 y 20 grados de libertad
+F <- qf(1 - alpha, df1 = 3, df2 = 20)
+
+# Chi-cuadrado con 10 grados de libertad
+chi2 <- qchisq(1 - alpha, df = 10)
+
+c(
+  Normal = z,
+  t_Student = t,
+  F_Snedecor = F,
+  Chi_cuadrado = chi2
+)
+```
+
+Los resultados serán aproximadamente:
+
+| Distribución  | Parámetros              | Valor crítico |
+| ------------- | ----------------------- | ------------: |
+| Normal        | $\alpha=0,05$ bilateral |         1,960 |
+| t de Student  | $df=19$                 |         2,093 |
+| F de Snedecor | $df_1=3$, $df_2=20$     |         3,099 |
+| Chi-cuadrado  | $df=10$                 |        18,307 |
+
+Debe tenerse en cuenta que estos valores **no son directamente comparables entre sí**, ya que cada distribución aparece asociada a estadísticos diferentes y a regiones críticas distintas.
+
+
+## Relación entre valor crítico y p-valor
+
+Los valores críticos y los p-valores representan dos formas alternativas de tomar una decisión en un contraste de hipótesis.
+
+El enfoque basado en el valor crítico consiste en comparar:
+
+$$
+\text{estadístico observado}
+\quad\text{frente a}\quad
+\text{valor crítico}.
+$$
+
+El enfoque basado en el p-valor consiste en comparar:
+
+$$
+p\text{-valor}
+\quad\text{frente a}\quad
+\alpha.
+$$
+
+Las dos reglas son equivalentes.
+
+Por ejemplo, en un contraste bilateral:
+
+$$
+|z|>z_{1-\alpha/2}
+$$
+
+implica rechazar $H_0$.
+
+Equivalentemente:
+
+$$
+p\text{-valor}<\alpha.
+$$
+
+Esta equivalencia es especialmente importante en la práctica porque los programas estadísticos suelen proporcionar directamente los p-valores, mientras que en los desarrollos teóricos y en las tablas estadísticas es frecuente trabajar con valores críticos.
+
+## Contenido interactivo
+
+::: {.content-visible when-format="html"}
+<iframe src="../recursos/criticos.html" width="100%" height="900" style="border:none;" loading="lazy"></iframe>
+:::
+
+::: {.content-visible unless-format="html"}
+*(Contenido interactivo disponible únicamente en la versión web del libro.)*
+:::
+

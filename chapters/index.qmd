@@ -1,0 +1,224 @@
+# Presentación del material docente {.unnumbered}
+
+Vivimos en una economía caracterizada por una disponibilidad creciente de información. Las empresas generan diariamente miles de registros contables, las bolsas producen millones de precios de activos financieros y los organismos públicos publican de forma continua indicadores económicos y financieros. Sin embargo, disponer de datos no implica necesariamente disponer de conocimiento.
+
+Una de las principales competencias de un graduado en Finanzas y Contabilidad consiste precisamente en transformar esa información en evidencia útil para la toma de decisiones. Por ejemplo, un analista financiero puede preguntarse si un elevado nivel de endeudamiento reduce la rentabilidad de una empresa. Un director financiero puede querer conocer qué variables explican la liquidez empresarial o qué factores incrementan la probabilidad de impago de un cliente. Del mismo modo, un gestor de inversiones puede intentar identificar qué variables influyen sobre la rentabilidad de una cartera o evaluar el efecto de las variaciones de los tipos de interés sobre los mercados financieros.
+
+Responder a este tipo de preguntas requiere mucho más que observar unos pocos datos o comparar empresas de forma aislada. Es necesario disponer de herramientas que permitan identificar relaciones entre variables, cuantificar su intensidad y evaluar si dichas relaciones responden realmente a un comportamiento económico o si son simplemente consecuencia del azar. La disciplina que proporciona estas herramientas es la **Econometría**.
+
+A lo largo de este libro aprenderemos cómo construir modelos que permitan explicar fenómenos económicos y financieros utilizando datos reales, interpretar correctamente los resultados obtenidos y valorar la fiabilidad de las conclusiones alcanzadas.
+
+## ¿Por qué estudiar Econometría? {.unnumbered}
+
+Muchos estudiantes comienzan un curso de Econometría preguntándose cuál será su utilidad profesional. La respuesta es sencilla: prácticamente todas las decisiones relevantes en el ámbito financiero y contable se apoyan, de una u otra forma, en el análisis de datos.
+
+Un profesional de las Finanzas y la Contabilidad utiliza modelos cuantitativos para responder preguntas como las siguientes:
+
+-   ¿Qué características presentan las empresas más rentables?
+-   ¿Cómo afecta el endeudamiento a la rentabilidad económica?
+-   ¿Existe una relación entre la liquidez y el riesgo financiero?
+-   ¿Qué variables permiten anticipar situaciones de insolvencia?
+-   ¿Cómo afectan las variaciones de los tipos de interés a los mercados financieros?
+-   ¿Qué factores explican la evolución del precio de una acción?
+
+Estas cuestiones no pueden responderse únicamente mediante la intuición o la experiencia profesional. Es necesario analizar información procedente de un número elevado de empresas o de observaciones temporales y utilizar técnicas estadísticas que permitan extraer conclusiones objetivas. La Econometría proporciona precisamente ese conjunto de herramientas.
+
+## La Econometría en Finanzas y Contabilidad {.unnumbered}
+
+Aunque la Econometría nació ligada al análisis económico, actualmente constituye una herramienta fundamental en numerosos ámbitos relacionados con las Finanzas y la Contabilidad.
+
+Entre sus principales aplicaciones destacan:
+
+-   análisis de la rentabilidad empresarial;
+-   valoración de empresas;
+-   análisis del riesgo financiero;
+-   estimación del coste de capital;
+-   predicción de insolvencias;
+-   detección de fraude contable;
+-   análisis de carteras de inversión;
+-   valoración de activos financieros;
+-   evaluación del impacto de políticas económicas;
+-   elaboración de previsiones financieras.
+
+En consecuencia, la Econometría forma parte del conjunto de competencias que debe dominar cualquier profesional dedicado al análisis financiero, la auditoría, la consultoría o la investigación económica.
+
+::: {.callout-important title="Lo que aprenderás en este libro"}
+Al finalizar este curso serás capaz de:
+
+-   construir modelos econométricos;
+-   estimar relaciones entre variables financieras;
+-   interpretar coeficientes e indicadores estadísticos;
+-   validar modelos econométricos;
+-   realizar predicciones;
+-   comunicar resultados con rigor técnico.
+
+Estas competencias forman parte del trabajo habitual de analistas financieros, auditores, consultores, gestores de riesgos e investigadores.
+:::
+
+## Estructura y método {.unnumbered}
+
+Con el fin de que el estudiante pueda concentrarse en los conceptos econométricos sin cambiar continuamente de contexto, el manual utilizará dos bases de datos como hilo conductor usando un sistema de colores para diferenciarlos, de manera que el bloque azul esta relacionado con una base de datos contables mientras que el bloque naranja esta relacionado con una base de datos financieros. Se presentan a continuación ambas bases: 
+
+
+::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
+
+-   Tipo de datos: corte transversal.
+-   Unidades de observación: 100 empresas.
+-   Se han seleccionado las 100 empresas con forma jurídica de sociedad limitada con datos disponibles en el 2024 del sector de transporte (IAE:722) en Andalucía y con mayor volumen de ventas en 2024.
+-   Variables principales: ROA, endeudamiento, liquidez corriente, activo y numero de empleados.
+-   Aplicación: análisis de la rentabilidad empresarial.
+- Fuente: SABI
+:::
+
+
+::: {.callout-tip appearance="simple" icon=false title="Base de datos 2: El IBEX35"}
+
+-   Tipo de datos: serie temporal.
+-   Frecuencia: mensual ()
+-   Variables principales: Precio de cierre mensual y rendimientos logaritmicos del IBX 35, S&P500 y Eurostoxx50.
+-   Aplicación: análisis de la dependencia del IBEX35 con respecto al mercado financiero europeo y americano.
+-  Fuente: Yahoo finance
+:::
+
+Estas dos bases de datos aparecerán de forma recurrente en los distintos capítulos, permitiendo aplicar las diferentes técnicas econométricas a problemas reales de Finanzas y Contabilidad.
+
+
+::: {.callout-important title="¿Qué software utilizaremos?"}
+
+Durante el libro todos los análisis se realizarán mediante **R** y **RStudio**.
+
+No es necesario tener conocimientos previos de programación.
+
+Cada capítulo incluirá el código necesario para reproducir completamente los resultados obtenidos.
+
+:::
+
+## Instalación y primeros pasos con R y RStudio {.unnumbered}
+
+Los ejemplos prácticos de este libro se desarrollan utilizando **R** y **RStudio**. Para poder reproducir los análisis es necesario tener instalados ambos programas. Se recomienda utilizar una versión reciente de R (por ejemplo, R ≥ 4.2) y la versión actual de RStudio Desktop.
+
+Si nunca has utilizado R, la instalación solo es necesaria una vez. A partir de ese momento, bastará con abrir RStudio para trabajar con los ejemplos del libro.
+
+**1. Instalar R**
+
+En primer lugar, es necesario instalar **R**, que es el programa que ejecuta las instrucciones y realiza los cálculos estadísticos.
+
+La descarga se realiza desde la página oficial de R:
+
+[Descargar R desde CRAN](https://cran.r-project.org/?utm_source=chatgpt.com)
+
+Selecciona el sistema operativo de tu ordenador (Windows, macOS o Linux) y sigue las instrucciones de instalación.
+
+***2. Instalar RStudio***
+
+Aunque R puede utilizarse directamente, en este libro trabajaremos con **RStudio**, un entorno de desarrollo que facilita la escritura, ejecución y organización del código.
+
+RStudio Desktop puede descargarse gratuitamente desde la página oficial de Posit:
+
+[Descargar RStudio Desktop](https://posit.co/download/rstudio-desktop/?utm_source=chatgpt.com)
+
+Una vez instalado, RStudio utilizará la instalación de R que se haya realizado previamente.
+
+***3. El entorno de RStudio***
+
+Al abrir RStudio se muestran diferentes paneles. El **Console** permite escribir y ejecutar directamente instrucciones de R. En los ejemplos del libro será habitual introducir el código en un archivo de tipo **R Markdown (`.Rmd`)**, que permite combinar explicaciones, ecuaciones, resultados y código en un mismo documento.
+
+Por ejemplo, para realizar una operación sencilla podemos escribir:
+
+```{r}
+2 + 2
+```
+
+Al ejecutar el código, R devuelve el resultado:
+
+```text
+[1] 4
+```
+
+No es necesario aprender de memoria todas las instrucciones de R. A lo largo del libro se irán introduciendo las funciones necesarias para realizar los análisis econométricos.
+
+***4. Instalación de los paquetes***
+
+R incorpora numerosas funciones estadísticas de forma predeterminada. Sin embargo, para algunas de las aplicaciones desarrolladas en este libro utilizaremos **paquetes adicionales**, que amplían las funciones disponibles.
+
+Los paquetes se instalan una sola vez. Por ejemplo, los principales paquetes que utilizaremos son:
+
+```{r, eval=FALSE}
+install.packages(c(
+  "readxl",      # importar archivos de Excel
+  "wooldridge",  # bases de datos de Wooldridge
+  "car",         # contrastes y herramientas para regresión
+  "lmtest",      # contrastes de hipótesis
+  "sandwich"     # errores estándar robustos
+))
+```
+
+Una vez instalado un paquete, no es necesario volver a instalarlo cada vez que se inicia R. Sin embargo, sí será necesario **cargarlo en cada sesión** en la que se quieran utilizar sus funciones. Para ello se utiliza la función `library()`:
+
+```{r}
+library(readxl)
+library(car)
+```
+
+Por tanto, es importante distinguir entre **instalar** y **cargar** un paquete:
+
+* `install.packages()` instala el paquete en el ordenador. Se realiza normalmente una sola vez.
+* `library()` carga el paquete para poder utilizar sus funciones durante la sesión de trabajo.
+
+***5. Importar una base de datos de Excel***
+
+Una de las tareas más habituales en las aplicaciones de finanzas y contabilidad será trabajar con bases de datos almacenadas en Excel. Para ello utilizaremos el paquete `readxl`.
+
+Por ejemplo, si disponemos del archivo `BD_SABI.xlsx` y queremos importar la hoja denominada `Datos`, podemos utilizar:
+
+```{r}
+library(readxl)
+
+datos <- read_excel(
+  "data/BD_SABI.xlsx",
+  sheet = "Datos"
+)
+```
+
+La instrucción `read_excel()` importa la información de Excel y la almacena en el objeto `datos`.
+
+En R, el operador `<-` se utiliza para **asignar** un resultado a un objeto. Así, en:
+
+```{r}
+datos <- read_excel("data/BD_SABI.xlsx", sheet = "Datos")
+```
+
+se está indicando que el resultado obtenido al leer el archivo debe almacenarse en el objeto `datos`.
+
+***6. Comprobar que los datos se han importado correctamente***
+
+Antes de comenzar cualquier análisis es conveniente realizar una primera comprobación de la base de datos. Tres funciones especialmente útiles son `str()`, `head()` y `summary()`.
+
+La función `str()` permite conocer la estructura de la base de datos:
+
+```{r}
+str(datos)
+```
+
+La función `head()` muestra las primeras observaciones:
+
+```{r}
+head(datos)
+```
+
+Por último, `summary()` proporciona un resumen descriptivo de las variables:
+
+```{r}
+summary(datos)
+```
+
+También podemos seleccionar únicamente algunas variables. Por ejemplo, si nuestra base contiene las variables `ROA`, `ENDEUDAMIENTO` y `LIQUIDEZ_INMEDIATA`:
+
+```{r}
+summary(
+  datos[, c("ROA", "ENDEUDAMIENTO", "LIQUIDEZ_INMEDIATA")]
+)
+```
+
+Estas tres funciones constituyen una primera comprobación básica que conviene realizar antes de estimar cualquier modelo. Permiten comprobar que la base se ha importado correctamente, conocer qué variables contiene y detectar posibles problemas iniciales en los datos.
+

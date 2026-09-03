@@ -1,0 +1,292 @@
+# Apéndice: Tema complementario: Modelo Logit
+
+## Resumen teórico
+
+Hasta ahora hemos trabajado fundamentalmente con modelos de regresión lineal en los que la variable dependiente es cuantitativa. Sin embargo, en muchas aplicaciones económicas, financieras y actuariales la variable que queremos explicar puede ser **dicotómica**, es decir, únicamente puede tomar dos valores.
+
+Por ejemplo, en el ámbito asegurador podemos estar interesados en analizar la probabilidad de que un vehículo sufra un siniestro durante un determinado periodo de tiempo. En este caso, podemos definir una variable:
+
+$$
+S_i=
+\begin{cases}
+1 & \text{si el vehículo }i\text{ sufre un siniestro},\
+0 & \text{si el vehículo }i\text{ no sufre un siniestro}.
+\end{cases}
+$$
+
+El objetivo será analizar cómo determinadas características del vehículo y del conductor afectan a la **probabilidad de ocurrencia del siniestro**.
+
+### El problema del modelo lineal de probabilidad
+
+Una primera posibilidad sería estimar mediante MCO un modelo como:
+
+$$
+S_i=\beta_0+\beta_1X_{1i}+\beta_2X_{2i}+\cdots+\beta_kX_{ki}+u_i.
+$$
+
+Este modelo se conoce como **modelo lineal de probabilidad**. Sin embargo, presenta algunos inconvenientes.
+
+En primer lugar, al tratarse de una variable dependiente que únicamente toma los valores 0 y 1, el valor esperado de la variable coincide con la probabilidad de que ocurra el acontecimiento:
+
+$$
+E(S_i|X_i)=P(S_i=1|X_i).
+$$
+
+Por tanto, el modelo debería proporcionar valores comprendidos entre 0 y 1. Sin embargo, una función lineal puede generar predicciones inferiores a 0 o superiores a 1.
+
+Además, la distribución de la variable dependiente no es continua y la varianza de la perturbación no es constante. En efecto, si:
+
+$$
+P(S_i=1|X_i)=p_i,
+$$
+
+entonces:
+
+$$
+Var(S_i|X_i)=p_i(1-p_i).
+$$
+
+Por tanto, la varianza depende de la probabilidad condicionada y, en consecuencia, existe heterocedasticidad.
+
+Para evitar estos problemas se utilizan modelos de **elección binaria**, entre los que se encuentran los modelos Logit y Probit.
+
+### El modelo Logit
+
+El modelo Logit supone que la probabilidad de que ocurra el acontecimiento puede expresarse mediante una función logística:
+
+$$
+P(S_i=1|X_i)
+============
+
+\frac{e^{X_i\beta}}
+{1+e^{X_i\beta}}.
+$$
+
+De forma equivalente:
+
+$$
+P(S_i=1|X_i)
+============
+
+\frac{1}
+{1+e^{-X_i\beta}}.
+$$
+
+La principal ventaja de esta especificación es que la función logística siempre proporciona valores comprendidos entre 0 y 1, por lo que puede interpretarse directamente como una probabilidad.
+
+Si el modelo contiene un término independiente y dos variables explicativas, podemos escribir:
+
+$$
+P(S_i=1|X_i)
+============
+
+\frac{1}
+{1+
+e^{-(\beta_0+\beta_1X_{1i}+\beta_2X_{2i})}
+}.
+$$
+
+Por tanto, el modelo permite relacionar las características observadas de cada individuo con la probabilidad de que ocurra un determinado acontecimiento.
+
+### Interpretación de los coeficientes
+
+A diferencia del modelo lineal, los coeficientes del modelo Logit **no representan directamente cambios en la probabilidad**.
+
+Un coeficiente positivo indica que un aumento de la variable explicativa incrementa el valor de:
+
+$$
+X_i\beta
+$$
+
+y, por tanto, aumenta la probabilidad de que ocurra el acontecimiento.
+
+Por el contrario, un coeficiente negativo indica que un aumento de la variable explicativa reduce dicha probabilidad.
+
+Para facilitar la interpretación económica y actuarial se utilizan habitualmente los **efectos marginales**.
+
+El efecto marginal de una variable continua $X_j$ sobre la probabilidad de ocurrencia es:
+
+$$
+\frac{\partial P(S_i=1|X_i)}
+{\partial X_{ji}}
+=================
+
+P_i(1-P_i)\beta_j.
+$$
+
+Este efecto depende de los valores de todas las variables explicativas. Por tanto, el efecto de una determinada característica sobre la probabilidad de siniestro no es necesariamente constante para todos los individuos.
+
+Otra forma habitual de interpretar los coeficientes consiste en utilizar los **odds**.
+
+La probabilidad de ocurrencia es $P_i$, mientras que la probabilidad de no ocurrencia es $1-P_i$. Por tanto, los *odds* son:
+
+$$
+\frac{P_i}{1-P_i}.
+$$
+
+En el modelo Logit se cumple:
+
+$$
+\frac{P_i}{1-P_i}=e^{X_i\beta}.
+$$
+
+De esta forma, un incremento de una unidad en $X_j$ multiplica los *odds* por:
+
+$$
+e^{\beta_j}.
+$$
+
+Este valor recibe el nombre de **odds ratio**.
+
+Por ejemplo, si:
+
+$$
+\widehat{\beta}_j=0.20,
+$$
+
+entonces:
+
+$$
+e^{0.20}\approx1.22.
+$$
+
+Esto significa que un incremento de una unidad en $X_j$ multiplica los *odds* de ocurrencia del acontecimiento aproximadamente por 1,22, manteniendo constantes las restantes variables.
+
+Si, por el contrario, el coeficiente fuese negativo, el *odds ratio* sería inferior a uno y la variable estaría asociada con una reducción de los *odds* de ocurrencia.
+
+### Estimación del modelo Logit
+
+Los parámetros del modelo Logit no se estiman mediante mínimos cuadrados ordinarios. Se utiliza el método de **máxima verosimilitud**.
+
+Dado que la variable dependiente únicamente puede tomar los valores 0 y 1, la probabilidad de observar una determinada realización $S_i$ puede escribirse como:
+
+$$
+P(S_i=s_i|X_i)
+==============
+
+P_i^{s_i}(1-P_i)^{1-s_i}.
+$$
+
+La función de verosimilitud viene dada por:
+
+$$
+L(\beta)
+========
+
+\prod_{i=1}^{n}
+P_i^{s_i}(1-P_i)^{1-s_i}.
+$$
+
+En la práctica se suele trabajar con el logaritmo de la función de verosimilitud:
+
+$$
+\ln L(\beta)
+============
+
+\sum_{i=1}^{n}
+\left[
+s_i\ln(P_i)
++
+(1-s_i)\ln(1-P_i)
+\right].
+$$
+
+Los estimadores de máxima verosimilitud son aquellos valores de los parámetros que maximizan esta función.
+
+En R, un modelo Logit puede estimarse mediante la función `glm()` utilizando una distribución binomial y la función de enlace logística:
+
+```{r}
+modelo_logit <- glm(
+  SINIESTRO ~ EDAD_CONDUCTOR + ANTIGUEDAD_CARNET + POTENCIA + EDAD_VEHICULO,
+  data = datos,
+  family = binomial(link = "logit")
+)
+
+summary(modelo_logit)
+```
+
+Una vez estimado el modelo, podemos obtener las probabilidades predichas mediante:
+
+```{r}
+datos$prob_siniestro <- predict(
+  modelo_logit,
+  type = "response"
+)
+```
+
+El argumento `type = "response"` es importante porque permite obtener directamente las probabilidades estimadas, en lugar del predictor lineal del modelo.
+
+-Ejemplo actuarial: probabilidad de sufrir un siniestro
+
+Para ilustrar la aplicación del modelo Logit utilizaremos un conjunto de datos procedente de una cartera real de seguros de automóvil de una compañía española.
+
+Los datos fueron publicados por Segura-Gisbert, Lledó y Pavía en el artículo Dataset of an actual motor vehicle insurance portfolio, publicado en el European Actuarial Journal, volumen 15, páginas 241--253 (2025). El artículo fue publicado online el 2 de septiembre de 2024.
+
+El conjunto de datos contiene 105.555 registros y 30 variables, correspondientes a pólizas de seguros de automóvil observadas entre noviembre de 2015 y diciembre de 2018. Cada observación representa una póliza durante un determinado periodo de cobertura. La base incluye información sobre las características de la póliza, del asegurado y del vehículo, así como información económica y sobre siniestros.
+
+El conjunto de datos está disponible públicamente junto con el artículo. La descarga puede realizarse desde el repositorio de datos asociado al trabajo:
+
+Descarga del conjunto de datos
+
+También puede consultarse una copia del conjunto de datos depositada en OpenICPSR:
+
+Motor vehicle insurance data — OpenICPSR
+
+La base resulta especialmente adecuada para introducir los modelos Logit porque contiene información relacionada con el comportamiento de los siniestros. Entre las variables disponibles se encuentran, entre otras, el número de siniestros durante el año (N_claims_year), el número histórico de siniestros (N_claims_history), la frecuencia histórica de siniestros (R_Claims_history) y diferentes características relacionadas con el riesgo asegurado. También se dispone de variables relacionadas con el vehículo, como el tipo de riesgo, el valor económico o la potencia, así como información relativa al asegurado y a la póliza.
+
+Para nuestro ejemplo construiremos una variable dependiente dicotómica que indique si la póliza ha registrado o no al menos un siniestro durante el periodo considerado:
+
+$$
+SINIESTRO_i =
+\begin{cases}
+1 & \text{si }N_claims_year_i>0,\
+0 & \text{si }N_claims_year_i=0.
+\end{cases}
+$$
+
+De esta manera, el objetivo será estudiar cómo determinadas características del riesgo afectan a la probabilidad de que una póliza registre al menos un siniestro durante el año.
+
+Podemos plantear inicialmente un modelo sencillo en el que la probabilidad de siniestro dependa de algunas características del vehículo y del asegurado:
+
+\frac{1}
+{1+\exp[-(\beta_0+
+\beta_1X_{1i}+
+\beta_2X_{2i}+\cdots+
+\beta_kX_{ki})]}.
+$$
+
+Por ejemplo, podríamos analizar si la probabilidad de siniestro depende del tipo de vehículo, de sus características técnicas y de determinadas características del asegurado.
+
+La base distingue cuatro tipos de riesgo: motocicletas, furgonetas, turismos y vehículos agrícolas. Los turismos constituyen la mayor parte de la cartera, con aproximadamente el 78,6% de las observaciones.
+
+También puede resultar interesante incorporar variables relacionadas con el conductor y con la experiencia del asegurado, como la antigüedad en la compañía (Seniority) o la existencia de un segundo conductor habitual (Second_driver). Estas variables permiten plantear preguntas de interés actuarial acerca de qué características están asociadas con una mayor o menor probabilidad de presentar un siniestro.
+
+El modelo podría escribirse, de forma ilustrativa, como:
+
+\frac{1}{1+\exp[-(
+&\beta_0+
+\beta_1VEHICULO_i+
+\beta_2EDAD_i\
+&+\beta_3ANTIGUEDAD_i+
+\beta_4SEGUNDO_CONDUCTOR_i)]}.
+\end{aligned}
+$$
+
+La estimación del modelo permitirá responder preguntas como:
+
+¿Qué características están asociadas con una mayor probabilidad de siniestro?
+¿El tipo de vehículo afecta significativamente al riesgo?
+¿La experiencia del asegurado está relacionada con la probabilidad de siniestro?
+¿La existencia de un segundo conductor modifica el riesgo?
+¿Qué variables presentan mayor capacidad explicativa?
+¿Cómo cambia la probabilidad estimada de siniestro cuando cambia una determinada característica?
+
+En este caso, la interpretación de los coeficientes deberá realizarse con cuidado. Un coeficiente positivo no significa directamente que la probabilidad aumente en $\beta_j$ unidades. Significa que aumenta el logaritmo de los odds y, equivalentemente, que los odds se multiplican por $e^{\beta_j}$.
+
+Para facilitar la interpretación económica y actuarial, posteriormente podremos calcular probabilidades predichas para diferentes perfiles de riesgo. Por ejemplo, podremos comparar la probabilidad estimada de siniestro de dos pólizas que únicamente difieran en el tipo de vehículo o en una determinada característica del conductor.
+
+De esta forma, el modelo Logit permite pasar de una pregunta descriptiva como «¿qué porcentaje de las pólizas registra un siniestro?» a una pregunta de carácter explicativo y predictivo:
+
+¿Cómo cambia la probabilidad de que una póliza registre un siniestro cuando cambian las características observables del riesgo?
+
+A partir de este planteamiento se procederá en R a preparar la variable dicotómica de siniestro, seleccionar las variables explicativas y estimar el modelo mediante regresión logística.

@@ -1,0 +1,1536 @@
+```{r}
+#| include: false
+library(readxl)
+library(dplyr)
+library(ggplot2)
+library(car)
+library(strucchange)
+```
+
+# Modelo de regresión lineal
+
+::: {.callout-important title="Objetivos de aprendizaje"}
+Al finalizar este capítulo, el estudiante será capaz de:
+
+- Comprender las hipótesis del modelo de regresión lineal múltiple y explicar su importancia para la validez de los resultados econométricos.
+
+- Estimar modelos de regresión lineal múltiple mediante el método de mínimos cuadrados ordinarios (MCO) utilizando datos de empresas y mercados financieros.
+
+- Interpretar económicamente los coeficientes estimados, distinguiendo entre el efecto individual de cada variable explicativa y su influencia conjunta sobre la variable dependiente.
+
+- Evaluar la calidad del ajuste de un modelo mediante las principales medidas de bondad de ajuste y comparar especificaciones alternativas para seleccionar el modelo más adecuado.
+
+- Realizar inferencia estadística sobre los parámetros del modelo mediante intervalos de confianza y contrastes de hipótesis, tanto individuales como conjuntos.
+
+- Contrastar la significación global del modelo y valorar su capacidad explicativa desde una perspectiva económica y estadística.
+
+- Analizar las propiedades básicas de los estimadores obtenidos mediante MCO y comprender las consecuencias del incumplimiento de las hipótesis del modelo.
+
+- Utilizar el modelo estimado para realizar predicciones e interpretar los resultados en contextos empresariales y financieros.
+
+- Evaluar la estabilidad de un modelo econométrico mediante contrastes de permanencia estructural y comprender su importancia cuando se analizan datos de distintos periodos o entornos económicos.
+
+- Aplicar todas estas herramientas al análisis de la rentabilidad empresarial y de los mercados financieros utilizando R como herramienta de trabajo.
+:::
+
+## Hipótesis del modelo
+
+EL modelo lineal uniecuacional múltiple analiza la relación lineal entre una variable dependiente, $Y$, y más de una variable independiente, $X_{j}$, $j=1,\dots,k$, $k > 1$, más un término aleatorio, $u$. Con una muestra de tamaño $n$, el modelo puede ser expresado como:
+
+$$Y_{i} = \beta_{1} + \beta_{2} X_{2i} + \beta_{3} X_{3i} +
+        \cdots + \beta_{k} X_{ki} + u_{i}, \quad i=1,\dots,n,$$
+
+donde se ha considerado que hay término constante, es decir, $X_{1i} = 1$, $\forall i$. Normalmente se usa el subíndice $i$ para trabajar con datos de caracter transversal y el subíndice $t$ para trabajar con datos de caracter temporal. 
+
+::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
+Aunque en la teoria la variable dependiente suele denotarse como $Y$ y las variables explicativas como $X$, en la práctica lo habitual  es que las variables tomen el nombre de las siglas de la medida a la que representan o similar. Asi, en nuestro ejemplo, el modelo se denota como: 
+$$
+ROA_i=\beta_0+\beta_1LEV_i+\beta_2LIQ_i+u_i
+$$
+Notese que el parámetro $\beta_0$ no esta multiplciado por ninguna variable explicativa por lo que podría considerarse que esta multiplicada por 1, que es a lo que llamamos el término independiente o intercepto. Tengase en cuenta tambien que el subindice $i$ se usa para denotar que tenemos $n=100$ observaciones, de manera que en esa ecuación se esta representando una observación (empresa) concreta $i$. En cambio, los parámetros no tienen porque son constantes desconocidas que describen la relación entre las variables y se supone que son comunes a todas las observaciones de la muestra.
+:::
+
+::: {.callout-tip appearance="simple" icon=false title="Base de datos 2: El IBEX35"}
+
+En el ejemplo con datos financieros, estamos trabajando con datos temporales referidos a $n=72$ meses. El modelo econométrico quedaría especificado como: 
+como: 
+$$
+IBEX35_t=\beta_0+\beta_1SP500_t+\beta_2EUROSTOXX50_t+u_t
+$$
+Es habitual usar el subíndice $t$ cuadno trabajamos con datos de series temporales. 
+:::
+
+Dado que cada variable se observa para las $n$ observaciones de la muestra, puede representarse mediante un vector de dimensión $n×1$. En consecuencia, el modelo de regresión puede escribirse de forma más compacta utilizando notación matricial, lo que simplifica su formulación teórica y el desarrollo de los resultados que se estudiarán a lo largo del capítulo:
+
+$$y = X \cdot \beta + u,$$
+
+
+
+Consideraremos las siguientes **hipótesis básicas** en el modelo lineal uniecuacional múltiple:
+
+1.  El vector $y$ se puede expresar como combinación lineal de las variables explicativas más un vector de perturbación.
+
+::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
+La rentabilidad económica de una empresa puede explicarse, al menos parcialmente, mediante variables observables como el endeudamiento y la liquidez, junto con otros factores no observados recogidos en la perturbación aleatoria.
+:::
+
+2.  No hay relación entre variables independientes y la perturbación aleatoria, es decir, $$Cov ( u_{n \times 1}, X_{i} ) = 0_{n\times n}.$$
+
+::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
+Se supone que las variables explicativas no contienen información sobre los factores no observados incluidos en la perturbación. Por ejemplo, si la calidad del equipo directivo afecta simultáneamente al endeudamiento y al ROA pero no se incorpora al modelo, esta hipótesis podría incumplirse.
+:::
+
+3.  La matriz $X$ es no estocástica y de rango completo por columnas, es decir, $rg(X) = k$ (como consecuencia $n > k$ y las columnas de $X$, es decir, $X_{i}$, $i=1,\dots,n$, son linealmente independientes).
+
+::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
+Si el modelo incorpora simultáneamente el ratio de endeudamiento y otro indicador calculado exactamente como el doble del anterior, ambas variables contienen la misma información y el modelo no podrá estimarse.
+:::
+
+4.  Las perturbaciones aleatorias son esféricas, es decir:
+
+4.1 Está centrada: $$E[u_{i}] =0, \ i=1,\dots,n$$
+
+4.2 Es homoscedástica: $$Var(u_{i}) =  E[u_{i}^{2} ] = \sigma^{2},  \ i=1,\dots,n $$
+
+4.3 Es incorrelada: $$Cov(u_{i}, u_{j}) = E[u_{i} \cdot u_{j}] = 0,  \ \forall i \not= j, i,j=1,\dots,n $$ El incumplimiento de la hipótesis (3) da lugar a la existencia de colinealidad perfecta. Igualmente, el incumplimiento de las hipótesis (4.b) y (4.c) dan lugar a la existencia de heterocedasticidad y autocorrelación.
+
+::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
+
+| Hipótesis        | Interpretación práctica                                                  |
+| ---------------- | --------------------------------------------------------------------------- |
+| Media cero       | Los factores omitidos no producen un sesgo sistemático en la rentabilidad.  |
+| Homocedasticidad | La variabilidad de los errores es similar para empresas pequeñas y grandes. |
+| Incorrelación    | El error cometido para una empresa no depende del error de otra empresa.    |
+:::
+
+Estas hipótesis no se introducen únicamente por razones matemáticas. Permiten demostrar que el estimador de mínimos cuadrados ordinarios posee propiedades deseables, como la insesgadez y la eficiencia. Además, muchas de ellas podrán comprobarse posteriormente mediante contrastes específicos. Además de estas hipótesis, para llevar a cabo lo que se conoce como inferencia tradicional (intervalos de confianza y contrastes de hipótesis basados en una distribución estadística) se impondrá como hipótesis adicional que la perturbación aleatoria se distribuya según una distribución Normal de media 0 y varianza $\sigma^2I$.
+
+## Estimación de los parámetros del modelo por mínimos cuadrados ordinarios. Propiedades
+
+El método de mínimos cuadrados ordinarios (MCO) es el procedimiento más utilizado para estimar un modelo de regresión lineal. Su objetivo consiste en encontrar los valores de los parámetros que hacen que las predicciones del modelo sean lo más próximas posible a los datos observados. En otras palabras, busca la recta (o, en el caso de varias variables, el hiperplano) que mejor se ajusta a la información disponible.
+
+::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
+En el caso de estudio del libro, el modelo intenta explicar la rentabilidad económica (ROA) de las empresas a partir del endeudamiento y la liquidez, y el objetivo es obtener un modelo estimado del tipo:
+$$\hat{ROA}=17.5061-0.3133LIQUIDEZ-0.1522ENDEUDAMIENTO$$
+Una vez estimado el modelo, cada empresa tendrá un ROA estimado y un ROA observado. La diferencia entre ambos valores constituye el residuo.
+
+| Empresa |   ROA | Endeudamiento | Liquidez | ROA estimado | Residuos |
+|:-------:|------:|--------------:|---------:|-------:|-------:|
+|    A    |  4.12 |         63.756 |    0.11 |  7.7679 | -3.6479|
+|    B    |  1.604|          79.32 |     0.037 |  5.4220 | -3.818|
+|    C    | 4.646 |          64.678 |     0.042|  7.6489 | -3.0029|
+|    D    |  10.828 |          11.881 |   2.058 |  15.0530 | -4.2250|
+|    E    |  4.916 |          81.242 |     0.028 |  5.1322 | -0.2163|
+|    F    |  11.147 |         41.208 |    0.693 |  11.0171 | 0.1298|
+|   ...    |  ... |         ... |    ...|  ... | ... |
+
+Podría pensarse en minimizar simplemente la suma de los residuos. Sin embargo, los residuos positivos y negativos se compensan entre sí, de modo que su suma siempre es cero cuando el modelo incorpora término independiente. Por este motivo se minimiza la suma de los cuadrados de los residuos (SCR), que penaliza por igual los errores positivos y negativos y concede mayor importancia a los errores de mayor magnitud. 
+:::
+
+Matemáticamente, el objetivo se traduce en estimar la recta que minimice la diferencia entre el valor real y el valor estimado. Dicha diferencia se conoce como residuo $e$, y se obtiene como $e = y - \widehat{y},$ donde $\widehat{y} = X \widehat{\beta}$. Dado que se verifica que la suma de los residuos es cero ($\sum_{i=1}^{n} e_i=0$), el objetivo será minimizar la suma de los cuadrados de los residuos (SCR). Los pasos a seguir son:
+
+- **Paso 1: Definir la función objetivo**. Se establece la expresión a minimizar que viene dada por:
+
+$$e^{t}e = (y - X \widehat{\beta})^{t} \cdot (y - X \widehat{\beta}) = y^{t}y - 2 \widehat{\beta}^{t} X^{t} y + \widehat{\beta}^{t} X^{t} X \widehat{\beta},$$ 
+- **Paso 2. Encontrar el mínimo**. Se deriva la expresión obtenida con respecto a $\widehat{\beta}$ y se iguala a cero. $$ \frac{\partial e^{t} e}{\partial {\widehat{\beta}}} =- 2 X^t {y}+ 2 X^t X {\widehat{\beta}}={0}$$ Esta expresión corresponde a la condición necesaria de mínimo de la función en estudio.
+
+- **Paso 3. Obtener el estimador MCO**. A continuación se despeja el vector de parámetros de la expresión anterior: $$ - 2 X^t {y}+ 2 X^t X {\widehat{\beta}}=  {0}
+             \Leftrightarrow
+             X^t X {\widehat{\beta}}=  X^t {y} \notag$$ obteniendo $$\widehat{\beta} = \left( X^{t} X \right)^{-1} \cdot X^{t}y$$.
+
+- **Paso 4. Comprobar que realmente es un mínimo**.  Se puede demostrar que igualmente se verifica la condición suficiente $$\frac{\partial^2 e^{t} e }{\partial {\widehat{\beta}} \partial {\widehat{\beta}}^t} =2 X^t X>0$$
+
+Por tanto, el estimador MCO viene dado por la siguiente expresión: 
+$${\widehat{\beta}} = \left(X^t X\right)^{-1} \left( X^t {y} \right)$$ 
+Esta expresión proporciona los estimadores de los parámetros del modelo utilizando únicamente la información contenida en la matriz de variables explicativas y en el vector de la variable dependiente. Aunque su cálculo puede realizarse manualmente en ejemplos sencillos mediante el producto de matrices y el cálculo de la inversa de una matriz, en la práctica usaremos programas estadísticos como R mediante la función `lm`. Sin embargo, el conocimiento de la expresión anterior permite comprender el fundamento matemático del método de estimación.
+
+::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
+
+A continuación, aplicamos la función `lm` a nuestro ejemplo para obtener los estiamdores MCO:
+```{r}
+datos <- read_excel("data/BD_SABI.xlsx", sheet = "Datos")
+modelo <- lm(
+    ROA ~ ENDEUDAMIENTO + LIQUIDEZ_INMEDIATA,
+    data = datos
+)
+modelo
+```
+Graficamente, se puede representar el gráfico de los valores observados frente a la recta estimada:
+```{r}
+datos$ROA_estimado <- fitted(modelo)
+
+ggplot(datos, aes(x = ROA_estimado, y = ROA)) +
+  geom_point(color = "steelblue", size = 2) +
+  geom_abline(intercept = 0, slope = 1,
+              color = "red", linewidth = 1) +
+  labs(
+    title = "Valores observados frente a valores ajustados",
+    x = "ROA estimado",
+    y = "ROA observado"
+  ) +
+  theme_minimal()
+```
+
+Igualmente, se pueden obtener los residuos:
+```{r}
+modelo$residuals
+```
+
+:::
+
+
+Las principales consecuencias de la estimación MCO son:
+
+| Propiedad         | Interpretación                                                     |
+| ----------------- | ------------------------------------------------------------------ |
+| $(X'\hat e=0)$      | Los residuos son ortogonales a las variables explicativas.         |
+| $(i'\hat e=0)$      | La suma de los residuos es cero.                                   |
+| $(i'\hat y=i'y)$    | La media de los valores estimados coincide con la media observada. |
+| $(\hat y'\hat e=0)$ | Los valores ajustados y los residuos no están correlacionados.     |
+
+### Teorema de Gauss-Markov
+
+En el modelo de regresión lineal, los parámetros $\beta_1,\beta_2,\ldots,\beta_k$ son **constantes desconocidas** que describen la relación existente entre la variable dependiente y las variables explicativas. Aunque sus valores son fijos, no pueden observarse directamente y, por tanto, deben estimarse a partir de una muestra de datos.
+
+Los valores obtenidos mediante el método de mínimos cuadrados ordinarios, $\widehat{\beta}_1,\widehat{\beta}_2,\ldots,\widehat{\beta}_k$, reciben el nombre de **estimadores**. A diferencia de los parámetros, los estimadores son **variables aleatorias**, ya que dependen de la muestra utilizada para realizar la estimación. Si se extrajeran repetidamente muestras distintas de la misma población y se estimara el modelo en cada una de ellas, los valores obtenidos para los coeficientes serían diferentes.
+
+Como cualquier variable aleatoria, los estimadores poseen una distribución de probabilidad y, por tanto, pueden caracterizarse mediante propiedades como su esperanza matemática y su varianza. En consecuencia, al evaluar un procedimiento de estimación interesa que los estimadores presenten determinadas propiedades deseables. Dos de las propiedades más importantes son las siguientes:
+
+- **Insesgadez**: un estimador es insesgado cuando, en promedio, coincide con el verdadero valor del parámetro que pretende estimar. Matemáticamente,
+
+$$
+E\left(\widehat{\beta}\right)=\beta.
+$$
+
+Esto significa que, si el proceso de muestreo pudiera repetirse un gran número de veces, el promedio de los estimadores obtenidos coincidiría con el verdadero valor del parámetro poblacional.
+
+- **Eficiencia**: entre dos estimadores insesgados, se considera más eficiente aquel que presenta una menor varianza. Un estimador eficiente produce estimaciones menos dispersas alrededor del verdadero valor del parámetro y, por tanto, proporciona resultados más precisos.
+
+En Econometría, una de las principales cuestiones consiste en determinar si el método de estimación utilizado produce estimadores con estas propiedades. El resultado fundamental que responde a esta cuestión es el **Teorema de Gauss-Markov**, que demuestra que, bajo las hipótesis del modelo lineal clásico, los estimadores obtenidos mediante el método de mínimos cuadrados ordinarios (MCO) son **lineales, insesgados y óptimos (ELIO)** o, utilizando la terminología anglosajona, **Best Linear Unbiased Estimators (BLUE)**. Esto significa que, dentro de la clase de todos los estimadores lineales e insesgados, los estimadores MCO presentan la **mínima varianza posible**, por lo que utilizan de la forma más eficiente la información contenida en la muestra (@Wooldridge2020).
+
+La demostración completa del teorema requiere herramientas avanzadas de álgebra matricial y teoría de la esperanza matemática, por lo que queda fuera del alcance de este texto. No obstante, este resultado proporciona el principal fundamento teórico que justifica el uso de los mínimos cuadrados ordinarios en la estimación de modelos econométricos.
+
+Además de estimar los coeficientes del modelo, es necesario obtener una estimación de la varianza de la perturbación aleatoria, $\sigma^2$, ya que esta determina la precisión de los estimadores y constituye la base para calcular los errores estándar, construir intervalos de confianza y realizar contrastes de hipótesis.
+
+Puede demostrarse que la suma de cuadrados de los residuos verifica la siguiente propiedad:
+
+Además de los coeficientes de las variables independientes, es necesario estimar la varianza de la perturbación aleatoria, $\sigma^{2}$. Puede demostrarse que la suma de cuadrados de los residuos verifica la siguiente propiedad:
+$$E[e^{t} e] = (n-k) \cdot \sigma^{2}$$
+por lo que un estimador insesgado de la varianza de la perturbación aleatoria viene dado por
+
+$$
+\widehat{\sigma}^{2} = \frac{e^{t} e}{n-k}
+$$
+
+Una vez estimada la varianza residual, puede obtenerse la matriz estimada de varianzas y covarianzas de los estimadores MCO $\widehat{\beta}$:
+
+$$\widehat{Var \left( \widehat{\beta} \right)} = \widehat{\sigma}^{2} \cdot \left( X^{t} X \right)^{-1}.$$
+Esta matriz resume la precisión de todos los estimadores del modelo. Sus elementos de la diagonal principal contienen las **varianzas** de cada uno de los coeficientes estimados, mientras que los elementos situados fuera de la diagonal representan las **covarianzas** entre ellos. A partir de esta matriz se obtienen los **errores estándar** de los coeficientes, que desempeñan un papel esencial en la inferencia estadística y permiten construir intervalos de confianza y realizar contrastes de significación sobre los parámetros del modelo, aspectos que se estudiarán en las siguientes secciones.
+
+::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
+
+En el caso de estudio del libro, el teorema de Gauss-Markov garantiza que, si se cumplen las hipótesis del modelo, los coeficientes que relacionan el ROA con el endeudamiento y la liquidez son los más precisos que pueden obtenerse mediante un estimador lineal e insesgado. Esto aumenta la fiabilidad de las conclusiones extraídas sobre la influencia de ambas variables en la rentabilidad empresarial.
+
+Hay que tener en cuenta que los coeficientes estimados que relaciona el ROA con el endeudamiento y la liquidez indican el efecto medio de cada variable sobre la rentabilidad empresarial. Sin embargo, estos coeficientes son estimaciones obtenidas a partir de una muestra de empresas y, por tanto, están sujetos a incertidumbre. La matriz de varianzas-covarianzas cuantifica esa incertidumbre y permite determinar si los efectos estimados son estadísticamente significativos o podrían deberse al azar. Esta idea constituye la base de la inferencia estadística que se desarrolla en los apartados siguientes.
+
+Se puede obtener la suma de los cuadrados de los residuos (SCR)
+```{r}
+SCR <- deviance(modelo)
+SCR
+```
+Y, a partir de ella, obtener la estimación de la varianza de las perturbaciones:
+```{r}
+n <- nobs(modelo)
+k <- length(coef(modelo))
+
+sigma2 <- SCR / (n - k)
+sigma2
+```
+También se puede obtener directamente, como:
+```{r}
+sigma(modelo)^2
+```
+La matriz de varianzas-covarianzas de los estimadores puede obtenerse mediante:
+
+```{r}
+vcov(modelo)
+```
+El resultado es una matriz cuadrada cuyos elementos de la diagonal representan las varianzas de los estimadores de los coeficientes, mientras que los elementos fuera de la diagonal corresponden a sus covarianzas. Asi, se verifica que:
+- $\hat{var}(\hat{\beta}_0)=8.0246$ 
+- $\hat{var}(\hat{\beta}_1)=0.0013$ 
+- $\hat{var}(\hat{\beta}_2)=2.7307$
+- $\hat{cov}(\hat{\beta_0},\hat{\beta_1})=-0.100$
+- $\hat{cov}(\hat{\beta_0},\hat{\beta_2})=-3.7175$
+- $\hat{cov}(\hat{\beta_1},\hat{\beta_2})=0.0434$
+:::
+
+### Interpretación de los estimadores
+
+Estimar un modelo econométrico constituye únicamente el primer paso del análisis. El verdadero interés radica en interpretar el significado económico de los coeficientes obtenidos y evaluar si sus magnitudes son coherentes con la teoría económica y financiera. En esta sección se estudia cómo interpretar los estimadores en función de la forma funcional del modelo.
+
+Si partimos de un modelo de regresión estimado con dos variables explicativas más un termino independiente:
+
+$$\hat{y}_t=\hat{\beta}_1+\hat{\beta}_2x_{2t}+\hat{\beta}_3x_{3_t}$$ 
+
+Si expresamos el modelo en diferencias:
+
+$$\hat{y}_t-\hat{y}_{t-1}=(\hat{\beta}_1+\hat{\beta}_2x_{2t}+\hat{\beta}_3x_{3_t})-(\hat{\beta}_1+\hat{\beta}_2x_{2t-1}+\hat{\beta}_3x_{3t-1})=$$ $$\Delta\hat{y}_t= \hat{\beta}_2\Delta x_{2t}+ \hat{\beta}_3 \Delta x_{3t}$$ 
+Por tanto, si el incremento en $x_3$ es cero ($\Delta x_3=0$), entonces: 
+$$\hat{\beta}_2=\frac{\Delta \hat{y}_t}{\Delta X_{2t}}$$ 
+por lo que $\hat{\beta}_2$ se interpreta como el cambio en $y$ producido por un cambio en $x_2$ manteniendose $x_3$ constante.
+
+::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
+En nuestro ejemplo, el modelo estimado tiene la siguiente expresión:
+$$
+\hat{ROA}_i=17.5061-0.1522LEV_i+-0.3133LIQ_i
+$$
+La interpretación de cada uno de los coeficientes es la siguiente:
+
+- $\hat{\beta_0}$=17.5061. El intercepto indica que, si una empresa presentara un nivel de endeudamiento y de liquidez igual a cero, el ROA esperado sería del 17.5061 %. No obstante, esta situación no suele tener sentido económico, ya que es poco realista encontrar empresas con ambos ratios iguales a cero. Por ello, el término independiente suele tener una interpretación limitada.
+- $\hat{\beta_1}$=−0.1522. Manteniendo constante la liquidez, un incremento de una unidad en el ratio de endeudamiento se asocia, en promedio, con una disminución de 0.1522 puntos porcentuales en el ROA. El signo negativo es coherente con la teoría financiera, ya que un mayor nivel de endeudamiento suele incrementar la carga financiera y el riesgo de la empresa, reduciendo su rentabilidad económica.
+- $\hat{\beta_1}$=−0.3133. Manteniendo constante el nivel de endeudamiento, un incremento de una unidad en el ratio de liquidez se asocia, en promedio, con una reducción de 0.3133 puntos porcentuales en el ROA. Dado que podría esperarse una relación positiva entre liquidez y rentabilidad, deberá analizarse posteriormente mediante los contrastes de significación estadística.
+
+Obsérvese que ambos coeficientes representan efectos marginales o efectos ceteris paribus. Es decir, cada coeficiente mide el efecto de una variable sobre el ROA suponiendo que el resto de las variables explicativas permanecen constantes. Esta es una de las principales ventajas de la regresión múltiple frente al análisis bivariante, ya que permite aislar el efecto individual de cada factor sobre la variable de interés.
+:::
+
+En algunas ocasiones, puede resultar interesante expresar la variables del modelo (dependiente, independiente o ambas) en logaritmos. Algunos ejemplos en los que puede resultar interesante trabajar con logaritmos son los siguientes:
+
+-   Para linealizar modelos no lineales. Por ejemplo la función de producción de Cobb-Douglas se expresa como una función no lineal del tipo: $$P_i=L_i^{\beta_1}\times K_i^{\beta_2} \times u_i$$ que se podría convertir en lineal tomando logaritmos: $$\ln{P_i}=\beta_1\ln(L_i)+\beta_2\ln(K_i)+ u_i$$
+
+-   Para reducir la dispersión original de los datos, ya que la forma funcional en logaritmos permite reducir la dispersión de la variable limitando el riesgo de aparición de heterocedasticidad (varianza no constante de la perturbación aleatoria)
+
+Cuando ambas variables estan expresadas en logaritmo, la interpretación de los parámetros es similar al concepto de elasticidad entre ambas variables:
+
+$$Elasticidad_{(y/x)}=\frac{\frac{\Delta y}{y}}{\frac{\Delta x}{x}}$$ por lo tanto: $$\frac{\Delta y}{y}=\beta_2 \frac{\Delta x}{x}\rightarrow log(y)=\beta_2 log(x)$$ Por lo que $\beta_2$ se interpreta como el cambio porcentual en $y$ ante una variación del 1% en la variable $x$.
+
+En algunas ocasiones se combinaran variables expresadas en unidades originales (nivel) con otras expresadas en logaritmos y para interpretarlo correctamente hay que tener en cuenta que los cambios de la variable en logaritmos se asemejan a cambios porcentuales, mientras que los cambios en variables en nivel se expresan como cambios en la unidad original de esa varriable. Este cuadro presentado por @arce2012, resume las distintas interpretaciones:
+
+| Especificación | Expresión | Interpretación de $\hat{\beta}_2$ |
+|------------------------|----------------------------|--------------------|
+| Nivel-Nivel | $y_i=\beta_1+\beta_2x_{2i}+u_i$ | Incremento de unidades en $y$ cuando aumenta 1 unidad la $x_2$ |
+| Log-nivel | $log(y_i)=\beta_1+\beta_2x_{2i}+u_i$ | $\hat{\beta}_2\times100$ incremento porcentual de $y$ cuando aumenta una unidad $x_2$ |
+| Nivel-log | $y_i=\beta_1+\beta_2log(x_{2i})+u_i$ | $\hat{\beta_2}/100$ incremento en unidades de $y$ cuando aumenta un 1% la variable $x_2$ |
+| Log-Log | $log(y_i)=\beta_1+\beta_2log(x_{2i})+u_i$ | Incremento porcentual de $y$ cuando aumenta un 1% la variable $x_2$ |
+
+: Resumen interpretación coeficientes
+
+Este cuadro será completado incoporando la interpretación para el caso de variables dicotómicas dependiendo de si la variable dependiente esta expresada en unidades originales o en logaritmos.
+
+## Bondad de ajuste: coeficientes de determinación y criterios de Akaike y Schwarz
+
+Una vez estimados los coeficientes del modelo surge una pregunta natural: ¿explica bien el modelo el comportamiento de la variable dependiente? Para responder a esta cuestión existen diversas medidas de bondad del ajuste. Ninguna de ellas permite decidir por sí sola si un modelo es adecuado, pero proporcionan información muy útil para comparar especificaciones alternativas y valorar su capacidad explicativa.
+
+Así, una vez obtenidos los estimadores de los parámetros, interesa conocer qué proporción de la variabilidad observada de la variable explicada consigue explicar el modelo y qué parte permanece sin explicar. 
+
+#### Descomposición de la variabilidad
+
+La variabilidad total observada en la variable dependiente puede descomponerse en dos partes:
+
+- la variabilidad explicada por el modelo, que recoge la información explicada por las variables independientes;
+- la variabilidad no explicada, correspondiente a los residuos o errores de estimación.
+
+Esta descomposición puede expresarse mediante la identidad
+
+$$SCT=SCE+SCR$$
+
+donde:
+
+- SCT es la Suma de Cuadrados Total 
+
+$$
+SCT=y^{t} y - n \cdot \overline{Y}^{2}
+$$
+
+- SCE es la Suma de Cuadrados Explicada
+$$
+SCE=\widehat{\beta}^{t} X^{t} y - n \cdot \overline{Y}^{2}
+$$
+
+- SCR es la Suma de Cuadrados de los Residuos.
+$$
+SCR=y^{t}y - \widehat{\beta}^{t} X^{t} y
+$$
+
+Obsérvese que esta descomposición únicamente se verifica cuando el modelo incorpora un término independiente.
+
+#### Coeficiente de determinación
+
+La medida de bondad del ajuste más utilizada es el coeficiente de determinación, denotado por $R^{2}$, se obtiene como el cociente entre SCE y SCT:
+
+$$R^{2} = \frac{SCE}{SCT} = 1 - \frac{SCR}{SCT}.$$ 
+
+Mide la proporción de la variabilidad total de la variable dependiente que consigue explicar el modelo de regresión. Asi, el coeficiente de determinación varía entre 0 y 1, siempre que el modelo lineal tenga término independiente. 
+
+- Cuando la SCE es nula, el modelo no explica nada y el coeficiente de determinación, toma el valor 0.  
+- Por otra parte, cuando la SCR es nula, el modelo explica el 100% de la varianza y, por tanto, el coeficiente de determinación toma el valor 1. 
+
+::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
+
+Por ejemplo, en el modelo del ROA se obtiene un coeficiente de determinación igual a 0.2582, significa que el 25.82 % de la variabilidad observada en la rentabilidad económica de las empresas queda explicada por el endeudamiento y la liquidez, mientras que el 74.18 % restante se debe a otros factores no incluidos en el modelo o al componente aleatorio.
+
+```{r}
+summary(modelo)$r.squared
+```
+:::
+
+El coeficiente de determinación presenta el inconveniente de que  aumenta a medida que se incluyen variables en el modelo aunque las variables incluidas no sean significativas. Por esta razón, el coeficiente de determinación no permite comparar modelos con distinto número de variables explicativas.
+
+#### El coeficiente de determinación corregido:
+
+Para resolver este inconveniente se utiliza el coeficiente de determinación corregido, denotado por $\overline{R}^{2}$. Se define como:
+
+$$
+\overline{R}^{2} = 1 - (1 - R^{2}) \cdot \frac{n-1}{n-k}.
+$$
+
+A diferencia del coeficiente de determinación, esta medida incorpora una penalización por el número de parámetros estimados. En consecuencia, únicamente aumenta cuando la incorporación de nuevas variables mejora realmente la capacidad explicativa del modelo.
+
+::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
+
+Si estimamos un modelo alternativo en el que, por error, se incorpora como variable explicativa el código identificador de la empresa (numeradas del 1 al 100), cabría esperar que el modelo no mejorase, ya que dicha variable no contiene información económica relacionada con el ROA. Sin embargo, al volver a estimar el modelo se observa que el coeficiente de determinación ($R^2$) aumenta ligeramente. Esto ocurre porque el $R^2$ nunca disminuye al añadir nuevas variables explicativas, aunque estas sean completamente irrelevantes. En cambio, el coeficiente de determinación corregido penaliza la incorporación de variables adicionales y, en este caso, pone de manifiesto que la aparente mejora del ajuste desaparece. Este ejemplo ilustra por qué el $R^2$ corregido resulta más adecuado que el $R^2$ para comparar modelos con distinto número de variables explicativas. 
+
+```{r}
+datos <- read_excel("data/BD_SABI.xlsx", sheet = "Datos")
+set.seed(1234)
+
+# Variable aleatoria independiente del resto
+datos$ID <- 1:nrow(datos)
+
+modelo_id <- lm(
+    ROA ~ ENDEUDAMIENTO + LIQUIDEZ_INMEDIATA+ID,
+    data = datos
+)
+# Comparación
+data.frame(
+  Modelo = c("Original", "Con ID"),
+  R2 = c(summary(modelo)$r.squared,
+         summary(modelo_id)$r.squared),
+  R2_corregido = c(summary(modelo)$adj.r.squared,
+                   summary(modelo_id)$adj.r.squared)
+)
+```
+:::
+
+####  Otros criterios de información
+
+Otra forma de comparar modelos consiste en utilizar los criterios de información, que combinan dos aspectos fundamentales:
+
+- la capacidad de ajuste del modelo;
+- su complejidad, medida por el número de parámetros estimados.
+
+Los criterios más utilizados son el criterio de información de Akaike (AIC) y el criterio bayesiano de Schwarz (BIC), definidos respectivamente por
+
+$$
+    AIC = - 2 \cdot \mathfrak{L} + 2 \cdot k.
+$$ 
+$$
+    BIC = - 2 \cdot \mathfrak{L}  + k \cdot \ln (n),
+$$ 
+donde $\mathfrak{L} = - \frac{n}{2} \cdot \left( 1 + \ln (2 \cdot \pi) - \ln (n) \right) - \frac{n}{2} \cdot \ln (SCR).$
+
+Ambos criterios penalizan la incorporación de nuevas variables explicativas. Aunque añadir variables suele reducir la suma de cuadrados de los residuos, también incrementa la complejidad del modelo. El AIC y el BIC buscan un equilibrio entre ambas cuestiones. Por tanto, cuando se comparan varios modelos estimados sobre la misma muestra y con la misma variable dependiente, será preferible aquel que presente el menor valor de AIC o BIC.
+
+::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
+
+Vamos a estimar el modelo, pero solo considerando como variable explicativa la LIQUIDEZ_INMEDIATA:
+```{r}
+modelo1 <- lm(
+  ROA ~ LIQUIDEZ_INMEDIATA,
+  data = datos)
+```
+Y, considerando la LIQUIDEZ_INMEDIATA, el ENDEUDAMIENTO y el número de EMPLEADOS:
+```{r}
+modelo2 <- lm(
+  ROA ~ LIQUIDEZ_INMEDIATA + ENDEUDAMIENTO + EMPLEADOS,
+  data = datos
+)
+```
+Por último, añadimos la variable EBIT:
+```{r}
+modelo3 <- lm(
+  ROA ~ LIQUIDEZ_INMEDIATA + ENDEUDAMIENTO + EMPLEADOS+EBIT,
+  data = datos
+)
+```
+
+Podemos realizar la siguiente comparación usando distintas medidas de bondad:
+```{r}
+comparacion <- data.frame(
+  Modelo = c(
+    "Liquidez + Endeudamiento",
+    "Liquidez",
+    "Liquidez + Endeudamiento + Empleados",
+    "Liquidez + Endeudamiento + Empleados+EBIT"
+  ),
+  R2 = c(
+    summary(modelo)$r.squared,
+    summary(modelo1)$r.squared,
+    summary(modelo2)$r.squared,
+    summary(modelo3)$r.squared
+  ),
+  R2_corregido = c(
+    summary(modelo)$adj.r.squared,
+    summary(modelo1)$adj.r.squared,
+    summary(modelo2)$adj.r.squared,
+    summary(modelo3)$adj.r.squared
+  ),
+  AIC = c(
+    AIC(modelo),
+    AIC(modelo1),
+    AIC(modelo2),
+    AIC(modelo3)
+  ),
+  BIC = c(
+    BIC(modelo),
+    BIC(modelo1),
+    BIC(modelo2),
+     BIC(modelo3)
+  )
+)
+
+comparacion
+```
+:::
+
+## Estimación mediante intervalos de confianza de los parámetros del modelo
+
+En el apartado anterior se obtuvo una estimación puntual de cada parámetro del modelo. Sin embargo, una estimación puntual proporciona únicamente un valor concreto obtenido a partir de la muestra disponible. Como cualquier estimación está sujeta a variabilidad muestral, resulta necesario cuantificar la incertidumbre asociada a dicho valor. Para ello se estudia la distribución de los estimadores a partir de la distribución de la perturbación aleatoria, lo que permitirá construir intervalos de confianza y realizar posteriormente contrastes de hipótesis sobre los parámetros del modelo.
+
+#### Distribución de la perturbación aleatoria  {.unnumbered}
+
+Para poder obtener intervalos de confianza y realizar contrastes de hipótesis mediante la inferencia clásica se añade una hipótesis adicional a las vistas anteriormente: se supone que la perturbación aleatoria sigue una distribución Normal.
+
+$$
+u_{n \times 1} \sim N(0_{n \times 1}, \sigma^{2} \cdot I_{n \times n})
+$$
+
+#### Distribución del estimador {.unnumbered}
+
+Partiendo de la distribución de la perturbación aleatoria se puede obtener la distribución del estimador.
+
+$$
+\hat{\beta}=\beta+\left( X^{t} X \right)^{-1} X^{t} u,
+$$
+
+entonces se verifica que $\hat{\beta}$ se distribuye según una normal con
+
+$$
+E \left[\widehat{\beta} \right] = \beta, \quad 
+Var \left( \widehat{\beta} \right) = \sigma^{2} \cdot \left( X^{t} X \right)^{-1},
+$$
+
+es decir:
+
+$$
+\widehat{\beta}_{k \times 1} \sim N\!\left(\beta, \ \sigma^{2} \cdot \left( X^{t} X \right)^{-1} \right).
+$$
+
+#### Intervalo de confianza {.unnumbered}
+
+De esta forma, es inmediato obtener los siguientes intervalos de confianza al nivel $1-\alpha$ para $\beta_{i}$ 
+$$
+\widehat{\beta}_{i} \pm t_{n-k} \left( 1 - \frac{\alpha}{2} \right) \cdot 
+ \cdot \sqrt{\widehat{var}(\hat{\beta_i})}, \quad i=1,\dots,k.
+$$
+
+siendo $\widehat{var}(\hat{\beta_i})=\hat{\sigma}^2\times w_{i}$ donde $w_{i}$ es el elemento $(i,i)$ de la matriz $(X'X)^{-1}$. El intervalo de confianza proporciona un conjunto de valores plausibles para el verdadero parámetro poblacional. Cuanto menor sea la variabilidad del estimador, más estrecho será el intervalo y mayor será la precisión de la estimación.
+
+::: {.callout-caution title="Error habitual interpretación del intervalor de confianza"}
+
+Un intervalo de confianza del 95 % no significa que exista un 95 % de probabilidad de que el parámetro pertenezca al intervalo calculado.
+
+Significa que, si el procedimiento de muestreo pudiera repetirse un gran número de veces, aproximadamente el 95 % de los intervalos construidos contendrían el verdadero valor del parámetro.
+:::
+
+Por otro lado, se puede obtener también el intervalo de confianza para $\sigma^{2}$: 
+$$
+\left[ \frac{(n-k) \cdot \widehat{\sigma}^{2}}{\chi^{2}_{n-k} \left( 1 - \frac{\alpha}{2} \right)}, \ 
+       \frac{(n-k) \cdot \widehat{\sigma}^{2}}{\chi^{2}_{n-k} \left( \frac{\alpha}{2} \right)} \right]
+$$
+
+donde $\chi^{2}_{n-k} \left( 1 - \frac{\alpha}{2} \right)$ y $\chi^{2}_{n-k} \left( \frac{\alpha}{2} \right)$ son los puntos de una distribución chi-cuadrado con $n-k$ grados de libertad que dejan a su izquierda, respectivamente, una probabilidad $1 - \frac{\alpha}{2}$ y $\frac{\alpha}{2}$.
+
+::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
+
+Calculamos mediante la función `confint` los itnervalos de confianza que por defecto se obtienen al 95%.
+
+```{r}
+confint(modelo3)
+```
+Pero tambien, se puede obtener al 90%:
+```{r}
+confint(modelo3, level = 0.90)
+```
+Al 99%, o a cualquier otro nivel que se desee:
+```{r}
+confint(modelo3, level = 0.99)
+```
+Notesé que el nivel de confianza influye directamente en la amplitud del intervalo de confianza. Cuanto mayor es el nivel de confianza, mayor es la probabilidad de que el intervalo contenga el verdadero valor del parámetro, pero para conseguir esa mayor seguridad es necesario construir un intervalo más amplio. Por el contrario, cuanto menor es el nivel de confianza, menor es la certeza de que el intervalo incluya el parámetro poblacional y, en consecuencia, el intervalo resulta más estrecho. Así, un intervalo de confianza del 99 % será siempre más amplio que uno del 95 %, y este, a su vez, será más amplio que un intervalo del 90 %. En la práctica existe un compromiso entre precisión y confianza: niveles de confianza elevados proporcionan mayor seguridad, pero a costa de obtener estimaciones menos precisas al aumentar la amplitud del intervalo.
+
+:::
+
+Además de proporcionar una medida de la precisión de las estimaciones, los intervalos de confianza permiten realizar una primera valoración sobre la relevancia de cada variable explicativa. En particular, resulta especialmente interesante comprobar si el intervalo de confianza de un coeficiente contiene o no el valor cero. Si el intervalo incluye el cero, significa que existen valores plausibles del parámetro para los cuales el efecto de la variable sobre la variable dependiente podría ser nulo. En consecuencia, con el nivel de confianza considerado no puede descartarse que dicha variable no tenga influencia sobre la variable explicada. Por el contrario, si el intervalo de confianza no contiene el cero, todos los valores plausibles del parámetro son positivos o negativos, lo que constituye una evidencia de que la variable ejerce un efecto significativo sobre la variable dependiente.
+
+Esta forma de razonar está estrechamente relacionada con los contrastes de hipótesis. En la práctica es habitual complementar su interpretación mediante contrastes de hipótesis, que permiten tomar decisiones de forma objetiva sobre la significación estadística de cada coeficiente.
+
+## Contrastes de hipótesis acerca de los parámetros del modelo
+
+En el apartado anterior se han construido intervalos de confianza para los coeficientes del modelo. Sin embargo, en muchas ocasiones el investigador desea responder a preguntas concretas sobre los parámetros estimados. Por ejemplo:
+
+- ¿Influye realmente el endeudamiento sobre la rentabilidad de las empresas?
+- ¿el endeudamiento y la liquidez tienen el mismo efecto?
+- ¿el IBEX35 replica exactamente al SP500?
+
+Todas estas cuestiones pueden formularse como contrastes de hipótesis, cuya formulación general se presenta a continuación. Para ello, lo primero es formular la hipótesis en forma de restricción. 
+
+### Estadístico general de contraste 
+
+Una restricción lineal consiste en imponer una determinada condición sobre uno o varios parámetros del modelo.  Por ejemplo, las preguntas anteriores se podrían formular en forma de restricción de la siguiente manera:
+
+::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
+
+ROA_i=\beta_0+\beta_1LEV_i+\beta_2LIQ_i+u_i
+
+- ¿Influye realmente el endeudamiento sobre la rentabilidad de las empresas?
+$$ \beta_1=0$$
+- ¿el endeudamiento y la liquidez tienen el mismo efecto?
+$$ \beta_1=\beta_2$$
+:::
+
+
+::: {.callout-tip appearance="simple" icon=false title="Base de datos 2: El IBEX35"}
+
+$$
+IBEX35_t=\beta_0+\beta_1SP500_t+\beta_2EUROSTOXX50_t+u_t
+$$
+- ¿el IBEX replica exactamente al SP500?
+$$ \beta_1=1$$
+:::
+
+
+Este conjunto de restricciones se puede resumir planteando una hipótesis nula del tipo:
+
+$$
+H_{0}: R \beta = r
+$$
+
+donde $R$ es la matriz de restricciones que tiene tantas filas como restricciones tenga el modelo ($q$) y tantas columnas como parámetros ($k$). Cada valor $a_{qk}$ toma el valor 0 si el parámetro $k$ no está afectado por la restricción $q$, y en el caso de que sí lo esté, toma el coeficiente correspondiente:
+
+$$
+R_{q \times k} = \begin{pmatrix}
+a_{11} & a_{12} & \dots & a_{1k} \\
+a_{21} & a_{22} & \dots & a_{2k} \\
+\vdots & \vdots & \ddots & \vdots \\
+a_{q1} & a_{q2} & \dots & a_{qk}
+\end{pmatrix}
+$$
+
+y $r$ es el vector de resultados:
+
+$$
+r_{q \times 1} = \begin{pmatrix}
+b_{1} \\
+b_{2} \\
+\vdots \\
+b_{q}
+\end{pmatrix}
+$$
+
+::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
+
+ROA_i=\beta_0+\beta_1LEV_i+\beta_2LIQ_i+u_i
+
+Suponiendo que queremos analizar conjuntamente ambas hipótesis $ \beta_1=0$ y $ \beta_1=\beta_2$, se reescribiría como $ \beta_1=0$ y $ \beta_1-\beta_2=0$ y la matriz de restricciones se definiria como:
+$$
+R=
+\begin{pmatrix}
+0 & 1 & 0 \\
+0 & 1 & -1
+\end{pmatrix}
+$$
+y $r$
+$$
+r=
+\begin{pmatrix}
+0 \\
+0
+\end{pmatrix}
+$$
+:::
+
+
+::: {.callout-tip appearance="simple" icon=false title="Base de datos 2: El IBEX35"}
+
+$$
+IBEX35_t=\beta_0+\beta_1SP500_t+\beta_2EUROSTOXX50_t+u_t
+$$
+Suponiendo que queremos analizar $ \beta_1=1$
+$$
+R=
+\begin{pmatrix}
+0 & 1 & 0 
+\end{pmatrix}
+$$
+y $r$
+$$
+r=1
+$$
+:::
+
+
+
+Una vez establecidas la matriz de restricciones y el vector de resultados, se obtiene el estadístico experimental a partir de la distribución:
+
+$$
+\left( R \widehat{\beta} - R \beta \right)^{t} \cdot
+\frac{\left[ R \left( X^{t} X \right)^{-1} R^{t}  \right]^{-1}}{q \cdot \widehat{\sigma}^{2}} \cdot 
+\left( R \widehat{\beta} - R \beta \right) \sim F_{q,n-k}
+$$
+
+De manera que rechazaremos la hipótesis nula al nivel de significación $\alpha$ si:
+
+$$
+\left( R \widehat{\beta} - r \right)^{t} \cdot
+\frac{\left[ R \left( X^{t} X \right)^{-1} R^{t}  \right]^{-1}}{q \cdot \widehat{\sigma}^{2}} \cdot 
+\left( R \widehat{\beta} - r \right) > F_{q,n-k} (1 - \alpha)
+$$
+
+donde $F_{q,n-k} (1 - \alpha)$ es el cuantil de la distribución $F$ de Snedecor con $q$ y $n-k$ grados de libertad.
+
+::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
+Partiendo del modelo:
+ROA_i=\beta_0+\beta_1LEV_i+\beta_2LIQ_i+u_i
+
+para contrastar conjuntamente $ \beta_1=0$ y $ \beta_1-\beta_2=0$, obtenemos previamente:
+
+```{r}
+b <- coef(modelo)
+X <- model.matrix(modelo)
+sigma2 <- summary(modelo)$sigma^2
+R <- rbind(
+  c(0, 1, 0),
+  c(0, 1, -1)
+)
+r <- c(0,0)
+q <- nrow(R)
+```
+Y, a partir de ello, se calcula el estadístico:
+```{r}
+Fexp <-
+t(R %*% b - r) %*%
+solve(R %*% solve(t(X)%*%X) %*% t(R)) %*%
+(R %*% b - r) /
+(q * sigma2)
+Fexp
+```
+y se puede obtener el valor critico al 95%:
+```{r}
+gl1 <- q
+gl2 <- df.residual(modelo)
+qf(0.95, gl1, gl2)
+```
+De manera que se concluye que se rechaza la hipótesis nula al 95% de confianza. Esto implica que los datos proporcionan evidencia suficiente para concluir que las restricciones impuestas no se verifican simultáneamente. En otras palabras, al menos una de las restricciones planteadas sobre los parámetros del modelo no es compatible con la información contenida en la muestra.
+:::
+
+El contraste general permite evaluar cualquier conjunto de restricciones lineales sobre los parámetros del modelo, desde una única restricción hasta varias restricciones simultáneas. No obstante, en la práctica existen algunos casos particulares que se utilizan con mucha frecuencia. En estos casos, al sustituir la hipótesis correspondiente en la expresión general del estadístico de contraste, se obtienen formulaciones mucho más sencillas que facilitan tanto su interpretación como su aplicación. 
+
+
+### Contraste de una única restricción lineal
+
+::: {.callout-tip appearance="simple" icon=false title="Base de datos 2: El IBEX35"}
+En el ejemplo financiero del IBEX 35 estimado a partir del siguiente modelo:
+$$
+IBEX35_t=\beta_0+\beta_1SP500_t+\beta_2EUROSTOXX50_t+u_t
+$$
+Se ha formulado anteriormente la hipótesis de que el IBEX 35 presente el mismo comportamiento que el SP500, es  decir que $ \beta_1=1$
+Este contraste constituye un caso particular del contraste general que se puede realizar con una expresión más simple.
+:::
+
+
+De forma general, si queremos contrastar úna unica hipótesis del tipo:
+
+$$
+H_{0}: \beta_{i} = b_{i}, \quad i=1,\dots,k
+$$
+donde $b_i$ es un valor conocido. En este caso $q=1$, $R = (0 \ \dots \ 1^{(i)} \ \dots \ 0)$ y $r=b_{i}$. La distribución se simplifica como:
+
+$$
+\frac{\left( \widehat{\beta}_{i} - b_{i} \right)^{2}}
+{\widehat{\sigma}^{2} \cdot w_{i}} = \frac{\left( \widehat{\beta}_{i} - b_{i} \right)^{2}}
+{\widehat{var}(\hat{\beta}_i)}\sim F_{1,n-k},
+$$
+
+recordemos que $w_{i}$ es el elemento $(i,i)$ de la matriz $(X^tX)^{-1}$, por lo que tambien se puede expresar como $\widehat{var}(\hat{\beta}_i)$. Teniendo en cuenta que la raíz cuadrada de una $F$ con 1 y $n$ grados de libertad sigue una $t$ de Student con $n$ grados de libertad:
+
+$$
+\frac{\widehat{\beta}_{i} - b_{i}}{\widehat{\sigma} \cdot \sqrt{w_{i}}}=\frac{\widehat{\beta}_{i} - b_{i}}{\sqrt{\widehat{var}(\hat{\beta}_i)}} \sim t_{n-k}
+$$
+
+
+Rechazaremos $H_{0}$ si:
+
+$$
+\left| \frac{\widehat{\beta}_{i} - b_{i}}{\widehat{\sigma} \cdot \sqrt{w_{i}}} \right|
+> t_{n-k}\left(1 - \frac{\alpha}{2}\right)
+$$
+
+::: {.callout-tip appearance="simple" icon=false title="Base de datos 2: El IBEX35"}
+Si estimamos el modelo podemos obtener el estimador que acompaña a la variable Rend_SP500 que es igual a $\beta_2=-0.2056$:
+```{r}
+datos <- read_excel("data/BD_IBEX.xlsx", sheet = "Datos")
+modeloIBEX<- lm(
+    Rend_IBEX ~ Rend_SP500+ Rend_EUROSTOXX50,
+    data = datos
+)
+modeloIBEX
+
+```
+A partir de la matriz de varianzas-covarianzas podemos obtener la estimación de la varianza del estimador que sera $\widehat{var}(\hat{\beta}_2)=0.012535714$
+```{r}
+vcov(modelo)
+```
+Por lo que el contraste quedaría formulado de la siguiente manera:
+Hipótesis: H$_0$: $\beta_2=1$
+Estadístico experimental:
+$t_exp=\frac{-0.2056-1}{\sqrt{0.012535714}}=-10.7678$
+Podemos calcular el valor teórico:
+```{r}
+gl <- df.residual(modelo)
+alpha <- 0.05
+t_teorico <- qt(1 - alpha/2, df = gl)
+t_teorico
+```
+Y, finalmente concluir, que dado que el estadístico experimental es mayor que el valor crítico se rechaza la hipótesis nula. 
+:::
+
+### Contraste de significación individual
+
+El contraste de significación individual que se utiliza habitualmente es simplemente un caso particular del contraste anterior. La diferencia está en el valor que asignamos a la restricción. En lugar de preguntarnos si un parámetro es igual a un valor concreto, nos preguntamos si es igual a cero. Este último contraste permite determinar si el efecto asociado a una variable explicativa es estadísticamente diferente de cero. Por tanto, el contraste de significación individual no es un contraste distinto del que acabamos de estudiar, sino el caso particular de una única restricción lineal en el que el valor hipotetizado del parámetro es cero. Es decir, la hipótesis nula quedaría formulada:
+
+$$H_{0}: \beta_{i} = 0$$
+Si la hipótesis nula no se rechaza, no existe evidencia estadística suficiente para afirmar que la variable explicativa tiene un efecto distinto de cero sobre la variable dependiente, una vez controlado el efecto del resto de variables del modelo. Por el contrario, si la hipótesis nula se rechaza, puede concluirse que dicha variable contribuye de forma significativa a explicar la variable dependiente.
+
+::: {.callout-tip appearance="simple" icon=false title="Base de datos 2: El IBEX35"}
+En el caso anterior, si queremos contrastar que $\beta_2=0$, partimos de los valores que hemos obtenido anteriormente para el estimador $\beta_2=-0.2056$ y  su varianza, formulamos el contraste de la siguiente manera:
+Hipótesis: H$_0$: $\beta_2=0$
+Estadístico experimental:
+$t_exp=\frac{-0.2056}{\sqrt{0.012535714}}=-1.837$
+Podemos calcular el valor teórico al 95% de confianza y concluir dado que el valor absoluto del estadístico experimental es menor que el valor crítico no se puede rechazar la hipótesis nula. 
+```{r}
+gl <- df.residual(modelo)
+alpha <- 0.05
+t_teorico <- qt(1 - alpha/2, df = gl)
+t_teorico
+```
+Sin embargo, si obtenemos el valor critico al 90% de confianza, en ese caso el valor absoluto del estadístico experimental es mayor que el valor crítico por lo que se rechaza la hipótesis nula. 
+```{r}
+gl <- df.residual(modelo)
+alpha <- 0.1
+t_teorico <- qt(1 - alpha/2, df = gl)
+t_teorico
+```
+:::
+
+En la práctica, los programas estadísticos no suelen comparar directamente el estadístico experimental con el valor crítico, sino que proporcionan el **p-valor** asociado al contraste. 
+
+#### Concepto de p-valor {.unnumbered}
+
+El p-valor representa la probabilidad de obtener, bajo la hipótesis nula, un valor del estadístico de contraste tan extremo como el observado en la muestra. Por tanto, cuanto menor sea el p-valor, mayor será la evidencia que los datos proporcionan en contra de la hipótesis nula. Otra forma de interpretar el p-valor consiste en considerarlo como el menor nivel de significación que habría que elegir para rechazar la hipótesis nula, dada la realización muestral del estadístico. Esta interpretación permite establecer una regla de decisión que no depende de fijar previamente un único nivel de significación.
+
+Si el contraste es **a dos colas**, el *valor-p* es dos veces el área de la realización muestral del estadístico en valor absoluto, en la distribución de éste bajo la hipótesis nula. Es decir:
+
+$$
+\text{valor-}p = 2 \, Pr(t_j > |t_j^m| \,/\, H_0)
+$$
+
+Si el contraste es **a una cola**, el *valor-p* es el área a la derecha de la realización muestral del estadístico en valor absoluto, en la distribución de éste bajo la hipótesis nula. Es decir:
+
+$$
+\text{valor-}p = Pr(t_j > t_j^m \,/\, H_0)
+$$
+
+En cualquier caso, a mayor *valor-p* menor la evidencia contra la hipótesis nula, y por el contrario, a menor *valor-p*, mayor evidencia contra la hipótesis nula.
+
+**Regla de decisión:**\
+Rechazar la hipótesis nula si el *valor-p* es menor que el nivel de significación elegido, y no rechazarla en caso contrario.
+
+::: {.callout-caution title="Error habitual en la interpretación del p-valor"}
+
+No debe interpretarse el p-valor como la probabilidad de que la hipótesis nula sea verdadera. El p-valor se calcula suponiendo que la hipótesis nula es cierta y mide la compatibilidad de los datos observados con dicha hipótesis.
+:::
+
+Por ejemplo, si un contraste presenta un p-valor de (0.03), la hipótesis nula se rechazaría al 5 %, ya que (0.03<0.05), pero no al 1 %, ya que (0.03>0.01). De este modo, el p-valor proporciona más información que una simple decisión de rechazo o no rechazo, ya que permite valorar hasta qué nivel de significación los datos permiten rechazar la hipótesis nula.
+
+
+::: {.callout-tip appearance="simple" icon=false title="Base de datos 2: El IBEX35"}
+En R podemos usar la función `summary(modelo)`para ver un resumen del modelo estimado y nos facilita directamente los estimadores, su desviación típica, el valor del estadístico experimental del contraste de signficación individual y su p valor correspondiente.
+
+```{r}
+datos <- read_excel("data/BD_IBEX.xlsx", sheet = "Datos")
+modeloIBEX <- lm(
+    Rend_IBEX ~ Rend_SP500+ Rend_EUROSTOXX50,
+    data = datos
+)
+summary(modeloIBEX)
+```
+
+La interpretación de las columnas que se obtiene con `summary(modelo)` es la siguiente:
+
+- Estimate: recoge el valor estimado del coeficiente $\widehat{\beta}_i$.
+- Std. Error: recoge el error estándar del estimador y, por tanto, una medida de la incertidumbre asociada a la estimación.
+- t value: es el estadístico experimental del contraste de significación individual, que permite contrastar $H_0:\beta_i=0$.
+- Pr(>|t|): es el p-valor asociado a dicho contraste.
+
+R añade además una columna de significación mediante asteriscos. En nuestro ejemplo, el intercepto aparece acompañado de un asterisco (`*` ), el rendimiento del SP500 aparece acompañado de un punto (`.`) y el rendimiento del EuroStoxx 50 aparece acompañado de tres asteriscos (`***`).
+
+Estos símbolos constituyen una forma rápida de identificar el nivel de significación estadística de cada coeficiente. Por defecto, R utiliza la siguiente clasificación:
+
+| Símbolo |   p-valor   | Interpretación         |
+| :-----: | :---------: | ---------------------- |
+|  `***`  |  (p<0.001)  | Significativo al 0,1 % |
+|   `**`  |   (p<0.01)  | Significativo al 1 %   |
+|   `*`   |   (p<0.05)  | Significativo al 5 %   |
+|   `.`   |   (p<0.10)  | Significativo al 10 %  |
+|         | (p\geq0.10) | No significativo       |
+
+Por tanto, en nuestro ejemplo, el intercepto es significativo al 5 %, mientras que el coeficiente asociado al SP500 presenta evidencia de significación al 10 %, pero no al 5 %. Por su parte, el coeficiente asociado al EuroStoxx 50 es altamente significativo, ya que su p-valor es inferior al 0,1 %.
+:::
+
+### Contraste de significación global
+
+El contraste de significación global permite determinar si, consideradas conjuntamente, las variables explicativas del modelo aportan información estadísticamente significativa para explicar la variable dependiente. Por tanto, responde a una pregunta diferente de la planteada en el contraste de significación individual. Mientras que el contraste (t) permite analizar si una variable concreta es significativa, el contraste global permite determinar si el conjunto de variables explicativas, tomado en su totalidad, tiene capacidad explicativa.
+
+La hipótesis nula plantea que ninguno de los coeficientes asociados a las variables explicativas es diferente de cero:
+
+$$
+H_{0}: \beta_{2} = \beta_{3} = \cdots = \beta_{k} = 0, \quad
+H_{1}: \exists \, \beta_{i} \neq 0
+$$
+
+Es importante observar que la hipótesis alternativa no afirma que todos los coeficientes sean diferentes de cero. Únicamente establece que existe al menos uno que presenta un efecto estadísticamente distinto de cero.
+
+Este contraste es un caso particular del contraste general de restricciones lineales (H$_0\beta$=r), en el que se imponen simultáneamente ($k-1$) restricciones sobre los coeficientes de las variables explicativas. Al sustituir estas restricciones en el estadístico general se obtiene el conocido estadístico (F) de significación global: 
+
+$$
+F_{exp} = \frac{\frac{SCE}{k-1}}{\frac{SCR}{n-k}} 
+$$
+
+donde $SCE$ es la suma de cuadrados explicada y $SCR$ la suma de cuadrados de los residuos.
+
+El estadístico compara la variabilidad explicada por el modelo con la variabilidad que permanece sin explicar. Si el modelo no aporta capacidad explicativa, ambas cantidades serán relativamente similares y el estadístico (F) tomará un valor reducido. Por el contrario, si las variables explicativas permiten explicar una parte importante de la variabilidad de la variable dependiente, el numerador será grande en relación con el denominador y el estadístico (F) tomará un valor elevado.
+
+Por tanto, para un nivel de significación ($\alpha$), la regla de decisión es:
+
+$$F_{exp}> F_{k-1,n-k}(1-\alpha)$$
+Si el estadístico experimental supera el valor crítico, existe evidencia suficiente para rechazar la hipótesis de que todos los coeficientes de las variables explicativas son simultáneamente iguales a cero. En consecuencia, se concluye que el modelo es globalmente significativo.
+
+::: {.callout-tip appearance="simple" icon=false title="Base de datos 2: El IBEX35"}
+Al utilizar la función summary() sobre un modelo estimado mediante lm(), R proporciona directamente el estadístico (F) del contraste de significación global, junto con sus grados de libertad y el p-valor asociado. En este caso $F_{exp}=91.54$ y el p valor toma un valor proximo a cero ($2.2\times10^{-16}$)
+
+```{r}
+datos <- read_excel("data/BD_IBEX.xlsx", sheet = "Datos")
+modeloIBEX <- lm(
+    Rend_IBEX ~ Rend_SP500+ Rend_EUROSTOXX50,
+    data = datos
+)
+summary(modeloIBEX)
+```
+Por tanto, esta información permite plantear directamente el contraste:
+
+$$
+H_0:\beta_2=\beta_3=\cdots=\beta_k=0
+$$
+
+frente a
+
+$$
+H_1:\text{al menos uno de los coeficientes es diferente de cero}.
+$$
+Así, si el p-valor asociado al estadístico (F) es inferior al 5 %, concluiremos que el modelo es globalmente significativo al 5 %.
+:::
+
+#### La tabla ANOVA {.unnumbered}
+
+El contraste global puede interpretarse a partir de la descomposición de la variabilidad de la variable dependiente. Cuando el modelo incluye término independiente, la suma de cuadrados total puede descomponerse como $SCT=SCE+SCR$. La primera parte corresponde a la variabilidad explicada por el modelo y la segunda a la variabilidad que permanece en los residuos. La tabla ANOVA resume esta descomposición:
+
+| Fuente de variación | Suma de cuadrados | Gl | Medias cuadráticas |
+|-------------------|------------------|------------------|-------------------|
+| Explicada | $SCE = \widehat{\beta}^t X^t y - n \overline{Y}^2$ | $k-1$ | $SCE/(k-1)$ |
+| Residuos | $SCR = y^t y - \widehat{\beta}^t X^t y$ | $n-k$ | $SCR/(n-k)$ |
+| Total | $SCT = y^t y - n \overline{Y}^2$ | $n-1$ |  |
+
+El estadístico (F) se obtiene, por tanto, como el cociente entre la media cuadrática explicada y la media cuadrática residual:
+
+$$
+\frac{SCE/(k-1)}
+{SCR/(n-k)}.
+$$
+
+#### Relación con el coeficiente de determinación {.unnumbered}
+
+Teniendo en cuenta que $R^2=\frac{SCE}{SCT}$, otra forma equivalente de expresar la región de rechazo es:
+
+$$
+\frac{\frac{R^{2}}{k-1}}{\frac{1 - R^{2}}{n-k}} > F_{k-1,n-k}(1-\alpha)
+$$
+
+Esta expresión permite establecer una conexión entre dos conceptos que hasta ahora se han presentado por separado. El ($R^2$) mide qué proporción de la variabilidad de la variable dependiente es explicada por el modelo, mientras que el contraste (F) permite determinar si esa capacidad explicativa es estadísticamente significativa.
+
+Por tanto, un ($R^2$) elevado no implica automáticamente que el modelo sea estadísticamente significativo, ni un ($R^2$) reducido implica necesariamente que el modelo no sea significativo. La significación global depende también del tamaño de la muestra y del número de variables incluidas en el modelo.
+
+### Estimador de mínimos cuadrados restringidos 
+
+El contraste general de hipótesis permite determinar si un conjunto de restricciones lineales sobre los parámetros del modelo es compatible con la información contenida en la muestra. Si no se rechaza la hipótesis nula $H_0: R\beta=r$, podemos considerar razonable incorporar dichas restricciones al proceso de estimación. En este caso, en lugar de estimar los parámetros únicamente mediante mínimos cuadrados ordinarios (MCO), podemos utilizar el estimador de mínimos cuadrados restringidos (MCR).
+
+La idea es sencilla: mientras que los MCO buscan los valores de los parámetros que minimizan la suma de cuadrados de los residuos sin imponer restricciones adicionales, los mínimos cuadrados restringidos buscan los valores que minimizan dicha suma de cuadrados entre aquellos que cumplen las restricciones planteadas.
+
+El estimador de mínimos cuadrados restringidos viene dado por:
+
+$$
+\widehat{\beta}_{R} = \widehat{\beta} + (X^tX)^{-1} R^t 
+\left[ R (X^tX)^{-1} R^t \right]^{-1} \cdot (r - R \widehat{\beta})
+$$
+
+Cuando las restricciones son ciertas, el estimador restringido presenta algunas propiedades interesantes. Es un estimador lineal e insesgado y, además, tiene una varianza menor o igual que la del estimador MCO. La incorporación de información válida sobre los parámetros permite, por tanto, obtener estimaciones más precisas.
+
+Sin embargo, esta mejora tiene un coste: al imponer restricciones, estamos limitando el conjunto de valores posibles de los parámetros. Por ello, la suma de cuadrados de los residuos del modelo restringido nunca puede ser inferior a la del modelo no restringido:
+
+$$
+SCR_R\geq SCR.
+$$
+
+En consecuencia, cuando el modelo incluye término independiente:
+
+$$
+R_R^2\leq R^2.
+$$
+Es decir, imponer restricciones no puede mejorar el ajuste del modelo en términos de (R^2). Esto no significa que el modelo restringido sea peor. Si las restricciones son correctas, podemos aceptar una pequeña pérdida de ajuste a cambio de obtener estimaciones con menor varianza.
+
+Por tanto, es importante distinguir entre dos preguntas:
+
+- ¿Son compatibles las restricciones con los datos? Esta es la pregunta que responde el contraste general (F).
+- ¿Qué estimaciones obtenemos si imponemos dichas restricciones? Esta es la pregunta que responde el estimador de mínimos cuadrados restringidos.
+
+En este sentido, el contraste general constituye un paso previo fundamental para decidir si tiene sentido incorporar las restricciones al modelo.
+
+Una vez presentados los estimadores MCR, se puede reformular el contraste general para realizarse fácilmente sin necesidad de construir explícitamente la matriz (R) y el vector (r). Para ello, en R usamos la función `linearHypothesis()` del paquete `car` que permite especificar directamente las restricciones que queremos contrastar y proporciona el contraste (F), sus grados de libertad y el p-valor asociado. 
+
+La lógica del contraste consiste en comparar el ajuste del modelo restringido con el del modelo no restringido (o modelo original). Al introducir restricciones, el modelo restringido dispone de un conjunto menor de valores posibles para los parámetros y, por tanto, su suma de cuadrados de los residuos no puede ser menor que la del modelo no restringido. La cuestión que plantea el contraste es, por tanto, si el aumento de la suma de cuadrados de los residuos que se produce al imponer las restricciones es suficientemente pequeño como para considerar que dichas restricciones son compatibles con los datos, o, por el contrario, si dicho aumento es demasiado elevado como para mantenerlas.
+
+De esta forma, el estadístico experimental del contraste general se puede reescribir como:
+
+$$F=\frac{\frac{SCR_R-SCR}{q}}{\frac{SCR}{n-k}}$$
+donde:
+
+- $SCR_R-SCR$ mide cuánto empeora el ajuste al imponer las restricciones;
+- $q$ es el número de restricciones;
+- $SCR/(n−k)$ es la estimación de la varianza de la perturbación en el modelo no restringido.
+
+::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
+Partiendo del modelo:
+ROA_i=\beta_0+\beta_1LEV_i+\beta_2LIQ_i+u_i
+
+para contrastar conjuntamente $ \beta_1=0$ y $ \beta_1-\beta_2=0$ se puede usar la función `linearHypothesis` del paquete `car` que no exige construir la matriz de restricciones ni resultados. 
+
+
+```{r}
+linearHypothesis(modelo,
+                 c("ENDEUDAMIENTO = 0",
+                   "ENDEUDAMIENTO-LIQUIDEZ_INMEDIATA = 0"))
+```
+:::
+
+## Explotación del modelo
+
+Una vez estimado y validado el modelo, podemos utilizarlo para **explotar la información que proporciona**. En esta fase, el modelo deja de utilizarse únicamente para analizar las relaciones existentes entre las variables y pasa a emplearse para obtener resultados sobre situaciones concretas.
+
+Entre las principales aplicaciones se encuentran la **predicción** de la variable dependiente para determinados valores de las variables explicativas y el análisis de la **permanencia estructural** del modelo, que permitirá comprobar si las relaciones estimadas se mantienen cuando cambia el periodo, el grupo de empresas o las condiciones económicas.
+
+### Predicción
+
+La predicción permite utilizar el modelo estimado para obtener un valor de la variable dependiente cuando conocemos los valores que toman las variables explicativas. Esta predicción puede referirse al **valor esperado de la variable dependiente** o a una **realización individual** de dicha variable.
+
+Supongamos que queremos realizar una predicción para una nueva observación cuyos valores de las variables explicativas vienen recogidos en el vector:
+
+$$
+x_0^t=(1,X_{02},X_{03},\dots,X_{0k}).
+$$
+
+A partir del modelo estimado:
+
+$$
+\widehat{Y}=X\widehat{\beta},
+$$
+
+podemos obtener una predicción puntual mediante:
+
+$$
+\widehat{Y}_0=x_0^t\widehat{\beta}.
+$$
+
+Esta expresión permite obtener tanto una estimación puntual del valor esperado de (Y_0) condicionado a (x_0),
+
+$$
+\widehat{E(Y_0|x_0)}=x_0^t\widehat{\beta},
+$$
+
+como una predicción puntual de una futura realización de (Y_0).
+
+La diferencia entre ambas situaciones será importante cuando construyamos intervalos. En el primer caso queremos conocer **dónde se encuentra el valor medio esperado de (Y)** para unas determinadas características, mientras que en el segundo queremos determinar **en qué intervalo podría encontrarse una observación individual**.
+
+### Predicción mediante intervalos
+
+La predicción puntual proporciona un único valor, pero no informa sobre la incertidumbre asociada a dicha predicción. Dado que los parámetros del modelo son estimados a partir de una muestra y que existe una perturbación aleatoria, la predicción está sujeta a incertidumbre.
+
+Por ello, resulta conveniente acompañar la predicción puntual de un intervalo. Es necesario distinguir dos situaciones:
+
+- **Intervalo de confianza para el valor esperado de (Y)**: proporciona un intervalo para (E(Y_0|x_0)), es decir, para el valor medio de la variable dependiente cuando las variables explicativas toman los valores (x_0).
+
+- **Intervalo de predicción para una observación individual de (Y)**: proporciona un intervalo en el que esperamos encontrar una realización concreta de (Y_0).
+
+El intervalo de confianza para el valor esperado de (Y) viene dado por:
+
+$$
+x_0^t\widehat{\beta}
+\pm
+t_{n-k}\left(1-\frac{\alpha}{2}\right)
+\widehat{\sigma}
+\sqrt{x_0^t(X^tX)^{-1}x_0}.
+$$
+
+Por su parte, el intervalo de predicción para una observación individual de (Y) es:
+
+$$
+x_0^t\widehat{\beta}
+\pm
+t_{n-k}\left(1-\frac{\alpha}{2}\right)
+\widehat{\sigma}
+\sqrt{
+1+x_0^t(X^tX)^{-1}x_0
+}.
+$$
+
+La diferencia entre ambos intervalos se encuentra en el término (1) que aparece en el intervalo de predicción para una observación individual. Este término recoge la **incertidumbre asociada a la perturbación aleatoria de la nueva observación**. Por este motivo, el intervalo de predicción es siempre más amplio que el intervalo de confianza para el valor esperado, manteniendo el mismo nivel de confianza.
+
+En términos intuitivos, el intervalo de confianza responde a la pregunta:
+
+> **¿Entre qué valores se encuentra el valor medio esperado de (Y) para unas determinadas características?**
+
+Mientras que el intervalo de predicción responde a:
+
+> **¿Entre qué valores puede encontrarse una nueva observación individual de (Y) con esas características?**
+
+
+::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
+
+La distinción entre la predicción para el valor individual o para el valor esperado, resulta especialmente relevante en aplicaciones financieras y contables. Por ejemplo, para el modelo que explica el **ROA** de un conjunto de empresas a partir de su endeudamiento y liquidez, podemos utilizarlo para estimar el ROA medio esperado para empresas con unas determinadas características o, alternativamente, para predecir el ROA de una empresa concreta.
+
+En R, ambas predicciones pueden obtenerse directamente mediante la función `predict()`. Por ejemplo, suponemos una empresa nueva con un ENDEUDAMIENTO de 15 y una LIQUIDEZ_INMEDIATA DE 3
+
+```{r}
+nueva_empresa <- data.frame(
+  ENDEUDAMIENTO = 15,
+  LIQUIDEZ_INMEDIATA = 3
+)
+```
+Se puede obtener la predicción por intervalo del valor individual:
+
+```{r}
+predict(
+  modelo,
+  newdata = nueva_empresa,
+  interval = "confidence"
+)
+```
+o el intervalo de confianza para el valor esperado:
+
+```{r}
+predict(
+  modelo,
+  newdata = nueva_empresa,
+  interval = "prediction"
+)
+```
+La amplitud de ambos intervalos depende del nivel de confianza elegido y de la incertidumbre asociada a la estimación. En particular, las predicciones serán generalmente más precisas para valores de las variables explicativas próximos a los observados en la muestra y menos precisas cuando se realizan para características alejadas de las utilizadas para estimar el modelo.
+:::
+
+### Permanencia estructural
+
+Otra de las aplicaciones del modelo estimado consiste en analizar su permanencia estructural, es decir, comprobar si la relación entre la variable dependiente y las variables explicativas se mantiene estable cuando cambia el periodo de análisis o el grupo de observaciones considerado.
+
+Al utilizar el modelo para realizar predicciones sobre observaciones que no pertenecen a la muestra utilizada para su estimación, estamos suponiendo implícitamente que la relación estimada se mantiene. Por ejemplo, si estimamos una relación entre el rendimiento del IBEX 35 y los rendimientos del SP500 y del EuroStoxx 50 para un determinado periodo, estamos suponiendo que los coeficientes estimados siguen siendo válidos para otro periodo.
+
+La cuestión que se plantea es, por tanto, si los parámetros del modelo son estables o, por el contrario, existe evidencia de que la relación entre las variables ha cambiado.
+
+Una primera aproximación intuitiva consiste en comparar las predicciones realizadas por el modelo con los valores observados fuera de la muestra. Así, para una nueva observación caracterizada por ($x_0$), podemos obtener una predicción y su correspondiente intervalo de predicción. Si el valor observado se sitúa dentro del intervalo para $Y$ dado $x_0$, se dice que los resultados son compatibles con el comportamiento previsto por el modelo. Sin embargo, esta comprobación debe interpretarse con cautela: que una observación individual se encuentre dentro del intervalo no constituye, por sí mismo, un contraste formal de permanencia estructural, es solo una primera idea intuitiva. 
+
+
+#### Test de Chow {.unnumbered}
+
+Para analizar formalmente si los parámetros se mantienen constantes entre dos grupos de observaciones, podemos comparar el modelo estimado sobre el conjunto de datos con los modelos estimados separadamente para cada grupo.
+
+Supongamos, por ejemplo, que disponemos de información sobre empresas correspondiente a dos periodos y queremos comprobar si la relación entre ROA, endeudamiento y liquidez es la misma en ambos periodos. La hipótesis nula de permanencia estructural sería:
+
+$$
+H_0:
+\beta_{0}^{(1)}=\beta_{0}^{(2)},\quad
+\beta_{1}^{(1)}=\beta_{1}^{(2)},\quad
+\ldots,\quad
+\beta_{k-1}^{(1)}=\beta_{k-1}^{(2)}.
+$$
+
+Frente a la alternativa:
+
+$$
+H_1:\text{al menos uno de los parámetros es diferente}.
+$$
+
+Una forma de realizar este contraste, cuando los grupos están definidos a priori, es mediante el contraste de Chow. La lógica del contraste es comparar la suma de cuadrados de los residuos del modelo restringido, en el que se supone que los parámetros son iguales para los dos grupos, con la suma de cuadrados de los residuos de los modelos no restringidos, en los que cada grupo tiene sus propios parámetros.
+
+Si denominamos (SCR_P) a la suma de cuadrados de los residuos del modelo restringido o conjunto y (SCR_1) y (SCR_2) a las correspondientes a los modelos estimados por separado, el estadístico de Chow es:
+
+$$
+F=
+\frac{
+\left[
+SCR_P-(SCR_1+SCR_2)
+\right]/k
+}{
+(SCR_1+SCR_2)/(n_1+n_2-2k)
+}.
+$$
+
+El numerador mide cuánto empeora el ajuste cuando obligamos a que los dos grupos compartan los mismos parámetros. Si la diferencia entre el ajuste restringido y el no restringido es pequeña, no tendremos evidencia suficiente para rechazar la permanencia estructural. Si, por el contrario, la imposición de unos mismos parámetros provoca un aumento importante de la suma de cuadrados de los residuos, tendremos evidencia de un cambio estructural.
+
+La hipótesis nula se rechaza cuando el estadístico experimental supera el valor crítico de la distribución (F) correspondiente o, de forma equivalente, cuando su p-valor es inferior al nivel de significación elegido. En ese caso, concluiremos que existen evidencias de que los parámetros no son estables entre los dos grupos analizados.
+
+::: {.callout-tip appearance="simple" icon=false title="Base de datos 2: El IBEX35"}
+
+Por ejemplo, podemos comprobar si la relación entre el IBEX, el SP500 y el EuroStoxx 50 se mantiene entre los primeros 36 y los últimos 36 meses:
+
+```{r}
+modeloIBEX <- lm(
+  Rend_IBEX ~ Rend_SP500 + Rend_EUROSTOXX50,
+  data = datos
+)
+
+sctest(
+  modeloIBEX,
+  type = "Chow",
+  point = 36
+)
+```
+Como el p valor es igual a 0.2586, no podemos rechazar la hipótesis nula de que los parámetros son iguales entre los primeros y los ultimos 36 meses al 90%, 95% y 99% de confianza. 
+:::
+
+El análisis anterior se ha planteado para series temporales, donde la permanencia estructural permite comprobar si los parámetros del modelo se mantienen estables a lo largo del tiempo. El test de Chow resulta especialmente apropiado cuando existe un punto de ruptura conocido que permite dividir la muestra temporal en dos periodos.
+
+En el caso de datos transversales, la lógica es similar, aunque no existe una dimensión temporal que permita dividir la muestra en periodos. En este caso, puede ser de interés comprobar si la relación estimada es la misma para distintos grupos de individuos o empresas. Por ejemplo, podríamos preguntarnos si el modelo que explica el ROA presenta los mismos parámetros para empresas grandes y pequeñas, para empresas pertenecientes a distintos sectores o para empresas con diferentes características financieras.
+
+Para ello, se pueden estimar modelos que permitan que los parámetros varíen entre los grupos y plantear posteriormente un contraste general de restricciones lineales.
+
+## Prácticas resueltas
+
+### Función de producción. Importancia de una buena especificación. {.unnumbered}
+
+Vamos a trabajar con la base de datos de @Greene2003 denominada `BD_FUNCIONPRODUCCION'  para realizar una práctica cuyo objetivo es introducir la estimación en R y comprender la importancia de realizar una adecuada especificación del modelo econométrico.
+
+```{r}
+datos= read_excel('data/BD_FUNCIONPRODUCCION.xlsx')
+```
+
+Esta base de datos procede del estudio de Solow (1957) en relación con la función de producción. Contamos con información sobre la producción agregada por trabajador/hora (q), un ratio sobre el capital agregado/trabajo (k) y un índice tecnológico (A).
+
+Se pide:
+
+1.  **Obtener los estadísticos descriptivos básicos:**
+
+Para ello se usa la función *summary*:
+
+```{r}
+summary(datos)
+```
+
+2.  **Obtener la matriz de correlaciones:**
+
+Para ello, se usa la función *cor*:
+
+```{r}
+cor(datos)
+```
+
+3.  **Representar un gráfico de la nube de puntos entre cada una de las variables explicativas y la explicada:**
+
+```{r, grafico 1, fig.width=4, fig.height=3}
+ggplot(datos, aes(x = k, y = q)) +
+  geom_point(color = "blue") +
+  labs(title = "q vs k", x = "k", y = "q") +
+  theme_minimal()
+```
+
+```{r, grafico 2, fig.width=4, fig.height=3}
+ggplot(datos, aes(x = A, y = q)) +
+  geom_point(color = "red") +
+  labs(title = "q vs A", x = "A", y = "q") +
+  theme_minimal()
+```
+
+4.  **Estimar el modelo que explique la producción agregada por trabajador/hora** en función del ratio sobre el capital agregado/trabajo ($k$) y el índice tecnológico ($A$), es decir: $$q_t=\beta_1+\beta_2k_t+\beta_3A_t+u_t$$.
+
+Para estimar dicho modelo usamos la función *lm*. Se puede obtener los principales resultados de la estimación mediante la función *summary*:
+
+```{r}
+modelo1=lm(q~k+A, data=datos)
+summary(modelo1)
+```
+
+Así, se observa que el modelo estimado tiene la siguiente expresión: $$\hat{q}_t=-0.295445+0.0956250k_t+0.717229A_t$$
+
+5.  **Interprete los coeficiente estimados:**
+
+-   El termino independiente (-0.295445) representa el valor esperado de producción agregada por trabajador/hora ($q$) cuando tanto el capital agregado por trabajador ($k$) como el índice tecnológico ($A$) toman el valor 0. En este contexto económico, un capital agregado nulo y un índice tecnológico nulo no son realistas, así que el término independiente no tiene una interpretación económica directa, sino que sirve como punto de referencia para la ecuación de regresión.
+
+-   El estimador asociado a la variable $k$ tiene la siguiente interpretación: un aumento de 1 unidad en el capital por trabajador se asocia con un aumento promedio de 0.0956 unidades en la producción por trabajador/hora, manteniendo A constante.
+
+-   El estimador asociado a la variable $A$ tiene la siguiente interpretación: un aumento de 1 unidad en el índice tecnológico se asocia con un aumento promedio de 0.7172 unidades en la producción por trabajador/hora, manteniendo $k$ constante.
+
+Se observa que el efecto de la tecnología sobre la productividad es mucho mayor que el efecto del capital. Esto resalta la importancia de la tecnología como motor del crecimiento en la función de producción, lo que esta relacionado con los trabajos premiados con el Nobel de Economía en el año 2025. Véase <https://www.nobelprize.org/uploads/2025/10/press-economicsciences2025-1.pdf>
+
+6.  **Representa graficamente los residuos de la estimación anterior:**
+
+Para ello, vamos a guardar los residuos de dicha estimación y a representarlos graficamente:
+
+```{r}
+residuos1=resid(modelo1)
+plot(datos$year, residuos1, type = "l", col = "blue", lwd = 2,
+     xlab = "Año", ylab = "Residuos modelo 1",
+     main = "Residuos de la regresión q ~ k + A")
+```
+
+Del modelo se pueden extraer tambien los valores estimados:
+
+```{r}
+q_estimada_modelo1<- fitted(modelo1)
+```
+
+```{r}
+df <- data.frame(
+  año = rep(datos$year, 2),
+  valor = c(q_estimada_modelo1, datos$q),
+ variable = rep(c("Variable estimada", "Variable observada"), each = nrow(datos))
+)
+
+ggplot(df, aes(x = año, y = valor, color = variable)) +
+  geom_line(linewidth = 1) +
+  labs(title = "Variable estimada vs observada", x = "Año", y = "Valor") +
+  theme_minimal()
+```
+
+7.  **Repite el análisis anterior, pero sin incorporar la variable indice tecnológico, que se ha comprobado que es una variable especialmente relevante en el modelo:**
+
+```{r}
+modelo2=lm(q~k, data=datos)
+summary(modelo2)
+```
+
+A continuación, representamos los residuos del modelo junto con la variable $A$ que recordemos que no ha sido incluida en el modelo:
+
+```{r}
+residuos2=resid(modelo2)
+df <- data.frame(
+  año = rep(datos$year, 2),
+  valor = c(residuos2, datos$A),
+ variable = rep(c("Residuos", "A"), each = nrow(datos))
+)
+
+ggplot(df, aes(x = año, y = valor, color = variable)) +
+  geom_line(linewidth = 1) +
+  labs(title = "Residuos de q~k y variable A", x = "Año", y = "Valor") +
+  theme_minimal()
+```
+
+**¿Encuentras algún patrón de comportamiento en los residuos? ¿A qué crees que puede deberse?**
+
+### Demanda de productos lacteos: Estimación y selección de modelos. Interpretación de coeficientes con logaritmos. {.unnumbered}
+
+Partiendo de la base de datos de @Uriel2019 denominada $demand$, se han considerado los siguientes modelos alternativos para analizar los determinantes del gasto en productos lácteos $dairy$ en función de la renta disponible de los hogares $inc$, el número de miembros del hogar $hhsize$ y la proporción de niños menores de cinco años en el hogar $punder5$:
+
+```{r}
+demand= read_excel('data/bd3_demand.xlsx')
+demand<-as.data.frame(demand)
+```
+
+Se proponen los siguientes modelos: - Modelo 1: $dairy=\beta_1+\beta_2inc+u$
+
+-   Modelo 2: $dairy=\beta_!+\beta_2ln(inc)+u$
+
+-   Modelo 3: $dairy=\beta_1+\beta_2inc+\beta_3punder5+u$
+
+-   Modelo 4: $dairy=\beta_2inc+\beta_3punder5+u$
+
+-   Modelo 5: $dairy=\beta_1+\beta_2inc+\beta_3hhsize+u$
+
+-   Modelo 6: $ln(dairy)=\beta_1+\beta_2inc+u$
+
+-   Modelo 7: $ln(dairy)=\beta_1+\beta_2inc+\beta_3punder5+u$
+
+-   Modelo 8: $ln(dairy)=\beta_2inc+\beta_3punder5+u$
+
+Se pide estimar los distintos modelos y compararlos mediante en terminos de bondad del ajuste. Para ello, en primer lugar se estiman los modelos y se extraen del resumen de cada estiamción el coeficiente de determinación corregido, el criterio de Akaike y el BIC.
+
+```{r}
+modelo1=lm(DAIRY~INC, data=demand)
+resultado_modelo1=summary(modelo1)
+modelo2=lm(DAIRY~log(INC), data=demand)
+resultado_modelo2=summary(modelo2)
+modelo3=lm(DAIRY~INC+PUNDER5, data=demand)
+resultado_modelo3=summary(modelo3)
+modelo4=lm(DAIRY~INC+PUNDER5-1, data=demand)
+resultado_modelo4=summary(modelo4)
+modelo5=lm(DAIRY~INC+HHSIZE, data=demand)
+resultado_modelo5=summary(modelo5)
+modelo6=lm(log(DAIRY)~INC,data=demand)
+resultado_modelo6=summary(modelo6)
+modelo7=lm(log(DAIRY)~INC+PUNDER5,data=demand)
+resultado_modelo7=summary(modelo7)
+modelo8=lm(log(DAIRY)~INC+PUNDER5-1,data=demand)
+resultado_modelo8=summary(modelo8)
+```
+
+```{r}
+resultados <- data.frame(
+Modelo = c("modelo1", "modelo2","modelo3","modelo4","modelo5","modelo6","modelo7","modelo8"),
+DF     = c(length(coef(modelo1)), length(coef(modelo2)), length(coef(modelo3)), length(coef(modelo4)), length(coef(modelo5)), length(coef(modelo6)), length(coef(modelo7)), length(coef(modelo8))),
+R2_CORREGIDO = c(resultado_modelo1$adj.r.squared,resultado_modelo2$adj.r.squared,resultado_modelo3$adj.r.squared,resultado_modelo4$adj.r.squared,resultado_modelo5$adj.r.squared,resultado_modelo6$adj.r.squared,resultado_modelo7$adj.r.squared,resultado_modelo8$adj.r.squared),
+AIC    = c(AIC(modelo1), AIC(modelo2),AIC(modelo3), AIC(modelo4),AIC(modelo5), AIC(modelo6),AIC(modelo7), AIC(modelo8)),
+BIC    = c(BIC(modelo1), BIC(modelo2),BIC(modelo3), BIC(modelo4),BIC(modelo5), BIC(modelo6),BIC(modelo7), BIC(modelo8)))
+resultados
+```
+
+Nótese que los primeros cinco modelos tienen la misma variable dependiente, por lo que pueden ser comparados entre sí. Sin embargo, es importante señalar que el modelo 4 no incluye término independiente, por lo que el coeficiente de determinación no puede aplicarse de manera adecuada. Así, se concluye que, entre los cinco primeros modelos, el modelo 4 es el que presenta la mejor bondad de ajuste según los distintos criterios de información.
+
+En cuanto a los modelos 6, 7 y 8, el modelo 8 nuevamente carece de término independiente, por lo que no es posible utilizar el coeficiente de determinación corregido como criterio de comparación. En este caso, la conclusión es que el modelo 7 presenta el menor valor en los criterios de información.
+
+Cabe destacar que los criterios de información cuentan con una versión ajustada que permite comparar modelos con la misma variable endógena, pero con distinta forma funcional, como ocurre en este caso (véase @Uriel2019).
+
+## Prácticas propuestas
+
+1. Se plantea un modelo para explicar la inflación en España para los años 2006-2024, en función de la tasa de desempleo y el precio de la energia (en euros por megavatio-hora), a partir de los siguientes datos obtenidos del Instituto Nacional de Estadística (INE) y de statista.com:
+
+```{r}
+philips= read_excel('data/BD_PHILIPS.xlsx')
+philips=as.data.frame(philips)
+```
+
+Se pide: 
+
+a. Representar la serie temporal de la inflación en función de la tasa de desempleo. 
+b. Estimación del modelo que explique la inflación en función de la tasa de desempleo.
+c. Interprete los coeficientes estimados.
+d. Estimación del modelo que explique la inflación en función de la tasa de desempleo y el precio de la energia. Compare ambos modelos en términos de bondad de ajuste.
+e. Analice la significatividad individual y global del último modelo estimado.
+f. Contraste al 95% si por cada unidad porcentual que aumente la el desempleo la inflación podría llegar a disminuir un 1%, ceteris paribus.
+g. Contraste si el efecto de la variable tasa de desempleo puede ser el mismo que el de la variable precio de la energia pero con signo contrario.
+h. Obtenga una previsión de la inflación para el año 2025, suponiendo que la tasa de paro ha sido de 10.8% y el precio medio de la energia de 85 euros.
+i. Analizar la permanencia estructural del modelo sabiendo que finalmente la inflación en el año 2025 fue de 2.5%.
+
+2. El departamento de Sanidad de E.E.U.U. quiere estudiar la relación entre el gasto sanitario agregado en billones de dólares (exphlth), la renta personal disponible agregada también en billones de dólares (income), el porcentaje de población que supera los 65 años en el año 2005 (seniors) y la población en millones (pop). Para ello encarga un estudio a dos becarios de la facultad de Económicas de Harvard poniendo a su disposición datos de 2005 para dichas variables sobre 51 estados americanos. (Fichero data8-3.gdt Ramanathan).
+a. Escribe la ecuación del modelo que te permita analizar la influencia de las variables explicativas income, seniors y pop sobre la variable exphlth.
+b. Interpreta los coeficientes del modelo anterior
+c. Estima la ecuación propuesta por MCO. Interpreta los coeficientes estimados del modelo. ¿Son sus signos coherentes con la teoría económica?
+d. ¿Cuál es la varianza de cada uno de los estimadores de los parámetros?
+e. Interpreta el coeficiente de determinación del modelo
+f. Obtener el valor del coeficiente de determinación corregido
+g. Estimar ahora el modelo eliminando la variable seniors, interpretar el modelo y comparar su bondad. 
+
+3. Se tiene una base de datos para el periodo 1990-2024 de la esperanza de vida al nacer y el gasto sanitario público (en millones de euros), asi como el porcentaje del gasto en función del PIB y la renta per capita (medida en euros).  `
+```{r}
+knitr::opts_chunk$set(echo = TRUE)
+library(readxl)
+datos <- read_excel("data/bd6_esperanza.xlsx")
+```
+
+Se proponen distintas especificaciones del modelo incluyendo la variable Gasto Sanitario (en millones de euros) y renta per capita (en euros)
+
+```{r}
+m_linlin <- lm(Esperanza ~ Gasto + Renta, data = datos)
+m_loglin <- lm(log(Esperanza)~ Gasto + Renta, data = datos)
+m_linlog <- lm(Esperanza ~ log(Gasto) + Renta, data = datos)     
+m_loglog <- lm(log(Esperanza) ~ log(Gasto) + log(Renta), data = datos)
+summary(m_linlin)
+summary(m_loglin)
+summary(m_linlog)
+summary(m_loglog)
+```
+Comparar en terminos de bondad de ajuste, pero con otra especificación que use en porcentaje de gasto Sanitario en función del PIB en lugar del gasto sanitario:
+
+
+```{r}
+m_linlin_ratio <- lm(Esperanza ~ GastoPIB + Renta, data = datos)
+m_loglin_ratio <- lm(log(Esperanza)~ GastoPIB + Renta, data = datos)
+m_linlog_ratio <- lm(Esperanza ~ log(GastoPIB) + Renta, data = datos) 
+m_loglog_ratio <- lm(log(Esperanza) ~ log(GastoPIB)+Renta, data = datos)
+summary(m_linlin_ratio)
+summary(m_loglin_ratio)
+summary(m_linlog_ratio)
+summary(m_loglog_ratio)
+```
+
+```{r}
+m_linlin_sinrenta <- lm(Esperanza ~ GastoPIB, data = datos)
+m_loglin_sinrenta <- lm(log(Esperanza)~ GastoPIB, data = datos)
+m_linlog_sinrenta <- lm(Esperanza ~ log(GastoPIB), data = datos)
+m_loglog_sinrenta <- lm(log(Esperanza) ~ log(GastoPIB), data = datos)
+summary(m_linlin_sinrenta)
+summary(m_loglin_sinrenta)
+summary(m_linlog_sinrenta)
+summary(m_loglog_sinrenta)
+```
+Se pide:
+a. Comparar en terminos de bondad de ajuste, pero con otra especificación que elimine la variable renta:
+```{r}
+resultados <- data.frame(
+  modelo = c("lin-lin", "log-lin", "lin-log", "log-log",
+             "lin-lin ratio", "log-lin ratio", "lin-log ratio", "log-log ratio",
+             "lin-lin sin renta", "log-lin sin renta", "lin-log sin renta", "log-log sin renta"),
+  R2 = c(summary(m_linlin)$r.squared,
+         summary(m_loglin)$r.squared,
+         summary(m_linlog)$r.squared,
+         summary(m_loglog)$r.squared,
+         summary(m_linlin_ratio)$r.squared,
+         summary(m_loglin_ratio)$r.squared,
+         summary(m_linlog_ratio)$r.squared,
+         summary(m_loglog_ratio)$r.squared,
+         summary(m_linlin_sinrenta)$r.squared,
+         summary(m_loglin_sinrenta)$r.squared,
+         summary(m_linlog_sinrenta)$r.squared,
+         summary(m_loglog_sinrenta)$r.squared),
+  R2_ajustado = c(summary(m_linlin)$adj.r.squared,
+                  summary(m_loglin)$adj.r.squared,
+                  summary(m_linlog)$adj.r.squared,
+                  summary(m_loglog)$adj.r.squared,
+                  summary(m_linlin_ratio)$adj.r.squared,
+                  summary(m_loglin_ratio)$adj.r.squared,
+                  summary(m_linlog_ratio)$adj.r.squared,
+                  summary(m_loglog_ratio)$adj.r.squared,
+                  summary(m_linlin_sinrenta)$adj.r.squared,
+                  summary(m_loglin_sinrenta)$adj.r.squared,
+                  summary(m_linlog_sinrenta)$adj.r.squared,
+                  summary(m_loglog_sinrenta)$adj.r.squared)
+)
+resultados
+```
+
+b. A partir de la siguiente información, realice una selección de modelos:
+```{r}
+AIC(m_linlin,m_loglin,m_linlog,m_loglog,m_linlin_ratio,m_loglin_ratio,m_linlog_ratio,m_loglog_ratio,m_linlin_sinrenta,m_loglin_sinrenta,m_linlog_sinrenta,m_loglog_sinrenta)
+BIC(m_linlin,m_loglin,m_linlog,m_loglog,m_linlin_ratio,m_loglin_ratio,m_linlog_ratio,m_loglog_ratio,m_linlin_sinrenta,m_loglin_sinrenta,m_linlog_sinrenta,m_loglog_sinrenta)
+```
+c. Selecciona un modelo para el caso de trabajar con la variable dependiente y otro para trabajar el modelo con la variable dependiente en su unidad original, y realiza predicciones de la esperanza de vida al nacer en el año 2025, suponiendo que el gasto sanitario es de 99.500 millones de euros, que supone un 8% del PIB y que la renta per capita es de 36.000 euros. 
+
+d. Construye el intervalo de predicción del valor individual de la variable dependiente y concluye en relación a la permanencia estructural del modelo sabiendo que la esperanza de vida al nacer en el año 2025 es de 84 años. 
+
+
+
+
+## Referencias

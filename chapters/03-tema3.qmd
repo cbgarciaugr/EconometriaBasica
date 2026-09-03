@@ -1,0 +1,710 @@
+# Variables dicotómicas y cambio estructural
+
+::: {.callout-important title="Objetivos de aprendizaje"}
+Al finalizar este capítulo, el estudiante será capaz de:
+
+- Identificar cuándo es necesario incorporar información cualitativa en un modelo de regresión mediante variables dicotómicas.
+- Definir e interpretar una variable dicotómica, distinguiendo entre la categoría representada por el valor 1 y la categoría de referencia representada por el valor 0.
+- Incorporar variables dicotómicas junto con variables cuantitativas en un modelo de regresión y explicar la interpretación de sus coeficientes manteniendo constantes las restantes variables.
+- Reconocer y evitar la trampa de las variables ficticias, identificando la situación de colinealidad perfecta que aparece al introducir todas las categorías junto con el término independiente.
+- Interpretar los coeficientes de las variables dicotómicas cuando existen varias categorías, entendiendo que cada coeficiente representa una diferencia respecto a la categoría de referencia.
+Analizar diferencias en la estructura del modelo entre grupos mediante variables dicotómicas e interacciones entre variables cualitativas y cuantitativas.
+- Plantear y contrastar hipótesis de igualdad de parámetros entre grupos, utilizando variables dicotómicas para analizar posibles cambios estructurales.
+- Interpretar correctamente una variable dicotómica cuando la variable dependiente está expresada en logaritmos.
+- Aplicar estos conceptos a problemas de economía, finanzas y contabilidad, utilizando ejemplos como las diferencias en el ROA entre empresas de distintas provincias y evaluando si dichas diferencias permanecen después de controlar por características financieras como el endeudamiento y la liquidez.
+:::
+
+
+## Resumen teórico
+
+Hasta ahora hemos trabajado fundamentalmente con variables cuantitativas. Sin embargo, en muchas aplicaciones de economía, finanzas y contabilidad también resulta necesario incorporar al modelo información de carácter **cualitativo**.
+
+Por ejemplo, en el análisis de la rentabilidad empresarial puede ser interesante comprobar si las empresas presentan un comportamiento diferente dependiendo de la provincia en la que están ubicadas. Para ello, podemos introducir en el modelo variables dicotómicas, también denominadas **variables ficticias** o *dummies*.
+
+Una variable dicotómica únicamente puede tomar dos valores: **1 cuando se cumple una determinada característica y 0 cuando no se cumple**. De esta forma, permite incorporar al modelo información cualitativa.
+
+### Un ejemplo con dos categorías: empresas de Sevilla y del resto de Andalucía
+
+Para introducir esta idea, supongamos que queremos analizar si existen diferencias en el **ROA** entre las empresas cuya sede se encuentra en Sevilla y las empresas situadas en el resto de provincias andaluzas.
+
+Definimos la variable dicotómica:
+
+$$
+D_{SEV,i}=
+\begin{cases}
+1 & \text{si la empresa }i\text{ pertenece a Sevilla}\\
+0 & \text{si la empresa }i\text{ pertenece a otra provincia}
+\end{cases}
+$$
+
+Podemos plantear inicialmente el siguiente modelo:
+
+$$
+ROA_i=\beta_0+\beta_1D_{SEV,i}+u_i.
+$$
+
+En este caso, cuando una empresa no pertenece a Sevilla, ($D_{SEV,i}=0$), por lo que:
+
+$$
+E(ROA_i|D_{SEV,i}=0)=\beta_0.
+$$
+
+Por el contrario, para una empresa situada en Sevilla, ($D_{SEV,i}=1$), de manera que:
+
+$$
+E(ROA_i|D_{SEV,i}=1)=\beta_0+\beta_1.
+$$
+
+Por tanto, ($\beta_0$) representa el **ROA medio esperado de las empresas que no pertenecen a Sevilla**, mientras que ($\beta_1$) mide la **diferencia en el ROA medio entre las empresas de Sevilla y las del resto de Andalucía**.
+
+Esta interpretación permite entender las variables dicotómicas de una manera especialmente sencilla: **el coeficiente asociado a una variable dicotómica mide la diferencia respecto a la categoría que se ha tomado como referencia**.
+
+::: {.callout-tip appearance="simple" icon=false title="Base de datos 2: El IBEX35"}
+```{r}
+library(readxl)
+library(dplyr)
+datos <- read_excel("data/BD_SABI.xlsx", sheet = "Datos")
+empresas_provincia <- datos %>%
+  count(PROVINCIA, name = "n_empresas") %>%
+  arrange(desc(n_empresas))
+
+empresas_provincia
+```
+
+```{r}
+datos <- datos %>%
+  mutate(
+    D_SEV = ifelse(PROVINCIA == "Sevilla", 1, 0)
+  )
+```
+Y se puede estimar el modelo:
+```{r}
+modelo_sevilla=lm(ROA~+D_SEV, data=datos)
+summary(modelo_sevilla)
+```
+
+:::
+
+
+
+
+### Variables dicotómicas junto con variables cuantitativas
+
+La variable dicotómica también puede incorporarse a un modelo que incluya otras variables explicativas cuantitativas. Por ejemplo, podemos analizar el ROA teniendo en cuenta el endeudamiento y la liquidez de las empresas:
+
+$$
+ROA_i=
+\beta_0+
+\beta_1D_{SEV,i}+
+\beta_2LEV_i+
+\beta_3LIQ_i+
+u_i.
+$$
+
+En este caso, para una empresa que no pertenece a Sevilla:
+
+$$
+E(ROA_i|D_{SEV,i}=0,LEV_i,LIQ_i)=\beta_0+\beta_2LEV_i+\beta_3LIQ_i.
+$$
+
+Para una empresa de Sevilla:
+
+$$
+E(ROA_i|D_{SEV,i}=1,LEV_i,LIQ_i)=\beta_0+\beta_1+\beta_2LEV_i+\beta_3LIQ_i.
+$$
+
+La interpretación de ($\beta_1$) cambia ligeramente respecto al modelo anterior. Ahora representa la **diferencia esperada en el ROA entre una empresa de Sevilla y otra que no pertenece a Sevilla, manteniendo constantes el endeudamiento y la liquidez**.
+
+Por tanto, la variable dicotómica permite analizar si, una vez controladas las características financieras de las empresas, sigue existiendo una diferencia asociada a su localización.
+
+Este tipo de especificación resulta especialmente útil para distinguir entre una diferencia **bruta** entre grupos y una diferencia que permanece después de controlar por otras características relevantes.
+
+::: {.callout-tip appearance="simple" icon=false title="Base de datos 2: El IBEX35"}
+```{r}
+datos <- read_excel("data/BD_SABI.xlsx", sheet = "Datos")
+empresas_provincia <- datos %>%
+  count(PROVINCIA, name = "n_empresas") %>%
+  arrange(desc(n_empresas))
+
+empresas_provincia
+```
+
+```{r}
+datos <- datos %>%
+  mutate(
+    D_SEV = ifelse(PROVINCIA == "Sevilla", 1, 0)
+  )
+```
+Y se puede estimar el modelo:
+```{r}
+modelo_sevilla=lm(ROA~ENDEUDAMIENTO+LIQUIDEZ_INMEDIATA+D_SEV, data=datos)
+summary(modelo_sevilla)
+```
+
+:::
+
+### Variables cualitativas con más de dos categorías
+
+La situación cambia cuando la característica cualitativa que queremos introducir tiene más de dos categorías.
+
+En nuestro ejemplo, en lugar de distinguir únicamente entre Sevilla y el resto de Andalucía, podemos preguntarnos si el ROA difiere entre las **ocho provincias andaluzas**: Almería, Cádiz, Córdoba, Granada, Huelva, Jaén, Málaga y Sevilla. La provincia es, por tanto, una variable cualitativa con ocho categorías.
+
+Para incorporar esta información al modelo no introduciremos las ocho variables dicotómicas simultáneamente. Debemos seleccionar una de las categorías como **categoría de referencia** e introducir una variable dicotómica para cada una de las restantes.
+
+Por ejemplo, podemos tomar **Sevilla como categoría de referencia**. En ese caso, crearíamos siete variables dicotómicas:
+
+$$
+D_{ALM,i},D_{CAD,i},D_{COR,i},D_{GRA,i},
+D_{HUE,i},D_{JAE,i},D_{MAL,i}.
+$$
+
+Cada una toma el valor 1 cuando la empresa pertenece a la provincia correspondiente y 0 en caso contrario.
+
+El modelo podría expresarse como:
+
+$$
+\begin{aligned}
+ROA_i={}&\beta_0+
+\beta_1D_{ALM,i}+
+\beta_2D_{CAD,i}+
+\beta_3D_{COR,i}+
+\beta_4D_{GRA,i}\\
+&+\beta_5D_{HUE,i}+
+\beta_6D_{JAE,i}+
+\beta_7D_{MAL,i}
++u_i.
+\end{aligned}
+$$
+
+En este modelo, Sevilla es la **categoría de referencia**. Por tanto, si una empresa pertenece a Sevilla, todas las variables dicotómicas toman el valor 0 y:
+
+$$
+E(ROA_i|Sevilla)=\beta_0.
+$$
+
+Para una empresa de Almería, por ejemplo:
+
+$$
+E(ROA_i|Almería)=\beta_0+\beta_1.
+$$
+
+De manera análoga:
+
+$$
+E(ROA_i|Cádiz)=\beta_0+\beta_2,
+$$
+
+y así sucesivamente.
+
+Por tanto, cada coeficiente asociado a una provincia mide la **diferencia en el ROA respecto a Sevilla**, manteniendo constantes las demás variables incluidas en el modelo.
+
+Si además incluimos endeudamiento y liquidez, tendríamos:
+
+$$
+\begin{aligned}
+ROA_i={}&\beta_0+
+\beta_1D_{ALM,i}+\cdots+\beta_7D_{MAL,i}\\
+&+\beta_8LEV_i+\beta_9LIQ_i+u_i.
+\end{aligned}
+$$
+
+En este caso, los coeficientes de las variables provinciales permiten analizar si existen diferencias en el ROA entre las distintas provincias **una vez controlado el efecto del endeudamiento y la liquidez**.
+
+
+::: {.callout-tip appearance="simple" icon=false title="Base de datos 2: El IBEX35"}
+```{r}
+datos <- read_excel("data/BD_SABI.xlsx", sheet = "Datos")
+empresas_provincia <- datos %>%
+  count(PROVINCIA, name = "n_empresas") %>%
+  arrange(desc(n_empresas))
+
+empresas_provincia
+```
+
+```{r}
+datos <- datos %>%
+  mutate(
+    D_ALM = ifelse(PROVINCIA == "Almería", 1, 0),
+    D_CAD = ifelse(PROVINCIA == "Cádiz", 1, 0),
+    D_COR = ifelse(PROVINCIA == "Córdoba", 1, 0),
+    D_GRA = ifelse(PROVINCIA == "Granada", 1, 0),
+    D_HUE = ifelse(PROVINCIA == "Huelva", 1, 0),
+    D_JAE = ifelse(PROVINCIA == "Jaen", 1, 0),
+    D_MAL = ifelse(PROVINCIA == "Málaga", 1, 0)
+  )
+```
+Y se puede estimar el modelo:
+```{r}
+modelo_provincias <- lm(
+  ROA ~ ENDEUDAMIENTO + LIQUIDEZ_INMEDIATA +
+    D_ALM + D_CAD + D_COR + D_GRA +
+    D_HUE + D_JAE + D_MAL,
+  data = datos
+)
+
+summary(modelo_provincias)
+```
+:::
+
+### La trampa de las variables ficticias
+
+Al introducir una variable cualitativa hay que tener en cuenta el número de categorías que presenta. Si una variable tiene ($m$) categorías, se introducen **(m-1) variables dicotómicas**, dejando una categoría como referencia.
+
+En nuestro ejemplo, la provincia tiene ocho categorías, por lo que se introducen siete variables dicotómicas y Sevilla queda como categoría de referencia.
+
+La razón es que no podemos introducir simultáneamente las ocho variables provinciales junto con el término independiente. Para cada empresa, una y solo una de las ocho variables provinciales tomaría el valor 1, por lo que se cumpliría:
+
+$$
+D_{ALM,i}+D_{CAD,i}+D_{COR,i}+D_{GRA,i}
++D_{HUE,i}+D_{JAE,i}+D_{MAL,i}+D_{SEV,i}=1.
+$$
+
+Esta relación implica una combinación lineal exacta entre las variables dicotómicas y el término independiente, dando lugar a **colinealidad perfecta** y, por tanto, impidiendo estimar el modelo mediante MCO.
+
+Este problema se conoce como **trampa de las variables ficticias**.
+
+La solución consiste en eliminar una de las categorías y utilizarla como referencia. En nuestro ejemplo, al eliminar ($D_{SEV}$), los coeficientes de las restantes provincias se interpretan siempre en comparación con Sevilla.
+
+### Variables dicotómicas y cambio estructural
+
+Las variables dicotómicas también permiten analizar si existe un **cambio estructural entre grupos**.
+
+En el ejemplo anterior, si incluimos una variable dicotómica para distinguir entre empresas de Sevilla y empresas del resto de Andalucía, estamos permitiendo que el intercepto sea diferente entre ambos grupos:
+
+$$
+ROA_i=\beta_0+\beta_1D_{SEV,i}+\beta_2LEV_i+\beta_3LIQ_i+u_i.
+$$
+
+En este caso, $\beta_1$ recoge un posible cambio en el intercepto entre los dos grupos.
+
+Sin embargo, también podemos plantear que las diferencias entre grupos afecten a la relación entre el ROA y las variables financieras. Para ello se pueden incorporar **interacciones** entre la variable dicotómica y las variables cuantitativas:
+
+$$
+\begin{aligned}
+ROA_i={}&\beta_0+\beta_1D_{SEV,i}
++\beta_2LEV_i+\beta_3LIQ_i\\
+&+\beta_4(D_{SEV,i}LEV_i)
++\beta_5(D_{SEV,i}LIQ_i)+u_i.
+\end{aligned}
+$$
+
+Ahora no solo permitimos que el intercepto sea diferente entre Sevilla y el resto de Andalucía, sino también que sean diferentes las pendientes asociadas al endeudamiento y la liquidez.
+
+Para las empresas que no pertenecen a Sevilla:
+
+$$
+E(ROA_i)=
+\beta_0+\beta_2LEV_i+\beta_3LIQ_i.
+$$
+
+Para las empresas de Sevilla:
+
+$$
+E(ROA_i)=
+(\beta_0+\beta_1)
++(\beta_2+\beta_4)LEV_i
++(\beta_3+\beta_5)LIQ_i.
+$$
+
+De esta forma, las variables dicotómicas permiten pasar de comparar simplemente **niveles medios entre grupos** a analizar si la **estructura completa del modelo** es diferente entre ellos.
+
+Esta idea conecta directamente con el análisis de permanencia estructural estudiado anteriormente. En un contexto transversal, podemos utilizar variables dicotómicas e interacciones para formular un conjunto de restricciones lineales y contrastar si los parámetros son iguales entre los grupos.
+
+Por ejemplo, para comprobar si el modelo es el mismo para las empresas de Sevilla y las del resto de Andalucía, podríamos plantear:
+
+$$
+H_0:
+\beta_1=\beta_4=\beta_5=0.
+$$
+
+Si no rechazamos esta hipótesis, no encontramos evidencia de diferencias en el intercepto ni en las pendientes entre ambos grupos. Si la rechazamos, existe evidencia de que al menos uno de los parámetros difiere y, por tanto, de que la relación entre las variables no es la misma en ambos grupos.
+
+De este modo, las variables dicotómicas constituyen una herramienta flexible para incorporar información cualitativa, comparar grupos y analizar posibles diferencias en la estructura de un modelo de regresión.
+
+
+### Interpretación cuando la variable dependiente esta expresada en logaritmos
+
+Cuando la variable dependiente está expresada en logaritmos, la interpretación de los coeficientes asociados a las variables dicotómicas debe realizarse en términos porcentuales.
+
+Consideremos el siguiente modelo:
+
+$$
+\ln(Y_t)=\beta_0+\beta_1D_t+u_t,
+$$
+
+donde $D_t$ es una variable dicotómica que toma el valor 1 cuando se presenta una determinada característica y 0 en caso contrario.
+
+Si $D_t=0$, el modelo queda:
+
+$$
+E[\ln(Y_t)|D_t=0]=\beta_0.
+$$
+
+Mientras que si $D_t=1$:
+
+$$
+E[\ln(Y_t)|D_t=1]=\beta_0+\beta_1.
+$$
+
+Por tanto, $\beta_1$ mide la diferencia en el **logaritmo de $Y$** entre las dos categorías. Como consecuencia de que la variable dependiente está expresada en logaritmos, esta diferencia puede transformarse en una diferencia porcentual en $Y$.
+
+Cuando $\beta_1$ toma valores relativamente pequeños, puede utilizarse la aproximación:
+
+$$
+\%\Delta Y \approx 100\beta_1.
+$$
+
+Por ejemplo, si $\beta_1=0.08$, la presencia de la característica representada por $D_t=1$ se asociaría aproximadamente con un incremento del **8% en $Y$** respecto a la categoría de referencia.
+
+Sin embargo, esta aproximación puede resultar poco precisa cuando el coeficiente toma valores elevados. La transformación exacta del coeficiente permite obtener directamente el cambio porcentual:
+
+$$
+\%\Delta Y=
+\left(e^{\beta_1}-1\right)\times100.
+$$
+
+Así, si $\beta_1=0.08$, el efecto exacto sería:
+
+$$
+\left(e^{0.08}-1\right)\times100=8.33\%.
+$$
+
+Por tanto, manteniendo constantes las demás variables del modelo, el valor esperado de $Y$ para las observaciones con $D_t=1$ es aproximadamente un **8.33% superior** al de las observaciones de la categoría de referencia.
+
+Esta interpretación puede extenderse al caso en el que el modelo incluya otras variables explicativas. En ese caso, el coeficiente de la variable dicotómica recoge la diferencia porcentual entre las dos categorías **manteniendo constantes las restantes variables incluidas en el modelo**.
+
+En consecuencia, cuando la variable dependiente está expresada en logaritmos, una variable dicotómica permite interpretar las diferencias entre grupos en términos porcentuales, lo que puede resultar especialmente útil en aplicaciones financieras y contables en las que las variables analizadas presentan grandes diferencias de escala.
+
+
+## Prácticas resueltas
+
+### Función de producción. Interpretación de variables dicotómicas {.unnumbered}
+
+Continuando con la base de datos de Greene denominada `BD_FUNCIONPRODUCCION`, que
+contiene información referida a Estados Unidos durante el período
+1909-1949. En este contexto histórico tuvieron lugar la Primera Guerra
+Mundial (1914–1918) y la Segunda Guerra Mundial (1939–1945), en las
+cuales Estados Unidos participó principalmente entre 1917–1918 y
+1941–1945.
+
+```{r}
+library(readxl)
+datos= read_excel('data/BD_FUNCIONPRODUCCION.xlsx')
+```
+
+Podríamos crear una variable dicotómica que diferencie entre años de
+guerra y años de paz:
+
+```{r}
+datos$guerra <- ifelse(datos$year %in% c(1914:1918, 1939:1945), 1, 0)
+```
+
+A continuación, calculamos la media de la variable $q$ para los años de
+guerra (Guerra=1) y para los años de paz (Guerra=0)
+
+```{r}
+tapply(datos$q, datos$guerra, mean, na.rm = TRUE)
+```
+
+Este calculo nos va a permitir comprender mejor la interpretación de los
+estimadores. Al hacer la estimación de la variable $q$ solo en función
+de la variable guerra, se observa que el estimador del termino
+independiente toma el valor 0.8817586, que coincide con la media de la
+variable $q$ para los años de paz que se ha obtenido anteriormente. Esa
+es, precisamente, su interpretación: el valor medio de la variable
+dependiente cuando la variable guerra toma el valor 0, es decir, en años
+de paz. Por otra parte, el estimador que acompaña a la variable guerra,
+toma el valor 0.08274, que se interpreta como la diferencia en el efecto
+sobre la media de la variable dependiente en los años de guerra en
+comparación con los años de paz. De hecho, si sumamos 0.8817586 y
+0.08274, se obtiene 0.9645, que es precisamente la media que se ha
+obtenido anteriormente para la variable $q$ en años de guerra.
+
+```{r}
+modelo_ficticia <- lm(q ~ guerra, data = datos)
+summary(modelo_ficticia)
+```
+
+Se observa que el modelo anterior tiene un coeficiente de determinación
+muy bajo, pero nos ha servido para explicar la interpretación de los
+estimadores en el caso de variables cualitativas.
+
+A continuación, se estima el modelo en su conjunto, añadiendo la
+variable dicotómica junto con el resto de variables explicativas
+cuantitativas:
+
+```{r}
+modelo3 <- lm(q ~ k + A + guerra, data = datos)
+summary(modelo3)
+```
+
+En este caso, la interpretación del estimador del termino independiente,
+sería el valor medio de la variable dependiente en años de paz
+(guerra=0) y con el resto de variables cuantitativas tomando el valor 0
+y el estimador que acompaña a la variable guerra se interpreta como la
+diferencia en la productividad en los años de guerra, con respecto a los
+años de paz, a igualdad del resto de variables. Se observa que en este
+caso, el estimador tiene signo negativo, lo que se interpreta como que
+la productividad sería menor en los años de guerra que en los años de
+paz (a igualdad del resto de variables), siendo significativo
+indivualmente al 90% de confianza.
+
+Podríamos igualmente crear la interacción entre las variables
+explicativas y la dicótomica, para analizar no solo si hay un cambio en
+la ordenada, sino tambien si el efecto de cada una de las variables
+explicativas es diferente en los periodos de guerra y los de paz:
+
+```{r}
+datos$k_guerra <- datos$k * datos$guerra
+datos$A_guerra <- datos$A * datos$guerra
+```
+
+Una vez creadas las variable interacción, se pueden incluir en el
+modelo:
+
+```{r}
+modelo_interaccion <- lm(q ~ k + A + guerra + k_guerra + A_guerra, data = datos)
+summary(modelo_interaccion)
+```
+
+### Consumo eléctrico en España. Interpretación de los coeficientes con el uso de logaritmos. {.unnumbered}
+
+Supongamos que queremos estimar para el periodo 1990-2024 cómo el
+consumo eléctrico (medido en gigavatio-hora GWh) en España depende de la
+renta per cápita (medido en euros) y del partido que gobernaba para lo
+que se ha creado una variable dicotómica ($D1$) que toma el valor 1 en
+los años en los que gobernaba el Partido Popular y 0 en caso contrario.
+
+```{r setup, include=FALSE}
+library(readxl)
+consumo_energia_espana_1990_2024 <- read_excel("data/BD_CONSUMOELECTRICO.xlsx")
+```
+
+El modelo general puede escribirse como:
+
+$$Consumoelectrico_t=\beta_1+\beta_2rentapercapita_t+\beta_3D1_t+u_t$$
+
+A continuación se explica cómo interpretar los coeficientes según la
+transformación de las variables.
+
+### Modelo nivel-nivel {.unnumbered}
+
+```{r}
+modelo_in_in=lm(Consumo_electrico~Renta+gobierno,data=consumo_energia_espana_1990_2024)
+summary(modelo_in_in)
+```
+
+En este modelo:
+
+$\beta_2$ indica el cambio absoluto en GWh por cada euro adicional de
+renta per cápita. $\beta_3$ indica la diferencia promedio en GWh entre
+los años que gobernaba el PP y los que no.
+
+### Modelo Log-Nivel {.unnumbered}
+
+```{r}
+modelo_log_in=lm(log(Consumo_electrico)~Renta+gobierno,data=consumo_energia_espana_1990_2024)
+summary(modelo_log_in)
+```
+
+En este modelo:
+
+$\beta_2$ mide el cambio porcentual aproximado en el consumo por cada
+euro adicional de renta. $\beta_3$ se interpreta como la diferencia
+porcentual exacta entre los años que gobernaba el PP y los que no.
+
+$$\% cambio=(e^\beta_3-1)\times100$$
+
+### Modelo Nivel-Log {.unnumbered}
+
+```{r}
+modelo_in_log=lm(Consumo_electrico~log(Renta)+gobierno,data=consumo_energia_espana_1990_2024)
+summary(modelo_in_log)
+```
+
+$\beta_2$ indica el cambio absoluto en GWh asociado a un aumento del 1%
+en renta per cápita. $\beta_3$ Igual que en Nivel-Nivel: diferencia
+absoluta entre los años que gobernaba el PP y los que no.
+
+### Modelo Log-Log (consumo y renta logarítmicas) {.unnumbered}
+
+```{r}
+modelo_log_log=lm(log(Consumo_electrico)~log(Renta)+              gobierno,data=consumo_energia_espana_1990_2024)
+summary(modelo_log_log)
+```
+
+$\beta_2$ es la elasticidad: porcentaje de cambio en consumo eléctrico
+ante un 1% de cambio en renta per cápita. $\beta_3$ Igual que en
+Log-Nivel: diferencia porcentual exacta entre los años que gobernaba el
+PP y los que no.
+
+## Prácticas propuestas
+
+1. Estimar el modelo de IBEX35 incluyendo una dicotomica que detalle a que trimestre corresponde cada dato, e incluir en el modelo esas variables dicotómicas para analizar si hay un efecto estacional por trimestres. 
+
+2. Se tienen datos para los años 2006-2015 sobre la evolución de las ventas
+($Y$) del grupo Inditex, el número de empleados ($X_2$), número de
+tiendas ($X_3$) y una variable ficticia que tomar el valor 1 para los
+años en los que se oferta comercio electónico ($X_4$).
+
+```{r}
+inditex <- data.frame(
+  Año = c(2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 
+          2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024),
+  Y = c(8196, 9435, 10407, 11084, 12597, 13793, 
+                              15946, 16724, 18117, 20900, 23311, 25336, 
+                              26145, 28286, 20402, 27716, 32569, 35947, 38632),
+  X2 = c(69240, 79517, 89112, 92301, 100138, 109512, 120314, 
+                128313, 137054, 152854, 162450, 171839, 174386, 176611, 
+                144116, 165042, 164997, 161281, 158797),
+  X3 = c(3131, 3691, 4264, 4607, 5044, 5527, 6009, 6340, 6683, 7013, 
+              7292, 7448, 7490, 7469, 6829, 6477, 5815, 5692, 5563),
+  X4 = c(0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1)
+)
+```
+
+Se pide: 
+a. Estimar el modelo
+b. Analizar la significatividad individual y global del modelo
+c. Estimar otro modelo alternativo en el que no se tenga en cuenta el comercio electrónico y comparar ambos en cuanto a la bondad del ajuste por los diferentes métodos explicados.
+
+3. Una empresa realizó un despido durante el primer trimestre de 2020, justificandolo en una bajada de producción y ha solicitado un informe a la consultora donde usted trabaja para que respalde la decisión. Para ello, la empresa ha faciliado información trimestral desde el primer trimestre de 2015 al cuarto trimestre de 2019 de las ventas (en miles de euros) y la media de trabajadores. La consultora obtiene el siguiente modelo estimado:
+
+```{r , echo=FALSE, include=FALSE}
+set.seed(12345)
+# Parámetros básicos
+n_years <- 10
+quarters_per_year <- 4
+n <- n_years * quarters_per_year
+
+# Crear fechas trimestrales
+year <- rep(2015:(2015 + n_years - 1), each = quarters_per_year)
+quarter <- rep(1:4, times = n_years)
+fecha <- paste0(year, "T", quarter)
+
+# Generar variables explicativas
+media_personal <- round(runif(n, 5, 12))  # gasto en personal
+gasto_publicidad <- round(runif(n, 20, 80)) # gasto en publicidad
+gasto_IA <- round(runif(n, 10, 40))         # gasto en inteligencia artificial
+
+# Crear estacionalidad: mayor venta en Q2 y Q3
+estacionalidad <- ifelse(quarter %in% c(2, 3), 1, 0)
+
+# Tendencia temporal (crecimiento con los años)
+tendencia <- 1:n
+
+# Generar ventas (variable dependiente)
+ventas <- 20 +
+  12 * media_personal +
+  0.8 * gasto_publicidad +
+  0.5 * gasto_IA +
+  110 * estacionalidad +     # impacto estacional Q2 y Q3
+             # tendencia creciente
+  rnorm(n, 0, 50)             # ruido aleatorio
+
+dummy_Q2 <- ifelse(quarter == 2, 1, 0)
+dummy_Q3 <- ifelse(quarter == 3, 1, 0)
+dummy_Q4 <- ifelse(quarter == 4, 1, 0)
+
+# Crear data frame final
+ventas_df <- data.frame(
+  Año = year,
+  Trimestre = quarter,
+  Fecha = fecha,
+  media_personal = media_personal,
+  Gasto_Publicidad = gasto_publicidad,
+  Gasto_IA = gasto_IA,
+  T2 = dummy_Q2,
+  T3 = dummy_Q3,
+  T4 = dummy_Q4,
+  Ventas = round(ventas)
+)
+```
+
+```{r}
+modelo=lm(Ventas~ media_personal+T2+T3+T4, data=ventas_df)
+summary(modelo)
+```
+
+Le han encargado que analice los resultados para redactar el informe y, en concreto, se le pide que:
+
+a. Interprete el coeficiente estimado de la variable media_personal.
+b. Interprete el coeficiente estimado de la variable T3.
+c. Interprete el coeficiente de determinación.
+d. ¿Se puede afirmar que la variable media_personal tiene influencia significativa en las ventas? Justifique su respuesta usando los distintos niveles de confianza habituales.
+e. ¿Se puede afirmar que el efecto del segundo y tercer trimestre son los mismos? Justifique su respuesta usando intervalos de confianza.
+f. Sabiendo que en el primer trimestre de 2020 tras el despido la media de trabajadores fue de 12, y las ventas se situaron en 160.000, razone si el despido podría justificarse por razones económicas.
+
+4. Continuando con la practica anterior, otro compañero de la consultora considera que es necesario incluir como factor explicativo adicional el gasto en publicidad (expresado en miles de euros) en logaritmos y plantea el siguiente modelo:
+
+```{r}
+modelo_pub=lm(Ventas~ media_personal+log(Gasto_Publicidad)+T2+T3+T4, data=ventas_df)
+summary(modelo_pub)
+```
+Se pide:
+a. Interprete el coeficiente estimado de la variable log(Gasto_Publicidad).
+b. Formule y resuelva el contraste de significación global.
+c. Compare ambos modelos en terminos de la bondad del ajuste
+d.  Sabiendo que en el primer trimestre de 2020 tras el despido la media de trabajadores fue de 12 y el gasto en publicidad de 5.000, y las ventas se situaron en 160.000, razone si el despido podria justificarse por razones económicas a partir de este modelo.
+
+5. La empresa anterior le pide que complete el informe desde el punto de vista teórico a partir de los siguientes puntos:
+
+a. Explique qué estimador ha utilizado y obtenga razonadamente su expresión.
+b. Comente las hipótesis básicas en las que se basa dicho estimador.
+c. Explique las propiedades deseables que se le suponen a dicho estimador.
+
+6. En el marco de un estudio sobre los determinantes de los ingresos profesionales en el sector jurídico, se ha recopilado información de abogados jóvenes que trabajan de forma independiente o en pequeños despachos. El objetivo es analizar cuáles son los factores que explican las diferencias en los ingresos mensuales entre ellos. La base de datos contiene las siguientes variables:
+
+-   Y= Ingreso mensual del abogado, medido en euros (€).
+
+-   X1= Años de experiencia profesional desde la obtención del título de abogado
+
+-   X2= Número medio de horas trabajadas por semana
+
+-   D1= Toma valor 1 si el abogado está especializado en derecho mercantil o empresarial, y 0 en caso contrario.
+
+```{r}
+knitr::opts_chunk$set(echo = TRUE)
+library(readxl)
+base_econometrica_abogados_40 <- read_excel("data/BD_ABOGADOS.xlsx")
+```
+
+A partir de los datos se estima el siguiente modelo:
+
+```{r}
+modelo=lm(Y ~ X1+X2+D1, data=base_econometrica_abogados_40)
+summary(modelo)
+```
+
+Contesta a las siguientes preguntas:
+
+a. ¿Cuál es el tamaño de la muestra?
+b. ¿Cuál es la ecuación estimada del modelo (sustituyendo los coeficientes por sus valores estimados)? ¿Qué signo presentan los coeficientes estimados de cada variable explicativa?¿Coinciden con tus expectativas teóricas?
+c. ¿Cuál es el valor del término constante (intercepto)?. ¿Tiene interpretación económica razonable en este contexto?
+d. ¿Qué interpretación económica puedes dar al coeficiente que acompaña a la variable años de experiencia?
+e. ¿Qué interpretación económica puedes dar al coeficiente que acompaña a la variable años de horas semanales?
+f. ¿Cómo se interpreta el coeficiente de la variable dicotómica de especializacion?
+g Para cada coeficiente, indique como se ha obtenido el valor del estadístico del contraste de significación individual y que coeficientes son significativos.
+h. ¿Cuál es el valor del coeficiente de determinación y cómo se interpreta?
+i. Indique el valor de la estimación de la varianza residual
+j. Construya la Tabla Anova y explique como se obtiene el estadístico experimental y concluye en relación con la significación global del modelo.
+k. Construye el intervalo de confianza para el parámetro que acompaña a la variable experiencia y contesta a partir del intervalo, si la variación en el salario por cada año adicional de experiencia puede ser de 500 euros (con un 95% de confianza)
+l. Realiza un contraste para saber si la diferencia en el salario de los abogados especialistas en mercantil puede llegar a ser de 1000 euros.
+
+7. Si en el ejercicio anterior, incluimos una variable adicional que sea la interacción de la variable experiencia y la variable especialización, se obtiene el siguiente modelo.
+
+```{r}
+modelo_int=lm(Y ~ X1+X2+D1+X1*D1, data=base_econometrica_abogados_40)
+summary(modelo_int)
+```
+
+a. Compara ambos modelos en terminos de bondad del ajuste
+b. Comenta como se interpretaría el coeficiente estimado de la interacción y comente su significatividad individual.
+c. Si transformas la variable dependiente a log(Ingreso_Mensual), ¿cómo cambiaría la interpretación de los coeficientes?
+
+```{r}
+modelo_lg=lm(log(Y) ~ X1+X2+D1, data=base_econometrica_abogados_40)
+summary(modelo_lg)
+```
+d. Considerando el nuevo modelo, predecir el salario anual, de un abogado que trabaje 37.5 horas semanales de medio, con experiencia de 10 años y sin especialización en mercantil.
+e. A partir del valor obtenido para el criterio de información de Akaike de los tres modelos anteriores, analice los resultados.

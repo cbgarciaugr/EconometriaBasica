@@ -1,0 +1,24 @@
+\usepackage{booktabs}
+
+\addto\captionsspanish{
+  \renewcommand{\contentsname}{Índice}
+  \renewcommand{\chaptername}{Capítulo}
+  \renewcommand{\bibname}{Referencias}
+}
+
+% Cabecera con el nombre del capítulo en todas las páginas (pares e impares),
+% en vez del comportamiento por defecto de \book (sección en las páginas impares).
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\fancypagestyle{plain}{%
+  \fancyhf{}
+  \fancyhead[LE,RO]{\nouppercase{\leftmark}}
+  \fancyfoot[C]{\thepage}
+  \renewcommand{\headrulewidth}{0.4pt}
+}

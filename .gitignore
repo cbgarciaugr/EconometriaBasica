@@ -1,0 +1,34 @@
+# R / RStudio
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+.httr-oauth
+.DS_Store
+
+# Quarto / bookdown: artefactos de build (se regeneran solos)
+/.quarto/
+docs/
+_book/
+_bookdown_files/
+_main.*
+_main_files/
+*.utf8.md
+*.knit.md
+**/*.quarto_ipynb
+
+# Renders sueltos de un .qmd individual (no del libro completo)
+/*.html
+/*_files/
+
+# Ficheros temporales de Excel
+~$*.xlsx
+
+# Datos pesados no incluidos en el libro (ver sin-publicar/)
+sin-publicar/Motor_vehicle_insurance_data.csv
+
+# Carpeta temporal de limpieza de este script
+_ARCHIVO_REVISAR_Y_BORRAR/
+
+# Logs
+*.log

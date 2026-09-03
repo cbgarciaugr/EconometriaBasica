@@ -1,0 +1,571 @@
+# Apéndice: conceptos básicos de algebra matricial {#sec-apendice-matrices}
+
+## Concepto de matriz
+
+Una **matriz** es un conjunto ordenado de números dispuesto en filas y columnas. Sea $A$ una matriz con $m$ filas y $n$ columnas. Diremos que $A$ tiene dimensión $m \times n$, donde $m$ representa el número de filas y $n$ el número de columnas.
+
+El elemento de la matriz $A$ situado en la fila $i$ y la columna $j$ se denota por $a_{ij}$, con:
+
+$$
+i=1,\ldots,m,
+\qquad
+j=1,\ldots,n.
+$$
+
+Por ejemplo, la matriz:
+
+$$
+A=
+\begin{pmatrix}
+2 & 4 & 1\\
+3 & 0 & 5
+\end{pmatrix}
+$$
+
+tiene dimensión $2\times3$. En este caso, $a_{12}=4$, ya que el elemento situado en la primera fila y segunda columna es 4.
+
+## Operaciones con matrices
+
+Las principales operaciones con matrices que utilizaremos en econometría son:
+
+* **Suma de matrices:** $A+B$. Para poder sumar dos matrices, ambas deben tener las mismas dimensiones. La suma se realiza elemento a elemento.
+
+* **Producto de matrices:** $AB$. Para que el producto pueda realizarse, el número de columnas de la primera matriz debe coincidir con el número de filas de la segunda.
+
+* **Producto de una matriz por un escalar:** $\lambda A$, donde $\lambda$ es un número real. El resultado es una matriz de las mismas dimensiones que $A$.
+
+* **Determinante de una matriz:** $\det(A)$. El determinante únicamente está definido para matrices cuadradas y será especialmente importante para estudiar si una matriz es invertible.
+
+La suma de matrices satisface las propiedades asociativa y conmutativa:
+
+$$
+(A+B)+C=A+(B+C),
+$$
+
+$$
+A+B=B+A.
+$$
+
+El producto de matrices es asociativo:
+
+$$
+(AB)C=A(BC),
+$$
+
+y se verifican las propiedades distributivas:
+
+$$
+(A+B)C=AC+BC,
+$$
+
+$$
+D(E+F)=DE+DF.
+$$
+
+Es importante recordar que, en general, **el producto de matrices no es conmutativo**. Es decir:
+
+$$
+AB\neq BA.
+$$
+
+Esta característica será especialmente importante al trabajar con la expresión matricial de los estimadores MCO.
+
+## Matriz transpuesta
+
+Dada una matriz $A$ de dimensión $m\times n$, se denomina **matriz transpuesta** de $A$, y se denota como $A'$ o $A^T$, a la matriz de dimensión $n\times m$ que se obtiene intercambiando filas por columnas.
+
+Por ejemplo:
+
+$$
+A=
+\begin{pmatrix}
+1 & 2 & 3\\
+4 & 5 & 6
+\end{pmatrix}
+$$
+
+tiene como transpuesta:
+
+$$
+A'=
+\begin{pmatrix}
+1 & 4\\
+2 & 5\\
+3 & 6
+\end{pmatrix}.
+$$
+
+La transposición verifica las siguientes propiedades:
+
+1. $(A')'=A$.
+2. $(A+B)'=A'+B'$.
+3. $(AB)'=B'A'$.
+
+La tercera propiedad es especialmente importante: **al transponer un producto se invierte el orden de las matrices**.
+
+## Rango de una matriz
+
+El **rango** de una matriz $A$, que denotaremos como $rg(A)$, es el número máximo de filas o columnas linealmente independientes de la matriz.
+
+Si $A$ tiene dimensión $m\times n$, entonces:
+
+$$
+rg(A)\leq \min(m,n).
+$$
+
+Cuando:
+
+$$
+rg(A)=\min(m,n),
+$$
+
+se dice que la matriz tiene **rango completo**.
+
+El concepto de rango es especialmente relevante en econometría porque permite determinar si existe información redundante entre las variables explicativas. En particular, la **colinealidad exacta** aparece cuando las columnas de la matriz de variables explicativas no son linealmente independientes.
+
+## Matriz cuadrada
+
+Una matriz es **cuadrada** cuando tiene el mismo número de filas y columnas. Si tiene $m$ filas y $m$ columnas, se dice que es una matriz cuadrada de orden $m$.
+
+Algunos conceptos importantes asociados a las matrices cuadradas son:
+
+* La **diagonal principal** está formada por los elementos:
+
+$$
+a_{11},a_{22},\ldots,a_{mm}.
+$$
+
+* Una matriz cuadrada es **diagonal** cuando todos los elementos situados fuera de la diagonal principal son iguales a cero.
+
+* La **matriz identidad**, que denotaremos por $I_m$, es una matriz cuadrada cuya diagonal principal está formada por unos y cuyos restantes elementos son ceros:
+
+$$
+I_m=
+\begin{pmatrix}
+1&0&\cdots&0\\
+0&1&\cdots&0\\
+\vdots&\vdots&\ddots&\vdots\\
+0&0&\cdots&1
+\end{pmatrix}.
+$$
+
+La matriz identidad desempeña un papel equivalente al número 1 en las operaciones con escalares.
+
+* Una matriz cuadrada $A$ es **invertible** si existe una matriz $A^{-1}$ tal que:
+
+$$
+AA^{-1}=A^{-1}A=I_m.
+$$
+
+La matriz $A^{-1}$ recibe el nombre de **matriz inversa** de $A$.
+
+Una matriz cuadrada es invertible si su determinante es distinto de cero:
+
+$$
+\det(A)\neq0.
+$$
+
+* La **traza** de una matriz cuadrada $A$, que denotaremos como $tr(A)$, es la suma de los elementos de su diagonal principal:
+
+$$
+tr(A)=\sum_{i=1}^{m}a_{ii}.
+$$
+
+Entre sus propiedades destacan:
+
+$$
+tr(A+B)=tr(A)+tr(B),
+$$
+
+$$
+tr(\lambda A)=\lambda tr(A).
+$$
+
+Además, cuando los productos están correctamente definidos:
+
+$$
+tr(AB)=tr(BA).
+$$
+
+* Una matriz cuadrada $A$ es **simétrica** cuando coincide con su transpuesta:
+
+$$
+A=A'.
+$$
+
+Por ejemplo:
+
+$$
+A=
+\begin{pmatrix}
+2&1\\
+1&3
+\end{pmatrix}
+$$
+
+es simétrica.
+
+## Aplicación de las matrices a la estimación por MCO
+
+La principal razón por la que repasamos estos conceptos es que el modelo de regresión lineal puede expresarse de forma compacta mediante matrices.
+
+Consideremos un modelo con una variable dependiente $Y$ y una variable explicativa $X$:
+
+$$
+Y_i=\beta_0+\beta_1X_i+u_i.
+$$
+
+Para $n$ observaciones, podemos escribir:
+
+$$
+\mathbf{Y}=\mathbf{X}\boldsymbol{\beta}+\mathbf{u},
+$$
+
+donde:
+
+$$
+\mathbf{Y}=
+\begin{pmatrix}
+Y_1\\
+Y_2\\
+\vdots\\
+Y_n
+\end{pmatrix},
+\qquad
+\mathbf{X}=
+\begin{pmatrix}
+1&X_1\\
+1&X_2\\
+\vdots&\vdots\\
+1&X_n
+\end{pmatrix},
+\qquad
+\boldsymbol{\beta}=
+\begin{pmatrix}
+\beta_0\\
+\beta_1
+\end{pmatrix},
+\qquad
+\mathbf{u}=
+\begin{pmatrix}
+u_1\\
+u_2\\
+\vdots\\
+u_n
+\end{pmatrix}.
+$$
+
+El estimador de mínimos cuadrados ordinarios puede expresarse mediante:
+
+$$
+\widehat{\boldsymbol{\beta}}=(\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{Y}.
+$$
+
+Esta expresión permite obtener simultáneamente todos los coeficientes estimados del modelo.
+
+### Ejemplo sencillo mediante multiplicación de matrices
+
+Supongamos que disponemos de tres observaciones:
+
+| $X$ | $Y$ |
+| --: | --: |
+|   1 |   2 |
+|   2 |   3 |
+|   3 |   5 |
+
+La matriz de variables explicativas, incluyendo el término independiente, es:
+
+$$
+\mathbf{X}=
+\begin{pmatrix}
+1&1\\
+1&2\\
+1&3
+\end{pmatrix},
+$$
+
+mientras que el vector de la variable dependiente es:
+
+$$
+\mathbf{Y}=
+\begin{pmatrix}
+2\\
+3\\
+5
+\end{pmatrix}.
+$$
+
+En primer lugar, calculamos:
+
+$$
+\mathbf{X}'\mathbf{X}=
+\begin{pmatrix}
+1&1&1\\
+1&2&3
+\end{pmatrix}
+\begin{pmatrix}
+1&1\\
+1&2\\
+1&3
+\end{pmatrix}=
+\begin{pmatrix}
+3&6\\
+6&14
+\end{pmatrix}.
+$$
+
+A continuación:
+
+$$
+\mathbf{X}'\mathbf{Y}=
+\begin{pmatrix}
+1&1&1\\
+1&2&3
+\end{pmatrix}
+\begin{pmatrix}
+2\\
+3\\
+5
+\end{pmatrix}=
+\begin{pmatrix}
+10\\
+23
+\end{pmatrix}.
+$$
+
+La inversa de $\mathbf{X}'\mathbf{X}$ es:
+
+$$
+(\mathbf{X}'\mathbf{X})^{-1}=
+\begin{pmatrix}
+3&6\\
+6&14
+\end{pmatrix}^{-1}=
+\begin{pmatrix}
+\frac{7}{3}&-1\\
+-1&\frac{1}{2}
+\end{pmatrix}.
+$$
+
+Por tanto:
+
+$$
+\widehat{\boldsymbol{\beta}}=
+\begin{pmatrix}
+\frac{7}{3}&-1\\
+-1&\frac{1}{2}
+\end{pmatrix}
+\begin{pmatrix}
+10\\
+23
+\end{pmatrix}=
+\begin{pmatrix}
+\frac{1}{3}\\
+\frac{3}{2}
+\end{pmatrix}.
+$$
+
+Por tanto, la recta estimada es:
+
+$$
+\widehat{Y}_i=\frac{1}{3}+\frac{3}{2}X_i.
+$$
+
+Este ejemplo permite observar cómo la expresión matricial resume en una única fórmula todas las operaciones necesarias para obtener los estimadores MCO.
+
+## Obtención de los estimadores mediante sumatorios
+
+La expresión matricial de los estimadores MCO:
+
+$$
+\widehat{\boldsymbol{\beta}}=(\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{Y}
+$$
+
+puede interpretarse también a partir de los **sumatorios de las variables observadas**. Esta forma de plantear la estimación permite comprender qué información contienen las matrices $\mathbf{X}'\mathbf{X}$ y $\mathbf{X}'\mathbf{Y}$.
+
+Consideremos ahora un modelo de regresión múltiple con dos variables explicativas:
+
+$$
+Y_i=\beta_0+\beta_1X_{1i}+\beta_2X_{2i}+u_i.
+$$
+
+La matriz de variables explicativas, incluyendo el término independiente, es:
+
+$$
+\mathbf{X}=
+\begin{pmatrix}
+1&X_{11}&X_{21}\\
+1&X_{12}&X_{22}\\
+\vdots&\vdots&\vdots\\
+1&X_{1n}&X_{2n}
+\end{pmatrix}.
+$$
+
+Su transpuesta es:
+
+$$
+\mathbf{X}'=
+\begin{pmatrix}
+1&1&\cdots&1\\
+X_{11}&X_{12}&\cdots&X_{1n}\\
+X_{21}&X_{22}&\cdots&X_{2n}
+\end{pmatrix}.
+$$
+
+Al multiplicar ambas matrices obtenemos:
+
+$$
+\mathbf{X}'\mathbf{X}=
+\begin{pmatrix}
+n &
+\displaystyle\sum_{i=1}^{n}X_{1i} &
+\displaystyle\sum_{i=1}^{n}X_{2i}\\
+\displaystyle\sum_{i=1}^{n}X_{1i} &
+\displaystyle\sum_{i=1}^{n}X_{1i}^{2} &
+\displaystyle\sum_{i=1}^{n}X_{1i}X_{2i}\\
+\displaystyle\sum_{i=1}^{n}X_{2i} &
+\displaystyle\sum_{i=1}^{n}X_{2i}X_{1i} &
+\displaystyle\sum_{i=1}^{n}X_{2i}^{2}
+\end{pmatrix}.
+$$
+
+De forma análoga, si:
+
+$$
+\mathbf{Y}=
+\begin{pmatrix}
+Y_1\\
+Y_2\\
+\vdots\\
+Y_n
+\end{pmatrix},
+$$
+
+entonces:
+
+$$
+\mathbf{X}'\mathbf{Y}=
+\begin{pmatrix}
+\displaystyle\sum_{i=1}^{n}Y_i\\
+\displaystyle\sum_{i=1}^{n}X_{1i}Y_i\\
+\displaystyle\sum_{i=1}^{n}X_{2i}Y_i
+\end{pmatrix}.
+$$
+
+Así, la expresión matricial de MCO puede escribirse como:
+
+$$
+\widehat{\boldsymbol{\beta}}=
+\begin{pmatrix}
+n & \sum X_{1i} & \sum X_{2i}\\
+\sum X_{1i} & \sum X_{1i}^{2} & \sum X_{1i}X_{2i}\\
+\sum X_{2i} & \sum X_{2i}X_{1i} & \sum X_{2i}^{2}
+\end{pmatrix}^{-1}
+\begin{pmatrix}
+\sum Y_i\\
+\sum X_{1i}Y_i\\
+\sum X_{2i}Y_i
+\end{pmatrix}.
+$$
+
+Esta expresión muestra que la estimación MCO puede realizarse únicamente a partir de los **sumatorios de las variables y de sus productos cruzados**.
+
+### Ejemplo
+
+Supongamos que queremos estimar:
+
+$$
+Y_i=\beta_0+\beta_1X_{1i}+\beta_2X_{2i}+u_i
+$$
+
+a partir de los siguientes datos:
+
+| $Y$ | $X_1$ | $X_2$ |
+| --: | ----: | ----: |
+|  10 |     1 |     2 |
+|  12 |     2 |     1 |
+|  15 |     3 |     4 |
+|  18 |     4 |     3 |
+
+A partir de los datos calculamos los siguientes sumatorios:
+
+$$
+\sum Y_i=55,
+\qquad
+\sum X_{1i}=10,
+\qquad
+\sum X_{2i}=10,
+$$
+
+$$
+\sum X_{1i}^{2}=30,
+\qquad
+\sum X_{2i}^{2}=30,
+$$
+
+$$
+\sum X_{1i}X_{2i}=28,
+$$
+
+y:
+
+$$
+\sum X_{1i}Y_i=156,
+\qquad
+\sum X_{2i}Y_i=149.
+$$
+
+Por tanto:
+
+$$
+\mathbf{X}'\mathbf{X}=
+\begin{pmatrix}
+4&10&10\\
+10&30&28\\
+10&28&30
+\end{pmatrix}
+$$
+
+y:
+
+$$
+\mathbf{X}'\mathbf{Y}=
+\begin{pmatrix}
+55\\
+156\\
+149
+\end{pmatrix}.
+$$
+
+Los estimadores se obtienen entonces como:
+
+$$
+\widehat{\boldsymbol{\beta}}=
+\begin{pmatrix}
+4&10&10\\
+10&30&28\\
+10&28&30
+\end{pmatrix}^{-1}
+\begin{pmatrix}
+55\\
+156\\
+149
+\end{pmatrix}.
+$$
+
+El resultado es:
+
+$$
+\widehat{\boldsymbol{\beta}}=
+\begin{pmatrix}
+3.4\\
+2.1\\
+1.7
+\end{pmatrix},
+$$
+
+por lo que el modelo estimado sería:
+
+$$
+\widehat{Y}_i=3.4+2.1X_{1i}+1.7X_{2i}.
+$$

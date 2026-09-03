@@ -727,16 +727,5 @@
       "Apéndices",
       "<span class='chapter-number'>C</span>  <span class='chapter-title'>Apéndice. Distribuciones estadísticas y valores críticos</span>"
     ]
-  },
-  {
-    "objectID": "chapters/references.html",
-    "href": "chapters/references.html",
-    "title": "Referencias",
-    "section": "",
-    "text": "Belsley, D. A. 1982. “Assessing the Presence of Harmful\nCollinearity and Other Forms of Weak Data Through a Test for\nSignal-to-Noise.” Journal of Econometrics 20: 211–53.\n\n\nGarcía, C. B., J. García, and J. Soto. 2010. “The Raise Method: An\nAlternative Procedure to Estimate the Parameters in Presence of\nCollinearity.” Qual. Quant. 45 (2): 403–23.\n\n\nHoerl, A. E., and R. W. Kennard. 1970. “Ridge Regression:\nApplications to Nonorthogonal Problems.” Technometrics\n12: 69–82.\n\n\nO’Brien, R. M. 2007. “A Caution Regarding Rules of Thumb for\nVariance Inflation Factors.” Qual. Quant. 41: 673–90.",
-    "crumbs": [
-      "Apéndices",
-      "Referencias"
-    ]
   }
 ]

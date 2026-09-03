@@ -82,7 +82,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-3dac5e246fdd9bdc5e35d09ab9b42ca8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-c117ac82edef17e21c58c619b1d4b9e4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -248,12 +248,6 @@ window.Quarto = {
   <div class="sidebar-item-container"> 
   <a href="../chapters/apendicedistribuciones.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Apéndice. Distribuciones estadísticas y valores críticos</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/references.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Referencias</span></a>
   </div>
 </li>
       </ul>
@@ -726,7 +720,7 @@ E\left(\widehat{\beta}\right)=\beta.
 <ul>
 <li><strong>Eficiencia</strong>: entre dos estimadores insesgados, se considera más eficiente aquel que presenta una menor varianza. Un estimador eficiente produce estimaciones menos dispersas alrededor del verdadero valor del parámetro y, por tanto, proporciona resultados más precisos.</li>
 </ul>
-<p>En Econometría, una de las principales cuestiones consiste en determinar si el método de estimación utilizado produce estimadores con estas propiedades. El resultado fundamental que responde a esta cuestión es el <strong>Teorema de Gauss-Markov</strong>, que demuestra que, bajo las hipótesis del modelo lineal clásico, los estimadores obtenidos mediante el método de mínimos cuadrados ordinarios (MCO) son <strong>lineales, insesgados y óptimos (ELIO)</strong> o, utilizando la terminología anglosajona, <strong>Best Linear Unbiased Estimators (BLUE)</strong>. Esto significa que, dentro de la clase de todos los estimadores lineales e insesgados, los estimadores MCO presentan la <strong>mínima varianza posible</strong>, por lo que utilizan de la forma más eficiente la información contenida en la muestra (<span class="citation" data-cites="Wooldridge2020">(<a href="references.html#ref-Wooldridge2020" role="doc-biblioref"><strong>Wooldridge2020?</strong></a>)</span>).</p>
+<p>En Econometría, una de las principales cuestiones consiste en determinar si el método de estimación utilizado produce estimadores con estas propiedades. El resultado fundamental que responde a esta cuestión es el <strong>Teorema de Gauss-Markov</strong>, que demuestra que, bajo las hipótesis del modelo lineal clásico, los estimadores obtenidos mediante el método de mínimos cuadrados ordinarios (MCO) son <strong>lineales, insesgados y óptimos (ELIO)</strong> o, utilizando la terminología anglosajona, <strong>Best Linear Unbiased Estimators (BLUE)</strong>. Esto significa que, dentro de la clase de todos los estimadores lineales e insesgados, los estimadores MCO presentan la <strong>mínima varianza posible</strong>, por lo que utilizan de la forma más eficiente la información contenida en la muestra (<span class="citation" data-cites="Wooldridge2020">(<a href="#ref-Wooldridge2020" role="doc-biblioref"><strong>Wooldridge2020?</strong></a>)</span>).</p>
 <p>La demostración completa del teorema requiere herramientas avanzadas de álgebra matricial y teoría de la esperanza matemática, por lo que queda fuera del alcance de este texto. No obstante, este resultado proporciona el principal fundamento teórico que justifica el uso de los mínimos cuadrados ordinarios en la estimación de modelos econométricos.</p>
 <p>Además de estimar los coeficientes del modelo, es necesario obtener una estimación de la varianza de la perturbación aleatoria, <span class="math inline">\(\sigma^2\)</span>, ya que esta determina la precisión de los estimadores y constituye la base para calcular los errores estándar, construir intervalos de confianza y realizar contrastes de hipótesis.</p>
 <p>Puede demostrarse que la suma de cuadrados de los residuos verifica la siguiente propiedad:</p>
@@ -835,7 +829,7 @@ LIQUIDEZ_INMEDIATA  -3.7175669   0.043415389         2.73076377</code></pre>
 </ul>
 <p>Cuando ambas variables estan expresadas en logaritmo, la interpretación de los parámetros es similar al concepto de elasticidad entre ambas variables:</p>
 <p><span class="math display">\[Elasticidad_{(y/x)}=\frac{\frac{\Delta y}{y}}{\frac{\Delta x}{x}}\]</span> por lo tanto: <span class="math display">\[\frac{\Delta y}{y}=\beta_2 \frac{\Delta x}{x}\rightarrow log(y)=\beta_2 log(x)\]</span> Por lo que <span class="math inline">\(\beta_2\)</span> se interpreta como el cambio porcentual en <span class="math inline">\(y\)</span> ante una variación del 1% en la variable <span class="math inline">\(x\)</span>.</p>
-<p>En algunas ocasiones se combinaran variables expresadas en unidades originales (nivel) con otras expresadas en logaritmos y para interpretarlo correctamente hay que tener en cuenta que los cambios de la variable en logaritmos se asemejan a cambios porcentuales, mientras que los cambios en variables en nivel se expresan como cambios en la unidad original de esa varriable. Este cuadro presentado por <span class="citation" data-cites="arce2012">(<a href="references.html#ref-arce2012" role="doc-biblioref"><strong>arce2012?</strong></a>)</span>, resume las distintas interpretaciones:</p>
+<p>En algunas ocasiones se combinaran variables expresadas en unidades originales (nivel) con otras expresadas en logaritmos y para interpretarlo correctamente hay que tener en cuenta que los cambios de la variable en logaritmos se asemejan a cambios porcentuales, mientras que los cambios en variables en nivel se expresan como cambios en la unidad original de esa varriable. Este cuadro presentado por <span class="citation" data-cites="arce2012">(<a href="#ref-arce2012" role="doc-biblioref"><strong>arce2012?</strong></a>)</span>, resume las distintas interpretaciones:</p>
 <table class="caption-top table">
 <caption>Resumen interpretación coeficientes</caption>
 <colgroup>
@@ -2052,7 +2046,7 @@ f(efp) = 1.2345, p-value = 0.2586</code></pre>
 <h2 data-number="2.7" class="anchored" data-anchor-id="prácticas-resueltas"><span class="header-section-number">2.7</span> Prácticas resueltas</h2>
 <section id="función-de-producción.-importancia-de-una-buena-especificación." class="level3 unnumbered">
 <h3 class="unnumbered anchored" data-anchor-id="función-de-producción.-importancia-de-una-buena-especificación.">Función de producción. Importancia de una buena especificación.</h3>
-<p>Vamos a trabajar con la base de datos de <span class="citation" data-cites="Greene2003">(<a href="references.html#ref-Greene2003" role="doc-biblioref"><strong>Greene2003?</strong></a>)</span> denominada `BD_FUNCIONPRODUCCION’ para realizar una práctica cuyo objetivo es introducir la estimación en R y comprender la importancia de realizar una adecuada especificación del modelo econométrico.</p>
+<p>Vamos a trabajar con la base de datos de <span class="citation" data-cites="Greene2003">(<a href="#ref-Greene2003" role="doc-biblioref"><strong>Greene2003?</strong></a>)</span> denominada `BD_FUNCIONPRODUCCION’ para realizar una práctica cuyo objetivo es introducir la estimación en R y comprender la importancia de realizar una adecuada especificación del modelo econométrico.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Código</summary>
@@ -2281,7 +2275,7 @@ F-statistic: 6.011 on 1 and 39 DF,  p-value: 0.0188</code></pre>
 </section>
 <section id="demanda-de-productos-lacteos-estimación-y-selección-de-modelos.-interpretación-de-coeficientes-con-logaritmos." class="level3 unnumbered">
 <h3 class="unnumbered anchored" data-anchor-id="demanda-de-productos-lacteos-estimación-y-selección-de-modelos.-interpretación-de-coeficientes-con-logaritmos.">Demanda de productos lacteos: Estimación y selección de modelos. Interpretación de coeficientes con logaritmos.</h3>
-<p>Partiendo de la base de datos de <span class="citation" data-cites="Uriel2019">(<a href="references.html#ref-Uriel2019" role="doc-biblioref"><strong>Uriel2019?</strong></a>)</span> denominada <span class="math inline">\(demand\)</span>, se han considerado los siguientes modelos alternativos para analizar los determinantes del gasto en productos lácteos <span class="math inline">\(dairy\)</span> en función de la renta disponible de los hogares <span class="math inline">\(inc\)</span>, el número de miembros del hogar <span class="math inline">\(hhsize\)</span> y la proporción de niños menores de cinco años en el hogar <span class="math inline">\(punder5\)</span>:</p>
+<p>Partiendo de la base de datos de <span class="citation" data-cites="Uriel2019">(<a href="#ref-Uriel2019" role="doc-biblioref"><strong>Uriel2019?</strong></a>)</span> denominada <span class="math inline">\(demand\)</span>, se han considerado los siguientes modelos alternativos para analizar los determinantes del gasto en productos lácteos <span class="math inline">\(dairy\)</span> en función de la renta disponible de los hogares <span class="math inline">\(inc\)</span>, el número de miembros del hogar <span class="math inline">\(hhsize\)</span> y la proporción de niños menores de cinco años en el hogar <span class="math inline">\(punder5\)</span>:</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Código</summary>
@@ -2346,7 +2340,7 @@ F-statistic: 6.011 on 1 and 39 DF,  p-value: 0.0188</code></pre>
 </div>
 <p>Nótese que los primeros cinco modelos tienen la misma variable dependiente, por lo que pueden ser comparados entre sí. Sin embargo, es importante señalar que el modelo 4 no incluye término independiente, por lo que el coeficiente de determinación no puede aplicarse de manera adecuada. Así, se concluye que, entre los cinco primeros modelos, el modelo 4 es el que presenta la mejor bondad de ajuste según los distintos criterios de información.</p>
 <p>En cuanto a los modelos 6, 7 y 8, el modelo 8 nuevamente carece de término independiente, por lo que no es posible utilizar el coeficiente de determinación corregido como criterio de comparación. En este caso, la conclusión es que el modelo 7 presenta el menor valor en los criterios de información.</p>
-<p>Cabe destacar que los criterios de información cuentan con una versión ajustada que permite comparar modelos con la misma variable endógena, pero con distinta forma funcional, como ocurre en este caso (véase <span class="citation" data-cites="Uriel2019">(<a href="references.html#ref-Uriel2019" role="doc-biblioref"><strong>Uriel2019?</strong></a>)</span>).</p>
+<p>Cabe destacar que los criterios de información cuentan con una versión ajustada que permite comparar modelos con la misma variable endógena, pero con distinta forma funcional, como ocurre en este caso (véase <span class="citation" data-cites="Uriel2019">(<a href="#ref-Uriel2019" role="doc-biblioref"><strong>Uriel2019?</strong></a>)</span>).</p>
 </section>
 </section>
 <section id="prácticas-propuestas" class="level2" data-number="2.8">

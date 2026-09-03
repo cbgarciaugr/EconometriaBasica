@@ -23,6 +23,7 @@ book:
     - chapters/apendice-basesdatos.qmd
     - chapters/apendicematrices.qmd
     - chapters/apendicedistribuciones.qmd
+    - chapters/references.qmd
 
 resources:
     - recursos/criticos.html

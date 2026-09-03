@@ -12,7 +12,7 @@ book:
   repo-url: https://github.com/cbgarciaugr/EconometriaBasica
   repo-actions: [edit]
   chapters:
-    - chapters/index.qmd
+    - index.qmd
     - chapters/01-tema1.qmd
     - chapters/02-tema2.qmd
     - chapters/03-tema3.qmd

@@ -1,0 +1,14 @@
+/* Ajustes puntuales sobre el tema flatly de Quarto Book */
+
+/* Div ::: flushright ::: usado en 05-Colinealidad.qmd */
+.flushright {
+  text-align: right;
+}
+
+/* Pies de figura/tabla */
+p.caption {
+  color: #666;
+  font-size: 0.9em;
+  font-style: italic;
+}
+

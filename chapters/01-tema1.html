@@ -1,0 +1,2068 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>1&nbsp; Introducción a la Econometría – Econometría para Finanzas y Contabilidad con R</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/02-tema2.html" rel="next">
+<link href="../index.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-3dac5e246fdd9bdc5e35d09ab9b42ca8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No se han encontrado resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+<script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../style.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/01-tema1.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducción a la Econometría</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Econometría para Finanzas y Contabilidad con R</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/cbgarciaugr/EconometriaBasica" title="Ejecutar el código" class="quarto-navigation-tool px-1" aria-label="Ejecutar el código"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Presentación del material docente</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/01-tema1.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducción a la Econometría</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/02-tema2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Modelo de regresión lineal</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/03-tema3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Variables dicotómicas y cambio estructural</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/04-tema4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Colinealidad</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/05-tema5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Heterocedasticidad</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/06-tema6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Autocorrelación</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Apéndices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/apendice-basesdatos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Apéndice: Bases de datos utilizadas en el libro</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/apendicematrices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Apéndice: conceptos básicos de algebra matricial</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/apendicedistribuciones.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Apéndice. Distribuciones estadísticas y valores críticos</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#econometría-y-modelos-econométricos" id="toc-econometría-y-modelos-econométricos" class="nav-link active" data-scroll-target="#econometría-y-modelos-econométricos"><span class="header-section-number">1.1</span> Econometría y modelos econométricos</a>
+  <ul class="collapse">
+  <li><a href="#qué-es-la-econometría" id="toc-qué-es-la-econometría" class="nav-link" data-scroll-target="#qué-es-la-econometría">¿Qué es la Econometría?</a></li>
+  <li><a href="#modelo-económico-frente-a-modelo-econométrico" id="toc-modelo-económico-frente-a-modelo-econométrico" class="nav-link" data-scroll-target="#modelo-económico-frente-a-modelo-econométrico">Modelo económico frente a modelo econométrico</a></li>
+  </ul></li>
+  <li><a href="#fases-del-método-econométrico-y-componentes" id="toc-fases-del-método-econométrico-y-componentes" class="nav-link" data-scroll-target="#fases-del-método-econométrico-y-componentes"><span class="header-section-number">1.2</span> Fases del método econométrico y componentes</a></li>
+  <li><a href="#naturaleza-de-la-información-utilizada-en-econometría" id="toc-naturaleza-de-la-información-utilizada-en-econometría" class="nav-link" data-scroll-target="#naturaleza-de-la-información-utilizada-en-econometría"><span class="header-section-number">1.3</span> Naturaleza de la información utilizada en Econometría</a></li>
+  <li><a href="#practicas-resueltas" id="toc-practicas-resueltas" class="nav-link" data-scroll-target="#practicas-resueltas"><span class="header-section-number">1.4</span> Practicas resueltas</a>
+  <ul class="collapse">
+  <li><a href="#top-100-empresas-andaluzas-del-transporte.-importancia-del-análisis-descriptivo-previo." id="toc-top-100-empresas-andaluzas-del-transporte.-importancia-del-análisis-descriptivo-previo." class="nav-link" data-scroll-target="#top-100-empresas-andaluzas-del-transporte.-importancia-del-análisis-descriptivo-previo.">Top 100 empresas andaluzas del transporte. Importancia del análisis descriptivo previo.</a></li>
+  </ul></li>
+  <li><a href="#practicas-propuestas" id="toc-practicas-propuestas" class="nav-link" data-scroll-target="#practicas-propuestas"><span class="header-section-number">1.5</span> Practicas propuestas</a></li>
+  <li><a href="#antes-de-continuar" id="toc-antes-de-continuar" class="nav-link" data-scroll-target="#antes-de-continuar"><span class="header-section-number">1.6</span> Antes de continuar</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/cbgarciaugr/EconometriaBasica/edit/main/chapters/01-tema1.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducción a la Econometría</span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Código</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Mostrar todo el código</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Ocultar todo el código</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">Ver el código fuente</a></li></ul></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-default callout-important callout-titled" title="Objetivos de aprendizaje">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Importante</span>Objetivos de aprendizaje
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Al finalizar este capítulo el estudiante será capaz de:</p>
+<ul>
+<li>Comprender qué es la Econometría y cuál es su papel dentro de las Finanzas y la Contabilidad.</li>
+<li>Diferenciar entre un modelo económico y un modelo econométrico.</li>
+<li>Identificar las principales fases del método econométrico.</li>
+<li>Reconocer los distintos tipos de datos utilizados en Econometría.</li>
+<li>Comprender por qué los modelos econométricos constituyen una herramienta esencial para la toma de decisiones empresariales y financieras.</li>
+<li>Familiarizarse con el caso de estudio que se utilizará a lo largo del libro.</li>
+</ul>
+</div>
+</div>
+<section id="econometría-y-modelos-econométricos" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="econometría-y-modelos-econométricos"><span class="header-section-number">1.1</span> Econometría y modelos econométricos</h2>
+<section id="qué-es-la-econometría" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="qué-es-la-econometría">¿Qué es la Econometría?</h3>
+<p>La Econometría es la disciplina que combina la <strong>Teoría Económica</strong>, la <strong>Estadística</strong>, las <strong>Matemáticas</strong> y la <strong>Informática</strong> con el objetivo de analizar relaciones económicas utilizando datos observados. Su finalidad no es únicamente describir los datos, sino explicar el comportamiento de las variables económicas, contrastar hipótesis formuladas por la teoría y proporcionar información útil para la toma de decisiones.</p>
+<p>En términos sencillos, la Econometría intenta responder preguntas del tipo:</p>
+<blockquote class="blockquote">
+<ul>
+<li>¿Cómo cambia la rentabilidad de una empresa cuando aumenta su endeudamiento?</li>
+<li>¿Cómo afecta una subida de los tipos de interés al precio de los bonos?</li>
+<li>¿Qué efecto tiene la liquidez sobre la capacidad de una empresa para generar beneficios?</li>
+<li>¿Qué efecto tiene el mercado financiero europeo sobre el español?</li>
+</ul>
+</blockquote>
+<p>Responder a estas preguntas requiere construir modelos capaces de cuantificar estas relaciones. La Econometría constituye, por tanto, el puente entre la teoría y la evidencia empírica. Mientras que la teoría económica propone relaciones entre variables, la Econometría utiliza datos para comprobar si dichas relaciones realmente se observan en la práctica.</p>
+</section>
+<section id="modelo-económico-frente-a-modelo-econométrico" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="modelo-económico-frente-a-modelo-econométrico">Modelo económico frente a modelo econométrico</h3>
+<p>En términos generales, un modelo es una representación simplificada de la realidad que permite estudiar el comportamiento de un fenómeno de interés. En Economía y Finanzas, los modelos constituyen una herramienta esencial para comprender cómo se relacionan distintas variables y para predecir el efecto que un cambio en una de ellas puede producir sobre las demás.</p>
+<p>Sin embargo, es importante distinguir entre un <strong>modelo económico</strong> y un <strong>modelo econométrico</strong>, ya que ambos persiguen objetivos diferentes.</p>
+<ul>
+<li>El <strong>modelo económico</strong> expresa, de forma simplificada, las relaciones que la teoría espera encontrar entre distintas variables en forma matemática, es decir, <span class="math inline">\(y=f(x)\)</span>. Sin embargo, no todas las relaciones se pueden expresar matemáticaemnte ya que hay cuestiones no observables que no se pueden incluir en la expresión matemática.</li>
+</ul>
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Base de datos 1: Top 100 empresas andaluzas del transporte
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Por ejemplo, numerosos trabajos de investigación en Finanzas Corporativas sugieren que la rentabilidad de una empresa depende, entre otros factores, de su nivel de endeudamiento y de su liquidez. Esta idea puede representarse mediante el siguiente modelo económico:</p>
+<p><span class="math display">\[
+ROA=f(Endeudamiento,\;Liquidez)
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li><strong>ROA</strong> representa la rentabilidad económica de la empresa;</li>
+<li><strong>Endeudamiento</strong> mide la proporción de deuda respecto al activo total;</li>
+<li><strong>Liquidez</strong> refleja la capacidad de la empresa para hacer frente a sus obligaciones a corto plazo.</li>
+</ul>
+<p>El modelo únicamente indica que existe una relación entre estas variables, pero no especifica cuál es su forma ni cuantifica su intensidad. Aunque la teoría económica resulta imprescindible para comprender el funcionamiento de las empresas, la realidad suele ser mucho más compleja que cualquier modelo teórico. Dos empresas con niveles muy similares de endeudamiento y liquidez pueden presentar rentabilidades muy diferentes debido a numerosos factores adicionales:</p>
+<ul>
+<li>calidad del equipo directivo;</li>
+<li>grado de innovación;</li>
+<li>eficiencia de los procesos productivos;</li>
+<li>estrategia comercial;</li>
+<li>características del mercado;</li>
+<li>condiciones macroeconómicas.</li>
+</ul>
+<p>Muchos de estos factores son difíciles de medir o, simplemente, no están disponibles en la base de datos. Por esta razón, el modelo económico debe ampliarse incorporando un término que recoja todos aquellos factores no observados que también influyen sobre la variable de interés.</p>
+</div>
+</div>
+<ul>
+<li>El <strong>modelo econométrico</strong> reconoce que la realidad está influida por numerosos factores no observados y, por tanto, incorpora una componente aleatoria. Ese término recibe el nombre de <strong>perturbación aleatoria</strong> y suele representarse mediante la letra (<span class="math inline">\(u\)</span>). Tras aplicar un procedimiento de estimación obtendremos una <strong>estimación para os parámetros</strong>. Más adelante aprenderemos cómo estimar correctamente estos coeficientes y cómo evaluar si estas relaciones son estadísticamente significativas.</li>
+</ul>
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Base de datos 1: Top 100 empresas andaluzas del transporte
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>El modelo económico anterior expresado como un modelo econométrico tendría la siguiente expresión:</p>
+<p><span class="math display">\[
+ROA_i=\beta_0+\beta_1LEV_i+\beta_2LIQ_i+u_i
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li>(<span class="math inline">\(ROA_i\)</span>) es la rentabilidad económica de la empresa (i);</li>
+<li>(<span class="math inline">\(LEV_i\)</span>) representa su nivel de endeudamiento (<em>Leverage</em>);</li>
+<li>(<span class="math inline">\(LIQ_i\)</span>) es su ratio de liquidez corriente;</li>
+<li>(<span class="math inline">\(\beta_0\)</span>,<span class="math inline">\(\beta_1\)</span>,<span class="math inline">\(\beta_2\)</span>) son parámetros desconocidos;</li>
+<li>(<span class="math inline">\(u_i\)</span>) recoge todos los factores no observados que afectan a la rentabilidad.</li>
+</ul>
+<p>Nuestro objetivo consistirá en obtener estimaciones para dichos parámetros utilizando la información disponible. A partir de este resultado podríamos concluir, por ejemplo, que:</p>
+<ul>
+<li>un mayor endeudamiento se asocia con una menor rentabilidad económica;</li>
+<li>una mayor liquidez se relaciona con un incremento de la rentabilidad, manteniendo constante el resto de factores.</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled" title="Error habitual confundir correlación con causalidad">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Precaución</span>Error habitual confundir correlación con causalidad
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Una de las ideas más importantes de la Econometría es que <strong>una relación estadística no implica necesariamente una relación causal</strong>. Observar que las empresas con mayor liquidez presentan un ROA más elevado no demuestra, por sí solo, que la liquidez sea la causa de dicha rentabilidad. El análisis econométrico proporciona herramientas para aproximarnos a la causalidad, pero siempre requiere apoyarse en la teoría económica y en un diseño adecuado de la investigación.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="fases-del-método-econométrico-y-componentes" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="fases-del-método-econométrico-y-componentes"><span class="header-section-number">1.2</span> Fases del método econométrico y componentes</h2>
+<p>La Econometría no consiste únicamente en aplicar técnicas estadísticas mediante un programa informático. En realidad, constituye un proceso de investigación estructurado cuyo objetivo es responder preguntas económicas utilizando datos. Aunque los problemas que aborda la Econometría pueden ser muy diversos, todos ellos siguen una secuencia lógica de etapas que comienza con la formulación de una hipótesis y finaliza con la obtención de conclusiones útiles para la toma de decisiones.</p>
+<p>La <a href="#fig-metodo" class="quarto-xref">Figura&nbsp;<span>1.1</span></a> resume las principales fases del método econométrico.</p>
+<div class="cell" data-fig-width="6" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-metodo" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-metodo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-metodo">flowchart LR
+1[Pregunta económica] --&gt; 2[Especificación del modelo]
+2 --&gt; 3[Obtención de datos]
+3 --&gt; 4[Estimación]
+4 --&gt; 5[Validación]
+5 --&gt; 6[Interpretación y predicción]
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-metodo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;1.1: Fases del método econométrico
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<ol type="1">
+<li><strong>Planteamiento del problema</strong>: Toda investigación econométrica comienza con una pregunta cuya respuesta resulta de interés para un investigador, una empresa o un responsable de la toma de decisiones. Algunos ejemplos habituales son:
+<ul>
+<li><p>¿Qué factores explican la rentabilidad económica de las empresas?</p></li>
+<li><p>¿Influye el endeudamiento sobre el riesgo financiero?</p></li>
+<li><p>¿Cómo afectan las variaciones de los tipos de interés al mercado bursátil?</p></li>
+<li><p>¿Qué características aumentan la probabilidad de insolvencia de una empresa?</p></li>
+</ul></li>
+</ol>
+<!-- -->
+<ol start="2" type="1">
+<li><strong>Especificación del modelo</strong>: Una vez definida la pregunta de investigación, el siguiente paso consiste en construir un modelo que represente las relaciones que se desean analizar. La especificación implica decidir:
+<ul>
+<li><p>cuál será la variable que queremos explicar</p></li>
+<li><p>qué variables consideramos relevantes para explicarla;</p></li>
+<li><p>qué forma funcional tendrá la relación entre ellas.</p></li>
+</ul></li>
+</ol>
+<!-- -->
+<ol start="3" type="1">
+<li><strong>Obtención de los datos</strong>: Una vez especificado el modelo es necesario obtener información sobre las variables que intervienen en él. econométrico depende en gran medida de la calidad de los datos utilizados. Por ello resulta imprescindible comprobar que:
+<ul>
+<li><p>las variables están correctamente definidas;</p></li>
+<li><p>no existen errores de registro;</p></li>
+<li><p>los datos corresponden al fenómeno que se desea estudiar;</p></li>
+<li><p>el tamaño de la muestra es suficiente.</p></li>
+</ul></li>
+</ol>
+<!-- -->
+<ol start="4" type="1">
+<li><strong>Estimación</strong>: Una vez disponible la información, el siguiente paso consiste en estimar los parámetros desconocidos del modelo. Los coeficientes <span class="math inline">\(\beta_0,\;\beta_1,\;\beta_2\)</span> son desconocidos.La estimación consiste en obtener valores numéricos para dichos parámetros utilizando la información contenida en la muestra. En los próximos capítulos estudiaremos el método de <strong>Mínimos Cuadrados Ordinarios (MCO)</strong>, que constituye la técnica de estimación más utilizada en los modelos de regresión lineal.</li>
+</ol>
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Base de datos 1: Top 100 empresas andaluzas del transporte
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Como resultado de este proceso obtendremos una ecuación estimada similar a</p>
+<p><span class="math display">\[
+\widehat{ROA}_i
+=
+\hat{\beta_0}
++\hat{\beta_1}LEV_i+\hat{\beta_2}LIQ_i.
+\]</span> A partir de ella podremos interpretar el efecto de cada variable sobre la rentabilidad empresarial.</p>
+</div>
+</div>
+<ol start="5" type="1">
+<li><p><strong>Validación del modelo</strong>: Una vez estimado el modelo, debemos comprobar si los resultados obtenidos son fiables. La validación pretende responder preguntas como las siguientes:</p>
+<ul>
+<li><p>¿Los coeficientes estimados son estadísticamente significativos?</p></li>
+<li><p>¿Los signos obtenidos son coherentes con la teoría financiera?</p></li>
+<li><p>¿Se cumplen los supuestos del modelo?</p></li>
+<li><p>¿Existen observaciones atípicas que puedan alterar los resultados?</p></li>
+</ul></li>
+</ol>
+<p>Responder a estas cuestiones constituye una parte esencial del análisis econométrico. Un modelo mal especificado puede conducir a conclusiones erróneas y, en consecuencia, a decisiones empresariales inadecuadas.</p>
+<ol start="6" type="1">
+<li><strong>Explotación del modelo</strong>: La última etapa consiste en interpretar los resultados obtenidos y utilizarlos para apoyar la toma de decisiones. La Econometría no finaliza con la obtención de una ecuación, sino con la capacidad de interpretar correctamente sus resultados y utilizarlos para obtener predicciones y fundamentar decisiones.</li>
+</ol>
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Base de datos 1: Top 100 empresas andaluzas del transporte
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>En este ejemplo podríamos responder preguntas como: - ¿El endeudamiento reduce realmente la rentabilidad?</p>
+<pre><code>-   ¿Cuál es el efecto de una mejora en la liquidez?
+
+-   ¿Qué variable tiene una mayor influencia sobre el ROA?</code></pre>
+<p>Además, el modelo podrá utilizarse para realizar predicciones sobre empresas similares o para evaluar distintos escenarios financieros.</p>
+</div>
+</div>
+<p><strong>Componentes de un modelo econométrico</strong></p>
+<p>Todos los modelos econométricos, independientemente de su complejidad, están formados por cuatro elementos básicos: variables, parámetros, perturbación aleatoria y ecuaciones. Comprender el papel que desempeña cada uno de ellos facilitará el estudio de los capítulos posteriores.</p>
+<ul>
+<li><p>Las <strong>variables</strong> representan las características que pueden observarse y medirse. En nuestro modelo distinguiremos dos tipos.</p>
+<ul>
+<li><p>Variable dependiente (explicada o endógena): Es la variable cuyo comportamiento deseamos explicar.</p></li>
+<li><p>Variables independientes (explicativas o exógenas): Son las variables utilizadas para explicar la variable dependiente.</p></li>
+</ul></li>
+</ul>
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Base de datos 1: Top 100 empresas andaluzas del transporte
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>En el modelo</p>
+<p><span class="math display">\[
+ROA_i=\beta_0+\beta_1LEV_i+\beta_2LIQ_i+u_i
+\]</span> La variable explicada es <span class="math inline">\(ROA_i\)</span> mientras que <span class="math inline">\(LEV_i\)</span> y <span class="math inline">\(LIQ_i\)</span> son las variables explicativas.</p>
+</div>
+</div>
+<ul>
+<li>La <strong>perturbación aleatoria</strong>, representada mediante ($u_i$), recoge todos aquellos factores que afectan a la variable dependiente y que no aparecen explícitamente en el modelo. Se considera tambien una variable de tipo no observable. Las variables explicativas se consideran deterministas (fijas), mientras que la variable explicada se considera aleatoria ya que depende de la perturbación que tiene caracter aleatorio.</li>
+</ul>
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Base de datos 1: Top 100 empresas andaluzas del transporte
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>En el ejemplo del ROA, los efectos no observables recogidos en la perturbación aleatoria podrían ser: la calidad del equipo directivo; la innovación; la reputación de la empresa; la competencia existente en el mercado; errores de medida. La existencia de esta componente aleatoria explica por qué empresas aparentemente muy similares pueden presentar rentabilidades diferentes.</p>
+</div>
+</div>
+<ul>
+<li>Los <strong>parámetros</strong> representan los efectos que las variables explicativas ejercen sobre la variable dependiente. Su valor es desconocido y deberá estimarse utilizando la información de la muestra. En el modelo</li>
+</ul>
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Base de datos 1: Top 100 empresas andaluzas del transporte
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>En el modelo <span class="math display">\[
+ROA_i=\beta_0+\beta_1LEV_i+\beta_2LIQ_i+u_i
+\]</span> los parámetros son: - <span class="math inline">\(\beta_0\)</span> que representa la ordenada en el origen o término independiente; - <span class="math inline">\(\beta_1\)</span> que mide el efecto del endeudamiento sobre la rentabilidad; - <span class="math inline">\(\beta_2\)</span> que mide el efecto de la liquidez sobre la rentabilidad.</p>
+</div>
+</div>
+<ul>
+<li>La <strong>ecuación econométrica</strong>: Finalmente, todas las relaciones entre variables se expresan mediante una o varias ecuaciones. En este libro trabajaremos inicialmente con modelos de regresión lineal de una única ecuación, aunque existen modelos más complejos con más de una ecuación.</li>
+</ul>
+</section>
+<section id="naturaleza-de-la-información-utilizada-en-econometría" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="naturaleza-de-la-información-utilizada-en-econometría"><span class="header-section-number">1.3</span> Naturaleza de la información utilizada en Econometría</h2>
+<p>Los modelos econométricos se construyen a partir de datos. La calidad de las conclusiones obtenidas dependerá, en gran medida, de la calidad de la información disponible y del tipo de datos utilizados. En la práctica, los economistas, analistas financieros y contables trabajan con bases de datos muy diversas. Antes de seleccionar una técnica econométrica es necesario identificar correctamente la naturaleza de la información disponible, ya que no todos los métodos son adecuados para todos los tipos de datos.</p>
+<p>En este libro distinguiremos tres grandes tipos de datos:</p>
+<ul>
+<li>Los <strong>datos de corte transversal</strong> (<em>cross-sectional data</em>) recogen información correspondiente a varias unidades de observación en un mismo instante del tiempo. Las unidades de observación pueden ser empresas, personas, bancos, municipios, países o cualquier otro conjunto de individuos sobre los que se dispone de información. En el ámbito de la Contabilidad y las Finanzas Empresariales, este tipo de datos es muy frecuente.</li>
+</ul>
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Base de datos 1: Top 100 empresas andaluzas del transporte
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>En este caso de estudio trabajamos con datos de corte transversal ya que cada empresa constituye una observación de la muestra. La <a href="#tbl-transversal" class="quarto-xref">Tabla&nbsp;<span>1.1</span></a> muestra un pequeño fragmento ilustrativo de dicha base de datos.</p>
+<div id="tbl-transversal" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-transversal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;1.1: Ejemplo ilustrativo de datos de corte transversal
+</figcaption>
+<div aria-describedby="tbl-transversal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Empresa</th>
+<th style="text-align: right;">ROA</th>
+<th style="text-align: right;">Endeudamiento</th>
+<th style="text-align: right;">Liquidez</th>
+<th style="text-align: right;">Empleados</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">A</td>
+<td style="text-align: right;">4.12</td>
+<td style="text-align: right;">63.756</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">503</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">B</td>
+<td style="text-align: right;">1.604</td>
+<td style="text-align: right;">79.32</td>
+<td style="text-align: right;">0.037</td>
+<td style="text-align: right;">208</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">C</td>
+<td style="text-align: right;">4.646</td>
+<td style="text-align: right;">64.678</td>
+<td style="text-align: right;">0.042</td>
+<td style="text-align: right;">713</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">D</td>
+<td style="text-align: right;">10.828</td>
+<td style="text-align: right;">11.881</td>
+<td style="text-align: right;">2.058</td>
+<td style="text-align: right;">631</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">E</td>
+<td style="text-align: right;">4.916</td>
+<td style="text-align: right;">81.242</td>
+<td style="text-align: right;">0.028</td>
+<td style="text-align: right;">193</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Las <strong>series temporales</strong> (<em>time series</em>) están formadas por observaciones correspondientes a una misma variable recogidas a lo largo del tiempo. En este caso, el interés no reside en comparar distintas empresas, sino en estudiar cómo evoluciona una variable conforme transcurren los meses, trimestres o años. Las series temporales desempeñan un papel fundamental en Finanzas, ya que gran parte de las variables financieras presentan una evolución dinámica. Entre las más habituales se encuentran:precios de acciones;índices bursátiles; tipos de interés; inflación; Tipos de cambio; rendimientos de bonos y volatilidad de los mercados.</li>
+</ul>
+<p>En este tipo de datos el orden cronológico resulta esencial. Cambiar el orden de las observaciones altera completamente el significado de los datos. Las observaciones no son independientes entre sí, ya que el comportamiento de una variable en un determinado periodo suele estar relacionado con su evolución en periodos anteriores. Esta característica hace necesario utilizar técnicas econométricas específicas que estudiaremos en los últimos capítulos del libro.</p>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled" title="Base de datos 2: El IBEX35">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Base de datos 2: El IBEX35
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>El segundo caso práctico que estamos usando como hilo conductor se trata de una serie temporal ya que cada unidad de estudio es un periodo temporal, en este caso el rendimiento financiero mensual calculado a partir del precio de cierre mensual. La <a href="#tbl-serie" class="quarto-xref">Tabla&nbsp;<span>1.2</span></a> ilustra el aspecto de este tipo de información.</p>
+<div id="tbl-serie" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-serie-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;1.2: Ejemplo ilustrativo de una serie temporal
+</figcaption>
+<div aria-describedby="tbl-serie-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 37%">
+<col style="width: 22%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Mes</th>
+<th style="text-align: right;">Rendimiento IBEX</th>
+<th style="text-align: right;">Rendimiento SP500</th>
+<th style="text-align: right;">Rendimiento EUROSTOXX50</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">2020-10</td>
+<td style="text-align: right;">-4.0161</td>
+<td style="text-align: right;">-2.8055</td>
+<td style="text-align: right;">-7.6567</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2020-11</td>
+<td style="text-align: right;">22.4586</td>
+<td style="text-align: right;">10.2146</td>
+<td style="text-align: right;">16.6044</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2020-12</td>
+<td style="text-align: right;">-0.0396</td>
+<td style="text-align: right;">3.6449</td>
+<td style="text-align: right;">2.2381</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2021-01</td>
+<td style="text-align: right;">-3.9951</td>
+<td style="text-align: right;">-1.1199</td>
+<td style="text-align: right;">-2.5564</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2021-02</td>
+<td style="text-align: right;">5.8518</td>
+<td style="text-align: right;">2.5768</td>
+<td style="text-align: right;">4.3559</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Los <strong>datos de panel</strong> o <strong>datos longitudinales</strong> combinan las características de los datos de corte transversal y de las series temporales. En ellos se observa simultáneamente un conjunto de unidades y su evolución a lo largo del tiempo. Por ejemplo, podríamos disponer de información correspondiente a las mismas 100 empresas durante los ejercicios comprendidos entre 2020 y 2024. Cada empresa aparecería varias veces en la base de datos, una por cada año observado.</li>
+</ul>
+<p>La <a href="#tbl-panel" class="quarto-xref">Tabla&nbsp;<span>1.3</span></a> muestra un ejemplo simplificado.</p>
+<div id="tbl-panel" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-panel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;1.3: Ejemplo ilustrativo de datos de panel
+</figcaption>
+<div aria-describedby="tbl-panel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Empresa</th>
+<th style="text-align: right;">Año</th>
+<th style="text-align: right;">ROA</th>
+<th style="text-align: right;">Endeudamiento</th>
+<th style="text-align: right;">Liquidez</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">A</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">6.80</td>
+<td style="text-align: right;">0.45</td>
+<td style="text-align: right;">1.65</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">A</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">7.20</td>
+<td style="text-align: right;">0.44</td>
+<td style="text-align: right;">1.71</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">A</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">8.10</td>
+<td style="text-align: right;">0.42</td>
+<td style="text-align: right;">1.76</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">B</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">4.90</td>
+<td style="text-align: right;">0.70</td>
+<td style="text-align: right;">1.10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">B</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">5.30</td>
+<td style="text-align: right;">0.68</td>
+<td style="text-align: right;">1.18</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">B</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">5.80</td>
+<td style="text-align: right;">0.65</td>
+<td style="text-align: right;">1.26</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Los datos de panel permiten estudiar simultáneamente las diferencias entre empresas y su evolución temporal. Gracias a ello es posible analizar cuestiones como:</p>
+<ul>
+<li>la persistencia de la rentabilidad empresarial;</li>
+<li>la evolución del endeudamiento;</li>
+<li>el efecto de determinadas políticas financieras a lo largo del tiempo;</li>
+<li>el impacto de acontecimientos económicos sobre diferentes empresas.</li>
+</ul>
+<p>Debido a la riqueza de la información disponible, los datos de panel ocupan actualmente un lugar destacado en la investigación en Finanzas y Contabilidad aunque no serán objeto de análisis en este manual.</p>
+<p><strong>Variables cuantitativas y cualitativas</strong></p>
+<p>Hasta ahora hemos trabajado únicamente con variables numéricas, como el ROA o el endeudamiento. Sin embargo, muchas características relevantes en un análisis económico son de naturaleza cualitativa.</p>
+<p>Algunos ejemplos son:</p>
+<ul>
+<li>sector de actividad;</li>
+<li>forma jurídica;</li>
+<li>empresa cotizada o no cotizada;</li>
+<li>existencia de auditoría externa;</li>
+<li>pertenencia a un grupo empresarial;</li>
+<li>provincia o comunidad autónoma.</li>
+</ul>
+<p>Aunque estas variables no representan cantidades numéricas, también pueden incorporarse a un modelo econométrico mediante técnicas que estudiaremos en capítulos posteriores.</p>
+</section>
+<section id="practicas-resueltas" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="practicas-resueltas"><span class="header-section-number">1.4</span> Practicas resueltas</h2>
+<section id="top-100-empresas-andaluzas-del-transporte.-importancia-del-análisis-descriptivo-previo." class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="top-100-empresas-andaluzas-del-transporte.-importancia-del-análisis-descriptivo-previo.">Top 100 empresas andaluzas del transporte. Importancia del análisis descriptivo previo.</h3>
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Base de datos 1: Top 100 empresas andaluzas del transporte
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>datos <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/BD_SABI.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"Datos"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Podemos ver las primeras observaciones:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(datos)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 9
+    ROA LIQUIDEZ_INMEDIATA LIQUIDEZ_GENERAL ENDEUDAMIENTO  EBIT  VENTAS ACTIVOS
+  &lt;dbl&gt;              &lt;dbl&gt;            &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+1  4.12              0.11             1.01           63.8 3984. 151205.  96688.
+2  1.60              0.037            1.19           79.3  829. 139602.  51679.
+3  4.65              0.042            1.36           64.7 4230. 124285.  91036.
+4 10.8               2.06             3.81           11.9 7475.  80433.  69025.
+5  4.92              0.028            0.789          81.2 1540.  36160.  31330.
+6 11.1               0.693            3.24           41.2 3136.  40614.  28131.
+# ℹ 2 more variables: EMPLEADOS &lt;dbl&gt;, PROVINCIA &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>Seleccionamos las variables de interés:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>datos_modelo <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(ROA, ENDEUDAMIENTO, LIQUIDEZ_INMEDIATA)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Podemos obtener los principales estadísticos descriptivos a partir de la función <code>summary</code>, y la desviación típica con la función <code>sd</code>:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(datos_modelo)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>      ROA          ENDEUDAMIENTO     LIQUIDEZ_INMEDIATA
+ Min.   :-11.781   Min.   :  5.944   Min.   :0.0000    
+ 1st Qu.:  4.043   1st Qu.: 52.103   1st Qu.:0.0305    
+ Median :  6.432   Median : 65.847   Median :0.1390    
+ Mean   :  7.685   Mean   : 63.798   Mean   :0.3471    
+ 3rd Qu.: 11.187   3rd Qu.: 81.788   3rd Qu.:0.4005    
+ Max.   : 31.760   Max.   :102.082   Max.   :2.4770    </code></pre>
+</div>
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(datos_modelo<span class="sc">$</span>ROA)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6.778986</code></pre>
+</div>
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(datos_modelo<span class="sc">$</span>ENDEUDAMIENTO)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 23.38335</code></pre>
+</div>
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(datos_modelo<span class="sc">$</span>LIQUIDEZ_INMEDIATA)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.516616</code></pre>
+</div>
+</div>
+<p>La matriz de correlaciones se obtiene con la función <code>cor</code>:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>correlaciones <span class="ot">&lt;-</span> <span class="fu">cor</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>datos_modelo,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="at">use =</span> <span class="st">"complete.obs"</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(correlaciones, <span class="dv">3</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                      ROA ENDEUDAMIENTO LIQUIDEZ_INMEDIATA
+ROA                 1.000        -0.508              0.354
+ENDEUDAMIENTO      -0.508         1.000             -0.720
+LIQUIDEZ_INMEDIATA  0.354        -0.720              1.000</code></pre>
+</div>
+</div>
+<p>Por último los gráficos de dispersión, de la variable explicada con cada una de las variables explicativas, se obtienen con la función <code>ggplot</code>:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ROA vs Endeudamiento</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(datos_modelo,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> ENDEUDAMIENTO,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> ROA)) <span class="sc">+</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>, <span class="at">colour =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">se =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">colour =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Endeudamiento"</span>,</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"ROA"</span>,</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"ROA frente al Endeudamiento"</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01-tema1_files/figure-html/Practica1-graficoROAvsEND-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ROA vs Liquidez</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(datos_modelo,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> LIQUIDEZ_INMEDIATA,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> ROA)) <span class="sc">+</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>, <span class="at">colour =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>,</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">se =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">colour =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Liquidez"</span>,</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"ROA"</span>,</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"ROA frente a la Liquidez"</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01-tema1_files/figure-html/Practica1-graficoROAvsLIQ-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="practicas-propuestas" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="practicas-propuestas"><span class="header-section-number">1.5</span> Practicas propuestas</h2>
+<ol type="1">
+<li><p>Realizar el análisis descriptivo previo para la base de datos <code>IBEX35</code> incluyendo estadísticos descriptivos básicos, la matriz de correlación y los gráficos de dispersión.</p></li>
+<li><p>Para cada una de las siguientes situaciones indique:</p></li>
+</ol>
+<ul>
+<li>la unidad de observación;</li>
+<li>el tipo de datos;</li>
+<li>una posible variable dependiente;</li>
+<li>dos posibles variables explicativas.</li>
+</ul>
+<ol type="a">
+<li><p>Análisis de 150 empresas españolas durante el ejercicio 2024.</p></li>
+<li><p>Evolución mensual del precio de una acción entre 2015 y 2024.</p></li>
+<li><p>Información de 80 empresas observadas entre 2019 y 2024.</p></li>
+</ol>
+<!-- -->
+<ol start="3" type="1">
+<li><p>Explique con sus propias palabras la diferencia entre un modelo económico y un modelo econométrico. ¿Por qué resulta necesario incorporar una perturbación aleatoria?</p></li>
+<li><p>Piense en otra aplicación de la Econometría relacionada con las Finanzas o la Contabilidad distinta de las presentadas en el capítulo. Identifique:</p></li>
+</ol>
+<ul>
+<li>la pregunta de investigación;</li>
+<li>la variable dependiente;</li>
+<li>dos variables explicativas;</li>
+<li>posibles factores que formarían parte de la perturbación aleatoria.</li>
+</ul>
+<ol start="5" type="1">
+<li>¿Por qué es importante distinguir entre datos transversales, series temporales y datos de panel antes de elegir un método econométrico? Razone su respuesta.</li>
+</ol>
+</section>
+<section id="antes-de-continuar" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="antes-de-continuar"><span class="header-section-number">1.6</span> Antes de continuar</h2>
+<p>Antes de comenzar el siguiente capítulo, comprueba si has comprendido las ideas fundamentales de esta introducción. Las siguientes preguntas no pretenden evaluar tu capacidad de memorizar definiciones, sino ayudarte a reflexionar sobre los conceptos básicos de la Econometría. Selecciona la respuesta que consideres correcta y justifica brevemente tu elección.</p>
+<p>Pregunta 1: ¿Cuál es el principal objetivo de la Econometría?</p>
+<p><strong>a)</strong> Elaborar estados financieros.</p>
+<p><strong>b)</strong> Describir datos mediante tablas y gráficos.</p>
+<p><strong>c)</strong> Analizar relaciones económicas utilizando datos para apoyar la toma de decisiones.</p>
+<p><strong>d)</strong> Sustituir la teoría económica mediante técnicas estadísticas.</p>
+<p>Pregunta 2: Una empresa desea estudiar si el nivel de endeudamiento influye sobre la rentabilidad económica de las empresas del sector alimentario. ¿Cuál sería la variable dependiente?</p>
+<p><strong>a)</strong> El endeudamiento.</p>
+<p><strong>b)</strong> La rentabilidad económica (ROA).</p>
+<p><strong>c)</strong> El tamaño de la empresa.</p>
+<p><strong>d)</strong> La liquidez.</p>
+<hr>
+<p>Pregunta 3: En el modelo</p>
+<p><span class="math display">\[
+ROA_i=\beta_0+\beta_1LEV_i+\beta_2LIQ_i+u_i
+\]</span></p>
+<p>¿qué representa el término (u_i)?</p>
+<p><strong>a)</strong> Un error cometido al introducir los datos.</p>
+<p><strong>b)</strong> Los parámetros del modelo.</p>
+<p><strong>c)</strong> Los factores que afectan al ROA y que no se han incorporado explícitamente al modelo.</p>
+<p><strong>d)</strong> El valor estimado de la rentabilidad.</p>
+<p>Pregunta 4: ¿Cuál de las siguientes bases de datos corresponde a un conjunto de datos de corte transversal?</p>
+<p><strong>a)</strong> Los rendimientos diarios del IBEX 35 entre 2015 y 2024.</p>
+<p><strong>b)</strong> Los estados financieros de 100 empresas correspondientes al ejercicio 2024.</p>
+<p><strong>c)</strong> La evolución mensual de la inflación durante los últimos diez años.</p>
+<p><strong>d)</strong> La cotización diaria de una acción durante un año.</p>
+<p>Pregunta 5: ¿Cuál de las siguientes situaciones constituye un ejemplo de serie temporal?</p>
+<p><strong>a)</strong> Los estados financieros de 250 empresas españolas en 2024.</p>
+<p><strong>b)</strong> El salario de 500 trabajadores durante un único año.</p>
+<p><strong>c)</strong> La evolución mensual del Euríbor entre 2010 y 2024.</p>
+<p><strong>d)</strong> Los balances de 80 empresas correspondientes al mismo ejercicio económico.</p>
+<p>Pregunta 6: Dos empresas presentan exactamente el mismo nivel de liquidez y endeudamiento, pero una obtiene un ROA considerablemente mayor que la otra.</p>
+<p>¿Cuál de las siguientes explicaciones es la más adecuada?</p>
+<p><strong>a)</strong> El modelo econométrico es incorrecto.</p>
+<p><strong>b)</strong> La perturbación aleatoria recoge otros factores que afectan a la rentabilidad.</p>
+<p><strong>c)</strong> El ROA está mal calculado.</p>
+<p><strong>d)</strong> La liquidez no influye nunca sobre la rentabilidad.</p>
+<p>Pregunta 7: ¿Cuál de las siguientes afirmaciones describe mejor la diferencia entre un modelo económico y un modelo econométrico?</p>
+<p><strong>a)</strong> El modelo económico utiliza datos y el econométrico no.</p>
+<p><strong>b)</strong> El modelo econométrico incorpora un término aleatorio que representa factores no observados.</p>
+<p><strong>c)</strong> Ambos modelos son exactamente iguales.</p>
+<p><strong>d)</strong> El modelo econométrico únicamente puede utilizarse con series temporales.</p>
+<p>Pregunta 8: Un investigador dispone de información correspondiente a 120 empresas observadas entre 2020 y 2024. ¿Con qué tipo de datos está trabajando?</p>
+<p><strong>a)</strong> Datos de corte transversal.</p>
+<p><strong>b)</strong> Series temporales.</p>
+<p><strong>c)</strong> Datos de panel.</p>
+<p><strong>d)</strong> Datos experimentales.</p>
+
+
+<!-- -->
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const cellDetails = window.document.querySelectorAll(".cell details.code-fold");
+        for (let i=0; i<cellDetails.length; i++) {
+          const details = cellDetails[i];
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell div.sourceCode.cell-code");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../index.html" class="pagination-link" aria-label="Presentación del material docente">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Presentación del material docente</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/02-tema2.html" class="pagination-link" aria-label="Modelo de regresión lineal">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Modelo de regresión lineal</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Ejecutar el código</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="fu"># Introducción a la Econometría</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>::: {.callout-important title="Objetivos de aprendizaje"}</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>Al finalizar este capítulo el estudiante será capaz de:</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Comprender qué es la Econometría y cuál es su papel dentro de las Finanzas y la Contabilidad.</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Diferenciar entre un modelo económico y un modelo econométrico.</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Identificar las principales fases del método econométrico.</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Reconocer los distintos tipos de datos utilizados en Econometría.</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Comprender por qué los modelos econométricos constituyen una herramienta esencial para la toma de decisiones empresariales y financieras.</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Familiarizarse con el caso de estudio que se utilizará a lo largo del libro.</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a><span class="fu">## Econometría y modelos econométricos</span></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a><span class="fu">### ¿Qué es la Econometría? {.unnumbered}</span></span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>La Econometría es la disciplina que combina la **Teoría Económica**, la **Estadística**, las **Matemáticas** y la **Informática** con el objetivo de analizar relaciones económicas utilizando datos observados. Su finalidad no es únicamente describir los datos, sino explicar el comportamiento de las variables económicas, contrastar hipótesis formuladas por la teoría y proporcionar información útil para la toma de decisiones.</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>En términos sencillos, la Econometría intenta responder preguntas del tipo:</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; -   ¿Cómo cambia la rentabilidad de una empresa cuando aumenta su endeudamiento?</span></span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; -   ¿Cómo afecta una subida de los tipos de interés al precio de los bonos?</span></span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; -   ¿Qué efecto tiene la liquidez sobre la capacidad de una empresa para generar beneficios?</span></span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; -   ¿Qué efecto tiene el mercado financiero europeo sobre el español?</span></span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>Responder a estas preguntas requiere construir modelos capaces de cuantificar estas relaciones. La Econometría constituye, por tanto, el puente entre la teoría y la evidencia empírica. Mientras que la teoría económica propone relaciones entre variables, la Econometría utiliza datos para comprobar si dichas relaciones realmente se observan en la práctica.</span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a><span class="fu">### Modelo económico frente a modelo econométrico {.unnumbered}</span></span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>En términos generales, un modelo es una representación simplificada de la realidad que permite estudiar el comportamiento de un fenómeno de interés. En Economía y Finanzas, los modelos constituyen una herramienta esencial para comprender cómo se relacionan distintas variables y para predecir el efecto que un cambio en una de ellas puede producir sobre las demás.</span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>Sin embargo, es importante distinguir entre un **modelo económico** y un **modelo econométrico**, ya que ambos persiguen objetivos diferentes.</span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>El **modelo económico** expresa, de forma simplificada, las relaciones que la teoría espera encontrar entre distintas variables en forma matemática, es decir, $y=f(x)$. Sin embargo, no todas las relaciones se pueden expresar matemáticaemnte ya que hay cuestiones no observables que no se pueden incluir en la expresión matemática.</span>
+<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a>::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}</span>
+<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a>Por ejemplo, numerosos trabajos de investigación en Finanzas Corporativas sugieren que la rentabilidad de una empresa depende, entre otros factores, de su nivel de endeudamiento y de su liquidez. Esta idea puede representarse mediante el siguiente modelo económico:</span>
+<span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-47"><a href="#cb20-47" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb20-48"><a href="#cb20-48" aria-hidden="true" tabindex="-1"></a>ROA=f(Endeudamiento,\;Liquidez)</span>
+<span id="cb20-49"><a href="#cb20-49" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb20-50"><a href="#cb20-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-51"><a href="#cb20-51" aria-hidden="true" tabindex="-1"></a>donde:</span>
+<span id="cb20-52"><a href="#cb20-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-53"><a href="#cb20-53" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**ROA** representa la rentabilidad económica de la empresa;</span>
+<span id="cb20-54"><a href="#cb20-54" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Endeudamiento** mide la proporción de deuda respecto al activo total;</span>
+<span id="cb20-55"><a href="#cb20-55" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Liquidez** refleja la capacidad de la empresa para hacer frente a sus obligaciones a corto plazo.</span>
+<span id="cb20-56"><a href="#cb20-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-57"><a href="#cb20-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-58"><a href="#cb20-58" aria-hidden="true" tabindex="-1"></a>El modelo únicamente indica que existe una relación entre estas variables, pero no especifica cuál es su forma ni cuantifica su intensidad. Aunque la teoría económica resulta imprescindible para comprender el funcionamiento de las empresas, la realidad suele ser mucho más compleja que cualquier modelo teórico. Dos empresas con niveles muy similares de endeudamiento y liquidez pueden presentar rentabilidades muy diferentes debido a numerosos factores adicionales:</span>
+<span id="cb20-59"><a href="#cb20-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-60"><a href="#cb20-60" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>calidad del equipo directivo;</span>
+<span id="cb20-61"><a href="#cb20-61" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>grado de innovación;</span>
+<span id="cb20-62"><a href="#cb20-62" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>eficiencia de los procesos productivos;</span>
+<span id="cb20-63"><a href="#cb20-63" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>estrategia comercial;</span>
+<span id="cb20-64"><a href="#cb20-64" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>características del mercado;</span>
+<span id="cb20-65"><a href="#cb20-65" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>condiciones macroeconómicas.</span>
+<span id="cb20-66"><a href="#cb20-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-67"><a href="#cb20-67" aria-hidden="true" tabindex="-1"></a>Muchos de estos factores son difíciles de medir o, simplemente, no están disponibles en la base de datos. Por esta razón, el modelo económico debe ampliarse incorporando un término que recoja todos aquellos factores no observados que también influyen sobre la variable de interés.</span>
+<span id="cb20-68"><a href="#cb20-68" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb20-69"><a href="#cb20-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-70"><a href="#cb20-70" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>El **modelo econométrico** reconoce que la realidad está influida por numerosos factores no observados y, por tanto, incorpora una componente aleatoria. Ese término recibe el nombre de **perturbación aleatoria** y suele representarse mediante la letra ($u$). Tras aplicar un procedimiento de estimación obtendremos una **estimación para os parámetros**. Más adelante aprenderemos cómo estimar correctamente estos coeficientes y cómo evaluar si estas relaciones son estadísticamente significativas.</span>
+<span id="cb20-71"><a href="#cb20-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-72"><a href="#cb20-72" aria-hidden="true" tabindex="-1"></a>::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}</span>
+<span id="cb20-73"><a href="#cb20-73" aria-hidden="true" tabindex="-1"></a>El modelo económico anterior expresado como un modelo econométrico tendría la siguiente expresión:</span>
+<span id="cb20-74"><a href="#cb20-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-75"><a href="#cb20-75" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb20-76"><a href="#cb20-76" aria-hidden="true" tabindex="-1"></a>ROA_i=\beta_0+\beta_1LEV_i+\beta_2LIQ_i+u_i</span>
+<span id="cb20-77"><a href="#cb20-77" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb20-78"><a href="#cb20-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-79"><a href="#cb20-79" aria-hidden="true" tabindex="-1"></a>donde:</span>
+<span id="cb20-80"><a href="#cb20-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-81"><a href="#cb20-81" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>($ROA_i$) es la rentabilidad económica de la empresa (i);</span>
+<span id="cb20-82"><a href="#cb20-82" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>($LEV_i$) representa su nivel de endeudamiento (*Leverage*);</span>
+<span id="cb20-83"><a href="#cb20-83" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>($LIQ_i$) es su ratio de liquidez corriente;</span>
+<span id="cb20-84"><a href="#cb20-84" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>($\beta_0$,$\beta_1$,$\beta_2$) son parámetros desconocidos;</span>
+<span id="cb20-85"><a href="#cb20-85" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>($u_i$) recoge todos los factores no observados que afectan a la rentabilidad.</span>
+<span id="cb20-86"><a href="#cb20-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-87"><a href="#cb20-87" aria-hidden="true" tabindex="-1"></a>Nuestro objetivo consistirá en obtener estimaciones para dichos parámetros utilizando la información disponible. A partir de este resultado podríamos concluir, por ejemplo, que:</span>
+<span id="cb20-88"><a href="#cb20-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-89"><a href="#cb20-89" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>un mayor endeudamiento se asocia con una menor rentabilidad económica;</span>
+<span id="cb20-90"><a href="#cb20-90" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>una mayor liquidez se relaciona con un incremento de la rentabilidad, manteniendo constante el resto de factores.</span>
+<span id="cb20-91"><a href="#cb20-91" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb20-92"><a href="#cb20-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-93"><a href="#cb20-93" aria-hidden="true" tabindex="-1"></a>::: {.callout-caution title="Error habitual confundir correlación con causalidad"}</span>
+<span id="cb20-94"><a href="#cb20-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-95"><a href="#cb20-95" aria-hidden="true" tabindex="-1"></a>Una de las ideas más importantes de la Econometría es que **una relación estadística no implica necesariamente una relación causal**. Observar que las empresas con mayor liquidez presentan un ROA más elevado no demuestra, por sí solo, que la liquidez sea la causa de dicha rentabilidad. El análisis econométrico proporciona herramientas para aproximarnos a la causalidad, pero siempre requiere apoyarse en la teoría económica y en un diseño adecuado de la investigación.</span>
+<span id="cb20-96"><a href="#cb20-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-97"><a href="#cb20-97" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb20-98"><a href="#cb20-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-99"><a href="#cb20-99" aria-hidden="true" tabindex="-1"></a><span class="fu">## Fases del método econométrico y componentes</span></span>
+<span id="cb20-100"><a href="#cb20-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-101"><a href="#cb20-101" aria-hidden="true" tabindex="-1"></a>La Econometría no consiste únicamente en aplicar técnicas estadísticas mediante un programa informático. En realidad, constituye un proceso de investigación estructurado cuyo objetivo es responder preguntas económicas utilizando datos. Aunque los problemas que aborda la Econometría pueden ser muy diversos, todos ellos siguen una secuencia lógica de etapas que comienza con la formulación de una hipótesis y finaliza con la obtención de conclusiones útiles para la toma de decisiones.</span>
+<span id="cb20-102"><a href="#cb20-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-103"><a href="#cb20-103" aria-hidden="true" tabindex="-1"></a>La @fig-metodo resume las principales fases del método econométrico.</span>
+<span id="cb20-104"><a href="#cb20-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-107"><a href="#cb20-107" aria-hidden="true" tabindex="-1"></a><span class="in">```{mermaid}</span></span>
+<span id="cb20-108"><a href="#cb20-108" aria-hidden="true" tabindex="-1"></a>%%| label: fig-metodo</span>
+<span id="cb20-109"><a href="#cb20-109" aria-hidden="true" tabindex="-1"></a>%%| fig-cap: <span class="ot">"</span><span class="st">Fases del método econométrico</span><span class="ot">"</span></span>
+<span id="cb20-110"><a href="#cb20-110" aria-hidden="true" tabindex="-1"></a>%%| fig-width: <span class="dv">6</span></span>
+<span id="cb20-111"><a href="#cb20-111" aria-hidden="true" tabindex="-1"></a>flowchart LR</span>
+<span id="cb20-112"><a href="#cb20-112" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>[Pregunta económica] --&gt; <span class="dv">2</span>[Especificación del modelo]</span>
+<span id="cb20-113"><a href="#cb20-113" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> --&gt; <span class="dv">3</span>[Obtención de datos]</span>
+<span id="cb20-114"><a href="#cb20-114" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> --&gt; <span class="dv">4</span>[Estimación]</span>
+<span id="cb20-115"><a href="#cb20-115" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span> --&gt; <span class="dv">5</span>[Validación]</span>
+<span id="cb20-116"><a href="#cb20-116" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span> --&gt; <span class="dv">6</span>[Interpretación y predicción]</span>
+<span id="cb20-117"><a href="#cb20-117" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-118"><a href="#cb20-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-119"><a href="#cb20-119" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**Planteamiento del problema**: Toda investigación econométrica comienza con una pregunta cuya respuesta resulta de interés para un investigador, una empresa o un responsable de la toma de decisiones. Algunos ejemplos habituales son:</span>
+<span id="cb20-120"><a href="#cb20-120" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>¿Qué factores explican la rentabilidad económica de las empresas?</span>
+<span id="cb20-121"><a href="#cb20-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-122"><a href="#cb20-122" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>¿Influye el endeudamiento sobre el riesgo financiero?</span>
+<span id="cb20-123"><a href="#cb20-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-124"><a href="#cb20-124" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>¿Cómo afectan las variaciones de los tipos de interés al mercado bursátil?</span>
+<span id="cb20-125"><a href="#cb20-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-126"><a href="#cb20-126" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>¿Qué características aumentan la probabilidad de insolvencia de una empresa?</span>
+<span id="cb20-127"><a href="#cb20-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-128"><a href="#cb20-128" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- --&gt;</span></span>
+<span id="cb20-129"><a href="#cb20-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-130"><a href="#cb20-130" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**Especificación del modelo**: Una vez definida la pregunta de investigación, el siguiente paso consiste en construir un modelo que represente las relaciones que se desean analizar. La especificación implica decidir:</span>
+<span id="cb20-131"><a href="#cb20-131" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>cuál será la variable que queremos explicar</span>
+<span id="cb20-132"><a href="#cb20-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-133"><a href="#cb20-133" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>qué variables consideramos relevantes para explicarla;</span>
+<span id="cb20-134"><a href="#cb20-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-135"><a href="#cb20-135" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>qué forma funcional tendrá la relación entre ellas.</span>
+<span id="cb20-136"><a href="#cb20-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-137"><a href="#cb20-137" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- --&gt;</span></span>
+<span id="cb20-138"><a href="#cb20-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-139"><a href="#cb20-139" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**Obtención de los datos**: Una vez especificado el modelo es necesario obtener información sobre las variables que intervienen en él. econométrico depende en gran medida de la calidad de los datos utilizados. Por ello resulta imprescindible comprobar que:</span>
+<span id="cb20-140"><a href="#cb20-140" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>las variables están correctamente definidas;</span>
+<span id="cb20-141"><a href="#cb20-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-142"><a href="#cb20-142" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>no existen errores de registro;</span>
+<span id="cb20-143"><a href="#cb20-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-144"><a href="#cb20-144" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>los datos corresponden al fenómeno que se desea estudiar;</span>
+<span id="cb20-145"><a href="#cb20-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-146"><a href="#cb20-146" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>el tamaño de la muestra es suficiente.</span>
+<span id="cb20-147"><a href="#cb20-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-148"><a href="#cb20-148" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- --&gt;</span></span>
+<span id="cb20-149"><a href="#cb20-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-150"><a href="#cb20-150" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**Estimación**: Una vez disponible la información, el siguiente paso consiste en estimar los parámetros desconocidos del modelo. Los coeficientes $\beta_0,\;\beta_1,\;\beta_2$ son desconocidos.La estimación consiste en obtener valores numéricos para dichos parámetros utilizando la información contenida en la muestra. En los próximos capítulos estudiaremos el método de **Mínimos Cuadrados Ordinarios (MCO)**, que constituye la técnica de estimación más utilizada en los modelos de regresión lineal. </span>
+<span id="cb20-151"><a href="#cb20-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-152"><a href="#cb20-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-153"><a href="#cb20-153" aria-hidden="true" tabindex="-1"></a>::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}</span>
+<span id="cb20-154"><a href="#cb20-154" aria-hidden="true" tabindex="-1"></a>Como resultado de este proceso obtendremos una ecuación estimada similar a</span>
+<span id="cb20-155"><a href="#cb20-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-156"><a href="#cb20-156" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb20-157"><a href="#cb20-157" aria-hidden="true" tabindex="-1"></a>\widehat{ROA}_i</span>
+<span id="cb20-158"><a href="#cb20-158" aria-hidden="true" tabindex="-1"></a>=</span>
+<span id="cb20-159"><a href="#cb20-159" aria-hidden="true" tabindex="-1"></a>\hat{\beta_0}</span>
+<span id="cb20-160"><a href="#cb20-160" aria-hidden="true" tabindex="-1"></a>+\hat{\beta_1}LEV_i+\hat{\beta_2}LIQ_i.</span>
+<span id="cb20-161"><a href="#cb20-161" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb20-162"><a href="#cb20-162" aria-hidden="true" tabindex="-1"></a>A partir de ella podremos interpretar el efecto de cada variable sobre la rentabilidad empresarial.</span>
+<span id="cb20-163"><a href="#cb20-163" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb20-164"><a href="#cb20-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-165"><a href="#cb20-165" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>**Validación del modelo**: Una vez estimado el modelo, debemos comprobar si los resultados obtenidos son fiables. La validación pretende responder preguntas como las siguientes:</span>
+<span id="cb20-166"><a href="#cb20-166" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-167"><a href="#cb20-167" aria-hidden="true" tabindex="-1"></a><span class="ss">    -  </span>¿Los coeficientes estimados son estadísticamente significativos?</span>
+<span id="cb20-168"><a href="#cb20-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-169"><a href="#cb20-169" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>¿Los signos obtenidos son coherentes con la teoría financiera?</span>
+<span id="cb20-170"><a href="#cb20-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-171"><a href="#cb20-171" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>¿Se cumplen los supuestos del modelo?</span>
+<span id="cb20-172"><a href="#cb20-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-173"><a href="#cb20-173" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>¿Existen observaciones atípicas que puedan alterar los resultados?</span>
+<span id="cb20-174"><a href="#cb20-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-175"><a href="#cb20-175" aria-hidden="true" tabindex="-1"></a>Responder a estas cuestiones constituye una parte esencial del análisis econométrico. Un modelo mal especificado puede conducir a conclusiones erróneas y, en consecuencia, a decisiones empresariales inadecuadas.</span>
+<span id="cb20-176"><a href="#cb20-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-177"><a href="#cb20-177" aria-hidden="true" tabindex="-1"></a><span class="ss">6.  </span>**Explotación del modelo**: La última etapa consiste en interpretar los resultados obtenidos y utilizarlos para apoyar la toma de decisiones. La Econometría no finaliza con la obtención de una ecuación, sino con la capacidad de interpretar correctamente sus resultados y utilizarlos para obtener predicciones y fundamentar decisiones.</span>
+<span id="cb20-178"><a href="#cb20-178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-179"><a href="#cb20-179" aria-hidden="true" tabindex="-1"></a>::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}</span>
+<span id="cb20-180"><a href="#cb20-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-181"><a href="#cb20-181" aria-hidden="true" tabindex="-1"></a>En este ejemplo podríamos responder preguntas como:</span>
+<span id="cb20-182"><a href="#cb20-182" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>¿El endeudamiento reduce realmente la rentabilidad?</span>
+<span id="cb20-183"><a href="#cb20-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-184"><a href="#cb20-184" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>¿Cuál es el efecto de una mejora en la liquidez?</span>
+<span id="cb20-185"><a href="#cb20-185" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-186"><a href="#cb20-186" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>¿Qué variable tiene una mayor influencia sobre el ROA?</span>
+<span id="cb20-187"><a href="#cb20-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-188"><a href="#cb20-188" aria-hidden="true" tabindex="-1"></a>Además, el modelo podrá utilizarse para realizar predicciones sobre empresas similares o para evaluar distintos escenarios financieros. </span>
+<span id="cb20-189"><a href="#cb20-189" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb20-190"><a href="#cb20-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-191"><a href="#cb20-191" aria-hidden="true" tabindex="-1"></a>**Componentes de un modelo econométrico**</span>
+<span id="cb20-192"><a href="#cb20-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-193"><a href="#cb20-193" aria-hidden="true" tabindex="-1"></a>Todos los modelos econométricos, independientemente de su complejidad, están formados por cuatro elementos básicos: variables, parámetros, perturbación aleatoria y ecuaciones. Comprender el papel que desempeña cada uno de ellos facilitará el estudio de los capítulos posteriores.</span>
+<span id="cb20-194"><a href="#cb20-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-195"><a href="#cb20-195" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Las **variables** representan las características que pueden observarse y medirse. En nuestro modelo distinguiremos dos tipos.</span>
+<span id="cb20-196"><a href="#cb20-196" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-197"><a href="#cb20-197" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>Variable dependiente (explicada o endógena): Es la variable cuyo comportamiento deseamos explicar.</span>
+<span id="cb20-198"><a href="#cb20-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-199"><a href="#cb20-199" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>Variables independientes (explicativas o exógenas): Son las variables utilizadas para explicar la variable dependiente. </span>
+<span id="cb20-200"><a href="#cb20-200" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-201"><a href="#cb20-201" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-202"><a href="#cb20-202" aria-hidden="true" tabindex="-1"></a>::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}</span>
+<span id="cb20-203"><a href="#cb20-203" aria-hidden="true" tabindex="-1"></a>En el modelo</span>
+<span id="cb20-204"><a href="#cb20-204" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-205"><a href="#cb20-205" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb20-206"><a href="#cb20-206" aria-hidden="true" tabindex="-1"></a>ROA_i=\beta_0+\beta_1LEV_i+\beta_2LIQ_i+u_i</span>
+<span id="cb20-207"><a href="#cb20-207" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb20-208"><a href="#cb20-208" aria-hidden="true" tabindex="-1"></a>La variable explicada es $ROA_i$ mientras que $LEV_i$ y $LIQ_i$ son las variables explicativas. </span>
+<span id="cb20-209"><a href="#cb20-209" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb20-210"><a href="#cb20-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-211"><a href="#cb20-211" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>La **perturbación aleatoria**, representada mediante (\$u_i\$), recoge todos aquellos factores que afectan a la variable dependiente y que no aparecen explícitamente en el modelo. Se considera tambien una variable de tipo no observable. Las variables explicativas se consideran deterministas (fijas), mientras que la variable explicada se considera aleatoria ya que depende de la perturbación que tiene caracter aleatorio. </span>
+<span id="cb20-212"><a href="#cb20-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-213"><a href="#cb20-213" aria-hidden="true" tabindex="-1"></a>::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}</span>
+<span id="cb20-214"><a href="#cb20-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-215"><a href="#cb20-215" aria-hidden="true" tabindex="-1"></a>En el ejemplo del ROA, los efectos no observables recogidos en la perturbación aleatoria podrían ser: la calidad del equipo directivo; la innovación; la reputación de la empresa; la competencia existente en el mercado; errores de medida. La existencia de esta componente aleatoria explica por qué empresas aparentemente muy similares pueden presentar rentabilidades diferentes.</span>
+<span id="cb20-216"><a href="#cb20-216" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb20-217"><a href="#cb20-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-218"><a href="#cb20-218" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Los **parámetros** representan los efectos que las variables explicativas ejercen sobre la variable dependiente. Su valor es desconocido y deberá estimarse utilizando la información de la muestra. En el modelo</span>
+<span id="cb20-219"><a href="#cb20-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-220"><a href="#cb20-220" aria-hidden="true" tabindex="-1"></a>::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}</span>
+<span id="cb20-221"><a href="#cb20-221" aria-hidden="true" tabindex="-1"></a>En el modelo</span>
+<span id="cb20-222"><a href="#cb20-222" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb20-223"><a href="#cb20-223" aria-hidden="true" tabindex="-1"></a>ROA_i=\beta_0+\beta_1LEV_i+\beta_2LIQ_i+u_i</span>
+<span id="cb20-224"><a href="#cb20-224" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb20-225"><a href="#cb20-225" aria-hidden="true" tabindex="-1"></a>los parámetros son:</span>
+<span id="cb20-226"><a href="#cb20-226" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\beta_0$ que representa la ordenada en el origen o término independiente;</span>
+<span id="cb20-227"><a href="#cb20-227" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\beta_1$ que mide el efecto del endeudamiento sobre la rentabilidad;</span>
+<span id="cb20-228"><a href="#cb20-228" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\beta_2$ que mide el efecto de la liquidez sobre la rentabilidad.</span>
+<span id="cb20-229"><a href="#cb20-229" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb20-230"><a href="#cb20-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-231"><a href="#cb20-231" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>La **ecuación econométrica**: Finalmente, todas las relaciones entre variables se expresan mediante una o varias ecuaciones. En este libro trabajaremos inicialmente con modelos de regresión lineal de una única ecuación, aunque existen modelos más complejos con más de una ecuación.</span>
+<span id="cb20-232"><a href="#cb20-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-233"><a href="#cb20-233" aria-hidden="true" tabindex="-1"></a><span class="fu">## Naturaleza de la información utilizada en Econometría</span></span>
+<span id="cb20-234"><a href="#cb20-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-235"><a href="#cb20-235" aria-hidden="true" tabindex="-1"></a>Los modelos econométricos se construyen a partir de datos. La calidad de las conclusiones obtenidas dependerá, en gran medida, de la calidad de la información disponible y del tipo de datos utilizados. En la práctica, los economistas, analistas financieros y contables trabajan con bases de datos muy diversas. Antes de seleccionar una técnica econométrica es necesario identificar correctamente la naturaleza de la información disponible, ya que no todos los métodos son adecuados para todos los tipos de datos.</span>
+<span id="cb20-236"><a href="#cb20-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-237"><a href="#cb20-237" aria-hidden="true" tabindex="-1"></a>En este libro distinguiremos tres grandes tipos de datos:</span>
+<span id="cb20-238"><a href="#cb20-238" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-239"><a href="#cb20-239" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Los **datos de corte transversal** (*cross-sectional data*) recogen información correspondiente a varias unidades de observación en un mismo instante del tiempo. Las unidades de observación pueden ser empresas, personas, bancos, municipios, países o cualquier otro conjunto de individuos sobre los que se dispone de información. En el ámbito de la Contabilidad y las Finanzas Empresariales, este tipo de datos es muy frecuente.</span>
+<span id="cb20-240"><a href="#cb20-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-241"><a href="#cb20-241" aria-hidden="true" tabindex="-1"></a>::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}</span>
+<span id="cb20-242"><a href="#cb20-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-243"><a href="#cb20-243" aria-hidden="true" tabindex="-1"></a>En este caso de estudio trabajamos con datos de corte transversal ya que cada empresa constituye una observación de la muestra. La @tbl-transversal muestra un pequeño fragmento ilustrativo de dicha base de datos.</span>
+<span id="cb20-244"><a href="#cb20-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-245"><a href="#cb20-245" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Empresa <span class="pp">|</span>   ROA <span class="pp">|</span> Endeudamiento <span class="pp">|</span> Liquidez <span class="pp">|</span> Empleados <span class="pp">|</span></span>
+<span id="cb20-246"><a href="#cb20-246" aria-hidden="true" tabindex="-1"></a><span class="pp">|:-------:|------:|--------------:|---------:|-------:|</span></span>
+<span id="cb20-247"><a href="#cb20-247" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>    A    <span class="pp">|</span>  4.12 <span class="pp">|</span>         63.756 <span class="pp">|</span>    0.11 <span class="pp">|</span>  503 <span class="pp">|</span></span>
+<span id="cb20-248"><a href="#cb20-248" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>    B    <span class="pp">|</span>  1.604<span class="pp">|</span>          79.32 <span class="pp">|</span>     0.037 <span class="pp">|</span>  208 <span class="pp">|</span></span>
+<span id="cb20-249"><a href="#cb20-249" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>    C    <span class="pp">|</span> 4.646 <span class="pp">|</span>          64.678 <span class="pp">|</span>     0.042<span class="pp">|</span>  713 <span class="pp">|</span></span>
+<span id="cb20-250"><a href="#cb20-250" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>    D    <span class="pp">|</span>  10.828 <span class="pp">|</span>          11.881 <span class="pp">|</span>   2.058 <span class="pp">|</span>  631 <span class="pp">|</span></span>
+<span id="cb20-251"><a href="#cb20-251" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>    E    <span class="pp">|</span>  4.916 <span class="pp">|</span>          81.242 <span class="pp">|</span>     0.028 <span class="pp">|</span>  193 <span class="pp">|</span></span>
+<span id="cb20-252"><a href="#cb20-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-253"><a href="#cb20-253" aria-hidden="true" tabindex="-1"></a>: Ejemplo ilustrativo de datos de corte transversal {#tbl-transversal}</span>
+<span id="cb20-254"><a href="#cb20-254" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb20-255"><a href="#cb20-255" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-256"><a href="#cb20-256" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-257"><a href="#cb20-257" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Las **series temporales** (*time series*) están formadas por observaciones correspondientes a una misma variable recogidas a lo largo del tiempo. En este caso, el interés no reside en comparar distintas empresas, sino en estudiar cómo evoluciona una variable conforme transcurren los meses, trimestres o años. Las series temporales desempeñan un papel fundamental en Finanzas, ya que gran parte de las variables financieras presentan una evolución dinámica. Entre las más habituales se encuentran:precios de acciones;índices bursátiles; tipos de interés; inflación; Tipos de cambio; rendimientos de bonos y volatilidad de los mercados.</span>
+<span id="cb20-258"><a href="#cb20-258" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-259"><a href="#cb20-259" aria-hidden="true" tabindex="-1"></a>En este tipo de datos el orden cronológico resulta esencial. Cambiar el orden de las observaciones altera completamente el significado de los datos. Las observaciones no son independientes entre sí, ya que el comportamiento de una variable en un determinado periodo suele estar relacionado con su evolución en periodos anteriores. Esta característica hace necesario utilizar técnicas econométricas específicas que estudiaremos en los últimos capítulos del libro.</span>
+<span id="cb20-260"><a href="#cb20-260" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-261"><a href="#cb20-261" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip appearance="simple" icon=false title="Base de datos 2: El IBEX35"}</span>
+<span id="cb20-262"><a href="#cb20-262" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-263"><a href="#cb20-263" aria-hidden="true" tabindex="-1"></a>El segundo caso práctico que estamos usando como hilo conductor se trata de una serie temporal ya que cada unidad de estudio es un periodo temporal, en este caso el rendimiento financiero mensual calculado a partir del precio de cierre mensual. La @tbl-serie ilustra el aspecto de este tipo de información.</span>
+<span id="cb20-264"><a href="#cb20-264" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-265"><a href="#cb20-265" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>     Mes <span class="pp">|</span> Rendimiento IBEX  <span class="pp">|</span>Rendimiento SP500 <span class="pp">|</span> Rendimiento EUROSTOXX50 <span class="pp">|</span></span>
+<span id="cb20-266"><a href="#cb20-266" aria-hidden="true" tabindex="-1"></a><span class="pp">|--------:|---------------------:|------------:|--------------:|</span></span>
+<span id="cb20-267"><a href="#cb20-267" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>   2020-10 <span class="pp">|</span>                 -4.0161 <span class="pp">|</span>        -2.8055 <span class="pp">|</span>          -7.6567 <span class="pp">|</span></span>
+<span id="cb20-268"><a href="#cb20-268" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 2020-11 <span class="pp">|</span>                22.4586 <span class="pp">|</span>        10.2146 <span class="pp">|</span>          16.6044 <span class="pp">|</span></span>
+<span id="cb20-269"><a href="#cb20-269" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 2020-12 <span class="pp">|</span>                 -0.0396 <span class="pp">|</span>        3.6449 <span class="pp">|</span>          2.2381 <span class="pp">|</span></span>
+<span id="cb20-270"><a href="#cb20-270" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 2021-01 <span class="pp">|</span>                 -3.9951 <span class="pp">|</span>        -1.1199 <span class="pp">|</span>        -2.5564 <span class="pp">|</span></span>
+<span id="cb20-271"><a href="#cb20-271" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 2021-02 <span class="pp">|</span>                5.8518 <span class="pp">|</span>        2.5768 <span class="pp">|</span>          4.3559 <span class="pp">|</span></span>
+<span id="cb20-272"><a href="#cb20-272" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-273"><a href="#cb20-273" aria-hidden="true" tabindex="-1"></a>: Ejemplo ilustrativo de una serie temporal {#tbl-serie}</span>
+<span id="cb20-274"><a href="#cb20-274" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb20-275"><a href="#cb20-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-276"><a href="#cb20-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-277"><a href="#cb20-277" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Los **datos de panel** o **datos longitudinales** combinan las características de los datos de corte transversal y de las series temporales. En ellos se observa simultáneamente un conjunto de unidades y su evolución a lo largo del tiempo. Por ejemplo, podríamos disponer de información correspondiente a las mismas 100 empresas durante los ejercicios comprendidos entre 2020 y 2024. Cada empresa aparecería varias veces en la base de datos, una por cada año observado.</span>
+<span id="cb20-278"><a href="#cb20-278" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-279"><a href="#cb20-279" aria-hidden="true" tabindex="-1"></a>La @tbl-panel muestra un ejemplo simplificado.</span>
+<span id="cb20-280"><a href="#cb20-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-281"><a href="#cb20-281" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Empresa <span class="pp">|</span>  Año <span class="pp">|</span>  ROA <span class="pp">|</span> Endeudamiento <span class="pp">|</span> Liquidez <span class="pp">|</span></span>
+<span id="cb20-282"><a href="#cb20-282" aria-hidden="true" tabindex="-1"></a><span class="pp">|:-------:|-----:|-----:|--------------:|---------:|</span></span>
+<span id="cb20-283"><a href="#cb20-283" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>    A    <span class="pp">|</span> 2020 <span class="pp">|</span> 6.80 <span class="pp">|</span>          0.45 <span class="pp">|</span>     1.65 <span class="pp">|</span></span>
+<span id="cb20-284"><a href="#cb20-284" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>    A    <span class="pp">|</span> 2021 <span class="pp">|</span> 7.20 <span class="pp">|</span>          0.44 <span class="pp">|</span>     1.71 <span class="pp">|</span></span>
+<span id="cb20-285"><a href="#cb20-285" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>    A    <span class="pp">|</span> 2022 <span class="pp">|</span> 8.10 <span class="pp">|</span>          0.42 <span class="pp">|</span>     1.76 <span class="pp">|</span></span>
+<span id="cb20-286"><a href="#cb20-286" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>    B    <span class="pp">|</span> 2020 <span class="pp">|</span> 4.90 <span class="pp">|</span>          0.70 <span class="pp">|</span>     1.10 <span class="pp">|</span></span>
+<span id="cb20-287"><a href="#cb20-287" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>    B    <span class="pp">|</span> 2021 <span class="pp">|</span> 5.30 <span class="pp">|</span>          0.68 <span class="pp">|</span>     1.18 <span class="pp">|</span></span>
+<span id="cb20-288"><a href="#cb20-288" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>    B    <span class="pp">|</span> 2022 <span class="pp">|</span> 5.80 <span class="pp">|</span>          0.65 <span class="pp">|</span>     1.26 <span class="pp">|</span></span>
+<span id="cb20-289"><a href="#cb20-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-290"><a href="#cb20-290" aria-hidden="true" tabindex="-1"></a>: Ejemplo ilustrativo de datos de panel {#tbl-panel}</span>
+<span id="cb20-291"><a href="#cb20-291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-292"><a href="#cb20-292" aria-hidden="true" tabindex="-1"></a>Los datos de panel permiten estudiar simultáneamente las diferencias entre empresas y su evolución temporal. Gracias a ello es posible analizar cuestiones como:</span>
+<span id="cb20-293"><a href="#cb20-293" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-294"><a href="#cb20-294" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>la persistencia de la rentabilidad empresarial;</span>
+<span id="cb20-295"><a href="#cb20-295" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>la evolución del endeudamiento;</span>
+<span id="cb20-296"><a href="#cb20-296" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>el efecto de determinadas políticas financieras a lo largo del tiempo;</span>
+<span id="cb20-297"><a href="#cb20-297" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>el impacto de acontecimientos económicos sobre diferentes empresas.</span>
+<span id="cb20-298"><a href="#cb20-298" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-299"><a href="#cb20-299" aria-hidden="true" tabindex="-1"></a>Debido a la riqueza de la información disponible, los datos de panel ocupan actualmente un lugar destacado en la investigación en Finanzas y Contabilidad aunque no serán objeto de análisis en este manual.</span>
+<span id="cb20-300"><a href="#cb20-300" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-301"><a href="#cb20-301" aria-hidden="true" tabindex="-1"></a>**Variables cuantitativas y cualitativas**</span>
+<span id="cb20-302"><a href="#cb20-302" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-303"><a href="#cb20-303" aria-hidden="true" tabindex="-1"></a>Hasta ahora hemos trabajado únicamente con variables numéricas, como el ROA o el endeudamiento. Sin embargo, muchas características relevantes en un análisis económico son de naturaleza cualitativa.</span>
+<span id="cb20-304"><a href="#cb20-304" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-305"><a href="#cb20-305" aria-hidden="true" tabindex="-1"></a>Algunos ejemplos son:</span>
+<span id="cb20-306"><a href="#cb20-306" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-307"><a href="#cb20-307" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>sector de actividad;</span>
+<span id="cb20-308"><a href="#cb20-308" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>forma jurídica;</span>
+<span id="cb20-309"><a href="#cb20-309" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>empresa cotizada o no cotizada;</span>
+<span id="cb20-310"><a href="#cb20-310" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>existencia de auditoría externa;</span>
+<span id="cb20-311"><a href="#cb20-311" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>pertenencia a un grupo empresarial;</span>
+<span id="cb20-312"><a href="#cb20-312" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>provincia o comunidad autónoma.</span>
+<span id="cb20-313"><a href="#cb20-313" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-314"><a href="#cb20-314" aria-hidden="true" tabindex="-1"></a>Aunque estas variables no representan cantidades numéricas, también pueden incorporarse a un modelo econométrico mediante técnicas que estudiaremos en capítulos posteriores.</span>
+<span id="cb20-315"><a href="#cb20-315" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-316"><a href="#cb20-316" aria-hidden="true" tabindex="-1"></a><span class="fu">## Practicas resueltas</span></span>
+<span id="cb20-317"><a href="#cb20-317" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-318"><a href="#cb20-318" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-319"><a href="#cb20-319" aria-hidden="true" tabindex="-1"></a><span class="fu">### Top 100 empresas andaluzas del transporte. Importancia del análisis descriptivo previo. {.unnumbered}</span></span>
+<span id="cb20-320"><a href="#cb20-320" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-321"><a href="#cb20-321" aria-hidden="true" tabindex="-1"></a>::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}</span>
+<span id="cb20-322"><a href="#cb20-322" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-323"><a href="#cb20-323" aria-hidden="true" tabindex="-1"></a><span class="in">```{r Practica1-cargadedatos}</span></span>
+<span id="cb20-324"><a href="#cb20-324" aria-hidden="true" tabindex="-1"></a>datos <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/BD_SABI.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"Datos"</span>)</span>
+<span id="cb20-325"><a href="#cb20-325" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-326"><a href="#cb20-326" aria-hidden="true" tabindex="-1"></a>Podemos ver las primeras observaciones:</span>
+<span id="cb20-327"><a href="#cb20-327" aria-hidden="true" tabindex="-1"></a><span class="in">```{r Practica1-vistadatos}</span></span>
+<span id="cb20-328"><a href="#cb20-328" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(datos)</span>
+<span id="cb20-329"><a href="#cb20-329" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-330"><a href="#cb20-330" aria-hidden="true" tabindex="-1"></a>Seleccionamos las variables de interés:</span>
+<span id="cb20-331"><a href="#cb20-331" aria-hidden="true" tabindex="-1"></a><span class="in">```{r Practica1-variables}</span></span>
+<span id="cb20-332"><a href="#cb20-332" aria-hidden="true" tabindex="-1"></a>datos_modelo <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span></span>
+<span id="cb20-333"><a href="#cb20-333" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(ROA, ENDEUDAMIENTO, LIQUIDEZ_INMEDIATA)</span>
+<span id="cb20-334"><a href="#cb20-334" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-335"><a href="#cb20-335" aria-hidden="true" tabindex="-1"></a>Podemos obtener los principales estadísticos descriptivos a partir de la función <span class="in">`summary`</span>, y la desviación típica con la función <span class="in">`sd`</span>:</span>
+<span id="cb20-336"><a href="#cb20-336" aria-hidden="true" tabindex="-1"></a><span class="in">```{r Practica1-estadisticosdescriptivos}</span></span>
+<span id="cb20-337"><a href="#cb20-337" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(datos_modelo)</span>
+<span id="cb20-338"><a href="#cb20-338" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(datos_modelo<span class="sc">$</span>ROA)</span>
+<span id="cb20-339"><a href="#cb20-339" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(datos_modelo<span class="sc">$</span>ENDEUDAMIENTO)</span>
+<span id="cb20-340"><a href="#cb20-340" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(datos_modelo<span class="sc">$</span>LIQUIDEZ_INMEDIATA)</span>
+<span id="cb20-341"><a href="#cb20-341" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-342"><a href="#cb20-342" aria-hidden="true" tabindex="-1"></a>La matriz de correlaciones se obtiene con la función <span class="in">`cor`</span>:</span>
+<span id="cb20-343"><a href="#cb20-343" aria-hidden="true" tabindex="-1"></a><span class="in">```{r Practica1-matrizcorrelacion}</span></span>
+<span id="cb20-344"><a href="#cb20-344" aria-hidden="true" tabindex="-1"></a>correlaciones <span class="ot">&lt;-</span> <span class="fu">cor</span>(</span>
+<span id="cb20-345"><a href="#cb20-345" aria-hidden="true" tabindex="-1"></a>datos_modelo,</span>
+<span id="cb20-346"><a href="#cb20-346" aria-hidden="true" tabindex="-1"></a><span class="at">use =</span> <span class="st">"complete.obs"</span></span>
+<span id="cb20-347"><a href="#cb20-347" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-348"><a href="#cb20-348" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(correlaciones, <span class="dv">3</span>)</span>
+<span id="cb20-349"><a href="#cb20-349" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-350"><a href="#cb20-350" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-351"><a href="#cb20-351" aria-hidden="true" tabindex="-1"></a>Por último los gráficos de dispersión, de la variable explicada con cada una de las variables explicativas, se obtienen con la función <span class="in">`ggplot`</span>:</span>
+<span id="cb20-352"><a href="#cb20-352" aria-hidden="true" tabindex="-1"></a><span class="in">```{r Practica1-graficoROAvsEND}</span></span>
+<span id="cb20-353"><a href="#cb20-353" aria-hidden="true" tabindex="-1"></a><span class="co"># ROA vs Endeudamiento</span></span>
+<span id="cb20-354"><a href="#cb20-354" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(datos_modelo,</span>
+<span id="cb20-355"><a href="#cb20-355" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> ENDEUDAMIENTO,</span>
+<span id="cb20-356"><a href="#cb20-356" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> ROA)) <span class="sc">+</span></span>
+<span id="cb20-357"><a href="#cb20-357" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>, <span class="at">colour =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb20-358"><a href="#cb20-358" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>,</span>
+<span id="cb20-359"><a href="#cb20-359" aria-hidden="true" tabindex="-1"></a>              <span class="at">se =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb20-360"><a href="#cb20-360" aria-hidden="true" tabindex="-1"></a>              <span class="at">colour =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb20-361"><a href="#cb20-361" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb20-362"><a href="#cb20-362" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Endeudamiento"</span>,</span>
+<span id="cb20-363"><a href="#cb20-363" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"ROA"</span>,</span>
+<span id="cb20-364"><a href="#cb20-364" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"ROA frente al Endeudamiento"</span></span>
+<span id="cb20-365"><a href="#cb20-365" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb20-366"><a href="#cb20-366" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb20-367"><a href="#cb20-367" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-368"><a href="#cb20-368" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-369"><a href="#cb20-369" aria-hidden="true" tabindex="-1"></a><span class="in">```{r Practica1-graficoROAvsLIQ}</span></span>
+<span id="cb20-370"><a href="#cb20-370" aria-hidden="true" tabindex="-1"></a><span class="co"># ROA vs Liquidez</span></span>
+<span id="cb20-371"><a href="#cb20-371" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(datos_modelo,</span>
+<span id="cb20-372"><a href="#cb20-372" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> LIQUIDEZ_INMEDIATA,</span>
+<span id="cb20-373"><a href="#cb20-373" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> ROA)) <span class="sc">+</span></span>
+<span id="cb20-374"><a href="#cb20-374" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>, <span class="at">colour =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb20-375"><a href="#cb20-375" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>,</span>
+<span id="cb20-376"><a href="#cb20-376" aria-hidden="true" tabindex="-1"></a>              <span class="at">se =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb20-377"><a href="#cb20-377" aria-hidden="true" tabindex="-1"></a>              <span class="at">colour =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb20-378"><a href="#cb20-378" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb20-379"><a href="#cb20-379" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Liquidez"</span>,</span>
+<span id="cb20-380"><a href="#cb20-380" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"ROA"</span>,</span>
+<span id="cb20-381"><a href="#cb20-381" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"ROA frente a la Liquidez"</span></span>
+<span id="cb20-382"><a href="#cb20-382" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb20-383"><a href="#cb20-383" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb20-384"><a href="#cb20-384" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-385"><a href="#cb20-385" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb20-386"><a href="#cb20-386" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-387"><a href="#cb20-387" aria-hidden="true" tabindex="-1"></a><span class="fu">## Practicas propuestas</span></span>
+<span id="cb20-388"><a href="#cb20-388" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-389"><a href="#cb20-389" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Realizar el análisis descriptivo previo para la base de datos <span class="in">`IBEX35`</span> incluyendo estadísticos descriptivos básicos, la matriz de correlación y los gráficos de dispersión.</span>
+<span id="cb20-390"><a href="#cb20-390" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-391"><a href="#cb20-391" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Para cada una de las siguientes situaciones indique:</span>
+<span id="cb20-392"><a href="#cb20-392" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-393"><a href="#cb20-393" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>la unidad de observación;</span>
+<span id="cb20-394"><a href="#cb20-394" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>el tipo de datos;</span>
+<span id="cb20-395"><a href="#cb20-395" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>una posible variable dependiente;</span>
+<span id="cb20-396"><a href="#cb20-396" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>dos posibles variables explicativas.</span>
+<span id="cb20-397"><a href="#cb20-397" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-398"><a href="#cb20-398" aria-hidden="true" tabindex="-1"></a>a)  Análisis de 150 empresas españolas durante el ejercicio 2024.</span>
+<span id="cb20-399"><a href="#cb20-399" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-400"><a href="#cb20-400" aria-hidden="true" tabindex="-1"></a>b)  Evolución mensual del precio de una acción entre 2015 y 2024.</span>
+<span id="cb20-401"><a href="#cb20-401" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-402"><a href="#cb20-402" aria-hidden="true" tabindex="-1"></a>c)  Información de 80 empresas observadas entre 2019 y 2024.</span>
+<span id="cb20-403"><a href="#cb20-403" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-404"><a href="#cb20-404" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- --&gt;</span></span>
+<span id="cb20-405"><a href="#cb20-405" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-406"><a href="#cb20-406" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Explique con sus propias palabras la diferencia entre un modelo económico y un modelo econométrico. ¿Por qué resulta necesario incorporar una perturbación aleatoria?</span>
+<span id="cb20-407"><a href="#cb20-407" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-408"><a href="#cb20-408" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>Piense en otra aplicación de la Econometría relacionada con las Finanzas o la Contabilidad distinta de las presentadas en el capítulo. Identifique:</span>
+<span id="cb20-409"><a href="#cb20-409" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-410"><a href="#cb20-410" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>la pregunta de investigación;</span>
+<span id="cb20-411"><a href="#cb20-411" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>la variable dependiente;</span>
+<span id="cb20-412"><a href="#cb20-412" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>dos variables explicativas;</span>
+<span id="cb20-413"><a href="#cb20-413" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>posibles factores que formarían parte de la perturbación aleatoria.</span>
+<span id="cb20-414"><a href="#cb20-414" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-415"><a href="#cb20-415" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>¿Por qué es importante distinguir entre datos transversales, series temporales y datos de panel antes de elegir un método econométrico? Razone su respuesta.</span>
+<span id="cb20-416"><a href="#cb20-416" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-417"><a href="#cb20-417" aria-hidden="true" tabindex="-1"></a><span class="fu">## Antes de continuar</span></span>
+<span id="cb20-418"><a href="#cb20-418" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-419"><a href="#cb20-419" aria-hidden="true" tabindex="-1"></a>Antes de comenzar el siguiente capítulo, comprueba si has comprendido las ideas fundamentales de esta introducción. Las siguientes preguntas no pretenden evaluar tu capacidad de memorizar definiciones, sino ayudarte a reflexionar sobre los conceptos básicos de la Econometría. Selecciona la respuesta que consideres correcta y justifica brevemente tu elección.</span>
+<span id="cb20-420"><a href="#cb20-420" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-421"><a href="#cb20-421" aria-hidden="true" tabindex="-1"></a>Pregunta 1: ¿Cuál es el principal objetivo de la Econometría?</span>
+<span id="cb20-422"><a href="#cb20-422" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-423"><a href="#cb20-423" aria-hidden="true" tabindex="-1"></a>**a)** Elaborar estados financieros.</span>
+<span id="cb20-424"><a href="#cb20-424" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-425"><a href="#cb20-425" aria-hidden="true" tabindex="-1"></a>**b)** Describir datos mediante tablas y gráficos.</span>
+<span id="cb20-426"><a href="#cb20-426" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-427"><a href="#cb20-427" aria-hidden="true" tabindex="-1"></a>**c)** Analizar relaciones económicas utilizando datos para apoyar la toma de decisiones.</span>
+<span id="cb20-428"><a href="#cb20-428" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-429"><a href="#cb20-429" aria-hidden="true" tabindex="-1"></a>**d)** Sustituir la teoría económica mediante técnicas estadísticas.</span>
+<span id="cb20-430"><a href="#cb20-430" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-431"><a href="#cb20-431" aria-hidden="true" tabindex="-1"></a>Pregunta 2: Una empresa desea estudiar si el nivel de endeudamiento influye sobre la rentabilidad económica de las empresas del sector alimentario. ¿Cuál sería la variable dependiente?</span>
+<span id="cb20-432"><a href="#cb20-432" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-433"><a href="#cb20-433" aria-hidden="true" tabindex="-1"></a>**a)** El endeudamiento.</span>
+<span id="cb20-434"><a href="#cb20-434" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-435"><a href="#cb20-435" aria-hidden="true" tabindex="-1"></a>**b)** La rentabilidad económica (ROA).</span>
+<span id="cb20-436"><a href="#cb20-436" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-437"><a href="#cb20-437" aria-hidden="true" tabindex="-1"></a>**c)** El tamaño de la empresa.</span>
+<span id="cb20-438"><a href="#cb20-438" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-439"><a href="#cb20-439" aria-hidden="true" tabindex="-1"></a>**d)** La liquidez.</span>
+<span id="cb20-440"><a href="#cb20-440" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-441"><a href="#cb20-441" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb20-442"><a href="#cb20-442" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-443"><a href="#cb20-443" aria-hidden="true" tabindex="-1"></a>Pregunta 3: En el modelo</span>
+<span id="cb20-444"><a href="#cb20-444" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-445"><a href="#cb20-445" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb20-446"><a href="#cb20-446" aria-hidden="true" tabindex="-1"></a>ROA_i=\beta_0+\beta_1LEV_i+\beta_2LIQ_i+u_i</span>
+<span id="cb20-447"><a href="#cb20-447" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb20-448"><a href="#cb20-448" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-449"><a href="#cb20-449" aria-hidden="true" tabindex="-1"></a>¿qué representa el término (u_i)?</span>
+<span id="cb20-450"><a href="#cb20-450" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-451"><a href="#cb20-451" aria-hidden="true" tabindex="-1"></a>**a)** Un error cometido al introducir los datos.</span>
+<span id="cb20-452"><a href="#cb20-452" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-453"><a href="#cb20-453" aria-hidden="true" tabindex="-1"></a>**b)** Los parámetros del modelo.</span>
+<span id="cb20-454"><a href="#cb20-454" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-455"><a href="#cb20-455" aria-hidden="true" tabindex="-1"></a>**c)** Los factores que afectan al ROA y que no se han incorporado explícitamente al modelo.</span>
+<span id="cb20-456"><a href="#cb20-456" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-457"><a href="#cb20-457" aria-hidden="true" tabindex="-1"></a>**d)** El valor estimado de la rentabilidad.</span>
+<span id="cb20-458"><a href="#cb20-458" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-459"><a href="#cb20-459" aria-hidden="true" tabindex="-1"></a>Pregunta 4: ¿Cuál de las siguientes bases de datos corresponde a un conjunto de datos de corte transversal?</span>
+<span id="cb20-460"><a href="#cb20-460" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-461"><a href="#cb20-461" aria-hidden="true" tabindex="-1"></a>**a)** Los rendimientos diarios del IBEX 35 entre 2015 y 2024.</span>
+<span id="cb20-462"><a href="#cb20-462" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-463"><a href="#cb20-463" aria-hidden="true" tabindex="-1"></a>**b)** Los estados financieros de 100 empresas correspondientes al ejercicio 2024.</span>
+<span id="cb20-464"><a href="#cb20-464" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-465"><a href="#cb20-465" aria-hidden="true" tabindex="-1"></a>**c)** La evolución mensual de la inflación durante los últimos diez años.</span>
+<span id="cb20-466"><a href="#cb20-466" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-467"><a href="#cb20-467" aria-hidden="true" tabindex="-1"></a>**d)** La cotización diaria de una acción durante un año.</span>
+<span id="cb20-468"><a href="#cb20-468" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-469"><a href="#cb20-469" aria-hidden="true" tabindex="-1"></a>Pregunta 5: ¿Cuál de las siguientes situaciones constituye un ejemplo de serie temporal?</span>
+<span id="cb20-470"><a href="#cb20-470" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-471"><a href="#cb20-471" aria-hidden="true" tabindex="-1"></a>**a)** Los estados financieros de 250 empresas españolas en 2024.</span>
+<span id="cb20-472"><a href="#cb20-472" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-473"><a href="#cb20-473" aria-hidden="true" tabindex="-1"></a>**b)** El salario de 500 trabajadores durante un único año.</span>
+<span id="cb20-474"><a href="#cb20-474" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-475"><a href="#cb20-475" aria-hidden="true" tabindex="-1"></a>**c)** La evolución mensual del Euríbor entre 2010 y 2024.</span>
+<span id="cb20-476"><a href="#cb20-476" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-477"><a href="#cb20-477" aria-hidden="true" tabindex="-1"></a>**d)** Los balances de 80 empresas correspondientes al mismo ejercicio económico.</span>
+<span id="cb20-478"><a href="#cb20-478" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-479"><a href="#cb20-479" aria-hidden="true" tabindex="-1"></a>Pregunta 6: Dos empresas presentan exactamente el mismo nivel de liquidez y endeudamiento, pero una obtiene un ROA considerablemente mayor que la otra.</span>
+<span id="cb20-480"><a href="#cb20-480" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-481"><a href="#cb20-481" aria-hidden="true" tabindex="-1"></a>¿Cuál de las siguientes explicaciones es la más adecuada?</span>
+<span id="cb20-482"><a href="#cb20-482" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-483"><a href="#cb20-483" aria-hidden="true" tabindex="-1"></a>**a)** El modelo econométrico es incorrecto.</span>
+<span id="cb20-484"><a href="#cb20-484" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-485"><a href="#cb20-485" aria-hidden="true" tabindex="-1"></a>**b)** La perturbación aleatoria recoge otros factores que afectan a la rentabilidad.</span>
+<span id="cb20-486"><a href="#cb20-486" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-487"><a href="#cb20-487" aria-hidden="true" tabindex="-1"></a>**c)** El ROA está mal calculado.</span>
+<span id="cb20-488"><a href="#cb20-488" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-489"><a href="#cb20-489" aria-hidden="true" tabindex="-1"></a>**d)** La liquidez no influye nunca sobre la rentabilidad.</span>
+<span id="cb20-490"><a href="#cb20-490" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-491"><a href="#cb20-491" aria-hidden="true" tabindex="-1"></a>Pregunta 7: ¿Cuál de las siguientes afirmaciones describe mejor la diferencia entre un modelo económico y un modelo econométrico?</span>
+<span id="cb20-492"><a href="#cb20-492" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-493"><a href="#cb20-493" aria-hidden="true" tabindex="-1"></a>**a)** El modelo económico utiliza datos y el econométrico no.</span>
+<span id="cb20-494"><a href="#cb20-494" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-495"><a href="#cb20-495" aria-hidden="true" tabindex="-1"></a>**b)** El modelo econométrico incorpora un término aleatorio que representa factores no observados.</span>
+<span id="cb20-496"><a href="#cb20-496" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-497"><a href="#cb20-497" aria-hidden="true" tabindex="-1"></a>**c)** Ambos modelos son exactamente iguales.</span>
+<span id="cb20-498"><a href="#cb20-498" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-499"><a href="#cb20-499" aria-hidden="true" tabindex="-1"></a>**d)** El modelo econométrico únicamente puede utilizarse con series temporales.</span>
+<span id="cb20-500"><a href="#cb20-500" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-501"><a href="#cb20-501" aria-hidden="true" tabindex="-1"></a>Pregunta 8: Un investigador dispone de información correspondiente a 120 empresas observadas entre 2020 y 2024. ¿Con qué tipo de datos está trabajando?</span>
+<span id="cb20-502"><a href="#cb20-502" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-503"><a href="#cb20-503" aria-hidden="true" tabindex="-1"></a>**a)** Datos de corte transversal.</span>
+<span id="cb20-504"><a href="#cb20-504" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-505"><a href="#cb20-505" aria-hidden="true" tabindex="-1"></a>**b)** Series temporales.</span>
+<span id="cb20-506"><a href="#cb20-506" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-507"><a href="#cb20-507" aria-hidden="true" tabindex="-1"></a>**c)** Datos de panel.</span>
+<span id="cb20-508"><a href="#cb20-508" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-509"><a href="#cb20-509" aria-hidden="true" tabindex="-1"></a>**d)** Datos experimentales.</span>
+</code></pre></div><button title="Copiar al portapapeles" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/cbgarciaugr/EconometriaBasica/edit/main/chapters/01-tema1.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li></ul></div></div></div></footer></body></html>

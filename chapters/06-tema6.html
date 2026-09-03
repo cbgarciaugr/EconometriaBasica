@@ -1,0 +1,1846 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>6&nbsp; Autocorrelación – Econometría para Finanzas y Contabilidad con R</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/apendice-basesdatos.html" rel="next">
+<link href="../chapters/05-tema5.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-3dac5e246fdd9bdc5e35d09ab9b42ca8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No se han encontrado resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../style.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/06-tema6.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Autocorrelación</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Econometría para Finanzas y Contabilidad con R</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/cbgarciaugr/EconometriaBasica" title="Ejecutar el código" class="quarto-navigation-tool px-1" aria-label="Ejecutar el código"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Presentación del material docente</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/01-tema1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducción a la Econometría</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/02-tema2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Modelo de regresión lineal</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/03-tema3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Variables dicotómicas y cambio estructural</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/04-tema4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Colinealidad</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/05-tema5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Heterocedasticidad</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/06-tema6.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Autocorrelación</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Apéndices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/apendice-basesdatos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Apéndice: Bases de datos utilizadas en el libro</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/apendicematrices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Apéndice: conceptos básicos de algebra matricial</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/apendicedistribuciones.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Apéndice. Distribuciones estadísticas y valores críticos</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#concepto-causas-y-consecuencias-de-autocorrelación" id="toc-concepto-causas-y-consecuencias-de-autocorrelación" class="nav-link active" data-scroll-target="#concepto-causas-y-consecuencias-de-autocorrelación"><span class="header-section-number">6.0.1</span> Concepto, causas y consecuencias de autocorrelación</a></li>
+  <li><a href="#detección-de-la-autocorrelación" id="toc-detección-de-la-autocorrelación" class="nav-link" data-scroll-target="#detección-de-la-autocorrelación"><span class="header-section-number">6.1</span> Detección de la autocorrelación</a>
+  <ul class="collapse">
+  <li><a href="#métodos-gráficos" id="toc-métodos-gráficos" class="nav-link" data-scroll-target="#métodos-gráficos"><span class="header-section-number">6.1.1</span> Métodos gráficos</a></li>
+  <li><a href="#contrastes-estadísticos" id="toc-contrastes-estadísticos" class="nav-link" data-scroll-target="#contrastes-estadísticos"><span class="header-section-number">6.1.2</span> Contrastes estadísticos</a></li>
+  </ul></li>
+  <li><a href="#estimación-de-modelos-con-autocorrelación" id="toc-estimación-de-modelos-con-autocorrelación" class="nav-link" data-scroll-target="#estimación-de-modelos-con-autocorrelación"><span class="header-section-number">6.2</span> Estimación de modelos con autocorrelación</a></li>
+  <li><a href="#prácticas-resueltas" id="toc-prácticas-resueltas" class="nav-link" data-scroll-target="#prácticas-resueltas"><span class="header-section-number">6.3</span> Prácticas resueltas</a></li>
+  <li><a href="#prácticas-propuestas" id="toc-prácticas-propuestas" class="nav-link" data-scroll-target="#prácticas-propuestas"><span class="header-section-number">6.4</span> Prácticas propuestas</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/cbgarciaugr/EconometriaBasica/edit/main/chapters/06-tema6.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Autocorrelación</span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Código</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Mostrar todo el código</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Ocultar todo el código</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">Ver el código fuente</a></li></ul></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-default callout-important callout-titled" title="Objetivos de aprendizaje">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Importante</span>Objetivos de aprendizaje
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Al finalizar este tema, el estudiante será capaz de:</p>
+<ul>
+<li>Comprender qué es la <strong>autocorrelación</strong> y por qué supone una vulneración de los supuestos clásicos del modelo de regresión lineal.</li>
+<li>Identificar las principales causas de autocorrelación en modelos con datos de series temporales.</li>
+<li>Comprender las consecuencias de la autocorrelación sobre los estimadores MCO, sus varianzas y los contrastes de hipótesis.</li>
+<li>Detectar indicios de autocorrelación mediante el análisis gráfico de los residuos.</li>
+<li>Aplicar e interpretar los principales contrastes de autocorrelación, especialmente <strong>Durbin-Watson</strong> y <strong>Ljung-Box</strong>.</li>
+<li>Comprender el supuesto de autocorrelación <strong>AR(1)</strong> y su relación con la matriz de varianzas y covarianzas de las perturbaciones.</li>
+<li>Entender la lógica de las transformaciones utilizadas para obtener perturbaciones incorreladas.</li>
+<li>Aplicar en R procedimientos para detectar y corregir la autocorrelación.</li>
+<li>Comprender el funcionamiento básico de los procedimientos de <strong>Cochrane-Orcutt</strong> y <strong>Prais-Winsten</strong>.</li>
+<li>Interpretar los resultados obtenidos en un contexto económico y financiero.</li>
+</ul>
+</div>
+</div>
+<section id="concepto-causas-y-consecuencias-de-autocorrelación" class="level3" data-number="6.0.1">
+<h3 data-number="6.0.1" class="anchored" data-anchor-id="concepto-causas-y-consecuencias-de-autocorrelación"><span class="header-section-number">6.0.1</span> Concepto, causas y consecuencias de autocorrelación</h3>
+<p>En el modelo lineal general,</p>
+<p><span class="math display">\[
+\mathbf{y} = \mathbf{X}\boldsymbol{\beta}+\mathbf{u},
+\]</span></p>
+<p>uno de los supuestos clásicos establece que las perturbaciones aleatorias de distintas observaciones no están correlacionadas entre sí. En concreto, suponemos que <span class="math inline">\(Var(\mathbf{u})=\sigma^2\mathbf{I}\)</span> que implica tres condiciones:</p>
+<ol type="1">
+<li><p>Las perturbaciones tienen media cero: <span class="math inline">\(E(u_t)=0\)</span></p></li>
+<li><p>Las perturbaciones presentan una varianza constante <span class="math inline">\(Var(u_t)=\sigma^2\)</span></p></li>
+<li><p>Las perturbaciones correspondientes a diferentes observaciones están incorrelacionadas: <span class="math inline">\(Cov(u_t,u_s)=0\qquad t\neq s.\)</span></p></li>
+</ol>
+<p>La tercera condición es especialmente importante cuando trabajamos con <strong>datos de series temporales</strong>, donde las observaciones están ordenadas cronológicamente.</p>
+<section id="concepto-de-la-autocorrelación" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="concepto-de-la-autocorrelación">Concepto de la autocorrelación</h4>
+<p>Existe <strong>autocorrelación</strong> cuando las perturbaciones correspondientes a distintos momentos del tiempo están correlacionadas: <span class="math inline">\(Cov(u_t,u_{t-k})\neq 0,\qquad k&gt;0.\)</span></p>
+<p>Por tanto, mientras que en la heteroscedasticidad estudiábamos una modificación de la <strong>varianza</strong> de las perturbaciones, en la autocorrelación estudiamos una modificación de las <strong>covarianzas entre perturbaciones de distintos períodos</strong>.</p>
+<p>En presencia de autocorrelación podemos escribir:</p>
+<p><span class="math display">\[
+Var(\mathbf{u})=\sigma^2\mathbf{\Omega},
+\]</span></p>
+<p>donde <span class="math inline">\(\mathbf{\Omega}\)</span> recoge la estructura de covarianzas entre las perturbaciones.</p>
+<p>Por ejemplo:</p>
+<p><span class="math display">\[
+Var(\mathbf{u})=
+\begin{pmatrix}
+\sigma^2 &amp; \sigma_{12} &amp; \cdots &amp; \sigma_{1n}\\
+\sigma_{21} &amp; \sigma^2 &amp; \cdots &amp; \sigma_{2n}\\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots\\
+\sigma_{n1} &amp; \sigma_{n2} &amp; \cdots &amp; \sigma^2
+\end{pmatrix}.
+\]</span></p>
+<p>La diagonal principal recoge las varianzas de las perturbaciones, mientras que los elementos situados fuera de la diagonal representan sus covarianzas.</p>
+<ul>
+<li><p>En ausencia de autocorrelación <span class="math inline">\(\sigma_{ij}=0\qquad i\neq j.\)</span></p></li>
+<li><p>En presencia de autocorrelación, algunas de estas covarianzas serán diferentes de cero.</p></li>
+</ul>
+<p>El problema es que una matriz completamente general requeriría estimar un número muy elevado de parámetros. Por ello, al igual que ocurre con la heteroscedasticidad, es necesario <strong>especificar una estructura concreta para las covarianzas</strong>. La estructura más sencilla que estudiaremos será la correspondiente a un proceso autorregresivo de primer orden, <strong>AR(1)</strong> que consiste en que las perturbaciones de un momento temporal dependen del momento temporal anterior.</p>
+</section>
+<section id="causas-de-la-autocorrelación" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="causas-de-la-autocorrelación">Causas de la autocorrelación</h4>
+<p>La autocorrelación aparece fundamentalmente en modelos estimados con datos de series temporales. Sin embargo, su origen puede encontrarse tanto en la propia naturaleza del fenómeno como en una especificación incorrecta del modelo.</p>
+<ul>
+<li>Cuando trabajamos con variables económicas y financieras observadas a lo largo del tiempo, es habitual que exista cierta persistencia. Por ejemplo, la rentabilidad del IBEX 35 de hoy puede estar relacionada con las condiciones existentes en el mercado durante los días anteriores. Del mismo modo, determinadas variables macroeconómicas o financieras presentan una evolución gradual y no cambian completamente de un período a otro.</li>
+</ul>
+<p>Esto puede provocar que los factores no incluidos explícitamente en el modelo también presenten persistencia temporal y, por tanto, que las perturbaciones estén correlacionadas.</p>
+<p><strong>Ejemplo</strong>: Supongamos que analizamos la evolución del IBEX 35 y omitimos factores como la incertidumbre internacional, la evolución de los tipos de interés o las expectativas de los inversores. Aunque estas variables no aparezcan explícitamente en el modelo, sus efectos pueden persistir durante varios días. En consecuencia, pueden generar un patrón temporal en los residuos.</p>
+<ul>
+<li>Omisión de variables relevantes: Otra causa frecuente es la omisión de variables relevantes. Supongamos que el modelo correcto es:</li>
+</ul>
+<p><span class="math display">\[
+Y_t=\beta_1+\beta_2X_{2t}+\beta_3X_{3t}+u_t,
+\]</span></p>
+<p>pero estimamos:</p>
+<p><span class="math display">\[
+Y_t=\alpha_1+\alpha_2X_{2t}+v_t.
+\]</span></p>
+<p>La variable <span class="math inline">\(X_{3t}\)</span> queda incorporada en la perturbación:</p>
+<p><span class="math display">\[
+v_t=\beta_3X_{3t}+u_t.
+\]</span></p>
+<p>Si <span class="math inline">\(X_{3t}\)</span> presenta dependencia temporal, la perturbación <span class="math inline">\(v_t\)</span> también la presentará.</p>
+<p>Por tanto, una variable relevante omitida puede generar autocorrelación incluso cuando la perturbación del modelo correctamente especificado sea incorrelacionada.</p>
+<ul>
+<li><p>Especificación incorrecta de la forma funcional: También puede aparecer autocorrelación cuando la relación entre las variables no se especifica correctamente. Por ejemplo, si la relación verdadera entre una variable financiera y una variable explicativa presenta una tendencia no lineal y estimamos únicamente una relación lineal, parte de esa estructura quedará recogida en los residuos. Si además esa estructura presenta un patrón temporal, los residuos pueden mostrar autocorrelación.</p></li>
+<li><p>Transformaciones y manipulación de los datos: La construcción de variables mediante medias, interpolaciones, agregaciones o determinadas técnicas de suavizado puede introducir relaciones artificiales entre observaciones consecutivas. Por ello, antes de interpretar una autocorrelación como un fenómeno económico, conviene comprobar también cómo se han construido y transformado los datos.</p></li>
+<li><p>Variables dependientes retardadas: La inclusión de retardos de la variable dependiente es habitual en modelos económicos y financieros: <span class="math inline">\(Y_t=\alpha+\beta X_t+\gamma Y_{t-1}+u_t.\)</span> Este tipo de modelos introduce explícitamente una relación temporal y requiere especial atención en los procedimientos de detección de autocorrelación.</p></li>
+</ul>
+</section>
+<section id="consecuencias-de-la-autocorrelación" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="consecuencias-de-la-autocorrelación">Consecuencias de la autocorrelación</h4>
+<p>La autocorrelación, al igual que la heteroscedasticidad, no implica necesariamente que los estimadores MCO dejen de ser insesgados bajo los supuestos adecuados de exogeneidad. Sin embargo, dejan de ser <strong>eficientes</strong> dentro de la clase de estimadores lineales e insesgados.</p>
+<p>Las principales consecuencias son:</p>
+<ul>
+<li>Los estimadores MCO pueden seguir siendo <strong>lineales, insesgados y consistentes</strong>, pero dejan de ser eficientes.</li>
+<li>La expresión habitual de la matriz de varianzas-covarianzas de los estimadores MCO deja de ser válida cuando ignora la autocorrelación.</li>
+<li>Los errores estándar calculados convencionalmente pueden estar mal estimados.</li>
+<li>Como consecuencia, los contrastes <span class="math inline">\(t\)</span> y <span class="math inline">\(F\)</span> pueden conducir a conclusiones incorrectas.</li>
+<li>La significación estadística de las variables puede estar sobreestimada o subestimada.</li>
+<li>Las predicciones y los intervalos de confianza pueden resultar poco fiables.</li>
+</ul>
+<p>En consecuencia, la presencia de autocorrelación no debe interpretarse únicamente como un problema de los coeficientes estimados. <strong>El problema fundamental para la inferencia está en la estimación incorrecta de sus varianzas.</strong></p>
+</section>
+</section>
+<section id="detección-de-la-autocorrelación" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="detección-de-la-autocorrelación"><span class="header-section-number">6.1</span> Detección de la autocorrelación</h2>
+<p>La detección de la autocorrelación puede abordarse mediante:</p>
+<ol type="1">
+<li>métodos gráficos;</li>
+<li>contrastes estadísticos.</li>
+</ol>
+<p>Los métodos gráficos permiten obtener una primera impresión sobre el comportamiento temporal de los residuos, mientras que los contrastes permiten formalizar estadísticamente la existencia de autocorrelación.</p>
+<section id="métodos-gráficos" class="level3" data-number="6.1.1">
+<h3 data-number="6.1.1" class="anchored" data-anchor-id="métodos-gráficos"><span class="header-section-number">6.1.1</span> Métodos gráficos</h3>
+<ul>
+<li>Gráfico temporal de los residuos: Una primera aproximación consiste en representar los residuos frente al tiempo. Si los residuos están incorrelacionados, esperamos encontrar una sucesión aproximadamente aleatoria de valores alrededor de cero.</li>
+</ul>
+<p>Por el contrario, pueden aparecer:</p>
+<ul>
+<li><strong>Rachas de residuos del mismo signo</strong>, compatibles con autocorrelación positiva.</li>
+<li><strong>Alternancia sistemática de signos</strong>, compatible con autocorrelación negativa.</li>
+</ul>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled" title="Base de datos 2: El IBEX35">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Base de datos 2: El IBEX35
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Una vez estimado el modelo correspondiente, podemos representar sus residuos mediante:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  residuos,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"l"</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">"Residuos del modelo del IBEX 35"</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"Tiempo"</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"Residuo"</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06-tema6_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>La interpretación debe hacerse con cautela. El gráfico permite detectar patrones, pero no constituye por sí mismo una prueba estadística de autocorrelación.</p>
+</div>
+</div>
+<ul>
+<li><p>Gráfico de residuos frente a su primer retardo: Otra posibilidad consiste en representar <span class="math inline">\(e_t\)</span> frente a $ e_{t-1}$.</p>
+<ul>
+<li><p>Una nube de puntos sin estructura clara es compatible con la ausencia de autocorrelación.</p></li>
+<li><p>Una tendencia creciente sería indicativa de autocorrelación positiva, mientras que una tendencia decreciente sería compatible con autocorrelación negativa.</p></li>
+</ul></li>
+</ul>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled" title="Base de datos 2: El IBEX35">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Base de datos 2: El IBEX35
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Una vez estimado el modelo correspondiente, podemos representar sus residuos mediante:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>datos <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/BD_IBEX.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"Datos"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>modelo_ibex <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    Rend_IBEX <span class="sc">~</span> Rend_SP500<span class="sc">+</span> Rend_EUROSTOXX50,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> datos</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>residuos <span class="ot">&lt;-</span> <span class="fu">residuals</span>(modelo_ibex)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  residuos[<span class="sc">-</span><span class="dv">1</span>],</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  residuos[<span class="sc">-</span><span class="fu">length</span>(residuos)],</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="fu">expression</span>(e[t<span class="dv">-1</span>]),</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="fu">expression</span>(e[t]),</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">"Residuos frente a su primer retardo"</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">v =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06-tema6_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>La interpretación debe hacerse con cautela. El gráfico permite detectar patrones, pero no constituye por sí mismo una prueba estadística de autocorrelación.</p>
+</div>
+</div>
+</section>
+<section id="contrastes-estadísticos" class="level3" data-number="6.1.2">
+<h3 data-number="6.1.2" class="anchored" data-anchor-id="contrastes-estadísticos"><span class="header-section-number">6.1.2</span> Contrastes estadísticos</h3>
+<section id="contraste-de-durbin-watson" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="contraste-de-durbin-watson">Contraste de Durbin-Watson</h4>
+<p>El contraste de Durbin-Watson es uno de los procedimientos clásicos para detectar autocorrelación de primer orden. Se parte del modelo <span class="math inline">\(u_t=\rho u_{t-1}+v_t\)</span> donde <span class="math inline">\(v_t\)</span> es una perturbación incorrelacionada. El contraste plantea:</p>
+<p><span class="math display">\[
+H_0:\rho=0
+\]</span></p>
+<p>frente a las alternativas:</p>
+<p><span class="math display">\[
+H_1:\rho&gt;0
+\]</span></p>
+<p>para autocorrelación positiva, o</p>
+<p><span class="math display">\[
+H_1:\rho&lt;0
+\]</span></p>
+<p>para autocorrelación negativa.</p>
+<p>El estadístico de Durbin-Watson es:</p>
+<p><span class="math display">\[
+d=
+\frac{\sum_{t=2}^{n}(e_t-e_{t-1})^2}
+{\sum_{t=1}^{n}e_t^2}.
+\]</span></p>
+<p>De forma aproximada:</p>
+<p><span class="math display">\[
+d\approx2(1-\hat{\rho}).
+\]</span></p>
+<p>Por tanto:</p>
+<ul>
+<li><span class="math inline">\(d\approx 2\)</span>: ausencia de autocorrelación.</li>
+<li><span class="math inline">\(d&lt;2\)</span>: autocorrelación positiva.</li>
+<li><span class="math inline">\(d&gt;2\)</span>: autocorrelación negativa.</li>
+<li><span class="math inline">\(d\approx 0\)</span>: autocorrelación positiva muy elevada.</li>
+<li><span class="math inline">\(d\approx 4\)</span>: autocorrelación negativa muy elevada.</li>
+</ul>
+<p>El paquete <code>lmtest</code> proporciona la función <code>dwtest()</code>.</p>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled" title="Base de datos 2: El IBEX35">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Base de datos 2: El IBEX35
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Una vez estimado el modelo correspondiente, podemos representar sus residuos mediante:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmtest)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dwtest</span>(modelo_ibex)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Durbin-Watson test
+
+data:  modelo_ibex
+DW = 1.9445, p-value = 0.4106
+alternative hypothesis: true autocorrelation is greater than 0</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="contraste-de-ljung-box" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="contraste-de-ljung-box">Contraste de Ljung-Box</h4>
+<p>El contraste de Ljung-Box permite analizar conjuntamente varias autocorrelaciones. Mientras que Durbin-Watson se centra en la autocorrelación de primer orden, Ljung-Box permite comprobar si existe autocorrelación hasta un determinado número de retardos. La hipótesis nula es:</p>
+<p><span class="math display">\[
+H_0:
+\rho_1=\rho_2=\cdots=\rho_m=0.
+\]</span></p>
+<p>La alternativa establece que al menos una de esas autocorrelaciones es diferente de cero.</p>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled" title="Base de datos 2: El IBEX35">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Base de datos 2: El IBEX35
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>En R podemos utilizar:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Box.test</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  residuos,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">lag =</span> <span class="dv">10</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"Ljung-Box"</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Box-Ljung test
+
+data:  residuos
+X-squared = 5.3134, df = 10, p-value = 0.8693</code></pre>
+</div>
+</div>
+<p>El parámetro <code>lag = 10</code> indica que se están considerando conjuntamente los diez primeros retardos. La elección de <code>lag</code> debe responder a la frecuencia de los datos y al objetivo del análisis, por lo que no debe entenderse como un valor universal.</p>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="estimación-de-modelos-con-autocorrelación" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="estimación-de-modelos-con-autocorrelación"><span class="header-section-number">6.2</span> Estimación de modelos con autocorrelación</h2>
+<p>Para modelizar la autocorrelación utilizaremos como referencia un proceso autorregresivo de primer orden:</p>
+<p><span class="math display">\[
+u_t=\rho u_{t-1}+v_t,
+\]</span></p>
+<p>donde:</p>
+<p><span class="math display">\[
+E(v_t)=0,
+\qquad
+Var(v_t)=\sigma^2,
+\]</span></p>
+<p>y las perturbaciones <span class="math inline">\(v_t\)</span> están incorrelacionadas.</p>
+<p>El parámetro <span class="math inline">\(\rho\)</span> mide la intensidad de la dependencia entre perturbaciones consecutivas.</p>
+<p>Si <span class="math inline">\(|\rho|&lt;1\)</span>, se obtiene:</p>
+<p><span class="math display">\[
+Cov(u_t,u_{t-k})=\rho^k\sigma^2.
+\]</span></p>
+<p>Por tanto, las correlaciones entre perturbaciones separadas por varios períodos disminuyen con la distancia temporal:</p>
+<p><span class="math display">\[
+\rho,\quad \rho^2,\quad \rho^3,\quad \ldots
+\]</span></p>
+<p>La matriz de correlaciones correspondiente es:</p>
+<p><span class="math display">\[
+\mathbf{\Omega}=
+\begin{pmatrix}
+1 &amp; \rho &amp; \rho^2 &amp; \cdots &amp; \rho^{n-1}\\
+\rho &amp; 1 &amp; \rho &amp; \cdots &amp; \rho^{n-2}\\
+\rho^2 &amp; \rho &amp; 1 &amp; \cdots &amp; \rho^{n-3}\\
+\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots\\
+\rho^{n-1} &amp; \rho^{n-2} &amp; \rho^{n-3} &amp; \cdots &amp; 1
+\end{pmatrix}.
+\]</span></p>
+<p>Esta parametrización simplifica considerablemente el problema, ya que en lugar de tener que estimar todas las covarianzas de la matriz, únicamente necesitamos estimar <span class="math inline">\(\rho\)</span> y <span class="math inline">\(\sigma^2\)</span>, además de los parámetros del modelo.</p>
+<p>Una vez identificada la estructura de autocorrelación, podemos transformar el modelo para obtener perturbaciones incorrelacionadas. Partimos de:</p>
+<p><span class="math display">\[
+Y_t=
+\beta_1+\beta_2X_{2t}+\cdots+\beta_kX_{kt}+u_t
+\]</span></p>
+<p>y suponemos <span class="math inline">\(u_t=\rho u_{t-1}+v_t\)</span>. Multiplicando el modelo retardado por <span class="math inline">\(\rho\)</span> y restándolo del modelo original obtenemos:</p>
+<p><span class="math display">\[
+Y_t-\rho Y_{t-1}=\beta_1(1-\rho)+\beta_2(X_{2t}-\rho X_{2,t-1})+\cdots+\beta_k(X_{kt}-\rho X_{k,t-1})
++v_t.
+\]</span></p>
+<p>Como: <span class="math inline">\(u_t-\rho u_{t-1}=v_t,\)</span> las perturbaciones del modelo transformado son incorrelacionadas.</p>
+<p>Para <span class="math inline">\(t&gt;1\)</span>:</p>
+<p><span class="math inline">\(Y_t^*=Y_t-\rho Y_{t-1},\)</span></p>
+<p><span class="math inline">\(X_{jt}^*=X_{jt}-\rho X_{j,t-1}.\)</span></p>
+<p>El término independiente también debe transformarse: <span class="math inline">\(1^*=1-\rho.\)</span></p>
+<p>Este último punto es importante: <strong>no se debe mantener el término independiente sin transformar</strong> cuando se aplica esta transformación al modelo.</p>
+<section id="cochrane-orcutt" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="cochrane-orcutt">Cochrane-Orcutt</h4>
+<p>En la práctica, <span class="math inline">\(\rho\)</span> es desconocido y debe estimarse. El procedimiento iterativo de Cochrane-Orcutt sigue, de forma simplificada, los siguientes pasos:</p>
+<ol type="1">
+<li>Estimar el modelo original mediante MCO.</li>
+<li>Obtener los residuos.</li>
+<li>Estimar <span class="math inline">\(\rho\)</span> a partir de los residuos.</li>
+<li>Transformar las variables utilizando <span class="math inline">\(\hat{\rho}\)</span>.</li>
+<li>Estimar nuevamente el modelo transformado.</li>
+<li>Repetir el procedimiento hasta que las estimaciones sucesivas de <span class="math inline">\(\rho\)</span> sean suficientemente próximas.</li>
+</ol>
+<p>Una estimación inicial habitual de <span class="math inline">\(\rho\)</span> es:</p>
+<p><span class="math display">\[
+\hat{\rho}=\frac{\sum_{t=2}^{n}e_te_{t-1}}{\sum_{t=1}^{n}e_t^2}.
+\]</span></p>
+<p>A continuación se implementa el procedimiento directamente en R, siguiendo paso a paso las etapas anteriores:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">&lt;-</span> datos<span class="sc">$</span>Rend_IBEX</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>X1 <span class="ot">&lt;-</span> datos<span class="sc">$</span>Rend_SP500</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>X2 <span class="ot">&lt;-</span> datos<span class="sc">$</span>Rend_EUROSTOXX50</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(Y)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>rho_hat <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>modelo_ibex_co <span class="ot">&lt;-</span> modelo_ibex</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (iter <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>) {</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  e <span class="ot">&lt;-</span> <span class="fu">residuals</span>(modelo_ibex_co)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  rho_nuevo <span class="ot">&lt;-</span> <span class="fu">sum</span>(e[<span class="sc">-</span><span class="dv">1</span>] <span class="sc">*</span> e[<span class="sc">-</span><span class="fu">length</span>(e)]) <span class="sc">/</span> <span class="fu">sum</span>(e<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  Y_t <span class="ot">&lt;-</span> Y[<span class="sc">-</span><span class="dv">1</span>] <span class="sc">-</span> rho_nuevo <span class="sc">*</span> Y[<span class="sc">-</span>n]</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  X1_t <span class="ot">&lt;-</span> X1[<span class="sc">-</span><span class="dv">1</span>] <span class="sc">-</span> rho_nuevo <span class="sc">*</span> X1[<span class="sc">-</span>n]</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  X2_t <span class="ot">&lt;-</span> X2[<span class="sc">-</span><span class="dv">1</span>] <span class="sc">-</span> rho_nuevo <span class="sc">*</span> X2[<span class="sc">-</span>n]</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  modelo_ibex_co <span class="ot">&lt;-</span> <span class="fu">lm</span>(Y_t <span class="sc">~</span> X1_t <span class="sc">+</span> X2_t)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">abs</span>(rho_nuevo <span class="sc">-</span> rho_hat) <span class="sc">&lt;</span> <span class="fl">1e-6</span>) <span class="cf">break</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  rho_hat <span class="ot">&lt;-</span> rho_nuevo</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>rho_hat</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.008107865</code></pre>
+</div>
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_ibex_co)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Y_t ~ X1_t + X2_t)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-5.6152 -1.5667  0.4108  1.4660  6.3744 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   0.7079     0.3163   2.238   0.0286 *  
+X1_t         -0.2188     0.1126  -1.944   0.0561 .  
+X2_t          1.0624     0.1099   9.663 2.53e-14 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.545 on 67 degrees of freedom
+Multiple R-squared:  0.7274,    Adjusted R-squared:  0.7192 
+F-statistic: 89.38 on 2 and 67 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>El bucle repite la transformación hasta que dos estimaciones sucesivas de <span class="math inline">\(\rho\)</span> difieren en menos de una tolerancia prefijada (<code>1e-6</code>), tal como se ha descrito en el procedimiento de Cochrane-Orcutt. El resultado permite comparar los coeficientes obtenidos mediante MCO con los obtenidos después de corregir la autocorrelación. Nótese que el intercepto del modelo transformado corresponde a <span class="math inline">\(\beta_1(1-\rho)\)</span>, tal como se explicó anteriormente.</p>
+</section>
+<section id="prais-winsten" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="prais-winsten">Prais-Winsten</h4>
+<p>Una limitación del procedimiento de Cochrane-Orcutt es que pierde la primera observación. El procedimiento de Prais-Winsten modifica la transformación de la primera observación para conservarla.</p>
+<p>Para <span class="math inline">\(t&gt;1\)</span> se mantiene:</p>
+<p><span class="math inline">\(Y_t^*=Y_t-\rho Y_{t-1},\)</span></p>
+<p>mientras que la primera observación recibe una transformación específica.</p>
+<p>Este procedimiento resulta especialmente útil cuando la muestra no es muy grande y la pérdida de una observación puede ser relevante.</p>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled" title="Base de datos 2: El IBEX35">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Base de datos 2: El IBEX35
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>El análisis de autocorrelación resulta especialmente natural en el ámbito financiero porque muchas variables se observan a lo largo del tiempo.</p>
+<p>Supongamos que disponemos de datos diarios del IBEX 35 y queremos estudiar la relación entre su rentabilidad y determinadas variables financieras.</p>
+<p>Un primer modelo podría ser:</p>
+<p><span class="math display">\[
+R_t=
+\beta_1+\beta_2X_{2t}+\beta_3X_{3t}+u_t.
+\]</span></p>
+<p>En R:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>modelo_ibex <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  Rend_IBEX <span class="sc">~</span> Rend_SP500 <span class="sc">+</span> Rend_EUROSTOXX50,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> datos</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_ibex)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Rend_IBEX ~ Rend_SP500 + Rend_EUROSTOXX50, data = datos)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-5.5865 -1.5595  0.3368  1.4755  6.5878 
+
+Coefficients:
+                 Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)        0.7512     0.3128   2.402   0.0191 *  
+Rend_SP500        -0.2056     0.1120  -1.837   0.0706 .  
+Rend_EUROSTOXX50   1.0371     0.1072   9.678 2.05e-14 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.547 on 68 degrees of freedom
+Multiple R-squared:  0.7292,    Adjusted R-squared:  0.7212 
+F-statistic: 91.54 on 2 and 68 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>Una vez estimado el modelo, podemos estudiar los residuos:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>residuos_ibex <span class="ot">&lt;-</span> <span class="fu">residuals</span>(modelo_ibex)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  residuos_ibex,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"l"</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">"Residuos del modelo del IBEX 35"</span>,</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"Observación"</span>,</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"Residuo"</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06-tema6_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>A continuación podemos aplicar Durbin-Watson:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmtest)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dwtest</span>(modelo_ibex)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Durbin-Watson test
+
+data:  modelo_ibex
+DW = 1.9445, p-value = 0.4106
+alternative hypothesis: true autocorrelation is greater than 0</code></pre>
+</div>
+</div>
+<p>y Ljung-Box:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Box.test</span>(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  residuos_ibex,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">lag =</span> <span class="dv">10</span>,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"Ljung-Box"</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Box-Ljung test
+
+data:  residuos_ibex
+X-squared = 5.3134, df = 10, p-value = 0.8693</code></pre>
+</div>
+</div>
+<p>La combinación de los gráficos y los contrastes permite obtener un diagnóstico más completo que la utilización aislada de un único indicador.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="prácticas-resueltas" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="prácticas-resueltas"><span class="header-section-number">6.3</span> Prácticas resueltas</h2>
+</section>
+<section id="prácticas-propuestas" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="prácticas-propuestas"><span class="header-section-number">6.4</span> Prácticas propuestas</h2>
+
+
+<!-- -->
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const cellDetails = window.document.querySelectorAll(".cell details.code-fold");
+        for (let i=0; i<cellDetails.length; i++) {
+          const details = cellDetails[i];
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell div.sourceCode.cell-code");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/05-tema5.html" class="pagination-link" aria-label="Heterocedasticidad">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Heterocedasticidad</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/apendice-basesdatos.html" class="pagination-link" aria-label="Apéndice: Bases de datos utilizadas en el libro">
+        <span class="nav-page-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Apéndice: Bases de datos utilizadas en el libro</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Ejecutar el código</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(strucchange)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>datos <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/BD_IBEX.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"Datos"</span>)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>modelo_ibex <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  Rend_IBEX <span class="sc">~</span> Rend_SP500 <span class="sc">+</span> Rend_EUROSTOXX50,</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> datos</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>residuos <span class="ot">&lt;-</span> <span class="fu">residuals</span>(modelo_ibex)</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="fu"># Autocorrelación</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>::: {.callout-important title="Objetivos de aprendizaje"}</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>Al finalizar este tema, el estudiante será capaz de:</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Comprender qué es la **autocorrelación** y por qué supone una vulneración de los supuestos clásicos del modelo de regresión lineal.</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Identificar las principales causas de autocorrelación en modelos con datos de series temporales.</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Comprender las consecuencias de la autocorrelación sobre los estimadores MCO, sus varianzas y los contrastes de hipótesis.</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Detectar indicios de autocorrelación mediante el análisis gráfico de los residuos.</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Aplicar e interpretar los principales contrastes de autocorrelación, especialmente **Durbin-Watson** y **Ljung-Box**.</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Comprender el supuesto de autocorrelación **AR(1)** y su relación con la matriz de varianzas y covarianzas de las perturbaciones.</span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Entender la lógica de las transformaciones utilizadas para obtener perturbaciones incorreladas.</span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Aplicar en R procedimientos para detectar y corregir la autocorrelación.</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Comprender el funcionamiento básico de los procedimientos de **Cochrane-Orcutt** y **Prais-Winsten**.</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Interpretar los resultados obtenidos en un contexto económico y financiero.</span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>::: </span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a><span class="fu">### Concepto, causas y consecuencias de autocorrelación</span></span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>En el modelo lineal general,</span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>\mathbf{y} = \mathbf{X}\boldsymbol{\beta}+\mathbf{u},</span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a>uno de los supuestos clásicos establece que las perturbaciones aleatorias de distintas observaciones no están correlacionadas entre sí. En concreto, suponemos que $Var(\mathbf{u})=\sigma^2\mathbf{I}$ que implica tres condiciones:</span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Las perturbaciones tienen media cero: $E(u_t)=0$</span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Las perturbaciones presentan una varianza constante $Var(u_t)=\sigma^2$</span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Las perturbaciones correspondientes a diferentes observaciones están incorrelacionadas: $Cov(u_t,u_s)=0\qquad t\neq s.$</span>
+<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a>La tercera condición es especialmente importante cuando trabajamos con **datos de series temporales**, donde las observaciones están ordenadas cronológicamente.</span>
+<span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-53"><a href="#cb18-53" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Concepto de la autocorrelación {.unnumbered}</span></span>
+<span id="cb18-54"><a href="#cb18-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-55"><a href="#cb18-55" aria-hidden="true" tabindex="-1"></a>Existe **autocorrelación** cuando las perturbaciones correspondientes a distintos momentos del tiempo están correlacionadas: $Cov(u_t,u_{t-k})\neq 0,\qquad k&gt;0.$</span>
+<span id="cb18-56"><a href="#cb18-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-57"><a href="#cb18-57" aria-hidden="true" tabindex="-1"></a>Por tanto, mientras que en la heteroscedasticidad estudiábamos una modificación de la **varianza** de las perturbaciones, en la autocorrelación estudiamos una modificación de las **covarianzas entre perturbaciones de distintos períodos**.</span>
+<span id="cb18-58"><a href="#cb18-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-59"><a href="#cb18-59" aria-hidden="true" tabindex="-1"></a>En presencia de autocorrelación podemos escribir:</span>
+<span id="cb18-60"><a href="#cb18-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-61"><a href="#cb18-61" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-62"><a href="#cb18-62" aria-hidden="true" tabindex="-1"></a>Var(\mathbf{u})=\sigma^2\mathbf{\Omega},</span>
+<span id="cb18-63"><a href="#cb18-63" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-64"><a href="#cb18-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-65"><a href="#cb18-65" aria-hidden="true" tabindex="-1"></a>donde $\mathbf{\Omega}$ recoge la estructura de covarianzas entre las perturbaciones.</span>
+<span id="cb18-66"><a href="#cb18-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-67"><a href="#cb18-67" aria-hidden="true" tabindex="-1"></a>Por ejemplo:</span>
+<span id="cb18-68"><a href="#cb18-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-69"><a href="#cb18-69" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-70"><a href="#cb18-70" aria-hidden="true" tabindex="-1"></a>Var(\mathbf{u})=</span>
+<span id="cb18-71"><a href="#cb18-71" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix}</span>
+<span id="cb18-72"><a href="#cb18-72" aria-hidden="true" tabindex="-1"></a>\sigma^2 &amp; \sigma_{12} &amp; \cdots &amp; \sigma_{1n}<span class="sc">\\</span></span>
+<span id="cb18-73"><a href="#cb18-73" aria-hidden="true" tabindex="-1"></a>\sigma_{21} &amp; \sigma^2 &amp; \cdots &amp; \sigma_{2n}<span class="sc">\\</span></span>
+<span id="cb18-74"><a href="#cb18-74" aria-hidden="true" tabindex="-1"></a>\vdots &amp; \vdots &amp; \ddots &amp; \vdots<span class="sc">\\</span></span>
+<span id="cb18-75"><a href="#cb18-75" aria-hidden="true" tabindex="-1"></a>\sigma_{n1} &amp; \sigma_{n2} &amp; \cdots &amp; \sigma^2</span>
+<span id="cb18-76"><a href="#cb18-76" aria-hidden="true" tabindex="-1"></a>\end{pmatrix}.</span>
+<span id="cb18-77"><a href="#cb18-77" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-78"><a href="#cb18-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-79"><a href="#cb18-79" aria-hidden="true" tabindex="-1"></a>La diagonal principal recoge las varianzas de las perturbaciones, mientras que los elementos situados fuera de la diagonal representan sus covarianzas.</span>
+<span id="cb18-80"><a href="#cb18-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-81"><a href="#cb18-81" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>En ausencia de autocorrelación $\sigma_{ij}=0\qquad i\neq j.$</span>
+<span id="cb18-82"><a href="#cb18-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-83"><a href="#cb18-83" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>En presencia de autocorrelación, algunas de estas covarianzas serán diferentes de cero.</span>
+<span id="cb18-84"><a href="#cb18-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-85"><a href="#cb18-85" aria-hidden="true" tabindex="-1"></a>El problema es que una matriz completamente general requeriría estimar un número muy elevado de parámetros. Por ello, al igual que ocurre con la heteroscedasticidad, es necesario **especificar una estructura concreta para las covarianzas**. La estructura más sencilla que estudiaremos será la correspondiente a un proceso autorregresivo de primer orden, **AR(1)** que consiste en que las perturbaciones de un momento temporal dependen del momento temporal anterior. </span>
+<span id="cb18-86"><a href="#cb18-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-87"><a href="#cb18-87" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Causas de la autocorrelación {.unnumbered}</span></span>
+<span id="cb18-88"><a href="#cb18-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-89"><a href="#cb18-89" aria-hidden="true" tabindex="-1"></a>La autocorrelación aparece fundamentalmente en modelos estimados con datos de series temporales. Sin embargo, su origen puede encontrarse tanto en la propia naturaleza del fenómeno como en una especificación incorrecta del modelo.</span>
+<span id="cb18-90"><a href="#cb18-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-91"><a href="#cb18-91" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Cuando trabajamos con variables económicas y financieras observadas a lo largo del tiempo, es habitual que exista cierta persistencia. Por ejemplo, la rentabilidad del IBEX 35 de hoy puede estar relacionada con las condiciones existentes en el mercado durante los días anteriores. Del mismo modo, determinadas variables macroeconómicas o financieras presentan una evolución gradual y no cambian completamente de un período a otro.</span>
+<span id="cb18-92"><a href="#cb18-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-93"><a href="#cb18-93" aria-hidden="true" tabindex="-1"></a>Esto puede provocar que los factores no incluidos explícitamente en el modelo también presenten persistencia temporal y, por tanto, que las perturbaciones estén correlacionadas.</span>
+<span id="cb18-94"><a href="#cb18-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-95"><a href="#cb18-95" aria-hidden="true" tabindex="-1"></a>**Ejemplo**: Supongamos que analizamos la evolución del IBEX 35 y omitimos factores como la incertidumbre internacional, la evolución de los tipos de interés o las expectativas de los inversores. Aunque estas variables no aparezcan explícitamente en el modelo, sus efectos pueden persistir durante varios días. En consecuencia, pueden generar un patrón temporal en los residuos.</span>
+<span id="cb18-96"><a href="#cb18-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-97"><a href="#cb18-97" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Omisión de variables relevantes: Otra causa frecuente es la omisión de variables relevantes. Supongamos que el modelo correcto es:</span>
+<span id="cb18-98"><a href="#cb18-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-99"><a href="#cb18-99" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-100"><a href="#cb18-100" aria-hidden="true" tabindex="-1"></a>Y_t=\beta_1+\beta_2X_{2t}+\beta_3X_{3t}+u_t,</span>
+<span id="cb18-101"><a href="#cb18-101" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-102"><a href="#cb18-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-103"><a href="#cb18-103" aria-hidden="true" tabindex="-1"></a>pero estimamos:</span>
+<span id="cb18-104"><a href="#cb18-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-105"><a href="#cb18-105" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-106"><a href="#cb18-106" aria-hidden="true" tabindex="-1"></a>Y_t=\alpha_1+\alpha_2X_{2t}+v_t.</span>
+<span id="cb18-107"><a href="#cb18-107" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-108"><a href="#cb18-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-109"><a href="#cb18-109" aria-hidden="true" tabindex="-1"></a>La variable $X_{3t}$ queda incorporada en la perturbación:</span>
+<span id="cb18-110"><a href="#cb18-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-111"><a href="#cb18-111" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-112"><a href="#cb18-112" aria-hidden="true" tabindex="-1"></a>v_t=\beta_3X_{3t}+u_t.</span>
+<span id="cb18-113"><a href="#cb18-113" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-114"><a href="#cb18-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-115"><a href="#cb18-115" aria-hidden="true" tabindex="-1"></a>Si $X_{3t}$ presenta dependencia temporal, la perturbación $v_t$ también la presentará.</span>
+<span id="cb18-116"><a href="#cb18-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-117"><a href="#cb18-117" aria-hidden="true" tabindex="-1"></a>Por tanto, una variable relevante omitida puede generar autocorrelación incluso cuando la perturbación del modelo correctamente especificado sea incorrelacionada.</span>
+<span id="cb18-118"><a href="#cb18-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-119"><a href="#cb18-119" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Especificación incorrecta de la forma funcional: También puede aparecer autocorrelación cuando la relación entre las variables no se especifica correctamente. Por ejemplo, si la relación verdadera entre una variable financiera y una variable explicativa presenta una tendencia no lineal y estimamos únicamente una relación lineal, parte de esa estructura quedará recogida en los residuos. Si además esa estructura presenta un patrón temporal, los residuos pueden mostrar autocorrelación.</span>
+<span id="cb18-120"><a href="#cb18-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-121"><a href="#cb18-121" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Transformaciones y manipulación de los datos: La construcción de variables mediante medias, interpolaciones, agregaciones o determinadas técnicas de suavizado puede introducir relaciones artificiales entre observaciones consecutivas. Por ello, antes de interpretar una autocorrelación como un fenómeno económico, conviene comprobar también cómo se han construido y transformado los datos.</span>
+<span id="cb18-122"><a href="#cb18-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-123"><a href="#cb18-123" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Variables dependientes retardadas: La inclusión de retardos de la variable dependiente es habitual en modelos económicos y financieros: $Y_t=\alpha+\beta X_t+\gamma Y_{t-1}+u_t.$ Este tipo de modelos introduce explícitamente una relación temporal y requiere especial atención en los procedimientos de detección de autocorrelación.</span>
+<span id="cb18-124"><a href="#cb18-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-125"><a href="#cb18-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-126"><a href="#cb18-126" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Consecuencias de la autocorrelación {.unnumbered}</span></span>
+<span id="cb18-127"><a href="#cb18-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-128"><a href="#cb18-128" aria-hidden="true" tabindex="-1"></a>La autocorrelación, al igual que la heteroscedasticidad, no implica necesariamente que los estimadores MCO dejen de ser insesgados bajo los supuestos adecuados de exogeneidad. Sin embargo, dejan de ser **eficientes** dentro de la clase de estimadores lineales e insesgados.</span>
+<span id="cb18-129"><a href="#cb18-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-130"><a href="#cb18-130" aria-hidden="true" tabindex="-1"></a>Las principales consecuencias son:</span>
+<span id="cb18-131"><a href="#cb18-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-132"><a href="#cb18-132" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Los estimadores MCO pueden seguir siendo **lineales, insesgados y consistentes**, pero dejan de ser eficientes.</span>
+<span id="cb18-133"><a href="#cb18-133" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>La expresión habitual de la matriz de varianzas-covarianzas de los estimadores MCO deja de ser válida cuando ignora la autocorrelación.</span>
+<span id="cb18-134"><a href="#cb18-134" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Los errores estándar calculados convencionalmente pueden estar mal estimados.</span>
+<span id="cb18-135"><a href="#cb18-135" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Como consecuencia, los contrastes $t$ y $F$ pueden conducir a conclusiones incorrectas.</span>
+<span id="cb18-136"><a href="#cb18-136" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>La significación estadística de las variables puede estar sobreestimada o subestimada.</span>
+<span id="cb18-137"><a href="#cb18-137" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Las predicciones y los intervalos de confianza pueden resultar poco fiables.</span>
+<span id="cb18-138"><a href="#cb18-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-139"><a href="#cb18-139" aria-hidden="true" tabindex="-1"></a>En consecuencia, la presencia de autocorrelación no debe interpretarse únicamente como un problema de los coeficientes estimados. **El problema fundamental para la inferencia está en la estimación incorrecta de sus varianzas.**</span>
+<span id="cb18-140"><a href="#cb18-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-141"><a href="#cb18-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-142"><a href="#cb18-142" aria-hidden="true" tabindex="-1"></a><span class="fu">## Detección de la autocorrelación</span></span>
+<span id="cb18-143"><a href="#cb18-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-144"><a href="#cb18-144" aria-hidden="true" tabindex="-1"></a>La detección de la autocorrelación puede abordarse mediante:</span>
+<span id="cb18-145"><a href="#cb18-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-146"><a href="#cb18-146" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>métodos gráficos;</span>
+<span id="cb18-147"><a href="#cb18-147" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>contrastes estadísticos.</span>
+<span id="cb18-148"><a href="#cb18-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-149"><a href="#cb18-149" aria-hidden="true" tabindex="-1"></a>Los métodos gráficos permiten obtener una primera impresión sobre el comportamiento temporal de los residuos, mientras que los contrastes permiten formalizar estadísticamente la existencia de autocorrelación.</span>
+<span id="cb18-150"><a href="#cb18-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-151"><a href="#cb18-151" aria-hidden="true" tabindex="-1"></a><span class="fu">### Métodos gráficos</span></span>
+<span id="cb18-152"><a href="#cb18-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-153"><a href="#cb18-153" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Gráfico temporal de los residuos: Una primera aproximación consiste en representar los residuos frente al tiempo. Si los residuos están incorrelacionados, esperamos encontrar una sucesión aproximadamente aleatoria de valores alrededor de cero.</span>
+<span id="cb18-154"><a href="#cb18-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-155"><a href="#cb18-155" aria-hidden="true" tabindex="-1"></a>Por el contrario, pueden aparecer:</span>
+<span id="cb18-156"><a href="#cb18-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-157"><a href="#cb18-157" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Rachas de residuos del mismo signo**, compatibles con autocorrelación positiva.</span>
+<span id="cb18-158"><a href="#cb18-158" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Alternancia sistemática de signos**, compatible con autocorrelación negativa.</span>
+<span id="cb18-159"><a href="#cb18-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-160"><a href="#cb18-160" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip appearance="simple" icon=false title="Base de datos 2: El IBEX35"}</span>
+<span id="cb18-161"><a href="#cb18-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-162"><a href="#cb18-162" aria-hidden="true" tabindex="-1"></a>Una vez estimado el modelo correspondiente, podemos representar sus residuos mediante:</span>
+<span id="cb18-163"><a href="#cb18-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-166"><a href="#cb18-166" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-167"><a href="#cb18-167" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb18-168"><a href="#cb18-168" aria-hidden="true" tabindex="-1"></a>  residuos,</span>
+<span id="cb18-169"><a href="#cb18-169" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"l"</span>,</span>
+<span id="cb18-170"><a href="#cb18-170" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">"Residuos del modelo del IBEX 35"</span>,</span>
+<span id="cb18-171"><a href="#cb18-171" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"Tiempo"</span>,</span>
+<span id="cb18-172"><a href="#cb18-172" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"Residuo"</span></span>
+<span id="cb18-173"><a href="#cb18-173" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-174"><a href="#cb18-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-175"><a href="#cb18-175" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb18-176"><a href="#cb18-176" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-177"><a href="#cb18-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-178"><a href="#cb18-178" aria-hidden="true" tabindex="-1"></a>La interpretación debe hacerse con cautela. El gráfico permite detectar patrones, pero no constituye por sí mismo una prueba estadística de autocorrelación.</span>
+<span id="cb18-179"><a href="#cb18-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-180"><a href="#cb18-180" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-181"><a href="#cb18-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-182"><a href="#cb18-182" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Gráfico de residuos frente a su primer retardo: Otra posibilidad consiste en representar $e_t$ frente a $</span>
+<span id="cb18-183"><a href="#cb18-183" aria-hidden="true" tabindex="-1"></a>e_{t-1}$. </span>
+<span id="cb18-184"><a href="#cb18-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-185"><a href="#cb18-185" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Una nube de puntos sin estructura clara es compatible con la ausencia de autocorrelación.</span>
+<span id="cb18-186"><a href="#cb18-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-187"><a href="#cb18-187" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Una tendencia creciente sería indicativa de autocorrelación positiva, mientras que una tendencia   decreciente sería compatible con autocorrelación negativa.</span>
+<span id="cb18-188"><a href="#cb18-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-189"><a href="#cb18-189" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip appearance="simple" icon=false title="Base de datos 2: El IBEX35"}</span>
+<span id="cb18-190"><a href="#cb18-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-191"><a href="#cb18-191" aria-hidden="true" tabindex="-1"></a>Una vez estimado el modelo correspondiente, podemos representar sus residuos mediante:</span>
+<span id="cb18-192"><a href="#cb18-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-195"><a href="#cb18-195" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-196"><a href="#cb18-196" aria-hidden="true" tabindex="-1"></a>datos <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/BD_IBEX.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"Datos"</span>)</span>
+<span id="cb18-197"><a href="#cb18-197" aria-hidden="true" tabindex="-1"></a>modelo_ibex <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb18-198"><a href="#cb18-198" aria-hidden="true" tabindex="-1"></a>    Rend_IBEX <span class="sc">~</span> Rend_SP500<span class="sc">+</span> Rend_EUROSTOXX50,</span>
+<span id="cb18-199"><a href="#cb18-199" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> datos</span>
+<span id="cb18-200"><a href="#cb18-200" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-201"><a href="#cb18-201" aria-hidden="true" tabindex="-1"></a>residuos <span class="ot">&lt;-</span> <span class="fu">residuals</span>(modelo_ibex)</span>
+<span id="cb18-202"><a href="#cb18-202" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-203"><a href="#cb18-203" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb18-204"><a href="#cb18-204" aria-hidden="true" tabindex="-1"></a>  residuos[<span class="sc">-</span><span class="dv">1</span>],</span>
+<span id="cb18-205"><a href="#cb18-205" aria-hidden="true" tabindex="-1"></a>  residuos[<span class="sc">-</span><span class="fu">length</span>(residuos)],</span>
+<span id="cb18-206"><a href="#cb18-206" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="fu">expression</span>(e[t<span class="dv">-1</span>]),</span>
+<span id="cb18-207"><a href="#cb18-207" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="fu">expression</span>(e[t]),</span>
+<span id="cb18-208"><a href="#cb18-208" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">"Residuos frente a su primer retardo"</span></span>
+<span id="cb18-209"><a href="#cb18-209" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-210"><a href="#cb18-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-211"><a href="#cb18-211" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">v =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb18-212"><a href="#cb18-212" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-213"><a href="#cb18-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-214"><a href="#cb18-214" aria-hidden="true" tabindex="-1"></a>La interpretación debe hacerse con cautela. El gráfico permite detectar patrones, pero no constituye por sí mismo una prueba estadística de autocorrelación.</span>
+<span id="cb18-215"><a href="#cb18-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-216"><a href="#cb18-216" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-217"><a href="#cb18-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-218"><a href="#cb18-218" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-219"><a href="#cb18-219" aria-hidden="true" tabindex="-1"></a><span class="fu">### Contrastes estadísticos</span></span>
+<span id="cb18-220"><a href="#cb18-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-221"><a href="#cb18-221" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Contraste de Durbin-Watson {.unnumbered}</span></span>
+<span id="cb18-222"><a href="#cb18-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-223"><a href="#cb18-223" aria-hidden="true" tabindex="-1"></a>El contraste de Durbin-Watson es uno de los procedimientos clásicos para detectar autocorrelación de primer orden. Se parte del modelo $u_t=\rho u_{t-1}+v_t$ donde $v_t$ es una perturbación incorrelacionada. El contraste plantea:</span>
+<span id="cb18-224"><a href="#cb18-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-225"><a href="#cb18-225" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-226"><a href="#cb18-226" aria-hidden="true" tabindex="-1"></a>H_0:\rho=0</span>
+<span id="cb18-227"><a href="#cb18-227" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-228"><a href="#cb18-228" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-229"><a href="#cb18-229" aria-hidden="true" tabindex="-1"></a>frente a las alternativas:</span>
+<span id="cb18-230"><a href="#cb18-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-231"><a href="#cb18-231" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-232"><a href="#cb18-232" aria-hidden="true" tabindex="-1"></a>H_1:\rho&gt;0</span>
+<span id="cb18-233"><a href="#cb18-233" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-234"><a href="#cb18-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-235"><a href="#cb18-235" aria-hidden="true" tabindex="-1"></a>para autocorrelación positiva, o</span>
+<span id="cb18-236"><a href="#cb18-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-237"><a href="#cb18-237" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-238"><a href="#cb18-238" aria-hidden="true" tabindex="-1"></a>H_1:\rho&lt;0</span>
+<span id="cb18-239"><a href="#cb18-239" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-240"><a href="#cb18-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-241"><a href="#cb18-241" aria-hidden="true" tabindex="-1"></a>para autocorrelación negativa.</span>
+<span id="cb18-242"><a href="#cb18-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-243"><a href="#cb18-243" aria-hidden="true" tabindex="-1"></a>El estadístico de Durbin-Watson es:</span>
+<span id="cb18-244"><a href="#cb18-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-245"><a href="#cb18-245" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-246"><a href="#cb18-246" aria-hidden="true" tabindex="-1"></a>d=</span>
+<span id="cb18-247"><a href="#cb18-247" aria-hidden="true" tabindex="-1"></a>\frac{\sum_{t=2}^{n}(e_t-e_{t-1})^2}</span>
+<span id="cb18-248"><a href="#cb18-248" aria-hidden="true" tabindex="-1"></a>{\sum_{t=1}^{n}e_t^2}.</span>
+<span id="cb18-249"><a href="#cb18-249" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-250"><a href="#cb18-250" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-251"><a href="#cb18-251" aria-hidden="true" tabindex="-1"></a>De forma aproximada:</span>
+<span id="cb18-252"><a href="#cb18-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-253"><a href="#cb18-253" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-254"><a href="#cb18-254" aria-hidden="true" tabindex="-1"></a>d\approx2(1-\hat{\rho}).</span>
+<span id="cb18-255"><a href="#cb18-255" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-256"><a href="#cb18-256" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-257"><a href="#cb18-257" aria-hidden="true" tabindex="-1"></a>Por tanto:</span>
+<span id="cb18-258"><a href="#cb18-258" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-259"><a href="#cb18-259" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$d\approx 2$: ausencia de autocorrelación.</span>
+<span id="cb18-260"><a href="#cb18-260" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$d&lt;2$: autocorrelación positiva.</span>
+<span id="cb18-261"><a href="#cb18-261" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$d&gt;2$: autocorrelación negativa.</span>
+<span id="cb18-262"><a href="#cb18-262" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$d\approx 0$: autocorrelación positiva muy elevada.</span>
+<span id="cb18-263"><a href="#cb18-263" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$d\approx 4$: autocorrelación negativa muy elevada.</span>
+<span id="cb18-264"><a href="#cb18-264" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-265"><a href="#cb18-265" aria-hidden="true" tabindex="-1"></a>El paquete <span class="in">`lmtest`</span> proporciona la función <span class="in">`dwtest()`</span>.</span>
+<span id="cb18-266"><a href="#cb18-266" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-267"><a href="#cb18-267" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip appearance="simple" icon=false title="Base de datos 2: El IBEX35"}</span>
+<span id="cb18-268"><a href="#cb18-268" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-269"><a href="#cb18-269" aria-hidden="true" tabindex="-1"></a>Una vez estimado el modelo correspondiente, podemos representar sus residuos mediante:</span>
+<span id="cb18-270"><a href="#cb18-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-273"><a href="#cb18-273" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-274"><a href="#cb18-274" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmtest)</span>
+<span id="cb18-275"><a href="#cb18-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-276"><a href="#cb18-276" aria-hidden="true" tabindex="-1"></a><span class="fu">dwtest</span>(modelo_ibex)</span>
+<span id="cb18-277"><a href="#cb18-277" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-278"><a href="#cb18-278" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-279"><a href="#cb18-279" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-280"><a href="#cb18-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-281"><a href="#cb18-281" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Contraste de Ljung-Box {.unnumbered}</span></span>
+<span id="cb18-282"><a href="#cb18-282" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-283"><a href="#cb18-283" aria-hidden="true" tabindex="-1"></a>El contraste de Ljung-Box permite analizar conjuntamente varias autocorrelaciones. Mientras que Durbin-Watson se centra en la autocorrelación de primer orden, Ljung-Box permite comprobar si existe autocorrelación hasta un determinado número de retardos. La hipótesis nula es:</span>
+<span id="cb18-284"><a href="#cb18-284" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-285"><a href="#cb18-285" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-286"><a href="#cb18-286" aria-hidden="true" tabindex="-1"></a>H_0:</span>
+<span id="cb18-287"><a href="#cb18-287" aria-hidden="true" tabindex="-1"></a>\rho_1=\rho_2=\cdots=\rho_m=0.</span>
+<span id="cb18-288"><a href="#cb18-288" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-289"><a href="#cb18-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-290"><a href="#cb18-290" aria-hidden="true" tabindex="-1"></a>La alternativa establece que al menos una de esas autocorrelaciones es diferente de cero.</span>
+<span id="cb18-291"><a href="#cb18-291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-292"><a href="#cb18-292" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-293"><a href="#cb18-293" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip appearance="simple" icon=false title="Base de datos 2: El IBEX35"}</span>
+<span id="cb18-294"><a href="#cb18-294" aria-hidden="true" tabindex="-1"></a>En R podemos utilizar:</span>
+<span id="cb18-295"><a href="#cb18-295" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-298"><a href="#cb18-298" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-299"><a href="#cb18-299" aria-hidden="true" tabindex="-1"></a><span class="fu">Box.test</span>(</span>
+<span id="cb18-300"><a href="#cb18-300" aria-hidden="true" tabindex="-1"></a>  residuos,</span>
+<span id="cb18-301"><a href="#cb18-301" aria-hidden="true" tabindex="-1"></a>  <span class="at">lag =</span> <span class="dv">10</span>,</span>
+<span id="cb18-302"><a href="#cb18-302" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"Ljung-Box"</span></span>
+<span id="cb18-303"><a href="#cb18-303" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-304"><a href="#cb18-304" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-305"><a href="#cb18-305" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-306"><a href="#cb18-306" aria-hidden="true" tabindex="-1"></a>El parámetro <span class="in">`lag = 10`</span> indica que se están considerando conjuntamente los diez primeros retardos. La elección de <span class="in">`lag`</span> debe responder a la frecuencia de los datos y al objetivo del análisis, por lo que no debe entenderse como un valor universal.</span>
+<span id="cb18-307"><a href="#cb18-307" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-308"><a href="#cb18-308" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-309"><a href="#cb18-309" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-310"><a href="#cb18-310" aria-hidden="true" tabindex="-1"></a><span class="fu">## Estimación de modelos con autocorrelación</span></span>
+<span id="cb18-311"><a href="#cb18-311" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-312"><a href="#cb18-312" aria-hidden="true" tabindex="-1"></a>Para modelizar la autocorrelación utilizaremos como referencia un proceso autorregresivo de primer orden:</span>
+<span id="cb18-313"><a href="#cb18-313" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-314"><a href="#cb18-314" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-315"><a href="#cb18-315" aria-hidden="true" tabindex="-1"></a>u_t=\rho u_{t-1}+v_t,</span>
+<span id="cb18-316"><a href="#cb18-316" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-317"><a href="#cb18-317" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-318"><a href="#cb18-318" aria-hidden="true" tabindex="-1"></a>donde:</span>
+<span id="cb18-319"><a href="#cb18-319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-320"><a href="#cb18-320" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-321"><a href="#cb18-321" aria-hidden="true" tabindex="-1"></a>E(v_t)=0,</span>
+<span id="cb18-322"><a href="#cb18-322" aria-hidden="true" tabindex="-1"></a>\qquad</span>
+<span id="cb18-323"><a href="#cb18-323" aria-hidden="true" tabindex="-1"></a>Var(v_t)=\sigma^2,</span>
+<span id="cb18-324"><a href="#cb18-324" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-325"><a href="#cb18-325" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-326"><a href="#cb18-326" aria-hidden="true" tabindex="-1"></a>y las perturbaciones $v_t$ están incorrelacionadas.</span>
+<span id="cb18-327"><a href="#cb18-327" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-328"><a href="#cb18-328" aria-hidden="true" tabindex="-1"></a>El parámetro $\rho$ mide la intensidad de la dependencia entre perturbaciones consecutivas.</span>
+<span id="cb18-329"><a href="#cb18-329" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-330"><a href="#cb18-330" aria-hidden="true" tabindex="-1"></a>Si $|\rho|&lt;1$, se obtiene:</span>
+<span id="cb18-331"><a href="#cb18-331" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-332"><a href="#cb18-332" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-333"><a href="#cb18-333" aria-hidden="true" tabindex="-1"></a>Cov(u_t,u_{t-k})=\rho^k\sigma^2.</span>
+<span id="cb18-334"><a href="#cb18-334" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-335"><a href="#cb18-335" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-336"><a href="#cb18-336" aria-hidden="true" tabindex="-1"></a>Por tanto, las correlaciones entre perturbaciones separadas por varios períodos disminuyen con la distancia temporal:</span>
+<span id="cb18-337"><a href="#cb18-337" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-338"><a href="#cb18-338" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-339"><a href="#cb18-339" aria-hidden="true" tabindex="-1"></a>\rho,\quad \rho^2,\quad \rho^3,\quad \ldots</span>
+<span id="cb18-340"><a href="#cb18-340" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-341"><a href="#cb18-341" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-342"><a href="#cb18-342" aria-hidden="true" tabindex="-1"></a>La matriz de correlaciones correspondiente es:</span>
+<span id="cb18-343"><a href="#cb18-343" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-344"><a href="#cb18-344" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-345"><a href="#cb18-345" aria-hidden="true" tabindex="-1"></a>\mathbf{\Omega}=</span>
+<span id="cb18-346"><a href="#cb18-346" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix}</span>
+<span id="cb18-347"><a href="#cb18-347" aria-hidden="true" tabindex="-1"></a>1 &amp; \rho &amp; \rho^2 &amp; \cdots &amp; \rho^{n-1}<span class="sc">\\</span></span>
+<span id="cb18-348"><a href="#cb18-348" aria-hidden="true" tabindex="-1"></a>\rho &amp; 1 &amp; \rho &amp; \cdots &amp; \rho^{n-2}<span class="sc">\\</span></span>
+<span id="cb18-349"><a href="#cb18-349" aria-hidden="true" tabindex="-1"></a>\rho^2 &amp; \rho &amp; 1 &amp; \cdots &amp; \rho^{n-3}<span class="sc">\\</span></span>
+<span id="cb18-350"><a href="#cb18-350" aria-hidden="true" tabindex="-1"></a>\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots<span class="sc">\\</span></span>
+<span id="cb18-351"><a href="#cb18-351" aria-hidden="true" tabindex="-1"></a>\rho^{n-1} &amp; \rho^{n-2} &amp; \rho^{n-3} &amp; \cdots &amp; 1</span>
+<span id="cb18-352"><a href="#cb18-352" aria-hidden="true" tabindex="-1"></a>\end{pmatrix}.</span>
+<span id="cb18-353"><a href="#cb18-353" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-354"><a href="#cb18-354" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-355"><a href="#cb18-355" aria-hidden="true" tabindex="-1"></a>Esta parametrización simplifica considerablemente el problema, ya que en lugar de tener que estimar todas las covarianzas de la matriz, únicamente necesitamos estimar $\rho$ y $\sigma^2$, además de los parámetros del modelo.</span>
+<span id="cb18-356"><a href="#cb18-356" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-357"><a href="#cb18-357" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-358"><a href="#cb18-358" aria-hidden="true" tabindex="-1"></a>Una vez identificada la estructura de autocorrelación, podemos transformar el modelo para obtener perturbaciones incorrelacionadas. Partimos de:</span>
+<span id="cb18-359"><a href="#cb18-359" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-360"><a href="#cb18-360" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-361"><a href="#cb18-361" aria-hidden="true" tabindex="-1"></a>Y_t=</span>
+<span id="cb18-362"><a href="#cb18-362" aria-hidden="true" tabindex="-1"></a>\beta_1+\beta_2X_{2t}+\cdots+\beta_kX_{kt}+u_t</span>
+<span id="cb18-363"><a href="#cb18-363" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-364"><a href="#cb18-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-365"><a href="#cb18-365" aria-hidden="true" tabindex="-1"></a>y suponemos $u_t=\rho u_{t-1}+v_t$. Multiplicando el modelo retardado por $\rho$ y restándolo del modelo original obtenemos:</span>
+<span id="cb18-366"><a href="#cb18-366" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-367"><a href="#cb18-367" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-368"><a href="#cb18-368" aria-hidden="true" tabindex="-1"></a>Y_t-\rho Y_{t-1}=\beta_1(1-\rho)+\beta_2(X_{2t}-\rho X_{2,t-1})+\cdots+\beta_k(X_{kt}-\rho X_{k,t-1})</span>
+<span id="cb18-369"><a href="#cb18-369" aria-hidden="true" tabindex="-1"></a>+v_t.</span>
+<span id="cb18-370"><a href="#cb18-370" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-371"><a href="#cb18-371" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-372"><a href="#cb18-372" aria-hidden="true" tabindex="-1"></a>Como: $u_t-\rho u_{t-1}=v_t,$ las perturbaciones del modelo transformado son incorrelacionadas.</span>
+<span id="cb18-373"><a href="#cb18-373" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-374"><a href="#cb18-374" aria-hidden="true" tabindex="-1"></a>Para $t&gt;1$: </span>
+<span id="cb18-375"><a href="#cb18-375" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-376"><a href="#cb18-376" aria-hidden="true" tabindex="-1"></a>$Y_t^*=Y_t-\rho Y_{t-1},$</span>
+<span id="cb18-377"><a href="#cb18-377" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-378"><a href="#cb18-378" aria-hidden="true" tabindex="-1"></a>$X_{jt}^*=X_{jt}-\rho X_{j,t-1}.$</span>
+<span id="cb18-379"><a href="#cb18-379" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-380"><a href="#cb18-380" aria-hidden="true" tabindex="-1"></a>El término independiente también debe transformarse: $1^*=1-\rho.$</span>
+<span id="cb18-381"><a href="#cb18-381" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-382"><a href="#cb18-382" aria-hidden="true" tabindex="-1"></a>Este último punto es importante: **no se debe mantener el término independiente sin transformar** cuando se aplica esta transformación al modelo.</span>
+<span id="cb18-383"><a href="#cb18-383" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-384"><a href="#cb18-384" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Cochrane-Orcutt {.unnumbered}</span></span>
+<span id="cb18-385"><a href="#cb18-385" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-386"><a href="#cb18-386" aria-hidden="true" tabindex="-1"></a>En la práctica, $\rho$ es desconocido y debe estimarse. El procedimiento iterativo de Cochrane-Orcutt sigue, de forma simplificada, los siguientes pasos:</span>
+<span id="cb18-387"><a href="#cb18-387" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-388"><a href="#cb18-388" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Estimar el modelo original mediante MCO.</span>
+<span id="cb18-389"><a href="#cb18-389" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Obtener los residuos.</span>
+<span id="cb18-390"><a href="#cb18-390" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Estimar $\rho$ a partir de los residuos.</span>
+<span id="cb18-391"><a href="#cb18-391" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Transformar las variables utilizando $\hat{\rho}$.</span>
+<span id="cb18-392"><a href="#cb18-392" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Estimar nuevamente el modelo transformado.</span>
+<span id="cb18-393"><a href="#cb18-393" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Repetir el procedimiento hasta que las estimaciones sucesivas de $\rho$ sean suficientemente próximas.</span>
+<span id="cb18-394"><a href="#cb18-394" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-395"><a href="#cb18-395" aria-hidden="true" tabindex="-1"></a>Una estimación inicial habitual de $\rho$ es:</span>
+<span id="cb18-396"><a href="#cb18-396" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-397"><a href="#cb18-397" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-398"><a href="#cb18-398" aria-hidden="true" tabindex="-1"></a>\hat{\rho}=\frac{\sum_{t=2}^{n}e_te_{t-1}}{\sum_{t=1}^{n}e_t^2}.</span>
+<span id="cb18-399"><a href="#cb18-399" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-400"><a href="#cb18-400" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-401"><a href="#cb18-401" aria-hidden="true" tabindex="-1"></a>A continuación se implementa el procedimiento directamente en R, siguiendo paso a paso las etapas anteriores:</span>
+<span id="cb18-402"><a href="#cb18-402" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-405"><a href="#cb18-405" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-406"><a href="#cb18-406" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">&lt;-</span> datos<span class="sc">$</span>Rend_IBEX</span>
+<span id="cb18-407"><a href="#cb18-407" aria-hidden="true" tabindex="-1"></a>X1 <span class="ot">&lt;-</span> datos<span class="sc">$</span>Rend_SP500</span>
+<span id="cb18-408"><a href="#cb18-408" aria-hidden="true" tabindex="-1"></a>X2 <span class="ot">&lt;-</span> datos<span class="sc">$</span>Rend_EUROSTOXX50</span>
+<span id="cb18-409"><a href="#cb18-409" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(Y)</span>
+<span id="cb18-410"><a href="#cb18-410" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-411"><a href="#cb18-411" aria-hidden="true" tabindex="-1"></a>rho_hat <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb18-412"><a href="#cb18-412" aria-hidden="true" tabindex="-1"></a>modelo_ibex_co <span class="ot">&lt;-</span> modelo_ibex</span>
+<span id="cb18-413"><a href="#cb18-413" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-414"><a href="#cb18-414" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (iter <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>) {</span>
+<span id="cb18-415"><a href="#cb18-415" aria-hidden="true" tabindex="-1"></a>  e <span class="ot">&lt;-</span> <span class="fu">residuals</span>(modelo_ibex_co)</span>
+<span id="cb18-416"><a href="#cb18-416" aria-hidden="true" tabindex="-1"></a>  rho_nuevo <span class="ot">&lt;-</span> <span class="fu">sum</span>(e[<span class="sc">-</span><span class="dv">1</span>] <span class="sc">*</span> e[<span class="sc">-</span><span class="fu">length</span>(e)]) <span class="sc">/</span> <span class="fu">sum</span>(e<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb18-417"><a href="#cb18-417" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-418"><a href="#cb18-418" aria-hidden="true" tabindex="-1"></a>  Y_t <span class="ot">&lt;-</span> Y[<span class="sc">-</span><span class="dv">1</span>] <span class="sc">-</span> rho_nuevo <span class="sc">*</span> Y[<span class="sc">-</span>n]</span>
+<span id="cb18-419"><a href="#cb18-419" aria-hidden="true" tabindex="-1"></a>  X1_t <span class="ot">&lt;-</span> X1[<span class="sc">-</span><span class="dv">1</span>] <span class="sc">-</span> rho_nuevo <span class="sc">*</span> X1[<span class="sc">-</span>n]</span>
+<span id="cb18-420"><a href="#cb18-420" aria-hidden="true" tabindex="-1"></a>  X2_t <span class="ot">&lt;-</span> X2[<span class="sc">-</span><span class="dv">1</span>] <span class="sc">-</span> rho_nuevo <span class="sc">*</span> X2[<span class="sc">-</span>n]</span>
+<span id="cb18-421"><a href="#cb18-421" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-422"><a href="#cb18-422" aria-hidden="true" tabindex="-1"></a>  modelo_ibex_co <span class="ot">&lt;-</span> <span class="fu">lm</span>(Y_t <span class="sc">~</span> X1_t <span class="sc">+</span> X2_t)</span>
+<span id="cb18-423"><a href="#cb18-423" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-424"><a href="#cb18-424" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">abs</span>(rho_nuevo <span class="sc">-</span> rho_hat) <span class="sc">&lt;</span> <span class="fl">1e-6</span>) <span class="cf">break</span></span>
+<span id="cb18-425"><a href="#cb18-425" aria-hidden="true" tabindex="-1"></a>  rho_hat <span class="ot">&lt;-</span> rho_nuevo</span>
+<span id="cb18-426"><a href="#cb18-426" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb18-427"><a href="#cb18-427" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-428"><a href="#cb18-428" aria-hidden="true" tabindex="-1"></a>rho_hat</span>
+<span id="cb18-429"><a href="#cb18-429" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_ibex_co)</span>
+<span id="cb18-430"><a href="#cb18-430" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-431"><a href="#cb18-431" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-432"><a href="#cb18-432" aria-hidden="true" tabindex="-1"></a>El bucle repite la transformación hasta que dos estimaciones sucesivas de $\rho$ difieren en menos de una tolerancia prefijada (<span class="in">`1e-6`</span>), tal como se ha descrito en el procedimiento de Cochrane-Orcutt. El resultado permite comparar los coeficientes obtenidos mediante MCO con los obtenidos después de corregir la autocorrelación. Nótese que el intercepto del modelo transformado corresponde a $\beta_1(1-\rho)$, tal como se explicó anteriormente.</span>
+<span id="cb18-433"><a href="#cb18-433" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-434"><a href="#cb18-434" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Prais-Winsten {.unnumbered}</span></span>
+<span id="cb18-435"><a href="#cb18-435" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-436"><a href="#cb18-436" aria-hidden="true" tabindex="-1"></a>Una limitación del procedimiento de Cochrane-Orcutt es que pierde la primera observación. El procedimiento de Prais-Winsten modifica la transformación de la primera observación para conservarla.</span>
+<span id="cb18-437"><a href="#cb18-437" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-438"><a href="#cb18-438" aria-hidden="true" tabindex="-1"></a>Para $t&gt;1$ se mantiene:</span>
+<span id="cb18-439"><a href="#cb18-439" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-440"><a href="#cb18-440" aria-hidden="true" tabindex="-1"></a>$Y_t^*=Y_t-\rho Y_{t-1},$</span>
+<span id="cb18-441"><a href="#cb18-441" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-442"><a href="#cb18-442" aria-hidden="true" tabindex="-1"></a>mientras que la primera observación recibe una transformación específica.</span>
+<span id="cb18-443"><a href="#cb18-443" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-444"><a href="#cb18-444" aria-hidden="true" tabindex="-1"></a>Este procedimiento resulta especialmente útil cuando la muestra no es muy grande y la pérdida de una observación puede ser relevante.</span>
+<span id="cb18-445"><a href="#cb18-445" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-446"><a href="#cb18-446" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip appearance="simple" icon=false title="Base de datos 2: El IBEX35"}</span>
+<span id="cb18-447"><a href="#cb18-447" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-448"><a href="#cb18-448" aria-hidden="true" tabindex="-1"></a>El análisis de autocorrelación resulta especialmente natural en el ámbito financiero porque muchas variables se observan a lo largo del tiempo.</span>
+<span id="cb18-449"><a href="#cb18-449" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-450"><a href="#cb18-450" aria-hidden="true" tabindex="-1"></a>Supongamos que disponemos de datos diarios del IBEX 35 y queremos estudiar la relación entre su rentabilidad y determinadas variables financieras.</span>
+<span id="cb18-451"><a href="#cb18-451" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-452"><a href="#cb18-452" aria-hidden="true" tabindex="-1"></a>Un primer modelo podría ser:</span>
+<span id="cb18-453"><a href="#cb18-453" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-454"><a href="#cb18-454" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-455"><a href="#cb18-455" aria-hidden="true" tabindex="-1"></a>R_t=</span>
+<span id="cb18-456"><a href="#cb18-456" aria-hidden="true" tabindex="-1"></a>\beta_1+\beta_2X_{2t}+\beta_3X_{3t}+u_t.</span>
+<span id="cb18-457"><a href="#cb18-457" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb18-458"><a href="#cb18-458" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-459"><a href="#cb18-459" aria-hidden="true" tabindex="-1"></a>En R:</span>
+<span id="cb18-460"><a href="#cb18-460" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-463"><a href="#cb18-463" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-464"><a href="#cb18-464" aria-hidden="true" tabindex="-1"></a>modelo_ibex <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb18-465"><a href="#cb18-465" aria-hidden="true" tabindex="-1"></a>  Rend_IBEX <span class="sc">~</span> Rend_SP500 <span class="sc">+</span> Rend_EUROSTOXX50,</span>
+<span id="cb18-466"><a href="#cb18-466" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> datos</span>
+<span id="cb18-467"><a href="#cb18-467" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-468"><a href="#cb18-468" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-469"><a href="#cb18-469" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_ibex)</span>
+<span id="cb18-470"><a href="#cb18-470" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-471"><a href="#cb18-471" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-472"><a href="#cb18-472" aria-hidden="true" tabindex="-1"></a>Una vez estimado el modelo, podemos estudiar los residuos:</span>
+<span id="cb18-473"><a href="#cb18-473" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-476"><a href="#cb18-476" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-477"><a href="#cb18-477" aria-hidden="true" tabindex="-1"></a>residuos_ibex <span class="ot">&lt;-</span> <span class="fu">residuals</span>(modelo_ibex)</span>
+<span id="cb18-478"><a href="#cb18-478" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-479"><a href="#cb18-479" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb18-480"><a href="#cb18-480" aria-hidden="true" tabindex="-1"></a>  residuos_ibex,</span>
+<span id="cb18-481"><a href="#cb18-481" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"l"</span>,</span>
+<span id="cb18-482"><a href="#cb18-482" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">"Residuos del modelo del IBEX 35"</span>,</span>
+<span id="cb18-483"><a href="#cb18-483" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"Observación"</span>,</span>
+<span id="cb18-484"><a href="#cb18-484" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"Residuo"</span></span>
+<span id="cb18-485"><a href="#cb18-485" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-486"><a href="#cb18-486" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-487"><a href="#cb18-487" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb18-488"><a href="#cb18-488" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-489"><a href="#cb18-489" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-490"><a href="#cb18-490" aria-hidden="true" tabindex="-1"></a>A continuación podemos aplicar Durbin-Watson:</span>
+<span id="cb18-491"><a href="#cb18-491" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-494"><a href="#cb18-494" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-495"><a href="#cb18-495" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmtest)</span>
+<span id="cb18-496"><a href="#cb18-496" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-497"><a href="#cb18-497" aria-hidden="true" tabindex="-1"></a><span class="fu">dwtest</span>(modelo_ibex)</span>
+<span id="cb18-498"><a href="#cb18-498" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-499"><a href="#cb18-499" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-500"><a href="#cb18-500" aria-hidden="true" tabindex="-1"></a>y Ljung-Box:</span>
+<span id="cb18-501"><a href="#cb18-501" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-504"><a href="#cb18-504" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-505"><a href="#cb18-505" aria-hidden="true" tabindex="-1"></a><span class="fu">Box.test</span>(</span>
+<span id="cb18-506"><a href="#cb18-506" aria-hidden="true" tabindex="-1"></a>  residuos_ibex,</span>
+<span id="cb18-507"><a href="#cb18-507" aria-hidden="true" tabindex="-1"></a>  <span class="at">lag =</span> <span class="dv">10</span>,</span>
+<span id="cb18-508"><a href="#cb18-508" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"Ljung-Box"</span></span>
+<span id="cb18-509"><a href="#cb18-509" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-510"><a href="#cb18-510" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-511"><a href="#cb18-511" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-512"><a href="#cb18-512" aria-hidden="true" tabindex="-1"></a>La combinación de los gráficos y los contrastes permite obtener un diagnóstico más completo que la utilización aislada de un único indicador.</span>
+<span id="cb18-513"><a href="#cb18-513" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-514"><a href="#cb18-514" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-515"><a href="#cb18-515" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-516"><a href="#cb18-516" aria-hidden="true" tabindex="-1"></a><span class="fu">## Prácticas resueltas</span></span>
+<span id="cb18-517"><a href="#cb18-517" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-518"><a href="#cb18-518" aria-hidden="true" tabindex="-1"></a><span class="fu">## Prácticas propuestas</span></span>
+</code></pre></div><button title="Copiar al portapapeles" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/cbgarciaugr/EconometriaBasica/edit/main/chapters/06-tema6.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li></ul></div></div></div></footer></body></html>

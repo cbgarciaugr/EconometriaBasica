@@ -255,13 +255,14 @@ La matriz de varianzas-covarianzas de los estimadores puede obtenerse mediante:
 ```{r}
 vcov(modelo)
 ```
-El resultado es una matriz cuadrada cuyos elementos de la diagonal representan las varianzas de los estimadores de los coeficientes, mientras que los elementos fuera de la diagonal corresponden a sus covarianzas. Asi, se verifica que:
-- $\hat{var}(\hat{\beta}_0)=8.0246$ 
-- $\hat{var}(\hat{\beta}_1)=0.0013$ 
-- $\hat{var}(\hat{\beta}_2)=2.7307$
-- $\hat{cov}(\hat{\beta_0},\hat{\beta_1})=-0.100$
-- $\hat{cov}(\hat{\beta_0},\hat{\beta_2})=-3.7175$
-- $\hat{cov}(\hat{\beta_1},\hat{\beta_2})=0.0434$
+El resultado es una matriz cuadrada cuyos elementos de la diagonal representan las varianzas de los estimadores de los coeficientes, mientras que los elementos fuera de la diagonal corresponden a sus covarianzas. Asi, se verifica que:\\
+
+- $\hat{var}(\hat{\beta}_0)=8.0246$\\ 
+- $\hat{var}(\hat{\beta}_1)=0.0013$\\
+- $\hat{var}(\hat{\beta}_2)=2.7307$\\
+- $\hat{cov}(\hat{\beta_0},\hat{\beta_1})=-0.100$\\
+- $\hat{cov}(\hat{\beta_0},\hat{\beta_2})=-3.7175$\\
+- $\hat{cov}(\hat{\beta_1},\hat{\beta_2})=0.0434$\\
 :::
 
 ### Interpretación de los estimadores
@@ -322,7 +323,7 @@ Una vez estimados los coeficientes del modelo surge una pregunta natural: ¿expl
 
 Así, una vez obtenidos los estimadores de los parámetros, interesa conocer qué proporción de la variabilidad observada de la variable explicada consigue explicar el modelo y qué parte permanece sin explicar. 
 
-#### Descomposición de la variabilidad
+### Descomposición de la variabilidad
 
 La variabilidad total observada en la variable dependiente puede descomponerse en dos partes:
 
@@ -353,7 +354,7 @@ $$
 
 Obsérvese que esta descomposición únicamente se verifica cuando el modelo incorpora un término independiente.
 
-#### Coeficiente de determinación
+### Coeficiente de determinación
 
 La medida de bondad del ajuste más utilizada es el coeficiente de determinación, denotado por $R^{2}$, se obtiene como el cociente entre SCE y SCT:
 
@@ -375,7 +376,7 @@ summary(modelo)$r.squared
 
 El coeficiente de determinación presenta el inconveniente de que  aumenta a medida que se incluyen variables en el modelo aunque las variables incluidas no sean significativas. Por esta razón, el coeficiente de determinación no permite comparar modelos con distinto número de variables explicativas.
 
-#### El coeficiente de determinación corregido:
+### El coeficiente de determinación corregido:
 
 Para resolver este inconveniente se utiliza el coeficiente de determinación corregido, denotado por $\overline{R}^{2}$. Se define como:
 
@@ -411,7 +412,7 @@ data.frame(
 ```
 :::
 
-####  Otros criterios de información
+###  Otros criterios de información
 
 Otra forma de comparar modelos consiste en utilizar los criterios de información, que combinan dos aspectos fundamentales:
 
@@ -1486,7 +1487,7 @@ summary(m_loglin_sinrenta)
 summary(m_linlog_sinrenta)
 summary(m_loglog_sinrenta)
 ```
-Se pide:
+Se pide:\\
 a. Comparar en terminos de bondad de ajuste, pero con otra especificación que elimine la variable renta:
 ```{r}
 resultados <- data.frame(
@@ -1530,7 +1531,3 @@ c. Selecciona un modelo para el caso de trabajar con la variable dependiente y o
 
 d. Construye el intervalo de predicción del valor individual de la variable dependiente y concluye en relación a la permanencia estructural del modelo sabiendo que la esperanza de vida al nacer en el año 2025 es de 84 años. 
 
-
-
-
-## Referencias

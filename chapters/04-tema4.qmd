@@ -393,7 +393,7 @@ El parámetro $\lambda$ debe seleccionarse cuidadosamente, ya que una modificaci
 
 ### Estimador ortogonal (residualization)
 
-Una tercera alternativa es la estimación residualizada, también denominada regresión ortogonal, presentada por @Novales y formalmente desarrollada por CITA ARTICULO RESIDUALIZACION
+Una tercera alternativa es la estimación residualizada, también denominada regresión ortogonal, presentada por @Novales y formalmente desarrollada por @garcia2020.
 
 La idea consiste en mantener una de las variables explicativas, considerada más importante desde el punto de vista económico, y sustituir la otra por la parte que no puede explicarse mediante la primera.
 
@@ -755,8 +755,8 @@ g.	Obtén a través del software el factor inflactor de la varianza y el número
 
 Vamos a realizar los siguientes modelos alternativos:
 
-Modelo 2: Construye la variable ratio de empleado por tienda e introdúcela en el modelo. 
-Modelo 3: A partir del año 2010 el grupo comienza el comercio electrónico. Crea una variable ficticia que recoja este efecto e introdúcela en el modelo junto con la anterior. 
+Modelo 2: Construye la variable ratio de empleado por tienda e introdúcela en el modelo.\\ 
+Modelo 3: A partir del año 2010 el grupo comienza el comercio electrónico. Crea una variable ficticia que recoja este efecto e introdúcela en el modelo junto con la anterior.\\ 
 Modelo 4 (Residualización): Realizamos la regresión del número de empleados en función del número de tiendas y nos quedamos con los residuos. De manera que sustituimos en el modelo 1, el número de empleados por dichos residuos (parte de la variable número de empleados que no está relacionada con el número de tiendas) y se estima nuevamente el modelo.
 
 Comparar todos los modelos en función de la bondad del ajuste. 

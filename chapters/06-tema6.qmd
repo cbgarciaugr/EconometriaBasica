@@ -498,3 +498,61 @@ La combinación de los gráficos y los contrastes permite obtener un diagnóstic
 ## Prácticas resueltas
 
 ## Prácticas propuestas
+
+1. InmoGranada S.A. quiere analizar la evolución del precio de la vivienda en Granada a lo largo del tiempo. Para ello construye una base de datos del precio medio de la vivienda en euros/m$^2$ para los ultimos 120 meses en función de la población (número de habitantes) y de la renta media (euros/mes), obteniendo el siguiente modelo estimado:
+
+```{r , echo=FALSE, include=FALSE}
+set.seed(123)
+
+# Número de periodos (mensual, 10 años)
+n <- 120
+tiempo <- seq(as.Date("2010-01-01"), by = "month", length.out = n)
+
+# Variables explicativas simuladas  
+renta <- 1200 + 0.8 * (1:n) + rnorm(n, 0, 20)      # renta creciente con ruido
+poblacion <- 230000 + 2 * (1:n) + rnorm(n, 0, 50)  # población ligeramente creciente
+
+# Generación del precio de la vivienda con autocorrelación AR(1)
+phi <- 0.7  # coeficiente de autocorrelación
+precio <- numeric(n)
+precio[1] <- 1500  # precio inicial
+
+for (i in 2:n) {
+  precio[i] <- 100 +
+    0.4 * renta[i] +
+    0.2 * poblacion[i] +
+    phi * precio[i - 1] +
+    rnorm(i, 0, 100)
+}
+
+# Crear base de datos final
+datos_vivienda <- data.frame(
+  fecha = tiempo,
+  renta = renta,
+  poblacion = poblacion,
+  precio = precio
+)
+
+head(datos_vivienda)
+```
+
+```{r, echo=FALSE, include=FALSE}
+library(lmtest)
+modelo3=lm(log(precio)~log(renta)+log(poblacion))
+summary(modelo3)
+dwtest(modelo3)
+```
+
+$$\hat{precio}=-1104.14+3.159log(renta)+88.57log(poblacion); dw=0.58763$$
+
+a. Contraste la posible existencia de autocorrelación en el modelo.
+
+b. Suponiendo que el modelo anterior tiene autocorrelación, **realice** y **explique** cómo transformaría la primera y segunda observación de los datos originales para obtener estimadores eficientes, sabiendo que los datos originales son los siguientes:
+
+| Observación |  Renta  | Población | Precio |
+|:-----------:|:-------:|:---------:|:------:|
+| 1           | 1.389   | 230.000   | 1.500  |
+| 2           | 1.427   | 229.956   | 1.655  |
+|             |         |           |        |
+
+

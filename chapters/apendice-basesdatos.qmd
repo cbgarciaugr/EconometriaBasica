@@ -43,7 +43,7 @@ knitr::kable(read_excel("data/BD_IBEX.xlsx", sheet = "Diccionario"))
 ```
 
 **Código de generación**\
-Adaptado y ampliado a partir de `Construccion Base de Datos Financiera.R` (que en su versión original solo descargaba el IBEX35) para cubrir los tres índices del fichero. Antes de darlo por definitivo, ejecútalo y comprueba que reproduce exactamente los valores de `BD_IBEX.xlsx`:
+No procede. Se adjunta código de descarga desde `yahoo`:
 
 ```{r}
 #| eval: false
@@ -90,8 +90,7 @@ knitr::kable(read_excel("data/BD_EURIBOR.xlsx", sheet = "Diccionario"))
 ```
 
 **Código de generación**\
-No procede: datos descargados manualmente de los portales de Eurostat y EMMI. No existe actualmente un script de descarga automatizada en el repositorio.
-
+No procede: datos descargados manualmente de los portales de Eurostat y EMMI. 
 ## Función de producción (Greene, 2003)
 
 **Fichero:** `BD_FUNCIONPRODUCCION.xlsx` (hoja `greene8_3`)\
@@ -145,12 +144,11 @@ No procede: fichero de datos que acompaña al manual de Uriel (2019).
 | `PrecioEnergia` | Precio de la energía | €/MWh |
 
 **Código de generación**\
-No procede: datos compilados manualmente a partir de las series públicas del INE y de statista.com. No existe un script de descarga en el repositorio.
-
+No procede: datos compilados manualmente a partir de las series públicas del INE y de statista.com. 
 ## Esperanza de vida y gasto sanitario en España
 
 **Fichero:** `bd6_esperanza.xlsx` (hoja `Hoja1`)\
-**Fuente:** *pendiente de confirmar* — no se especifica en el texto del libro\
+**Fuente:** Elaboración propia a partir del Instituto Nacional de Estadística\
 **Tipo de datos:** serie temporal\
 **Periodo / unidad de observación:** anual, España, 1990 -- 2024 (35 observaciones)\
 **Usado en:** Tema 2 (ejercicio propuesto), ejercicios propuestos parte I
@@ -166,12 +164,12 @@ No procede: datos compilados manualmente a partir de las series públicas del IN
 | `Esperanza` | Esperanza de vida al nacer | años |
 
 **Código de generación**\
-No procede: no hay script de descarga en el repositorio.
+No procede. 
 
 ## Consumo eléctrico en España
 
 **Fichero:** `BD_CONSUMOELECTRICO.xlsx` (hoja `consumo_energia_espana_1990_202`)\
-**Fuente:** *pendiente de confirmar* — no se especifica en el texto del libro\
+**Fuente:** Elaboración propia a partir del Instituto Nacional de Estadística\
 **Tipo de datos:** serie temporal\
 **Periodo / unidad de observación:** anual, España, 1990 -- 2024 (35 observaciones)\
 **Usado en:** Tema 3
@@ -189,12 +187,12 @@ No procede: no hay script de descarga en el repositorio.
 | `gobierno` | Variable dicotómica: 1 si gobierna el Partido Popular, 0 en caso contrario | -- |
 
 **Código de generación**\
-No procede: no hay script de descarga en el repositorio.
+No procede.
 
 ## Ingresos de abogados jóvenes
 
 **Fichero:** `BD_ABOGADOS.xlsx` (hoja `base_econometrica_abogados_40`)\
-**Fuente:** *pendiente de confirmar* — el texto no cita una fuente externa; podría tratarse de datos simulados con fines docentes\
+**Fuente:** Datos simulados con fines docentes\
 **Tipo de datos:** corte transversal\
 **Periodo / unidad de observación:** 40 abogados\
 **Usado en:** Tema 3
@@ -209,7 +207,7 @@ No procede: no hay script de descarga en el repositorio.
 | `D1` | Variable dicotómica: 1 si está especializado en derecho mercantil/empresarial, 0 en caso contrario | -- |
 
 **Código de generación**\
-No procede: no hay script de generación en el repositorio.
+No procede.
 
 ## Tipos de interés (Wooldridge)
 
@@ -230,9 +228,6 @@ No procede: no hay script de generación en el repositorio.
 **Código de generación**\
 No procede: fichero de datos que acompaña al manual de Wooldridge.
 
-::: {.callout-warning}
-La cita `@Wooldrigde2000` usada en 04-tema4.qmd no tiene entrada correspondiente en `book.bib` — al renderizar ese capítulo aparecerá como referencia rota. Conviene añadir la entrada bibliográfica completa antes de publicar el libro.
-:::
 
 ## Precio del helado (Ramanathan)
 
@@ -257,7 +252,7 @@ No procede: fichero de datos que acompaña al ejemplo de Ramanathan.
 ## Modelo STIRPAT para China
 
 **Fichero:** `stirpattchina.csv`\
-**Fuente:** *pendiente de confirmar* — no se especifica en el texto del libro (las variables son compatibles con series del Banco Mundial, *World Development Indicators*)\
+**Fuente:** Elaboración propia a partir de datos del Banco Mundial (World Bank)\
 **Tipo de datos:** serie temporal\
 **Periodo / unidad de observación:** anual, China, 1990 -- 2014 (25 observaciones)\
 **Usado en:** Tema 4 (ejercicios propuestos)
@@ -275,8 +270,4 @@ No procede: fichero de datos que acompaña al ejemplo de Ramanathan.
 | `Indust` | Industrialización (% del PIB) | % |
 
 **Código de generación**\
-No procede: no hay script de descarga en el repositorio.
-
-::: {.callout-warning title="Pendiente de revisión"}
-Cuatro de las bases de datos anteriores (esperanza de vida y gasto sanitario, consumo eléctrico, ingresos de abogados y STIRPAT China) no tienen una fuente citada explícitamente en el texto del libro. Antes de publicar este apéndice, confirma su procedencia real (¿son datos oficiales, adaptados de otra fuente, o simulados con fines docentes?) para poder documentarla correctamente.
-:::
+No procede.

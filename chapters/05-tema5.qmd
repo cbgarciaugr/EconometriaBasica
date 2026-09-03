@@ -60,7 +60,7 @@ Esta es una de las razones por las que la heterocedasticidad es un problema frec
 Para ilustrar este concepto, consideremos el modelo utilizado para explicar la rentabilidad económica de las empresas:
 
 $$
-ROA_i=\beta_0+\beta_1LIQUIDEZ\_INMEDIATA_i+\beta_2ENDEUDAMIENTO_i+\beta_3EMPLEADOS_i+u_i.
+ROA_i=\beta_0+\beta_1LIQ_i+\beta_2LEV_i+\beta_3EMP_i+u_i.
 $$
 En este modelo, el término de perturbación $u_i$ recoge todos aquellos factores que afectan al ROA de la empresa $i$ y que no están incluidos explícitamente en el modelo.  Si se cumple el supuesto de homocedasticidad, estamos suponiendo que la variabilidad de estos factores no observados es similar para todas las empresas. Es decir, una empresa pequeña y una empresa grande presentarían, en términos generales, una dispersión similar de sus errores alrededor del valor de ROA explicado por el modelo.
 
@@ -108,7 +108,7 @@ La heterocedasticidad puede aparecer por diferentes motivos relacionados con la 
 
 * **Naturaleza de las variables.** La heterocedasticidad es especialmente frecuente cuando se trabaja con datos de sección cruzada, ya que las unidades analizadas pueden presentar diferencias importantes en sus características y, por tanto, en la variabilidad de la variable dependiente.
 
-En el modelo $ROA_i=\beta_0+\beta_1LIQUIDEZ_i+  \beta_2ENDEUDAMIENTO_i+  \beta_3EMPLEADOS_i+u_i$, es posible que la variabilidad de los factores no observados que afectan al ROA no sea la misma para todas las empresasas empresas, por ejemplo que las de mayor tamaño pueden presentar una mayor diversidad en sus resultados y, en consecuencia, una mayor dispersión de los residuos.
+En el modelo $ROA_i=\beta_0+\beta_1LIQ_i+  \beta_2LEV_i+  \beta_3EMP_i+u_i$, es posible que la variabilidad de los factores no observados que afectan al ROA no sea la misma para todas las empresasas empresas, por ejemplo que las de mayor tamaño pueden presentar una mayor diversidad en sus resultados y, en consecuencia, una mayor dispersión de los residuos.
 
 * **Uso de una forma funcional incorrecta.** La heterocedasticidad también puede ser consecuencia de especificar incorrectamente la relación entre la variable dependiente y las variables explicativas. En particular, puede ocurrir que se suponga una relación lineal cuando la relación verdadera presenta una forma no lineal.   
 
@@ -119,22 +119,22 @@ En el modelo $ROA_i=\beta_0+\beta_1LIQUIDEZ_i+  \beta_2ENDEUDAMIENTO_i+  \beta_3
   Para ilustrarlo, supongamos que el verdadero modelo que explica el ROA es:
 
   $$
-  ROA_i=\beta_0+\beta_1LIQUIDEZ_i+
-  \beta_2ENDEUDAMIENTO_i+
-  \beta_3TAMAÑO_i+u_i,
+  ROA_i=\beta_0+\beta_1LIQ_i+
+  \beta_2LEV_i+
+  \beta_3EMP_i+u_i,
   $$
 
   pero se estima un modelo en el que se omite el tamaño de la empresa:
 
   $$
-  ROA_i=\alpha_0+\alpha_1LIQUIDEZ_i+
-  \alpha_2ENDEUDAMIENTO_i+v_i.
+  ROA_i=\alpha_0+\alpha_1LIQ_i+
+  \alpha_2LEV_i+v_i.
   $$
 
   La perturbación del modelo estimado recogerá ahora tanto los factores no observados $u_i$ como el efecto de la variable omitida:
 
   $$
-  v_i=u_i+\beta_3TAMAÑO_i.
+  v_i=u_i+\beta_3EMP_i.
   $$
 
   Suponiendo que $E(u_i)=0$, $Var(u_i)=\sigma^2$ y que se cumplen las condiciones habituales de exogeneidad, se obtiene:
@@ -143,8 +143,8 @@ En el modelo $ROA_i=\beta_0+\beta_1LIQUIDEZ_i+  \beta_2ENDEUDAMIENTO_i+  \beta_3
   \begin{aligned}
   Var(v_i)
   &=E[v_i^2]\\
-  &=E[(u_i+\beta_3TAMAÑO_i)^2]\\
-  &=\sigma^2+\beta_3^2TAMAÑO_i^2.
+  &=E[(u_i+\beta_3EMP_i)^2]\\
+  &=\sigma^2+\beta_3^2EMP_i^2.
   \end{aligned}
   $$
 
@@ -199,7 +199,7 @@ Es importante señalar que un gráfico, por sí solo, **no permite concluir form
 
 Dentro de los procedimientos gráficos pueden distinguirse los siguientes.
 
-#### Gráfico de los residuos frente al orden de las observaciones
+#### Gráfico de los residuos frente al orden de las observaciones {.unnumbered} 
 
 Una primera posibilidad consiste en representar los residuos estimados $e_i$ o sus cuadrados $e_i^2$ frente al número de observación $i$.
 
@@ -227,7 +227,7 @@ plot(residuals(modelo_roa)^2,
 
 :::
 
-#### Gráfico de los residuos frente a las variables explicativas
+#### Gráfico de los residuos frente a las variables explicativas {.unnumbered} 
 
 Una herramienta especialmente útil consiste en representar los residuos estimados, o sus cuadrados, frente a cada una de las variables explicativas del modelo. Esta representación permite analizar no solo si existe heterocedasticidad, sino también obtener una primera indicación sobre **qué variable puede estar relacionada con el cambio en la varianza de los residuos**.
 
@@ -235,9 +235,9 @@ Una herramienta especialmente útil consiste en representar los residuos estimad
 Por ejemplo, consideremos el modelo utilizado para explicar la rentabilidad empresarial:
 
 $$
-ROA_i=\beta_0+\beta_1LIQUIDEZ\_INMEDIATA_i+
-\beta_2ENDEUDAMIENTO_i+
-\beta_3EMPLEADOS_i+u_i.
+ROA_i=\beta_0+\beta_1LIQ_i+
+\beta_2LEV_i+
+\beta_3EMP_i+u_i.
 $$
 Podemos representar los residuos frente a la variable **LIQUIDEZ_INMEDIATA**. Si la dispersión de los residuos permanece aproximadamente constante para todos los niveles de liquidez, no se apreciaría un patrón claro de heterocedasticidad. Por el contrario, si la dispersión aumenta conforme aumenta la liquidez, podría existir una relación entre la varianza de la perturbación y esta variable.
 
@@ -272,7 +272,7 @@ abline(h = 0, lty = 2)
 
 
 
-#### ¿Qué debemos buscar en un gráfico?
+### ¿Qué debemos buscar en un gráfico? {.unnumbered} 
 
 Al analizar estos gráficos, no debemos centrarnos únicamente en si los residuos están próximos o alejados de cero. Lo que interesa fundamentalmente es comprobar si **la amplitud de la nube de puntos cambia sistemáticamente**. Así, podemos encontrar diferentes situaciones:
 
@@ -317,9 +317,9 @@ Permite analizar situaciones en las que se sospecha que la varianza de las pertu
 Por ejemplo, en el modelo de rentabilidad empresarial:
 
 $$
-ROA_i=\beta_0+\beta_1LIQUIDEZ\_INMEDIATA_i+
-\beta_2ENDEUDAMIENTO_i+
-\beta_3EMPLEADOS_i+u_i,
+ROA_i=\beta_0+\beta_1LIQ_i+
+\beta_2LEV_i+
+\beta_3EMP_i+u_i,
 $$
 
 podríamos sospechar que la variabilidad del ROA aumenta con la **LIQUIDEZ_INMEDIATA**. El test de Goldfeld-Quandt permite contrastar formalmente esta posibilidad.
@@ -358,24 +358,24 @@ El resultado proporciona el estadístico $F$ y su correspondiente p-valor. Se ob
 
 :::
 
-### Test de White
+### Test de White {.unnumbered} 
 
 Constituye una alternativa más general, ya que no requiere especificar previamente una variable concreta como causante de la heteroscedasticidad ni asumir una forma funcional determinada para la varianza. La idea consiste en analizar si los **residuos al cuadrado** pueden explicarse mediante las variables explicativas del modelo, sus cuadrados y sus productos cruzados. Para el modelo:
 
 $$
-ROA_i=\beta_0+\beta_1LIQUIDEZ_i+
-\beta_2ENDEUDAMIENTO_i+u_i,
+ROA_i=\beta_0+\beta_1LIQ_i+
+\beta_2LEV_i+u_i,
 $$
 
 la regresión auxiliar incluiría, de forma simplificada, términos como:
 
 $$
 \hat e_i^2=
-\alpha_0+\alpha_1LIQUIDEZ_i+
-\alpha_2ENDEUDAMIENTO_i+
-\alpha_3LIQUIDEZ_i^2+
-\alpha_4ENDEUDAMIENTO_i^2+
-\alpha_5LIQUIDEZ_iENDEUDAMIENTO_i+\cdots+v_i.
+\alpha_0+\alpha_1LIQ_i+
+\alpha_2LEV_i+
+\alpha_3LIQ_i^2+
+\alpha_4LEV_i^2+
+\alpha_5LIQ_iLEV_i+v_i.
 $$
 
 El contraste parte de la hipótesis:
@@ -421,7 +421,7 @@ bptest(modelo_roa, studentize = FALSE)
 Se observa que no se puede rechazar la hipótesis nula de homocesdasticidad a los distintos niveles de confianza habituales.
 :::
 
-### Test de Breusch-Pagan
+### Test de Breusch-Pagan {.unnumbered} 
 
 Parte de una hipótesis alternativa más específica que la de White. En este caso se supone que la varianza de las perturbaciones puede explicarse mediante una **relación lineal con un conjunto de variables**. En términos generales, se supone que:
 
@@ -471,7 +471,7 @@ Se observa que no se puede rechazar la hipótesis nula de homocesdasticidad a lo
 :::
 
 
-### Método de Glejser
+### Método de Glejser {.unnumbered} 
 
 El método de **Glejser** presenta un planteamiento diferente. Su objetivo no es únicamente detectar la existencia de heteroscedasticidad, sino también obtener información sobre la **posible forma funcional de la varianza**. El procedimiento parte de los residuos del modelo original y analiza si su valor absoluto puede explicarse mediante una variable que se sospecha que está relacionada con la heteroscedasticidad.
 
@@ -683,38 +683,38 @@ Este procedimiento recibe el nombre de **mínimos cuadrados generalizados factib
 Consideremos nuevamente el modelo utilizado a lo largo del tema:
 
 $$
-ROA_i=\beta_0+\beta_1LIQUIDEZ\_INMEDIATA_i+\beta_2ENDEUDAMIENTO_i+\beta_3EMPLEADOS_i+u_i.
+ROA_i=\beta_0+\beta_1LIQ_i+\beta_2LEV_i+\beta_3EMP_i+u_i.
 $$
 
 Supongamos que, a partir del análisis realizado previamente, se considera que el esquema de heteroscedasticidad viene determinado directamente por la variable **LIQUIDEZ_INMEDIATA**, de modo que:
 
-$$Var(u_i)=\sigma^2LIQUIDEZ\_INMEDIATA_i^2.$$
+$$Var(u_i)=\sigma^2LIQ_i^2.$$
 
 En este caso, el esquema de heteroscedasticidad viene determinado por $w_i=LIQUIDEZ\_INMEDIATA_i^2$. Para eliminar la heteroscedasticidad debemos dividir todas las variables del modelo por:
 
 $$
-\sqrt{w_i}=\sqrt{LIQUIDEZ\_INMEDIATA_i^2}=LIQUIDEZ\_INMEDIATA_i
+\sqrt{w_i}=\sqrt{LIQ_i^2}=LIQ_i
 $$
 
 Por tanto, el modelo transformado se obtiene dividiendo **todas las variables por LIQUIDEZ_INMEDIATA**, incluido el término independiente:
 
 $$
-\frac{ROA_i}{LIQUIDEZ\_INMEDIATA_i}=
-\beta_0\frac{1}{LIQUIDEZ\_INMEDIATA_i}
+\frac{ROA_i}{LIQ_i}=
+\beta_0\frac{1}{LIQ_i}
 +
-\beta_1\frac{LIQUIDEZ\_INMEDIATA_i}{LIQUIDEZ\_INMEDIATA_i}
+\beta_1\frac{LIQ_i}{LIQ_i}
 +
-\beta_2\frac{ENDEUDAMIENTO_i}{LIQUIDEZ\_INMEDIATA_i}
+\beta_2\frac{LEV_i}{LIQ_i}
 +
-\beta_3\frac{EMPLEADOS_i}{LIQUIDEZ\_INMEDIATA_i}
+\beta_3\frac{EMP_i}{LIQ_i}
 +
-\frac{u_i}{LIQUIDEZ\_INMEDIATA_i}.
+\frac{u_i}{LIQ_i}.
 $$
 
 Por tanto:
 
 $$
-\frac{ROA_i}{LIQUIDEZ\_INMEDIATA_i}=\beta_0\frac{1}{LIQUIDEZ\_INMEDIATA_i}+\beta_1+\beta_2\frac{ENDEUDAMIENTO_i}{LIQUIDEZ\_INMEDIATA_i}+\beta_3\frac{EMPLEADOS_i}{LIQUIDEZ\_INMEDIATA_i}+u_i^*,
+\frac{ROA_i}{LIQ_i}=\beta_0\frac{1}{LIQ_i}+\beta_1+\beta_2\frac{LEV_i}{LIQ_i}+\beta_3\frac{EMP_i}{LIQ_i}+u_i^*,
 $$
 
 donde $u_i^*=\frac{u_i}{LIQUIDEZ\_INMEDIATA_i}$
@@ -724,17 +724,17 @@ Es importante destacar que **el término independiente también debe transformar
 La transformación consigue que la perturbación transformada sea homocedástica:
 
 $$
-Var(u_i^*)= Var\left(\frac{u_i}{LIQUIDEZ\_INMEDIATA_i}\right)=\frac{Var(u_i)}{LIQUIDEZ\_INMEDIATA_i^2}=\frac{\sigma^2LIQUIDEZ\_INMEDIATA_i^2}{LIQUIDEZ\_INMEDIATA_i^2}=\sigma^2.
+Var(u_i^*)= Var\left(\frac{u_i}{LIQ_i}\right)=\frac{Var(u_i)}{LIQ_i^2}=\frac{\sigma^2LIQ_i^2}{LIQ_i^2}=\sigma^2.
 $$
 
 Por tanto, podemos estimar el modelo transformado mediante MCO. Para ello, en primer lugar creamos las variables transformadas:
 
 ```{r}
-datos$ROA_t <- datos$ROA / datos$LIQUIDEZ_INMEDIATA
-datos$inv_LIQ <- 1 / datos$LIQUIDEZ_INMEDIATA
-datos$LIQ_t <- datos$LIQUIDEZ_INMEDIATA / datos$LIQUIDEZ_INMEDIATA
-datos$ENDEUD_t <- datos$ENDEUDAMIENTO / datos$LIQUIDEZ_INMEDIATA
-datos$EMPLEADOS_t <- datos$EMPLEADOS / datos$LIQUIDEZ_INMEDIATA
+datos$ROA_t <- datos$ROA / datos$LIQ
+datos$inv_LIQ <- 1 / datos$LIQ
+datos$LIQ_t <- datos$LIQ / datos$LIQ
+datos$LEV_t <- datos$LEV / datos$LIQ
+datos$EMP_t <- datos$EMP / datos$LIQ
 ```
 
 Como $\frac{LIQUIDEZ\_INMEDIATA_i}{LIQUIDEZ\_INMEDIATA_i}=1$ la variable `LIQ_t` toma el valor 1 para todas las observaciones. Por tanto, esta variable actúa como el **término independiente** del modelo transformado.
@@ -753,8 +753,8 @@ summary(modelo_mcp)
 Este modelo es equivalente a estimar:
 
 $$
-\frac{ROA_i}{LIQUIDEZ\_INMEDIATA_i}=\beta_0\frac{1}{LIQUIDEZ\_INMEDIATA_i}+\beta_1+\beta_2\frac{ENDEUDAMIENTO_i}{LIQUIDEZ\_INMEDIATA_i}+
-\beta_3\frac{EMPLEADOS_i}{LIQUIDEZ\_INMEDIATA_i}+u_i^*.
+\frac{ROA_i}{LIQ_i}=\beta_0\frac{1}{LIQ_i}+\beta_1+\beta_2\frac{ENDEUDAMIENTO_i}{LIQ_i}+
+\beta_3\frac{EMP_i}{LIQ_i}+u_i^*.
 $$
 
 En este caso, estamos aplicando **mínimos cuadrados ponderados (MCP)**, donde el peso asociado a cada observación es inversamente proporcional a la varianza de su perturbación $w_i^{MCP}=\frac{1}{LIQUIDEZ\_INMEDIATA_i^2}$.
@@ -793,3 +793,68 @@ La diferencia entre ambos procedimientos es importante:
 * Con **errores estándar robustos**, no es necesario especificar la forma de la heteroscedasticidad. Se mantiene el modelo MCO original y se corrige la inferencia estadística.
 
 Por tanto, si se dispone de información suficiente para justificar el esquema de la varianza, los mínimos cuadrados ponderados pueden aprovechar esa información. Si no se conoce adecuadamente la estructura de la heteroscedasticidad, los errores estándar robustos proporcionan una alternativa más flexible para realizar inferencia válida.
+
+## Practicas resueltas
+
+## Practicas propuestas
+
+1. La inmobiliaria InmoGranada S.A. desea realizar un estudio sobre el valor de la vivienda en la ciudad de Granada, con el objetivo de orientar futuras inversiones y decisiones comerciales. Para ello, ha recogido la siguiente información de las transacciones del último mes:
+el precio de venta en miles de euros ($precio_i$), el número de
+habitaciónes ($nhab_i$) y una variable que toma el valor 1 si la vivienda tiene una antigüedad de más de 10 años ($ant_i$), especificando el siguiente modelo:
+
+$$precio_i=\beta_1+\beta_2nhab_i+\beta_3ant_i+u_i$$ A partir de la siguiente información:
+
+$$(X'X)^{-1}=\left(
+  \begin{array}{ccc}
+   0.6657&-0.1424&-0.2994\\
+  -0.1424& 0.0610& -0.0145\\
+  - 0.2994& -0.0145& 0.4796\\
+  \end{array}
+\right); X'y=\left(
+  \begin{array}{c}
+    2057.88\\
+    5374.84\\
+    1307.88\\
+  \end{array}
+\right);\sum_{i=1}^{n=10} precio_i^2=455.396,079$$ Se pide:
+
+a. Obtener los estimadores de los parámetros del modelo e interpretarlos.
+
+b. Realice el contraste de significación global del modelo y construya la Tabla Anova.
+
+Para profundizar en el estudio anterior, la inmobiliaria InmoGranada S.A. ha contactado con la consultora en la que usted trabaja y le ha propuesto ampliar el modelo a 50 observaciones y añadir como variable adicional la superficie medida en metros cuadrados ($sup_i$) ndo lugar al siguiente modelo estimado:
+
+```{r , echo=FALSE, include=FALSE}
+library(readxl)
+datos <- read_excel("viviendas_granada.xlsx")
+norte <- ifelse(datos$zona == "Norte", 1, 0)
+este <- ifelse(datos$zona == "Este", 1, 0)
+oeste <- ifelse(datos$zona == "Oeste", 1, 0)
+sur <- ifelse(datos$zona == "Sur", 1, 0)
+data_df <- data.frame(
+  superficie = datos$superficie,
+  numhab = datos$num_hab,
+  ant = datos$ant,
+  norte = norte,
+  este = este,
+  oeste = oeste,
+  precio = datos$precio/1000
+)
+modelo1=lm(precio~ log(superficie)+numhab+ant, data=data_df)
+summary(modelo1)
+modelo2=lm(precio~ superficie+numhab+ant, data=data_df)
+summary(modelo2)
+```
+getwd()
+$$\hat{precio}\_i=23.5156+1.8161sup_i-4.3921nhab_i-24.8294ant_i;
+R^2=0.8441$$
+
+c. Compare este modelo con el anterior en terminos de bondad del ajuste.
+
+d. Sospechan que la inclusión de la variable superficie en el modelo ha generado que la **varianza de las perturbaciones del modelo no sea constante**. Para analizarlo, ordenan los datos de menor a mayor en función de la variable *superficie*, eliminan 18  observaciones centrales y realizan una regresión para cada una de  las submuestras resultantes, obteniendo los siguientes resultados:
+
+    $$i=1-16: \hat{precio}=41.1831+1.1278superficie-0.3728nhab-4.765ant; R^2=0.4266;SCT=6193.02$$
+    $$i=35-50: \hat{precio}=129.8725+1.2084superficie-9.99nhab-36.8128ant; R^2=0.6237;SCT=16613$$
+    Realice el contraste necesario y obtenga las conclusiones al 95% de
+    confianza.
+

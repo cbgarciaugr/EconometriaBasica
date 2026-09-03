@@ -15,7 +15,7 @@ Analizar diferencias en la estructura del modelo entre grupos mediante variables
 :::
 
 
-## Resumen teórico
+## Introducción
 
 Hasta ahora hemos trabajado fundamentalmente con variables cuantitativas. Sin embargo, en muchas aplicaciones de economía, finanzas y contabilidad también resulta necesario incorporar al modelo información de carácter **cualitativo**.
 
@@ -23,7 +23,7 @@ Por ejemplo, en el análisis de la rentabilidad empresarial puede ser interesant
 
 Una variable dicotómica únicamente puede tomar dos valores: **1 cuando se cumple una determinada característica y 0 cuando no se cumple**. De esta forma, permite incorporar al modelo información cualitativa.
 
-### Un ejemplo con dos categorías: empresas de Sevilla y del resto de Andalucía
+## Un ejemplo con dos categorías: empresas de Sevilla y del resto de Andalucía
 
 Para introducir esta idea, supongamos que queremos analizar si existen diferencias en el **ROA** entre las empresas cuya sede se encuentra en Sevilla y las empresas situadas en el resto de provincias andaluzas.
 
@@ -86,9 +86,7 @@ summary(modelo_sevilla)
 :::
 
 
-
-
-### Variables dicotómicas junto con variables cuantitativas
+## Variables dicotómicas junto con variables cuantitativas
 
 La variable dicotómica también puede incorporarse a un modelo que incluya otras variables explicativas cuantitativas. Por ejemplo, podemos analizar el ROA teniendo en cuenta el endeudamiento y la liquidez de las empresas:
 
@@ -143,7 +141,7 @@ summary(modelo_sevilla)
 
 :::
 
-### Variables cualitativas con más de dos categorías
+## Variables cualitativas con más de dos categorías
 
 La situación cambia cuando la característica cualitativa que queremos introducir tiene más de dos categorías.
 
@@ -246,7 +244,7 @@ summary(modelo_provincias)
 ```
 :::
 
-### La trampa de las variables ficticias
+## La trampa de las variables ficticias
 
 Al introducir una variable cualitativa hay que tener en cuenta el número de categorías que presenta. Si una variable tiene ($m$) categorías, se introducen **(m-1) variables dicotómicas**, dejando una categoría como referencia.
 
@@ -265,7 +263,7 @@ Este problema se conoce como **trampa de las variables ficticias**.
 
 La solución consiste en eliminar una de las categorías y utilizarla como referencia. En nuestro ejemplo, al eliminar ($D_{SEV}$), los coeficientes de las restantes provincias se interpretan siempre en comparación con Sevilla.
 
-### Variables dicotómicas y cambio estructural
+## Variables dicotómicas y cambio estructural
 
 Las variables dicotómicas también permiten analizar si existe un **cambio estructural entre grupos**.
 
@@ -322,7 +320,7 @@ Si no rechazamos esta hipótesis, no encontramos evidencia de diferencias en el 
 De este modo, las variables dicotómicas constituyen una herramienta flexible para incorporar información cualitativa, comparar grupos y analizar posibles diferencias en la estructura de un modelo de regresión.
 
 
-### Interpretación cuando la variable dependiente esta expresada en logaritmos
+## Interpretación cuando la variable dependiente esta expresada en logaritmos
 
 Cuando la variable dependiente está expresada en logaritmos, la interpretación de los coeficientes asociados a las variables dicotómicas debe realizarse en términos porcentuales.
 
@@ -563,10 +561,10 @@ inditex <- data.frame(
 )
 ```
 
-Se pide: 
-a. Estimar el modelo
-b. Analizar la significatividad individual y global del modelo
-c. Estimar otro modelo alternativo en el que no se tenga en cuenta el comercio electrónico y comparar ambos en cuanto a la bondad del ajuste por los diferentes métodos explicados.
+Se pide:\\
+a. Estimar el modelo.\\
+b. Analizar la significatividad individual y global del modelo.\\
+c. Estimar otro modelo alternativo en el que no se tenga en cuenta el comercio electrónico y comparar ambos en cuanto a la bondad del ajuste por los diferentes métodos explicados.\\
 
 3. Una empresa realizó un despido durante el primer trimestre de 2020, justificandolo en una bajada de producción y ha solicitado un informe a la consultora donde usted trabaja para que respalde la decisión. Para ello, la empresa ha faciliado información trimestral desde el primer trimestre de 2015 al cuarto trimestre de 2019 de las ventas (en miles de euros) y la media de trabajadores. La consultora obtiene el siguiente modelo estimado:
 
@@ -626,14 +624,14 @@ modelo=lm(Ventas~ media_personal+T2+T3+T4, data=ventas_df)
 summary(modelo)
 ```
 
-Le han encargado que analice los resultados para redactar el informe y, en concreto, se le pide que:
+Le han encargado que analice los resultados para redactar el informe y, en concreto, se le pide que:\\
 
-a. Interprete el coeficiente estimado de la variable media_personal.
-b. Interprete el coeficiente estimado de la variable T3.
-c. Interprete el coeficiente de determinación.
-d. ¿Se puede afirmar que la variable media_personal tiene influencia significativa en las ventas? Justifique su respuesta usando los distintos niveles de confianza habituales.
-e. ¿Se puede afirmar que el efecto del segundo y tercer trimestre son los mismos? Justifique su respuesta usando intervalos de confianza.
-f. Sabiendo que en el primer trimestre de 2020 tras el despido la media de trabajadores fue de 12, y las ventas se situaron en 160.000, razone si el despido podría justificarse por razones económicas.
+a. Interprete el coeficiente estimado de la variable media_personal.\\
+b. Interprete el coeficiente estimado de la variable T3.\\
+c. Interprete el coeficiente de determinación.\\
+d. ¿Se puede afirmar que la variable media_personal tiene influencia significativa en las ventas? Justifique su respuesta usando los distintos niveles de confianza habituales.\\
+e. ¿Se puede afirmar que el efecto del segundo y tercer trimestre son los mismos? Justifique su respuesta usando intervalos de confianza.\\
+f. Sabiendo que en el primer trimestre de 2020 tras el despido la media de trabajadores fue de 12, y las ventas se situaron en 160.000, razone si el despido podría justificarse por razones económicas.\\
 
 4. Continuando con la practica anterior, otro compañero de la consultora considera que es necesario incluir como factor explicativo adicional el gasto en publicidad (expresado en miles de euros) en logaritmos y plantea el siguiente modelo:
 
@@ -641,17 +639,17 @@ f. Sabiendo que en el primer trimestre de 2020 tras el despido la media de traba
 modelo_pub=lm(Ventas~ media_personal+log(Gasto_Publicidad)+T2+T3+T4, data=ventas_df)
 summary(modelo_pub)
 ```
-Se pide:
-a. Interprete el coeficiente estimado de la variable log(Gasto_Publicidad).
-b. Formule y resuelva el contraste de significación global.
-c. Compare ambos modelos en terminos de la bondad del ajuste
-d.  Sabiendo que en el primer trimestre de 2020 tras el despido la media de trabajadores fue de 12 y el gasto en publicidad de 5.000, y las ventas se situaron en 160.000, razone si el despido podria justificarse por razones económicas a partir de este modelo.
+Se pide:\\
+a. Interprete el coeficiente estimado de la variable log(Gasto_Publicidad).\\
+b. Formule y resuelva el contraste de significación global.\\
+c. Compare ambos modelos en terminos de la bondad del ajuste.\\
+d.  Sabiendo que en el primer trimestre de 2020 tras el despido la media de trabajadores fue de 12 y el gasto en publicidad de 5.000, y las ventas se situaron en 160.000, razone si el despido podria justificarse por razones económicas a partir de este modelo.\\
 
-5. La empresa anterior le pide que complete el informe desde el punto de vista teórico a partir de los siguientes puntos:
+5. La empresa anterior le pide que complete el informe desde el punto de vista teórico a partir de los siguientes puntos:\\
 
-a. Explique qué estimador ha utilizado y obtenga razonadamente su expresión.
-b. Comente las hipótesis básicas en las que se basa dicho estimador.
-c. Explique las propiedades deseables que se le suponen a dicho estimador.
+a. Explique qué estimador ha utilizado y obtenga razonadamente su expresión.\\
+b. Comente las hipótesis básicas en las que se basa dicho estimador.\\
+c. Explique las propiedades deseables que se le suponen a dicho estimador.\\
 
 6. En el marco de un estudio sobre los determinantes de los ingresos profesionales en el sector jurídico, se ha recopilado información de abogados jóvenes que trabajan de forma independiente o en pequeños despachos. El objetivo es analizar cuáles son los factores que explican las diferencias en los ingresos mensuales entre ellos. La base de datos contiene las siguientes variables:
 

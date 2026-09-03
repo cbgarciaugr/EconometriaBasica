@@ -57,7 +57,7 @@ Estas competencias forman parte del trabajo habitual de analistas financieros, a
 
 ## Estructura y método {.unnumbered}
 
-Con el fin de que el estudiante pueda concentrarse en los conceptos econométricos sin cambiar continuamente de contexto, el manual utilizará dos bases de datos como hilo conductor usando un sistema de colores para diferenciarlos, de manera que el bloque azul esta relacionado con una base de datos contables mientras que el bloque naranja esta relacionado con una base de datos financieros. Se presentan a continuación ambas bases: 
+Con el fin de que el estudiante pueda concentrarse en los conceptos econométricos sin cambiar continuamente de contexto, el manual utilizará dos bases de datos como hilo conductor usando un sistema de colores para diferenciarlos, de manera que el bloque azul esta relacionado con una base de datos contables mientras que el bloque verde esta relacionado con una base de datos financieros. Se presentan a continuación ambas bases: 
 
 
 ::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}

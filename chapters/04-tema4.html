@@ -269,6 +269,12 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Apéndice. Distribuciones estadísticas y valores críticos</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referencias</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -586,7 +592,7 @@ FIV(\widehat{\beta}_i)=\frac{1}{1-R_i^2},
 <p>El FIV indica en qué medida la varianza del estimador de un coeficiente se ve incrementada como consecuencia de la relación lineal existente entre su variable explicativa y las restantes variables del modelo.</p>
 <p>Como referencia habitual, valores de:</p>
 <p><span class="math inline">\(FIV &lt; 4\)</span>: no suelen considerarse indicativos de un problema importante; <span class="math inline">\(4 \leq FIV &lt; 10\)</span>: pueden indicar la existencia de multicolinealidad; <span class="math inline">\(FIV \geq 10\)</span>: constituyen una señal clara de posible multicolinealidad.</p>
-<p>La relación entre el FIV y el <span class="math inline">\(R_i^2\)</span> permite interpretar estos valores. Si <span class="math inline">\(FIV=10\)</span>, entonces <span class="math inline">\(10=\frac{1}{1-R_i^2}\)</span> lo que implica <span class="math inline">\(R_i^2=0.90\)</span>. Es decir, el 90 % de la variabilidad de la variable explicativa considerada puede explicarse mediante las restantes variables del modelo. Estos valores deben interpretarse como reglas orientativas y no como puntos de corte absolutos. <span class="citation" data-cites="OBrien2007">O’Brien (<a href="#ref-OBrien2007" role="doc-biblioref">2007</a>)</span> señala, precisamente, que el uso mecánico de un único umbral puede conducir a conclusiones inadecuadas.</p>
+<p>La relación entre el FIV y el <span class="math inline">\(R_i^2\)</span> permite interpretar estos valores. Si <span class="math inline">\(FIV=10\)</span>, entonces <span class="math inline">\(10=\frac{1}{1-R_i^2}\)</span> lo que implica <span class="math inline">\(R_i^2=0.90\)</span>. Es decir, el 90 % de la variabilidad de la variable explicativa considerada puede explicarse mediante las restantes variables del modelo. Estos valores deben interpretarse como reglas orientativas y no como puntos de corte absolutos. <span class="citation" data-cites="OBrien2007">O’Brien (<a href="references.html#ref-OBrien2007" role="doc-biblioref">2007</a>)</span> señala, precisamente, que el uso mecánico de un único umbral puede conducir a conclusiones inadecuadas.</p>
 <p>El FIV presenta la ventaja de que permite identificar qué variables presentan mayores problemas de colinealidad, a diferencia de los indicadores globales del modelo. No obstante, el FIV es que no detecta la multicolinealidad de tipo no esencial. Además, no se puede calcular el FIV de variables dicotómicas.</p>
 </section>
 <section id="número-de-condición-kx" class="level3" data-number="4.2.4">
@@ -594,7 +600,7 @@ FIV(\widehat{\beta}_i)=\frac{1}{1-R_i^2},
 <p>Otro procedimiento consiste en analizar el número de condición de la matriz de variables explicativas. Este indicador permite evaluar el grado de dependencia lineal existente en el conjunto de regresores.</p>
 <p>Se obtiene a partir de los autovalores de la matriz correspondiente. Si <span class="math inline">\(\lambda_{\max}\)</span> y <span class="math inline">\(\lambda_{\min}\)</span> representan, respectivamente, el mayor y el menor autovalor, el número de condición se define como:</p>
 <p><span class="math display">\[k(X) = \sqrt{\frac{\lambda_{max}}{\lambda_{min}}} \]</span></p>
-<p>Si <span class="math inline">\(k(X)\)</span> se sitúa entre 20 y 30, la colinealidad es probable; si supera 30, se considera grave (<span class="citation" data-cites="Belsley">Belsley (<a href="#ref-Belsley" role="doc-biblioref">1982</a>)</span>). El número de condición si detecta la multicolinealidad de tipo no esencial, pero el indicador es una medida global para el modelo por lo que no detalla la variable causante.</p>
+<p>Si <span class="math inline">\(k(X)\)</span> se sitúa entre 20 y 30, la colinealidad es probable; si supera 30, se considera grave (<span class="citation" data-cites="Belsley">Belsley (<a href="references.html#ref-Belsley" role="doc-biblioref">1982</a>)</span>). El número de condición si detecta la multicolinealidad de tipo no esencial, pero el indicador es una medida global para el modelo por lo que no detalla la variable causante.</p>
 <section id="detección-de-la-multicolinealidad-no-esencial" class="level4 unnumbered">
 <h4 class="unnumbered anchored" data-anchor-id="detección-de-la-multicolinealidad-no-esencial">Detección de la multicolinealidad no esencial</h4>
 <p>El número de condición puede utilizarse también para distinguir entre diferentes tipos de multicolinealidad. Para ello resulta útil comparar el número de condición calculado incluyendo el término independiente con el obtenido sin incluirlo.</p>
@@ -604,7 +610,7 @@ FIV(\widehat{\beta}_i)=\frac{1}{1-R_i^2},
 CV=\frac{s_X}{\overline{X}},
 \]</span></p>
 <p>donde <span class="math inline">\(s_X\)</span> representa la desviación típica de la variable y <span class="math inline">\(\overline{X}\)</span> su media.</p>
-<p><span class="citation" data-cites="salmeron2019diagnosis">(<a href="#ref-salmeron2019diagnosis" role="doc-biblioref"><strong>salmeron2019diagnosis?</strong></a>)</span> propone como referencia un valor de <span class="math inline">\(CV\)</span> inferior a 0.1002506 como indicativo de una variabilidad suficientemente reducida para que pueda aparecer una relación lineal fuerte con el término independiente.</p>
+<p><span class="citation" data-cites="salmeron2019diagnosis">(<a href="references.html#ref-salmeron2019diagnosis" role="doc-biblioref"><strong>salmeron2019diagnosis?</strong></a>)</span> propone como referencia un valor de <span class="math inline">\(CV\)</span> inferior a 0.1002506 como indicativo de una variabilidad suficientemente reducida para que pueda aparecer una relación lineal fuerte con el término independiente.</p>
 <p>En el caso de las variables dicotómicas, la situación debe analizarse de forma particular. Como estas variables únicamente pueden tomar los valores 0 y 1, su relación con el término independiente está estrechamente relacionada con la proporción de observaciones que toman el valor 1. Si una categoría es muy poco frecuente, la variable dicotómica presenta una variabilidad reducida y puede aparecer un problema de colinealidad no esencial.</p>
 <p>Una posible solución cuando la colinealidad no esencial procede de una variable cuantitativa con una media elevada y poca variabilidad es centrar la variable, sustituyéndola por la diferencia respecto de su media:</p>
 <p><span class="math display">\[
@@ -725,22 +731,22 @@ X_i^c=X_i-\overline{X}_i.
 <ul>
 <li>Eliminar o combinar variables explicativas. Cuando la multicolinealidad es <strong>esencial</strong>, puede existir una relación lineal elevada entre dos o más variables explicativas. Si desde el punto de vista económico o teórico algunas variables aportan información muy similar, una alternativa consiste en eliminar una de ellas o construir una medida conjunta que recoja la información común.</li>
 </ul>
-<p>Estas soluciones son las primeras que deben considerarse porque mantienen, en la medida de lo posible, la interpretación habitual de los estimadores MCO. Alternativamente, pueden usarse estimadores alternativos como el estimador de mínimos cuadrados restringidos (si existen restricciones teóricas) o el <strong>estimador cresta (ridge )</strong> <span class="citation" data-cites="Hoerl1970b">(<a href="#ref-Hoerl1970b" role="doc-biblioref">Hoerl y Kennard 1970</a>)</span>, la <strong>estimador alzado (raise)</strong> <span class="citation" data-cites="Garcia2010">(<a href="#ref-Garcia2010" role="doc-biblioref">García et&nbsp;al. 2010</a>)</span> o el <strong>estimador residualizado</strong>.</p>
+<p>Estas soluciones son las primeras que deben considerarse porque mantienen, en la medida de lo posible, la interpretación habitual de los estimadores MCO. Alternativamente, pueden usarse estimadores alternativos como el estimador de mínimos cuadrados restringidos (si existen restricciones teóricas) o el <strong>estimador cresta (ridge )</strong> <span class="citation" data-cites="Hoerl1970b">(<a href="references.html#ref-Hoerl1970b" role="doc-biblioref">Hoerl y Kennard 1970</a>)</span>, la <strong>estimador alzado (raise)</strong> <span class="citation" data-cites="Garcia2010">(<a href="references.html#ref-Garcia2010" role="doc-biblioref">García et&nbsp;al. 2010</a>)</span> o el <strong>estimador residualizado</strong>.</p>
 </section>
 <section id="soluciones-avanzadas" class="level3" data-number="4.3.2">
 <h3 data-number="4.3.2" class="anchored" data-anchor-id="soluciones-avanzadas"><span class="header-section-number">4.3.2</span> Soluciones avanzadas</h3>
 <p>Cuando la multicolinealidad persiste y no resulta conveniente modificar la muestra, centrar las variables o eliminar alguno de los regresores, pueden utilizarse procedimientos de estimación alternativos a MCO.</p>
 <section id="estimación-cresta" class="level4 unnumbered">
 <h4 class="unnumbered anchored" data-anchor-id="estimación-cresta">Estimación cresta</h4>
-<p><span class="citation" data-cites="Hoerl1970b">Hoerl y Kennard (<a href="#ref-Hoerl1970b" role="doc-biblioref">1970</a>)</span> y <span class="citation" data-cites="Hoerl1970a">(<a href="#ref-Hoerl1970a" role="doc-biblioref"><strong>Hoerl1970a?</strong></a>)</span> proponen la <strong>estimación cresta</strong>(ridge) cuyos estimadores se obtienen como: <span class="math display">\[\hat{\boldsymbol{\beta}}_R(k)=\left(\mathbf{X}'\mathbf{X}+k\mathbf{I}\right)^{-1}\mathbf{X}'\mathbf{Y}, \quad k\geq 0.\]</span> La idea fundamental consiste en introducir una cantidad positiva <span class="math inline">\(k\)</span> en la diagonal de <span class="math inline">\(\mathbf{X}'\mathbf{X}\)</span>. De esta forma, se evita que la proximidad a la singularidad de dicha matriz genere varianzas excesivamente elevadas.</p>
+<p><span class="citation" data-cites="Hoerl1970b">Hoerl y Kennard (<a href="references.html#ref-Hoerl1970b" role="doc-biblioref">1970</a>)</span> y <span class="citation" data-cites="Hoerl1970a">(<a href="references.html#ref-Hoerl1970a" role="doc-biblioref"><strong>Hoerl1970a?</strong></a>)</span> proponen la <strong>estimación cresta</strong>(ridge) cuyos estimadores se obtienen como: <span class="math display">\[\hat{\boldsymbol{\beta}}_R(k)=\left(\mathbf{X}'\mathbf{X}+k\mathbf{I}\right)^{-1}\mathbf{X}'\mathbf{Y}, \quad k\geq 0.\]</span> La idea fundamental consiste en introducir una cantidad positiva <span class="math inline">\(k\)</span> en la diagonal de <span class="math inline">\(\mathbf{X}'\mathbf{X}\)</span>. De esta forma, se evita que la proximidad a la singularidad de dicha matriz genere varianzas excesivamente elevadas.</p>
 <p>La principal característica de este procedimiento es que introduce un sesgo controlado en los estimadores a cambio de conseguir una reducción de su varianza. Por tanto, frente al estimador MCO, se establece un compromiso entre sesgo y varianza.</p>
 <p>Una de las dificultades de la estimación cresta es la elección del parámetro <span class="math inline">\(k\)</span>. Además, los estimadores obtenidos mediante este procedimiento deben interpretarse teniendo en cuenta que ya no son estimadores MCO insesgados.</p>
-<p>Una vez aplicada la estimación cresta, también es necesario comprobar si efectivamente se ha reducido la multicolinealidad. Tradicionalmente se había extendido al estimador cresta la expresión del FIV utilizada en MCO. Sin embargo, esta extensión puede proporcionar valores inadecuados del FIV, incluso inferiores a uno, por lo que se recomienda usar la expresión presentada por <span class="citation" data-cites="Garcia2015">(<a href="#ref-Garcia2015" role="doc-biblioref"><strong>Garcia2015?</strong></a>)</span>.</p>
+<p>Una vez aplicada la estimación cresta, también es necesario comprobar si efectivamente se ha reducido la multicolinealidad. Tradicionalmente se había extendido al estimador cresta la expresión del FIV utilizada en MCO. Sin embargo, esta extensión puede proporcionar valores inadecuados del FIV, incluso inferiores a uno, por lo que se recomienda usar la expresión presentada por <span class="citation" data-cites="Garcia2015">(<a href="references.html#ref-Garcia2015" role="doc-biblioref"><strong>Garcia2015?</strong></a>)</span>.</p>
 </section>
 </section>
 <section id="estimación-alzada" class="level3" data-number="4.3.3">
 <h3 data-number="4.3.3" class="anchored" data-anchor-id="estimación-alzada"><span class="header-section-number">4.3.3</span> Estimación alzada</h3>
-<p>Otra alternativa es la estimación alzada (raise), propuesta por <span class="citation" data-cites="Garcia2010">García et&nbsp;al. (<a href="#ref-Garcia2010" role="doc-biblioref">2010</a>)</span> y <span class="citation" data-cites="Garcia2016">(<a href="#ref-Garcia2016" role="doc-biblioref"><strong>Garcia2016?</strong></a>)</span>. Este procedimiento aborda la multicolinealidad desde una perspectiva geométrica.</p>
+<p>Otra alternativa es la estimación alzada (raise), propuesta por <span class="citation" data-cites="Garcia2010">García et&nbsp;al. (<a href="references.html#ref-Garcia2010" role="doc-biblioref">2010</a>)</span> y <span class="citation" data-cites="Garcia2016">(<a href="references.html#ref-Garcia2016" role="doc-biblioref"><strong>Garcia2016?</strong></a>)</span>. Este procedimiento aborda la multicolinealidad desde una perspectiva geométrica.</p>
 <p>Consideremos, para simplificar, un modelo con dos variables explicativas:</p>
 <p><span class="math display">\[
 \beta_1\mathbf{x}_1+
@@ -764,7 +770,7 @@ X_i^c=X_i-\overline{X}_i.
 </section>
 <section id="estimador-ortogonal-residualization" class="level3" data-number="4.3.4">
 <h3 data-number="4.3.4" class="anchored" data-anchor-id="estimador-ortogonal-residualization"><span class="header-section-number">4.3.4</span> Estimador ortogonal (residualization)</h3>
-<p>Una tercera alternativa es la estimación residualizada, también denominada regresión ortogonal, presentada por <span class="citation" data-cites="Novales">(<a href="#ref-Novales" role="doc-biblioref"><strong>Novales?</strong></a>)</span> y formalmente desarrollada por CITA ARTICULO RESIDUALIZACION</p>
+<p>Una tercera alternativa es la estimación residualizada, también denominada regresión ortogonal, presentada por <span class="citation" data-cites="Novales">(<a href="references.html#ref-Novales" role="doc-biblioref"><strong>Novales?</strong></a>)</span> y formalmente desarrollada por CITA ARTICULO RESIDUALIZACION</p>
 <p>La idea consiste en mantener una de las variables explicativas, considerada más importante desde el punto de vista económico, y sustituir la otra por la parte que no puede explicarse mediante la primera.</p>
 <p>Asi, partiendo del modelo <span class="math display">\[\mathbf{y} = \beta_{1} \mathbf{x}_{1} + \beta_{2} \mathbf{x}_{2} + \mathbf{u}\]</span> donde las variables están estandarizadas. Dicha metodología se basa en sustituir una de las variables exógenas del modelo de regresión (aquella considerada menos importante) por sus componentes no explicados por la otra variable exógena (considerada más relevante para el fenómeno que se está intentando explicar).</p>
 <p>Considerando que <span class="math inline">\(\mathbf{x}_{1}\)</span> tiene mayor importancia que <span class="math inline">\(\mathbf{x}_{2}\)</span>, por lo que se desea mantenerla intacta, se estima la regresión auxiliar en la que la <span class="math inline">\(\mathbf{x}_{1}\)</span> aparezca como independiente. Al estimar esta regresión auxiliar por MCO se consigue expresar la <span class="math inline">\(\mathbf{x}_{2}\)</span> como una combinación de <span class="math inline">\(\mathbf{x}_{1}\)</span> y los residuos del modelo, esto es, <span class="math inline">\(\mathbf{x}_{2} = \widehat{\alpha} \mathbf{x}_{1} + \mathbf{e}\)</span>.</p>
@@ -1010,7 +1016,7 @@ $ki$`Proportion of non-essential collinearity in i-th independent variable (with
 </section>
 <section id="wooldridge.-aplicación-de-la-estimación-residualizada." class="level3 unnumbered">
 <h3 class="unnumbered anchored" data-anchor-id="wooldridge.-aplicación-de-la-estimación-residualizada.">Wooldridge. Aplicación de la estimación residualizada.</h3>
-<p>A partir de los datos de <span class="citation" data-cites="Wooldrigde2000">(<a href="#ref-Wooldrigde2000" role="doc-biblioref"><strong>Wooldrigde2000?</strong></a>)</span> se estima un modelo que analiza los tipos de interés a 12 meses en función de los tipos de interés a 3 y 6 meses. Se pide:</p>
+<p>A partir de los datos de <span class="citation" data-cites="Wooldrigde2000">(<a href="references.html#ref-Wooldrigde2000" role="doc-biblioref"><strong>Wooldrigde2000?</strong></a>)</span> se estima un modelo que analiza los tipos de interés a 12 meses en función de los tipos de interés a 3 y 6 meses. Se pide:</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Código</summary>
@@ -1662,7 +1668,7 @@ F-statistic: 918.2 on 3 and 21 DF,  p-value: &lt; 2.2e-16</code></pre>
 
 <!-- -->
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-Belsley" class="csl-entry" role="listitem">
 Belsley, D. A. 1982. <span>«Assessing the presence of harmful collinearity and other forms of weak data through a test for signal-to-noise»</span>. <em>Journal of Econometrics</em> 20: 211-53.
 </div>

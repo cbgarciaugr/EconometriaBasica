@@ -35,3 +35,7 @@ _ARCHIVO_REVISAR_Y_BORRAR/
 
 # Artefactos temporales de sesion R
 .RDataTmp*
+
+# Renders de capitulos individuales: no versionar figuras/artefactos,
+# se regeneran al ejecutar el codigo
+chapters/*_files/

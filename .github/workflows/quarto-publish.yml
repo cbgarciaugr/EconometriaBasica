@@ -37,7 +37,6 @@ jobs:
             any::ggplot2
             any::lmtest
             any::multiColl
-            any::orcutt
             any::plotly
             any::prais
             any::quantmod
@@ -47,6 +46,13 @@ jobs:
             any::strucchange
             any::rmarkdown
             any::knitr
+
+      # El paquete 'orcutt' fue retirado de CRAN (archivado el 2024-11-04)
+      # y no se resuelve mediante los repositorios habituales; se instala
+      # directamente desde el archivo de CRAN.
+      - name: Instalar paquete orcutt desde el archivo de CRAN
+        run: |
+          Rscript -e 'install.packages("https://cran.r-project.org/src/contrib/Archive/orcutt/orcutt_2.3.tar.gz", repos = NULL, type = "source")'
 
       # El libro publicado en Pages solo necesita el formato HTML;
       # se evita renderizar el PDF (xelatex) para no instalar TinyTeX en CI.

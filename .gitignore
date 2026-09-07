@@ -39,3 +39,7 @@ _ARCHIVO_REVISAR_Y_BORRAR/
 # Renders de capitulos individuales: no versionar figuras/artefactos,
 # se regeneran al ejecutar el codigo
 chapters/*_files/
+
+# Artefactos de un render completo del libro (HTML/PDF)
+site_libs/
+index.tex

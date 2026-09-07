@@ -32,3 +32,6 @@ _ARCHIVO_REVISAR_Y_BORRAR/
 
 # Logs
 *.log
+
+# Artefactos temporales de sesion R
+.RDataTmp*

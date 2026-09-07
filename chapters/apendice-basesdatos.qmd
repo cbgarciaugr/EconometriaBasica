@@ -7,10 +7,6 @@ library(readxl)
 
 En este apéndice se documentan todas las bases de datos empleadas a lo largo del manual: su fuente, el periodo y la unidad de observación, las variables que contienen y, cuando existe, el código con el que se han generado o importado. El objetivo es que cualquier lector pueda reproducir los ejemplos y prácticas del libro a partir de los ficheros disponibles en el repositorio.
 
-::: {.callout-important title="Nota sobre uso y licencia"}
-Los ficheros `BD_SABI.xlsx` y `BD_ContabilidadCompleta.xlsx` contienen datos extraídos de la base de datos comercial **SABI** (Sistema de Análisis de Balances Ibéricos, Informa/Moody's). Antes de distribuir estos ficheros en un repositorio público, se recomienda confirmar con el servicio de licencias de la universidad que la redistribución de datos exportados de SABI —aunque estén agregados o anonimizados— está permitida por el contrato de acceso institucional.
-:::
-
 ## Top 100 empresas andaluzas del transporte
 
 **Fichero:** `BD_SABI.xlsx` (hoja `Datos`)\
@@ -26,7 +22,30 @@ knitr::kable(read_excel("data/BD_SABI.xlsx", sheet = "Diccionario"))
 ```
 
 **Código de generación**\
-No procede un script reproducible: los datos se exportaron manualmente desde la plataforma SABI aplicando los filtros *sector = transporte*, *región = Andalucía*, seleccionando las 100 primeras empresas por tamaño de activo. El fichero `BD_ContabilidadCompleta.xlsx` conserva la estrategia de búsqueda y los metadatos de la consulta original tal como los genera SABI, por si se necesita repetir o auditar la extracción.
+No procede un script reproducible: los datos se exportaron manualmente desde la plataforma SABI aplicando los filtros *sector = transporte*, *región = Andalucía*, seleccionando las 100 primeras empresas por tamaño de activo. 
+
+## Extracción completa de SABI: cuentas y ratios de las 100 empresas
+
+**Fichero:** `BD_ContabilidadCompleta.xlsx` (hojas `Search strategy`, `Results`, `Hoja1`, `Hoja2`, `Hoja3`)\
+**Fuente:** SABI — Sistema de Análisis de Balances Ibéricos (Informa/Moody's)\
+**Tipo de datos:** corte transversal\
+**Periodo / unidad de observación:** ejercicio 2024, las mismas 100 empresas que `BD_SABI.xlsx`\
+**Usado en:** documentación de apoyo del ejemplo de multicolinealidad del Tema 4; no se importa directamente en el código del libro (los ejemplos del Tema 4 leen `BD_SABI.xlsx`)
+
+**Variables**
+
+Contiene las mismas 100 empresas y variables que `BD_SABI.xlsx` (ver diccionario en la sección anterior), pero conservadas en el formato de exportación íntegra de SABI, más tres hojas de trabajo:
+
+| Hoja | Contenido |
+|---|---|
+| `Search strategy` | Estrategia de búsqueda aplicada en SABI (forma jurídica, región, código IAE, filtro de ventas) y metadatos de la exportación |
+| `Results` | Extracción íntegra de las 100 empresas con las variables originales de SABI (identificador, NIF, ciudad, ratios del último ejercicio disponible y de 2024) |
+| `Hoja1` | Subconjunto de variables (ROA, liquidez inmediata, endeudamiento, EBITDA, empleados, activo total, rentabilidad financiera y económica) usado para preparar el ejemplo de regresión |
+| `Hoja2` | Salida del análisis de regresión de Excel (ROA sobre liquidez inmediata y endeudamiento) que reproduce los resultados comentados en el Tema 4 |
+| `Hoja3` | Matriz de correlaciones entre ROA, liquidez inmediata y endeudamiento, usada para ilustrar el diagnóstico de multicolinealidad |
+
+**Código de generación**\
+No procede: es el fichero de exportación original de SABI, conservado como copia de auditoría de `BD_SABI.xlsx` y como base de los cálculos de regresión y correlación comentados en el Tema 4.
 
 ## El IBEX35 frente a otros índices bursátiles
 
@@ -91,6 +110,7 @@ knitr::kable(read_excel("data/BD_EURIBOR.xlsx", sheet = "Diccionario"))
 
 **Código de generación**\
 No procede: datos descargados manualmente de los portales de Eurostat y EMMI. 
+
 ## Función de producción (Greene, 2003)
 
 **Fichero:** `BD_FUNCIONPRODUCCION.xlsx` (hoja `greene8_3`)\
@@ -145,6 +165,7 @@ No procede: fichero de datos que acompaña al manual de Uriel (2019).
 
 **Código de generación**\
 No procede: datos compilados manualmente a partir de las series públicas del INE y de statista.com. 
+
 ## Esperanza de vida y gasto sanitario en España
 
 **Fichero:** `bd6_esperanza.xlsx` (hoja `Hoja1`)\

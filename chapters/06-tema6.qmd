@@ -7,11 +7,11 @@ library(car)
 library(strucchange)
 
 datos <- read_excel("data/BD_IBEX.xlsx", sheet = "Datos")
-modelo_ibex <- lm(
+modeloIBEX <- lm(
   Rend_IBEX ~ Rend_SP500 + Rend_EUROSTOXX50,
   data = datos
 )
-residuos <- residuals(modelo_ibex)
+residuos <- residuals(modeloIBEX)
 ```
 
 # Autocorrelación
@@ -78,7 +78,7 @@ $$
 
 La diagonal principal recoge las varianzas de las perturbaciones, mientras que los elementos situados fuera de la diagonal representan sus covarianzas.
 
-- En ausencia de autocorrelación $\sigma_{ij}=0\qquad i\neq j.$
+- En ausencia de autocorrelación $\sigma_{ts}=0\qquad t\neq s.$
 
 - En presencia de autocorrelación, algunas de estas covarianzas serán diferentes de cero.
 
@@ -88,13 +88,11 @@ El problema es que una matriz completamente general requeriría estimar un núme
 
 La autocorrelación aparece fundamentalmente en modelos estimados con datos de series temporales. Sin embargo, su origen puede encontrarse tanto en la propia naturaleza del fenómeno como en una especificación incorrecta del modelo.
 
-- Cuando trabajamos con variables económicas y financieras observadas a lo largo del tiempo, es habitual que exista cierta persistencia. Por ejemplo, la rentabilidad del IBEX 35 de hoy puede estar relacionada con las condiciones existentes en el mercado durante los días anteriores. Del mismo modo, determinadas variables macroeconómicas o financieras presentan una evolución gradual y no cambian completamente de un período a otro.
-
-Esto puede provocar que los factores no incluidos explícitamente en el modelo también presenten persistencia temporal y, por tanto, que las perturbaciones estén correlacionadas.
+- **Naturaleza de la variable:** Cuando trabajamos con variables económicas y financieras observadas a lo largo del tiempo, es habitual que exista cierta persistencia. Por ejemplo, la rentabilidad del IBEX 35 de hoy puede estar relacionada con las condiciones existentes en el mercado durante los días anteriores. Del mismo modo, determinadas variables macroeconómicas o financieras presentan una evolución gradual y no cambian completamente de un período a otro. Esto puede provocar que los factores no incluidos explícitamente en el modelo también presenten persistencia temporal y, por tanto, que las perturbaciones estén correlacionadas.
 
 **Ejemplo**: Supongamos que analizamos la evolución del IBEX 35 y omitimos factores como la incertidumbre internacional, la evolución de los tipos de interés o las expectativas de los inversores. Aunque estas variables no aparezcan explícitamente en el modelo, sus efectos pueden persistir durante varios días. En consecuencia, pueden generar un patrón temporal en los residuos.
 
-- Omisión de variables relevantes: Otra causa frecuente es la omisión de variables relevantes. Supongamos que el modelo correcto es:
+- **Omisión de variables relevantes:** Otra causa frecuente es la omisión de variables relevantes. Supongamos que el modelo correcto es:
 
 $$
 Y_t=\beta_1+\beta_2X_{2t}+\beta_3X_{3t}+u_t,
@@ -116,11 +114,11 @@ Si $X_{3t}$ presenta dependencia temporal, la perturbación $v_t$ también la pr
 
 Por tanto, una variable relevante omitida puede generar autocorrelación incluso cuando la perturbación del modelo correctamente especificado sea incorrelacionada.
 
-- Especificación incorrecta de la forma funcional: También puede aparecer autocorrelación cuando la relación entre las variables no se especifica correctamente. Por ejemplo, si la relación verdadera entre una variable financiera y una variable explicativa presenta una tendencia no lineal y estimamos únicamente una relación lineal, parte de esa estructura quedará recogida en los residuos. Si además esa estructura presenta un patrón temporal, los residuos pueden mostrar autocorrelación.
+- **Especificación incorrecta de la forma funcional:** También puede aparecer autocorrelación cuando la relación entre las variables no se especifica correctamente. Por ejemplo, si la relación verdadera entre una variable financiera y una variable explicativa presenta una tendencia no lineal y estimamos únicamente una relación lineal, parte de esa estructura quedará recogida en los residuos. Si además esa estructura presenta un patrón temporal, los residuos pueden mostrar autocorrelación.
 
-- Transformaciones y manipulación de los datos: La construcción de variables mediante medias, interpolaciones, agregaciones o determinadas técnicas de suavizado puede introducir relaciones artificiales entre observaciones consecutivas. Por ello, antes de interpretar una autocorrelación como un fenómeno económico, conviene comprobar también cómo se han construido y transformado los datos.
+- **Transformaciones y manipulación de los datos:** La construcción de variables mediante medias, interpolaciones, agregaciones o determinadas técnicas de suavizado puede introducir relaciones artificiales entre observaciones consecutivas. Por ello, antes de interpretar una autocorrelación como un fenómeno económico, conviene comprobar también cómo se han construido y transformado los datos.
 
-- Variables dependientes retardadas: La inclusión de retardos de la variable dependiente es habitual en modelos económicos y financieros: $Y_t=\alpha+\beta X_t+\gamma Y_{t-1}+u_t.$ Este tipo de modelos introduce explícitamente una relación temporal y requiere especial atención en los procedimientos de detección de autocorrelación.
+- **Variables dependientes retardadas**: La inclusión de retardos de la variable dependiente es habitual en modelos económicos y financieros: $Y_t=\alpha+\beta X_t+\gamma Y_{t-1}+u_t.$ Este tipo de modelos introduce explícitamente una relación temporal y requiere especial atención en los procedimientos de detección de autocorrelación.
 
 
 #### Consecuencias de la autocorrelación {.unnumbered}
@@ -177,8 +175,7 @@ La interpretación debe hacerse con cautela. El gráfico permite detectar patron
 
 :::
 
-- Gráfico de residuos frente a su primer retardo: Otra posibilidad consiste en representar $e_t$ frente a $
-e_{t-1}$. 
+- Gráfico de residuos frente a su primer retardo: Otra posibilidad consiste en representar $e_t$ frente a $e_{t-1}$. 
 
   - Una nube de puntos sin estructura clara es compatible con la ausencia de autocorrelación.
 
@@ -189,13 +186,6 @@ e_{t-1}$.
 Una vez estimado el modelo correspondiente, podemos representar sus residuos mediante:
 
 ```{r}
-datos <- read_excel("data/BD_IBEX.xlsx", sheet = "Datos")
-modelo_ibex <- lm(
-    Rend_IBEX ~ Rend_SP500+ Rend_EUROSTOXX50,
-    data = datos
-)
-residuos <- residuals(modelo_ibex)
-
 plot(
   residuos[-1],
   residuos[-length(residuos)],
@@ -262,40 +252,149 @@ El paquete `lmtest` proporciona la función `dwtest()`.
 
 ::: {.callout-tip appearance="simple" icon=false title="Base de datos 2: El IBEX35"}
 
-Una vez estimado el modelo correspondiente, podemos representar sus residuos mediante:
+Una vez estimado el modelo correspondiente, podemos realizar el contraste de Durbin-Watson con la función `dwtest`. En este caso, el p valor es mayor que 0.1, por lo que no se puede rechazar la hipótesis nula de ausencia de autocorrelación. 
 
 ```{r}
 library(lmtest)
 
-dwtest(modelo_ibex)
+dwtest(modeloIBEX)
 ```
 :::
 
+#### Contraste h de Durbin {.unnumbered}
+
+El contraste de Durbin-Watson es válido cuando la autocorrelación de los errores es autorregresiva de orden 1 y cuando la regresión no incluye entre las variables explicativas algún retardo de la variable dependiente.
+
+En este segundo caso, se recurre al contraste $h$ de Durbin @durbin1970testing. Esto es, en modelos del tipo:
+
+$$
+Y_t = \alpha Y_{t-1} + \beta_1 + \beta_2 X_{2t} + \cdots + \beta_k X_{kt} + u_t,
+$$
+
+donde los errores siguen un proceso autorregresivo de primer orden:
+
+$$
+u_t = \rho u_{t-1} + v_t,
+$$
+
+se plantean las siguientes hipótesis:
+
+$$
+\begin{aligned}
+H_0 &: \rho = 0 \quad \text{(incorrelación)},\\
+H_1 &: \rho \neq 0 \quad \text{(correlación)}.
+\end{aligned}
+$$
+
+Para contrastar estas hipótesis, utilizaremos el estadístico $h$ de Durbin, definido como:
+
+$$
+h =
+\widehat{\rho}
+\sqrt{
+\frac{n}
+{1-n\widehat{\operatorname{Var}}(\widehat{\alpha})}
+}
+\sim N(0,1).
+$$
+
+Por tanto, se rechazará la hipótesis nula $H_0$ al nivel de significación $\alpha$ si:
+
+$$
+|h| > Z_{1-\frac{\alpha}{2}},
+$$
+
+donde $Z_{1-\frac{\alpha}{2}}$ representa el cuantil de la distribución normal estándar correspondiente.
+
+::: {.callout-tip appearance="simple" icon=false title="Base de datos 2: El IBEX35"}
+
+En este caso, incluimos como variable explicativa el primer retardo de la variable dependiente, y volvemos a estimar el modelo. Obtenemos el valor del estadístico experimental a partir del siguiente código y concluimos que no se puede rechazar la hipótesis nula de ausencia de autocorrelación:
+
+```{r}
+datos$Rend_IBEX_lag1 <- dplyr::lag(datos$Rend_IBEX, 1)
+
+# Estimar el modelo incluyendo el primer retardo
+modeloIBEX_dinamico <- lm(
+  Rend_IBEX ~ Rend_IBEX_lag1 + Rend_SP500 + Rend_EUROSTOXX50,
+  data = datos
+)
+alpha_hat <- coef(modeloIBEX_dinamico)["Rend_IBEX_lag1"]
+var_alpha_hat <- vcov(modeloIBEX_dinamico)[
+  "Rend_IBEX_lag1",
+  "Rend_IBEX_lag1"
+]
+
+n <- nrow(modeloIBEX_dinamico$model)
+
+DW=as.numeric(dwtest(modeloIBEX_dinamico)[1])
+
+rho_hat <- 1 - DW / 2
+
+h <- rho_hat * sqrt(
+  n / (1 - n * var_alpha_hat)
+)
+
+# Decisión al 5%
+z_critico <- qnorm(0.975)
+
+if (abs(h) > z_critico) {
+  cat("Se rechaza H0: existe autocorrelación\n")
+} else {
+  cat("No se rechaza H0: no existe evidencia de autocorrelación\n")
+}
+```
+
+:::
 
 #### Contraste de Ljung-Box {.unnumbered}
 
-El contraste de Ljung-Box permite analizar conjuntamente varias autocorrelaciones. Mientras que Durbin-Watson se centra en la autocorrelación de primer orden, Ljung-Box permite comprobar si existe autocorrelación hasta un determinado número de retardos. La hipótesis nula es:
+Si los residuos son independientes, sus primeras $m$ autocorrelaciones son cero, para cualquier valor de $m$. En esta idea se basa el test de \cite{ljung1978measure}, que contrasta la hipótesis nula de que las primeras $m$ autocorrelaciones, $\rho_1, \rho_2, \dots, \rho_m$, son cero. Esto es:
 
 $$
-H_0:
-\rho_1=\rho_2=\cdots=\rho_m=0.
+\begin{aligned}
+H_0 &: \rho_1 = \rho_2 = \dots = \rho_m = 0, \\
+H_1 &: \exists\, i \in \{1,2,\dots,m\} \text{ tal que } \rho_i \neq 0.
+\end{aligned}
 $$
 
-La alternativa establece que al menos una de esas autocorrelaciones es diferente de cero.
+Se rechaza la hipótesis nula de incorrelación si:
+
+$$
+Q_{LB}
+=
+n(n+2)
+\sum_{s=1}^{m}
+\frac{r(s)^2}{n-s}
+>
+\chi^2_{m}(1-\alpha),
+$$
+
+donde
+
+$$
+r(s)
+=
+\frac{
+\displaystyle\sum_{t=s+1}^{n} e_t e_{t-s}
+}{
+\displaystyle\sum_{t=1}^{n} e_t^2
+},
+$$
+
+es el coeficiente de autocorrelación muestral de orden $s$. Si las observaciones son independientes (incorrelación), los coeficientes $r(s)$ serán próximos a cero, por lo que no se rechazaría la hipótesis nula. Por otro lado, el valor de $m$ puede fijarse arbitrariamente, aunque no debe ser demasiado grande.
 
 
 ::: {.callout-tip appearance="simple" icon=false title="Base de datos 2: El IBEX35"}
-En R podemos utilizar:
-
+En R podemos utilizar la función `Box.test` seleccionando `type="Ljung-Box"`. En este caso, realizamos el contraste sobre el modelo original (sin incluir la variable dependiente retardada como variable explicativa) y seleccionando 12 retardos (`lag=12`), lo que permite analizar la posible existencia de autocorrelación de los residuos hasta un horizonte de un año. Dado que las observaciones tienen una frecuencia mensual, el retardo 12 resulta especialmente relevante, ya que permite detectar posibles patrones de autocorrelación asociados al mismo mes del año anterior.
 ```{r}
 Box.test(
   residuos,
-  lag = 10,
+  lag = 12,
   type = "Ljung-Box"
 )
 ```
 
-El parámetro `lag = 10` indica que se están considerando conjuntamente los diez primeros retardos. La elección de `lag` debe responder a la frecuencia de los datos y al objetivo del análisis, por lo que no debe entenderse como un valor universal.
+El parámetro `lag = 12` indica que se están considerando conjuntamente los doce primeros retardos. La elección de `lag` debe responder a la frecuencia de los datos y al objetivo del análisis, por lo que no debe entenderse como un valor universal. Como el p valor es mayor que 0.1, no se puede rechazar la hipótesis nula de ausencia de autocorrelación. 
 :::
 
 
@@ -389,37 +488,13 @@ Una estimación inicial habitual de $\rho$ es:
 $$
 \hat{\rho}=\frac{\sum_{t=2}^{n}e_te_{t-1}}{\sum_{t=1}^{n}e_t^2}.
 $$
-
-A continuación se implementa el procedimiento directamente en R, siguiendo paso a paso las etapas anteriores:
-
+Se puede implementar a partir de la libreria `orcutt` con la función `cochrane.orcutt`. Aunque el modelo con los datos del IBEX35 no parece tener autocorrelación, lo usamos de manera ilustrativa: 
 ```{r}
-Y <- datos$Rend_IBEX
-X1 <- datos$Rend_SP500
-X2 <- datos$Rend_EUROSTOXX50
-n <- length(Y)
-
-rho_hat <- 0
-modelo_ibex_co <- modelo_ibex
-
-for (iter in 1:50) {
-  e <- residuals(modelo_ibex_co)
-  rho_nuevo <- sum(e[-1] * e[-length(e)]) / sum(e^2)
-
-  Y_t <- Y[-1] - rho_nuevo * Y[-n]
-  X1_t <- X1[-1] - rho_nuevo * X1[-n]
-  X2_t <- X2[-1] - rho_nuevo * X2[-n]
-
-  modelo_ibex_co <- lm(Y_t ~ X1_t + X2_t)
-
-  if (abs(rho_nuevo - rho_hat) < 1e-6) break
-  rho_hat <- rho_nuevo
-}
-
-rho_hat
-summary(modelo_ibex_co)
+#install.packages("https://cran.r-project.org/src/contrib/Archive/orcutt/orcutt_2.3.tar.gz",repos = NULL,type = "source")
+library(orcutt)
+modelo_ibex_orcutt <- cochrane.orcutt(modeloIBEX)
+summary(modelo_ibex_orcutt)
 ```
-
-El bucle repite la transformación hasta que dos estimaciones sucesivas de $\rho$ difieren en menos de una tolerancia prefijada (`1e-6`), tal como se ha descrito en el procedimiento de Cochrane-Orcutt. El resultado permite comparar los coeficientes obtenidos mediante MCO con los obtenidos después de corregir la autocorrelación. Nótese que el intercepto del modelo transformado corresponde a $\beta_1(1-\rho)$, tal como se explicó anteriormente.
 
 #### Prais-Winsten {.unnumbered}
 
@@ -435,71 +510,83 @@ Este procedimiento resulta especialmente útil cuando la muestra no es muy grand
 
 ::: {.callout-tip appearance="simple" icon=false title="Base de datos 2: El IBEX35"}
 
-El análisis de autocorrelación resulta especialmente natural en el ámbito financiero porque muchas variables se observan a lo largo del tiempo.
-
-Supongamos que disponemos de datos diarios del IBEX 35 y queremos estudiar la relación entre su rentabilidad y determinadas variables financieras.
-
-Un primer modelo podría ser:
-
-$$
-R_t=
-\beta_1+\beta_2X_{2t}+\beta_3X_{3t}+u_t.
-$$
-
-En R:
-
 ```{r}
-modelo_ibex <- lm(
+library(prais)
+datos$t <- seq_len(nrow(datos))
+modelo_pw <- prais_winsten(
   Rend_IBEX ~ Rend_SP500 + Rend_EUROSTOXX50,
+  index = "t",
   data = datos
 )
 
-summary(modelo_ibex)
+summary(modelo_pw)
 ```
+:::
 
-Una vez estimado el modelo, podemos estudiar los residuos:
+## Prácticas resueltas
+
+### Función de producción. Diagóstico de autocorrelación. {.unnumbered}
+
+1. A partir de la base de datos de @Greene2003 denominada `BD_FUNCIONPRODUCCION' vamos a realizar una práctica para el diagóstico de la autocorrelación. En primer lugar, se estima el modelo:
 
 ```{r}
-residuos_ibex <- residuals(modelo_ibex)
+library(readxl)
+library(lmtest)
+datos= read_excel('data/BD_FUNCIONPRODUCCION.xlsx')
+modelo1=lm(q~k+A, data=datos)
+summary(modelo1)
+```
 
+Al representar los residuos frente al tiempo, se podría intuir una alternancia de rachas positivas y negativas, pero no es conluyente:
+```{r}
+residuos <- residuals(modelo1)
 plot(
-  residuos_ibex,
+  residuos,
   type = "l",
-  main = "Residuos del modelo del IBEX 35",
-  xlab = "Observación",
+  main = "Residuos",
+  xlab = "Tiempo",
   ylab = "Residuo"
 )
 
 abline(h = 0, lty = 2)
 ```
 
-A continuación podemos aplicar Durbin-Watson:
 
+Al representar los residuos frente a los residuos del modelo anterior se observa una tendencia positiva, lo que implicaría autocorrelación positiva:
 ```{r}
-library(lmtest)
+residuos <- residuals(modelo1)
 
-dwtest(modelo_ibex)
-```
-
-y Ljung-Box:
-
-```{r}
-Box.test(
-  residuos_ibex,
-  lag = 10,
-  type = "Ljung-Box"
+plot(
+  residuos[-1],
+  residuos[-length(residuos)],
+  xlab = expression(e[t-1]),
+  ylab = expression(e[t]),
+  main = "Residuos frente a su primer retardo"
 )
+
+abline(h = 0, v = 0, lty = 2)
 ```
 
-La combinación de los gráficos y los contrastes permite obtener un diagnóstico más completo que la utilización aislada de un único indicador.
+Para apoyar las conclusiones obtenidas de la representación gráfica de los residuos, se ha realizado el contraste de Durbin-Watson obteniendo un p valor con un valor cercano a cero, por lo que se rechaza la hipótesis nula de ausencia de autocorrelación. 
 
-:::
+```{r}
+dwtest(modelo1)
+```
+Una vez detectada la autocorrelación, se estima mediante el procedimiento de Cochrane-Orcutt. Se observa que la salida de R, ofrece el valor del estadístico experimental de Durbin-Watson del modelo original y del modelo transformado, concluyéndose que en el modelo transformado no se puede rechazar la hipótesis nula de ausencia de autocorrelación. 
 
-## Prácticas resueltas
+```{r}
+#install.packages("https://cran.r-project.org/src/contrib/Archive/orcutt/orcutt_2.3.tar.gz",repos = NULL,type = "source")
+library(orcutt)
+modelo1_co <- cochrane.orcutt(modelo1)
+summary(modelo1_co)
+```
+
 
 ## Prácticas propuestas
 
-1. InmoGranada S.A. quiere analizar la evolución del precio de la vivienda en Granada a lo largo del tiempo. Para ello construye una base de datos del precio medio de la vivienda en euros/m$^2$ para los ultimos 120 meses en función de la población (número de habitantes) y de la renta media (euros/mes), obteniendo el siguiente modelo estimado:
+1. Crear el código en R para reproducir el procedimiento de Cochrane–Orcutt y comprobar que sale el mismo resultado. 
+
+2. InmoGranada S.A. quiere analizar la evolución del precio de la vivienda en Granada a lo largo del tiempo. Para ello construye una base de datos del precio medio de la vivienda en euros/m$^2$ para los ultimos 120 meses en función de la población (número de habitantes) y de la renta media (euros/mes), obteniendo el siguiente modelo estimado:
 
 ```{r , echo=FALSE, include=FALSE}
 set.seed(123)

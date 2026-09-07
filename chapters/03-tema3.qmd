@@ -540,7 +540,7 @@ PP y los que no.
 
 1. Estimar el modelo de IBEX35 incluyendo una dicotomica que detalle a que trimestre corresponde cada dato, e incluir en el modelo esas variables dicotómicas para analizar si hay un efecto estacional por trimestres. 
 
-2. Se tienen datos para los años 2006-2015 sobre la evolución de las ventas
+2. Se tienen datos para los años 2006-2024 sobre la evolución de las ventas
 ($Y$) del grupo Inditex, el número de empleados ($X_2$), número de
 tiendas ($X_3$) y una variable ficticia que tomar el valor 1 para los
 años en los que se oferta comercio electónico ($X_4$).

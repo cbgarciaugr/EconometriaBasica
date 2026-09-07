@@ -779,8 +779,7 @@ $$
 Si estimamos el modelo podemos obtener el estimador que acompaña a la variable Rend_SP500 que es igual a $\beta_2=-0.2056$:
 ```{r}
 datos <- read_excel("data/BD_IBEX.xlsx", sheet = "Datos")
-modeloIBEX<- lm(
-    Rend_IBEX ~ Rend_SP500+ Rend_EUROSTOXX50,
+modeloIBEX<- lm(Rend_IBEX ~ Rend_SP500+ Rend_EUROSTOXX50,
     data = datos
 )
 modeloIBEX

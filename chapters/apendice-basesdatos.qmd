@@ -24,28 +24,6 @@ knitr::kable(read_excel("data/BD_SABI.xlsx", sheet = "Diccionario"))
 **Código de generación**\
 No procede un script reproducible: los datos se exportaron manualmente desde la plataforma SABI aplicando los filtros *sector = transporte*, *región = Andalucía*, seleccionando las 100 primeras empresas por tamaño de activo. 
 
-## Extracción completa de SABI: cuentas y ratios de las 100 empresas
-
-**Fichero:** `BD_ContabilidadCompleta.xlsx` (hojas `Search strategy`, `Results`, `Hoja1`, `Hoja2`, `Hoja3`)\
-**Fuente:** SABI — Sistema de Análisis de Balances Ibéricos (Informa/Moody's)\
-**Tipo de datos:** corte transversal\
-**Periodo / unidad de observación:** ejercicio 2024, las mismas 100 empresas que `BD_SABI.xlsx`\
-**Usado en:** documentación de apoyo del ejemplo de multicolinealidad del Tema 4; no se importa directamente en el código del libro (los ejemplos del Tema 4 leen `BD_SABI.xlsx`)
-
-**Variables**
-
-Contiene las mismas 100 empresas y variables que `BD_SABI.xlsx` (ver diccionario en la sección anterior), pero conservadas en el formato de exportación íntegra de SABI, más tres hojas de trabajo:
-
-| Hoja | Contenido |
-|---|---|
-| `Search strategy` | Estrategia de búsqueda aplicada en SABI (forma jurídica, región, código IAE, filtro de ventas) y metadatos de la exportación |
-| `Results` | Extracción íntegra de las 100 empresas con las variables originales de SABI (identificador, NIF, ciudad, ratios del último ejercicio disponible y de 2024) |
-| `Hoja1` | Subconjunto de variables (ROA, liquidez inmediata, endeudamiento, EBITDA, empleados, activo total, rentabilidad financiera y económica) usado para preparar el ejemplo de regresión |
-| `Hoja2` | Salida del análisis de regresión de Excel (ROA sobre liquidez inmediata y endeudamiento) que reproduce los resultados comentados en el Tema 4 |
-| `Hoja3` | Matriz de correlaciones entre ROA, liquidez inmediata y endeudamiento, usada para ilustrar el diagnóstico de multicolinealidad |
-
-**Código de generación**\
-No procede: es el fichero de exportación original de SABI, conservado como copia de auditoría de `BD_SABI.xlsx` y como base de los cálculos de regresión y correlación comentados en el Tema 4.
 
 ## El IBEX35 frente a otros índices bursátiles
 

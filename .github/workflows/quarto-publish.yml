@@ -37,7 +37,9 @@ jobs:
             any::ggplot2
             any::lmtest
             any::multiColl
+            any::orcutt
             any::plotly
+            any::prais
             any::quantmod
             any::readxl
             any::rvif

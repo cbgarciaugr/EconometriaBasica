@@ -1,4 +1,4 @@
-# Variables dicotómicas y cambio estructural
+# Variables dicotómicas y cambio estructural {#tema3}
 
 ::: {.callout-important title="Objetivos de aprendizaje"}
 Al finalizar este capítulo, el estudiante será capaz de:

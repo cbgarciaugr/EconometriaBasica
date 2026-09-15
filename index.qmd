@@ -75,7 +75,7 @@ Con el fin de que el estudiante pueda concentrarse en los conceptos econométric
 
 -   Tipo de datos: serie temporal.
 -   Frecuencia: mensual ()
--   Variables principales: Precio de cierre mensual y rendimientos logaritmicos del IBX 35, S&P500 y Eurostoxx50.
+-   Variables principales: Precio de cierre mensual y rendimientos logaritmicos del IBEX 35, S&P500 y Eurostoxx50.
 -   Aplicación: análisis de la dependencia del IBEX35 con respecto al mercado financiero europeo y americano.
 -  Fuente: Yahoo finance
 :::

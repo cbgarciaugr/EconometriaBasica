@@ -34,7 +34,7 @@ Esta descripción de los objetivos de la Sociedad no constituye propiamente una 
 
 Así, se puede decir que la Econometría es la disciplina que combina la **Teoría Económica**, la **Estadística**, las **Matemáticas** y la **Informática** con el objetivo de analizar relaciones económicas utilizando datos observados. Su finalidad no es únicamente describir los datos, sino explicar el comportamiento de las variables económicas, contrastar hipótesis formuladas por la teoría y proporcionar información útil para la toma de decisiones.
 
-![Concepto Econometría](ConceptoModerno.png)
+
 En términos sencillos, la Econometría intenta responder preguntas del tipo:
 
 > -   ¿Cómo cambia la rentabilidad de una empresa cuando aumenta su endeudamiento?
@@ -78,7 +78,7 @@ El modelo únicamente indica que existe una relación entre estas variables, per
 Muchos de estos factores son difíciles de medir o, simplemente, no están disponibles en la base de datos. Por esta razón, el modelo económico debe ampliarse incorporando un término que recoja todos aquellos factores no observados que también influyen sobre la variable de interés.
 :::
 
--   El **modelo econométrico** reconoce que la realidad está influida por numerosos factores no observados y, por tanto, incorpora una componente aleatoria. Ese término recibe el nombre de **perturbación aleatoria** y suele representarse mediante la letra ($u$). Tras aplicar un procedimiento de estimación obtendremos una **estimación para los parámetros**. Más adelante aprenderemos cómo estimar correctamente estos coeficientes y cómo evaluar si estas relaciones son estadísticamente significativas.
+-   El **modelo econométrico** reconoce que la realidad está influida por numerosos factores no observados y, por tanto, incorpora una componente aleatoria. Ese término recibe el nombre de **perturbación aleatoria** y suele representarse mediante la letra ($u$). En los modelos econométricos básicos, además, se suele asumir que las relaciones entre las variables son **lineales**. Tras aplicar un procedimiento de estimación obtendremos una **estimación para los parámetros**. Más adelante aprenderemos cómo estimar correctamente estos coeficientes y cómo evaluar si estas relaciones son estadísticamente significativas.
 
 ::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
 El modelo económico anterior expresado como un modelo econométrico tendría la siguiente expresión:
@@ -117,12 +117,13 @@ La @fig-metodo resume las principales fases del método econométrico.
 %%| label: fig-metodo
 %%| fig-cap: "Fases del método econométrico"
 %%| fig-width: 6
-flowchart LR
-1[Pregunta económica] --> 2[Especificación del modelo]
-2 --> 3[Obtención de datos]
-3 --> 4[Estimación]
-4 --> 5[Validación]
-5 --> 6[Interpretación y predicción]
+flowchart TD
+    1[Pregunta económica] --> 2[Especificación del modelo]
+    2 --> 3[Obtención de datos]
+    3 --> 4[Estimación]
+    4 --> 5{Validación}
+    5 -->|Sí| 6[Interpretación y predicción]
+    5 -->|No| 2
 ```
 
 1.  **Planteamiento del problema**: Toda investigación econométrica comienza con una pregunta cuya respuesta resulta de interés para un investigador, una empresa o un responsable de la toma de decisiones. Algunos ejemplos habituales son:
@@ -222,7 +223,7 @@ La variable explicada es $ROA_i$ mientras que $LEV_i$ y $LIQ_i$ son las variable
 En el ejemplo del ROA, los efectos no observables recogidos en la perturbación aleatoria podrían ser: la calidad del equipo directivo; la innovación; la reputación de la empresa; la competencia existente en el mercado; errores de medida. La existencia de este componente aleatorio explica por qué empresas aparentemente muy similares pueden presentar rentabilidades diferentes.
 :::
 
--   Los **parámetros** representan los efectos que las variables explicativas ejercen sobre la variable dependiente. Su valor es desconocido y deberá estimarse utilizando la información de la muestra. En el modelo
+-   Los **parámetros** representan los efectos que las variables explicativas ejercen sobre la variable dependiente. Su valor es desconocido y deberá estimarse utilizando la información de la muestra. 
 
 ::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
 En el modelo
@@ -231,8 +232,8 @@ ROA_i=\beta_0+\beta_1LEV_i+\beta_2LIQ_i+u_i
 $$
 los parámetros son:
 
-- $\beta_0$ que representa la ordenada en el origen o término independiente;\\
-- $\beta_1$ que mide el efecto del endeudamiento sobre la rentabilidad;\\
+- $\beta_0$ que representa la ordenada en el origen o término independiente;
+- $\beta_1$ que mide el efecto del endeudamiento sobre la rentabilidad;
 - $\beta_2$ que mide el efecto de la liquidez sobre la rentabilidad.
 :::
 
@@ -319,7 +320,23 @@ Algunos ejemplos son:
 -   pertenencia a un grupo empresarial;
 -   provincia o comunidad autónoma.
 
-Aunque estas variables no representan cantidades numéricas, también pueden incorporarse a un modelo econométrico mediante técnicas que estudiaremos en capítulos posteriores.
+Aunque estas variables no representan cantidades numéricas, también pueden incorporarse a un modelo econométrico mediante técnicas en las que profundizaremos en el @tema3. 
+
+::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
+A modo de ejemplo, si quiere incluirse en el modelo el efecto que puede tener sobre la rentabilidad el hecho de que exista auditoría externa o no, una vez recogida la información correspondiente para cada empresa se añadiría una variable dicotómica ($D_1$) que tomaría el valor 1 cuando se cumpla la característica (existir auditoria externa) y el valor 0 cuando no se cumpla la característica (no existir auditoria externa). El modelo quedaría expresado de la siguiente manera:
+$$
+ROA_i=\beta_0+\beta_1LEV_i+\beta_2LIQ_i+\beta_3D_1+u_i
+$$
+los parámetros son:
+
+- $\beta_0$ se interpretaría como la rentabilidad esperada para empresas en las que no existe auditoría externa cuando el endeudamiento y la liquidez toman el valor 0.
+- $\beta_1$ que mide el efecto del endeudamiento sobre la rentabilidad;
+- $\beta_2$ que mide el efecto de la liquidez sobre la rentabilidad.
+- $\beta_3$ representa lo que varia la rentabilidad esperada para las empresas que tienen auditoría externa con respecto a las que no lo tienen, a igualdad del resto de variables.
+
+Se estudiará en mayor detalle en el tema @tema3.
+
+:::
 
 ## Practicas resueltas
 

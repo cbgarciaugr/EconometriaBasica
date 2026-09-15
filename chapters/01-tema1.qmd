@@ -22,8 +22,19 @@ Al finalizar este capítulo el estudiante será capaz de:
 
 ### ¿Qué es la Econometría? {.unnumbered}
 
-La Econometría es la disciplina que combina la **Teoría Económica**, la **Estadística**, las **Matemáticas** y la **Informática** con el objetivo de analizar relaciones económicas utilizando datos observados. Su finalidad no es únicamente describir los datos, sino explicar el comportamiento de las variables económicas, contrastar hipótesis formuladas por la teoría y proporcionar información útil para la toma de decisiones.
+El concepto moderno de ``Econometría'' se le atribuye a [@Frisch1926], aunque fue en el primer volumen de la revista *Econometrica*, de la que era editor [@Frisch1936], donde asentó el concepto de econometría:
 
+> [...] su definición queda implícita en los objetivos que impulsaron la Sociedad Econométrica y que están recogidos en la sección I de la constitución de la misma. La Sociedad Econométrica es una sociedad internacional dedicada al avance de la Teoría Económica en su relación con la Estadística y las Matemáticas... Su principal objetivo es promover estudios que conduzcan a la unificación de los enfoques teórico-cuantitativos y empírico-cuantitativos en el estudio de los problemas económicos.
+
+Esta descripción de los objetivos de la Sociedad no constituye propiamente una definición, ``pero indica el objeto de la Econometría: el estudio cuantitativo de los problemas económicos''. De entre la multitud de definiciones existentes en la literatura, se podría destacar la aportada por [@Judge1985]:
+
+> La Econometría, usando la Teoría Económica, las Matemáticas y la Inferencia Estadística como fundamentos analíticos, y los datos económicos como la base informativa, proporciona una base para:
+1. Modificar, refinar o posiblemente refutar las conclusiones en el cuerpo de conocimientos conocido como Teoría Económica.
+2. Conseguir signos, magnitudes y afirmaciones de calidad para los coeficientes de las variables en las relaciones económicas, de modo que esta información puede usarse como base para la elección y toma de decisiones.
+
+Así, se puede decir que la Econometría es la disciplina que combina la **Teoría Económica**, la **Estadística**, las **Matemáticas** y la **Informática** con el objetivo de analizar relaciones económicas utilizando datos observados. Su finalidad no es únicamente describir los datos, sino explicar el comportamiento de las variables económicas, contrastar hipótesis formuladas por la teoría y proporcionar información útil para la toma de decisiones.
+
+![Concepto Econometría](ConceptoModerno.png)
 En términos sencillos, la Econometría intenta responder preguntas del tipo:
 
 > -   ¿Cómo cambia la rentabilidad de una empresa cuando aumenta su endeudamiento?

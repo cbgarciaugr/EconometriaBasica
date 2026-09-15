@@ -320,7 +320,7 @@ Algunos ejemplos son:
 -   pertenencia a un grupo empresarial;
 -   provincia o comunidad autónoma.
 
-Aunque estas variables no representan cantidades numéricas, también pueden incorporarse a un modelo econométrico mediante técnicas en las que profundizaremos en el @tema3. 
+Aunque estas variables no representan cantidades numéricas, también pueden incorporarse a un modelo econométrico mediante técnicas en las que profundizaremos en el @sec-tema3. 
 
 ::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
 A modo de ejemplo, si quiere incluirse en el modelo el efecto que puede tener sobre la rentabilidad el hecho de que exista auditoría externa o no, una vez recogida la información correspondiente para cada empresa se añadiría una variable dicotómica ($D_1$) que tomaría el valor 1 cuando se cumpla la característica (existir auditoria externa) y el valor 0 cuando no se cumpla la característica (no existir auditoria externa). El modelo quedaría expresado de la siguiente manera:
@@ -334,7 +334,7 @@ los parámetros son:
 - $\beta_2$ que mide el efecto de la liquidez sobre la rentabilidad.
 - $\beta_3$ representa lo que varia la rentabilidad esperada para las empresas que tienen auditoría externa con respecto a las que no lo tienen, a igualdad del resto de variables.
 
-Se estudiará en mayor detalle en el tema @tema3.
+Se estudiará en mayor detalle en el tema @sec-tema3.
 
 :::
 

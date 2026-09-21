@@ -178,7 +178,24 @@ modelo$residuals
 
 :::
 
+Es posible obtener el producto $X^{t} X$ y $X^{t}y$ a partir de las siguientes expresiones:
 
+$$X^{t} X = \left(
+\begin{array}{cccc}
+            n & \sum \limits_{t=1}^{n} X_{2i} & \cdots & \sum \limits_{i=1}^{n} X_{ki} \\
+            \sum \limits_{i=1}^{n} X_{2i} & \sum \limits_{i=1}^{n} X_{2i}^{2} & \cdots & \sum \limits_{i=1}^{n} X_{2i} X_{ki} \\
+            \vdots & \vdots & \ddots & \vdots \\
+            \sum \limits_{i=1}^{n} X_{ki} & \sum \limits_{i=1}^{n} X_{ki} X_{2i} & \cdots & \sum \limits_{i=1}^{n} X_{ki}^{2} \\
+\end{array} \right),$$
+\noindent y
+$$X^{t} y = \left(
+        \begin{array}{c}
+            \sum \limits_{i=1}^{n} Y_{i} \\
+            \sum \limits_{i=1}^{n} X_{2i} Y_{i} \\
+            \vdots \\
+            \sum \limits_{i=1}^{n} X_{ki} Y_{i} \\
+        \end{array} \right).$$
+        
 Como consecuencia de la estimación mediante MCO se derivan las siguientes propiedades algebraicas de los estimadores:
 
 | Propiedad         | Interpretación                                                     |
@@ -1373,6 +1390,37 @@ En el caso de datos transversales, la lógica es similar, aunque no existe una d
 Para ello, se pueden estimar modelos que permitan que los parámetros varíen entre los grupos y plantear posteriormente un contraste general de restricciones lineales.
 
 ## Prácticas resueltas
+
+### Obtención de los estimadores mediante el sumatorio de las variables {-}
+
+A partir de los datos del modelo de la rentabilidad, se tienen los siguientes sumatorios:
+
+$$\sum ROA_i=768,54; \sum LEV_i=6379,76;\sum LIQ_i=34.707$$
+$$\sum LEV_i^2=461145,61;\sum LIQ_i^2=38.468; \sum LEV_i\times LIQ_i=1353,61$$
+$$\sum ROA_i \times LEV_i=41060,34; \sum ROA_i \times LIQ_i=389,47$$
+Con estos datos se pueden construir las siguientes matrices:
+
+$$X^{t} X = \left(
+\begin{array}{cccc}
+            100 & 6379,76 & 34,707 \\
+            6379,76 & 461145,61 & 1353,61 \\
+             34,707 & 1353,61 & 38,468 \\
+\end{array} \right),$$
+\noindent y
+$$X^{t} y = \left(
+        \begin{array}{c}
+            768,54 \\
+            41060,34\\
+            389,47\\
+        \end{array} \right).$$
+Se puede calcular la inversa de la matriz $X'X$ y se obtendrán los siguientes estimadores que coinciden con los obtenidos mediante la función `lm`.
+
+$$\hat{\beta} = \left(
+        \begin{array}{c}
+            17,5053 \\
+            -0,1522\\
+            -0,3133\\
+        \end{array} \right).$$
 
 ### Función de producción. Importancia de una buena especificación. {.unnumbered}
 

@@ -47,7 +47,7 @@ Aunque en la teoria la variable dependiente suele denotarse como $Y$ y las varia
 $$
 ROA_i=\beta_0+\beta_1LEV_i+\beta_2LIQ_i+u_i
 $$
-Notese que el parámetro $\beta_0$ no esta multiplciado por ninguna variable explicativa por lo que podría considerarse que esta multiplicada por 1, que es a lo que llamamos el término independiente o intercepto. Tengase en cuenta tambien que el subindice $i$ se usa para denotar que tenemos $n=100$ observaciones, de manera que en esa ecuación se esta representando una observación (empresa) concreta $i$. En cambio, los parámetros no tienen porque son constantes desconocidas que describen la relación entre las variables y se supone que son comunes a todas las observaciones de la muestra.
+Notese que el parámetro $\beta_0$ no esta multiplicado por ninguna variable explicativa por lo que podría considerarse que esta multiplicada por 1, que es a lo que llamamos el término independiente o intercepto. Tengase en cuenta tambien que el subindice $i$ se usa para denotar que tenemos $n=100$ observaciones, de manera que en esa ecuación se esta representando una observación (empresa) concreta $i$. En cambio, los parámetros no tienen subindice porque son constantes desconocidas que describen la relación entre las variables y se supone que son comunes a todas las observaciones de la muestra.
 :::
 
 ::: {.callout-tip appearance="simple" icon=false title="Base de datos 2: El IBEX35"}
@@ -71,10 +71,10 @@ Consideraremos las siguientes **hipótesis básicas** en el modelo lineal uniecu
 1.  El vector $y$ se puede expresar como combinación lineal de las variables explicativas más un vector de perturbación.
 
 ::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
-La rentabilidad económica de una empresa puede explicarse, al menos parcialmente, mediante variables observables como el endeudamiento y la liquidez, junto con otros factores no observados recogidos en la perturbación aleatoria.
+La rentabilidad económica de una empresa puede explicarse, al menos parcialmente, mediante una relación lineal con variables observables como el endeudamiento y la liquidez, junto con otros factores no observados recogidos en la perturbación aleatoria.
 :::
 
-2.  No hay relación entre variables independientes y la perturbación aleatoria, es decir, $$Cov ( u_{n \times 1}, X_{i} ) = 0_{n\times n}.$$
+2.  No hay relación entre variables independientes y la perturbación aleatoria, es decir, $$Cov ( u_{n \times 1}, X_{j} ) = 0_{n\times n}.$$
 
 ::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
 Se supone que las variables explicativas no contienen información sobre los factores no observados incluidos en la perturbación. Por ejemplo, si la calidad del equipo directivo afecta simultáneamente al endeudamiento y al ROA pero no se incorpora al modelo, esta hipótesis podría incumplirse.
@@ -92,7 +92,7 @@ Si el modelo incorpora simultáneamente el ratio de endeudamiento y otro indicad
 
 4.2 Es homoscedástica: $$Var(u_{i}) =  E[u_{i}^{2} ] = \sigma^{2},  \ i=1,\dots,n $$
 
-4.3 Es incorrelada: $$Cov(u_{i}, u_{j}) = E[u_{i} \cdot u_{j}] = 0,  \ \forall i \not= j, i,j=1,\dots,n $$ El incumplimiento de la hipótesis (3) da lugar a la existencia de colinealidad perfecta. Igualmente, el incumplimiento de las hipótesis (4.b) y (4.c) dan lugar a la existencia de heterocedasticidad y autocorrelación.
+4.3 Es incorrelada: $$Cov(u_{i}, u_{j}) = E[u_{i} \cdot u_{j}] = 0,  \ \forall i \not= j, i,j=1,\dots,n $$ El incumplimiento de la hipótesis (3) da lugar a la existencia de colinealidad perfecta. Igualmente, el incumplimiento de las hipótesis (4.b) y (4.c) dan lugar a la existencia de heterocedasticidad y autocorrelación, respectivamente.
 
 ::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
 
@@ -100,7 +100,7 @@ Si el modelo incorpora simultáneamente el ratio de endeudamiento y otro indicad
 | ---------------- | --------------------------------------------------------------------------- |
 | Media cero       | Los factores omitidos no producen un sesgo sistemático en la rentabilidad.  |
 | Homocedasticidad | La variabilidad de los errores es similar para empresas pequeñas y grandes. |
-| Incorrelación    | El error cometido para una empresa no depende del error de otra empresa.    |
+| Incorrelación    | La variable no observable de una empresa no esta relacionada con variable no observable de otra empresa.    |
 :::
 
 Estas hipótesis no se introducen únicamente por razones matemáticas. Permiten demostrar que el estimador de mínimos cuadrados ordinarios posee propiedades deseables, como la insesgadez y la eficiencia. Además, muchas de ellas podrán comprobarse posteriormente mediante contrastes específicos. Además de estas hipótesis, para llevar a cabo lo que se conoce como inferencia tradicional (intervalos de confianza y contrastes de hipótesis basados en una distribución estadística) se impondrá como hipótesis adicional que la perturbación aleatoria se distribuya según una distribución Normal de media 0 y varianza $\sigma^2I$.
@@ -179,14 +179,14 @@ modelo$residuals
 :::
 
 
-Las principales consecuencias de la estimación MCO son:
+Como consecuencia de la estimación mediante MCO se derivan las siguientes propiedades algebraicas de los estimadores:
 
 | Propiedad         | Interpretación                                                     |
 | ----------------- | ------------------------------------------------------------------ |
-| $(X'\hat e=0)$      | Los residuos son ortogonales a las variables explicativas.         |
-| $(i'\hat e=0)$      | La suma de los residuos es cero.                                   |
+| $(X' e=0)$      | Los residuos son ortogonales a las variables explicativas.         |
+| $(i'e=0)$      | La suma de los residuos es cero.                                   |
 | $(i'\hat y=i'y)$    | La media de los valores estimados coincide con la media observada. |
-| $(\hat y'\hat e=0)$ | Los valores ajustados y los residuos no están correlacionados.     |
+| $(\hat y' e=0)$ | Los valores ajustados y los residuos no están correlacionados.     |
 
 ### Teorema de Gauss-Markov
 
@@ -196,23 +196,167 @@ Los valores obtenidos mediante el método de mínimos cuadrados ordinarios, $\wi
 
 Como cualquier variable aleatoria, los estimadores poseen una distribución de probabilidad y, por tanto, pueden caracterizarse mediante propiedades como su esperanza matemática y su varianza. En consecuencia, al evaluar un procedimiento de estimación interesa que los estimadores presenten determinadas propiedades deseables. Dos de las propiedades más importantes son las siguientes:
 
-- **Insesgadez**: un estimador es insesgado cuando, en promedio, coincide con el verdadero valor del parámetro que pretende estimar. Matemáticamente,
+- **Insesgadez**: un estimador es insesgado cuando, en promedio, coincide con el verdadero valor del parámetro que pretende estimar. Matemáticamente, se puede demostrar:
 
 $$
-E\left(\widehat{\beta}\right)=\beta.
+\begin{aligned}
+\widehat{\beta}
+&= \left( X^{t}X \right)^{-1} X^{t}y \\
+&= \left( X^{t}X \right)^{-1} X^{t}(X\beta + u) \\
+&= \beta + \left( X^{t}X \right)^{-1} X^{t}u.
+\end{aligned}
 $$
 
-Esto significa que, si el proceso de muestreo pudiera repetirse un gran número de veces, el promedio de los estimadores obtenidos coincidiría con el verdadero valor del parámetro poblacional.
+Por tanto,
+
+$$
+\widehat{\beta}
+=
+\beta + \left( X^{t}X \right)^{-1} X^{t}u.
+$$
+
+Dado que $E[u] = 0$, se cumple que:
+
+$$
+\begin{aligned}
+E[\widehat{\beta}]
+&= E\left[
+\beta + \left( X^{t}X \right)^{-1} X^{t}u
+\right] \\
+&= \beta + \left( X^{t}X \right)^{-1} X^{t}E[u] \\
+&= \beta.
+\end{aligned}
+$$
+
+Por lo que se ha demostrado que $\widehat{\beta}$ es un **estimador insesgado**. Esto significa que, si el proceso de muestreo pudiera repetirse un gran número de veces, el promedio de los estimadores obtenidos coincidiría con el verdadero valor del parámetro poblacional.
 
 - **Eficiencia**: entre dos estimadores insesgados, se considera más eficiente aquel que presenta una menor varianza. Un estimador eficiente produce estimaciones menos dispersas alrededor del verdadero valor del parámetro y, por tanto, proporciona resultados más precisos.
 
-En Econometría, una de las principales cuestiones consiste en determinar si el método de estimación utilizado produce estimadores con estas propiedades. El resultado fundamental que responde a esta cuestión es el **Teorema de Gauss-Markov**, que demuestra que, bajo las hipótesis del modelo lineal clásico, los estimadores obtenidos mediante el método de mínimos cuadrados ordinarios (MCO) son **lineales, insesgados y óptimos (ELIO)** o, utilizando la terminología anglosajona, **Best Linear Unbiased Estimators (BLUE)**. Esto significa que, dentro de la clase de todos los estimadores lineales e insesgados, los estimadores MCO presentan la **mínima varianza posible**, por lo que utilizan de la forma más eficiente la información contenida en la muestra (@Wooldridge2020).
+Para demostrar que el estimador MCO es eficiente se calcula en primer lugar la matriz de varianzas-covarianzas de $\widehat{\beta}$:
 
-La demostración completa del teorema requiere herramientas avanzadas de álgebra matricial y teoría de la esperanza matemática, por lo que queda fuera del alcance de este texto. No obstante, este resultado proporciona el principal fundamento teórico que justifica el uso de los mínimos cuadrados ordinarios en la estimación de modelos econométricos.
+$$
+\begin{aligned}
+Var\left(\widehat{\beta}\right)
+&= E\left[
+\left(\widehat{\beta} - E[\widehat{\beta}]\right)
+\left(\widehat{\beta} - E[\widehat{\beta}]\right)^{t}
+\right] \\
+&= E\left[
+\left(\widehat{\beta} - \beta\right)
+\left(\widehat{\beta} - \beta\right)^{t}
+\right] \\
+&= E\left[
+\left(X^{t}X\right)^{-1}X^{t}u
+u^{t}X\left(X^{t}X\right)^{-1}
+\right] \\
+&= \left(X^{t}X\right)^{-1}X^{t}
+E\left[uu^{t}\right]
+X\left(X^{t}X\right)^{-1} \\
+&= \sigma^{2}
+\left(X^{t}X\right)^{-1}X^{t}X
+\left(X^{t}X\right)^{-1} \\
+&= \sigma^{2}\left(X^{t}X\right)^{-1}.
+\end{aligned}
+$$
 
-Además de estimar los coeficientes del modelo, es necesario obtener una estimación de la varianza de la perturbación aleatoria, $\sigma^2$, ya que esta determina la precisión de los estimadores y constituye la base para calcular los errores estándar, construir intervalos de confianza y realizar contrastes de hipótesis.
+donde se ha tenido en cuenta que $\widehat{\beta}$ es insesgado, que
 
-Puede demostrarse que la suma de cuadrados de los residuos verifica la siguiente propiedad:
+$$
+\widehat{\beta} - \beta
+=
+\left(X^{t}X\right)^{-1}X^{t}u
+$$
+
+y que
+
+$$
+Var(u) = E\left[uu^{t}\right]
+= \sigma^{2}I_{n \times n}.
+$$
+
+A continuación, se procede a demostrar que $\widehat{\beta}$ es el estimador de mínima varianza de entre todos los estimadores lineales e insesgados. Para ello, se considera otro estimador, $\beta^{*}$, de $\beta$, lineal e insesgado, de forma que $Var(\widehat{\beta}) < Var(\beta^{*})$. En efecto,
+
+$$
+\beta^{*} = D_{k \times n}y_{n \times 1},
+$$
+
+tal que
+
+$$
+DX = I_{k \times k},
+$$
+
+es lineal e insesgado. Además,
+
+$$
+Var\left(\beta^{*}\right)
+=
+\sigma^{2}DD^{t}.
+$$
+
+En tal caso, puesto que podemos escribir
+
+$$
+D = \left(X^{t}X\right)^{-1}X^{t} + W,
+$$
+
+con
+
+$$
+W \neq 0_{k \times n},
+$$
+
+se tiene que
+
+$$
+DD^{t}
+=
+\left(X^{t}X\right)^{-1} + WW^{t},
+$$
+
+y, en tal caso:
+
+$$
+\begin{aligned}
+Var\left(\beta^{*}\right)
+&= \sigma^{2}DD^{t} \\
+&= \sigma^{2}\left(X^{t}X\right)^{-1}
++ \sigma^{2}WW^{t} \\
+&= Var\left(\widehat{\beta}\right)
++ \sigma^{2}WW^{t}.
+\end{aligned}
+$$
+
+Esto es,
+
+$$
+Var\left(\beta^{*}\right)
+-
+Var\left(\widehat{\beta}\right)
+=
+\sigma^{2}WW^{t}.
+$$
+
+Debido a que $WW^{t}$ es definida positiva:
+
+$$
+Var\left(\beta^{*}\right)
+-
+Var\left(\widehat{\beta}\right)
+> 0.
+$$
+
+Por tanto,
+
+$$
+Var\left(\beta^{*}\right)
+>
+Var\left(\widehat{\beta}\right).
+$$
+
+Los resultados obtenidos en la demostración anterior constituyen precisamente los elementos fundamentales del **Teorema de Gauss-Markov** que establece que, bajo las hipótesis del modelo lineal clásico, los estimadores obtenidos mediante el método de mínimos cuadrados ordinarios (MCO) son lineales e insesgados y, además, presentan la mínima varianza entre todos los estimadores lineales e insesgados. Por esta razón, se denominan Estimadores Lineales Insesgados Óptimos (ELIO) o, utilizando la terminología anglosajona, Best Linear Unbiased Estimators (BLUE). Ver @Wooldridge2020 para más detalle.
+
+**Varianza de la perturbación aleatoria**\\
 
 Además de los coeficientes de las variables independientes, es necesario estimar la varianza de la perturbación aleatoria, $\sigma^{2}$. Puede demostrarse que la suma de cuadrados de los residuos verifica la siguiente propiedad:
 $$E[e^{t} e] = (n-k) \cdot \sigma^{2}$$
@@ -225,13 +369,13 @@ $$
 Una vez estimada la varianza residual, puede obtenerse la matriz estimada de varianzas y covarianzas de los estimadores MCO $\widehat{\beta}$:
 
 $$\widehat{Var \left( \widehat{\beta} \right)} = \widehat{\sigma}^{2} \cdot \left( X^{t} X \right)^{-1}.$$
-Esta matriz resume la precisión de todos los estimadores del modelo. Sus elementos de la diagonal principal contienen las **varianzas** de cada uno de los coeficientes estimados, mientras que los elementos situados fuera de la diagonal representan las **covarianzas** entre ellos. A partir de esta matriz se obtienen los **errores estándar** de los coeficientes, que desempeñan un papel esencial en la inferencia estadística y permiten construir intervalos de confianza y realizar contrastes de significación sobre los parámetros del modelo, aspectos que se estudiarán en las siguientes secciones.
+Los elementos de la diagonal principal de esta matriz contienen las **varianzas** de cada uno de los coeficientes estimados, mientras que los elementos situados fuera de la diagonal representan las **covarianzas** entre ellos. A partir de esta matriz se obtienen los **errores estándar** de los coeficientes, que desempeñan un papel esencial en la inferencia estadística y permiten construir intervalos de confianza y realizar contrastes de significación sobre los parámetros del modelo, aspectos que se estudiarán en las siguientes secciones.
 
 ::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
 
 En el caso de estudio del libro, el teorema de Gauss-Markov garantiza que, si se cumplen las hipótesis del modelo, los coeficientes que relacionan el ROA con el endeudamiento y la liquidez son los más precisos que pueden obtenerse mediante un estimador lineal e insesgado. Esto aumenta la fiabilidad de las conclusiones extraídas sobre la influencia de ambas variables en la rentabilidad empresarial.
 
-Hay que tener en cuenta que los coeficientes estimados que relaciona el ROA con el endeudamiento y la liquidez indican el efecto medio de cada variable sobre la rentabilidad empresarial. Sin embargo, estos coeficientes son estimaciones obtenidas a partir de una muestra de empresas y, por tanto, están sujetos a incertidumbre. La matriz de varianzas-covarianzas cuantifica esa incertidumbre y permite determinar si los efectos estimados son estadísticamente significativos o podrían deberse al azar. Esta idea constituye la base de la inferencia estadística que se desarrolla en los apartados siguientes.
+Hay que tener en cuenta que los coeficientes estimados que relacionan el ROA con el endeudamiento y la liquidez indican el efecto medio de cada variable sobre la rentabilidad empresarial. Sin embargo, estos coeficientes son estimaciones obtenidas a partir de una muestra de empresas y, por tanto, están sujetos a incertidumbre. La matriz de varianzas-covarianzas cuantifica esa incertidumbre y permite determinar si los efectos estimados son estadísticamente significativos o podrían deberse al azar. Esta idea constituye la base de la inferencia estadística que se desarrolla en los apartados siguientes.
 
 Se puede obtener la suma de los cuadrados de los residuos (SCR)
 ```{r}
@@ -257,12 +401,12 @@ vcov(modelo)
 ```
 El resultado es una matriz cuadrada cuyos elementos de la diagonal representan las varianzas de los estimadores de los coeficientes, mientras que los elementos fuera de la diagonal corresponden a sus covarianzas. Asi, se verifica que:\\
 
-- $\hat{var}(\hat{\beta}_0)=8.0246$\\ 
-- $\hat{var}(\hat{\beta}_1)=0.0013$\\
-- $\hat{var}(\hat{\beta}_2)=2.7307$\\
-- $\hat{cov}(\hat{\beta_0},\hat{\beta_1})=-0.100$\\
-- $\hat{cov}(\hat{\beta_0},\hat{\beta_2})=-3.7175$\\
-- $\hat{cov}(\hat{\beta_1},\hat{\beta_2})=0.0434$\\
+- $\hat{var}(\hat{\beta}_0)=8.0246$ 
+- $\hat{var}(\hat{\beta}_1)=0.0013$
+- $\hat{var}(\hat{\beta}_2)=2.7307$
+- $\hat{cov}(\hat{\beta_0},\hat{\beta_1})=-0.100$
+- $\hat{cov}(\hat{\beta_0},\hat{\beta_2})=-3.7175$
+- $\hat{cov}(\hat{\beta_1},\hat{\beta_2})=0.0434$
 :::
 
 ### Interpretación de los estimadores
@@ -272,10 +416,9 @@ Estimar un modelo econométrico constituye únicamente el primer paso del análi
 Si partimos de un modelo de regresión estimado con dos variables explicativas más un termino independiente:
 
 $$\hat{y}_t=\hat{\beta}_1+\hat{\beta}_2x_{2t}+\hat{\beta}_3x_{3_t}$$ 
-
 Si expresamos el modelo en diferencias:
 
-$$\hat{y}_t-\hat{y}_{t-1}=(\hat{\beta}_1+\hat{\beta}_2x_{2t}+\hat{\beta}_3x_{3_t})-(\hat{\beta}_1+\hat{\beta}_2x_{2t-1}+\hat{\beta}_3x_{3t-1})=$$ $$\Delta\hat{y}_t= \hat{\beta}_2\Delta x_{2t}+ \hat{\beta}_3 \Delta x_{3t}$$ 
+$$\hat{y}_i-\hat{y}_{i-1}=(\hat{\beta}_1+\hat{\beta}_2x_{2t}+\hat{\beta}_3x_{3_t})-(\hat{\beta}_1+\hat{\beta}_2x_{2t-1}+\hat{\beta}_3x_{3t-1})=$$ $$\Delta\hat{y}_t= \hat{\beta}_2\Delta x_{2t}+ \hat{\beta}_3 \Delta x_{3t}$$ 
 Por tanto, si el incremento en $x_3$ es cero ($\Delta x_3=0$), entonces: 
 $$\hat{\beta}_2=\frac{\Delta \hat{y}_t}{\Delta X_{2t}}$$ 
 por lo que $\hat{\beta}_2$ se interpreta como el cambio en $y$ producido por un cambio en $x_2$ manteniendose $x_3$ constante.
@@ -291,14 +434,14 @@ La interpretación de cada uno de los coeficientes es la siguiente:
 - $\hat{\beta_1}$=−0.1522. Manteniendo constante la liquidez, un incremento de una unidad en el ratio de endeudamiento se asocia, en promedio, con una disminución de 0.1522 puntos porcentuales en el ROA. El signo negativo es coherente con la teoría financiera, ya que un mayor nivel de endeudamiento suele incrementar la carga financiera y el riesgo de la empresa, reduciendo su rentabilidad económica.
 - $\hat{\beta_1}$=−0.3133. Manteniendo constante el nivel de endeudamiento, un incremento de una unidad en el ratio de liquidez se asocia, en promedio, con una reducción de 0.3133 puntos porcentuales en el ROA. Dado que podría esperarse una relación positiva entre liquidez y rentabilidad, deberá analizarse posteriormente mediante los contrastes de significación estadística.
 
-Obsérvese que ambos coeficientes representan efectos marginales o efectos ceteris paribus. Es decir, cada coeficiente mide el efecto de una variable sobre el ROA suponiendo que el resto de las variables explicativas permanecen constantes. Esta es una de las principales ventajas de la regresión múltiple frente al análisis bivariante, ya que permite aislar el efecto individual de cada factor sobre la variable de interés.
+Obsérvese que ambos coeficientes representan efectos marginales o efectos *ceteris paribus*. Es decir, cada coeficiente mide el efecto de una variable sobre el ROA suponiendo que el resto de las variables explicativas permanecen constantes. Esta es una de las principales ventajas de la regresión múltiple frente al análisis bivariante, ya que permite aislar el efecto individual de cada factor sobre la variable de interés.
 :::
 
 En algunas ocasiones, puede resultar interesante expresar la variables del modelo (dependiente, independiente o ambas) en logaritmos. Algunos ejemplos en los que puede resultar interesante trabajar con logaritmos son los siguientes:
 
--   Para linealizar modelos no lineales. Por ejemplo la función de producción de Cobb-Douglas se expresa como una función no lineal del tipo: $$P_i=L_i^{\beta_1}\times K_i^{\beta_2} \times u_i$$ que se podría convertir en lineal tomando logaritmos: $$\ln{P_i}=\beta_1\ln(L_i)+\beta_2\ln(K_i)+ u_i$$
+-   **Para linealizar modelos no lineales**. Por ejemplo la función de producción de Cobb-Douglas se expresa como una función no lineal del tipo: $$P_i=L_i^{\beta_1}\times K_i^{\beta_2} \times u_i$$ que se podría convertir en lineal tomando logaritmos: $$\ln{P_i}=\beta_1\ln(L_i)+\beta_2\ln(K_i)+ u_i$$
 
--   Para reducir la dispersión original de los datos, ya que la forma funcional en logaritmos permite reducir la dispersión de la variable limitando el riesgo de aparición de heterocedasticidad (varianza no constante de la perturbación aleatoria)
+-   **Para reducir la dispersión original de los datos**, ya que la forma funcional en logaritmos permite reducir la dispersión de la variable limitando el riesgo de aparición de heterocedasticidad (varianza no constante de la perturbación aleatoria)
 
 Cuando ambas variables estan expresadas en logaritmo, la interpretación de los parámetros es similar al concepto de elasticidad entre ambas variables:
 
@@ -315,7 +458,7 @@ En algunas ocasiones se combinaran variables expresadas en unidades originales (
 
 : Resumen interpretación coeficientes
 
-Este cuadro será completado incoporando la interpretación para el caso de variables dicotómicas dependiendo de si la variable dependiente esta expresada en unidades originales o en logaritmos.
+Este cuadro será completado incorporando la interpretación para el caso de variables dicotómicas dependiendo de si la variable dependiente esta expresada en unidades originales o en logaritmos.
 
 ## Bondad de ajuste: coeficientes de determinación y criterios de Akaike y Schwarz
 

@@ -371,7 +371,7 @@ Var\left(\beta^{*}\right)
 Var\left(\widehat{\beta}\right).
 $$
 
-Los resultados obtenidos en la demostración anterior constituyen precisamente los elementos fundamentales del **Teorema de Gauss-Markov** que establece que, bajo las hipótesis del modelo lineal clásico, los estimadores obtenidos mediante el método de mínimos cuadrados ordinarios (MCO) son lineales e insesgados y, además, presentan la mínima varianza entre todos los estimadores lineales e insesgados. Por esta razón, se denominan Estimadores Lineales Insesgados Óptimos (ELIO) o, utilizando la terminología anglosajona, Best Linear Unbiased Estimators (BLUE). Ver @Wooldridge2020 para más detalle.
+Los resultados obtenidos en la demostración anterior constituyen precisamente los elementos fundamentales del **Teorema de Gauss-Markov** que establece que, bajo las hipótesis del modelo lineal clásico, los estimadores obtenidos mediante el método de mínimos cuadrados ordinarios (MCO) son lineales e insesgados y, además, presentan la mínima varianza entre todos los estimadores lineales e insesgados. Por esta razón, se denominan Estimadores Lineales Insesgados Óptimos (ELIO) o, utilizando la terminología anglosajona, Best Linear Unbiased Estimators (BLUE). Ver @Wooldridge2000 para más detalle.
 
 **Varianza de la perturbación aleatoria**\\
 

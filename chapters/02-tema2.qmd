@@ -142,6 +142,24 @@ $$e^{t}e = (y - X \widehat{\beta})^{t} \cdot (y - X \widehat{\beta}) = y^{t}y - 
 
 Por tanto, el estimador MCO viene dado por la siguiente expresión: 
 $${\widehat{\beta}} = \left(X^t X\right)^{-1} \left( X^t {y} \right)$$ 
+Es posible obtener el producto $X^{t} X$ y $X^{t}y$ a partir de las siguientes expresiones:
+
+$$X^{t} X = \left(
+\begin{array}{cccc}
+            n & \sum \limits_{t=1}^{n} X_{2i} & \cdots & \sum \limits_{i=1}^{n} X_{ki} \\
+            \sum \limits_{i=1}^{n} X_{2i} & \sum \limits_{i=1}^{n} X_{2i}^{2} & \cdots & \sum \limits_{i=1}^{n} X_{2i} X_{ki} \\
+            \vdots & \vdots & \ddots & \vdots \\
+            \sum \limits_{i=1}^{n} X_{ki} & \sum \limits_{i=1}^{n} X_{ki} X_{2i} & \cdots & \sum \limits_{i=1}^{n} X_{ki}^{2} \\
+\end{array} \right),$$
+\noindent y
+$$X^{t} y = \left(
+        \begin{array}{c}
+            \sum \limits_{i=1}^{n} Y_{i} \\
+            \sum \limits_{i=1}^{n} X_{2i} Y_{i} \\
+            \vdots \\
+            \sum \limits_{i=1}^{n} X_{ki} Y_{i} \\
+        \end{array} \right).$$
+        
 Esta expresión proporciona los estimadores de los parámetros del modelo utilizando únicamente la información contenida en la matriz de variables explicativas y en el vector de la variable dependiente. Aunque su cálculo puede realizarse manualmente en ejemplos sencillos mediante el producto de matrices y el cálculo de la inversa de una matriz, en la práctica usaremos programas estadísticos como R mediante la función `lm`. Sin embargo, el conocimiento de la expresión anterior permite comprender el fundamento matemático del método de estimación.
 
 ::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
@@ -178,24 +196,7 @@ modelo$residuals
 
 :::
 
-Es posible obtener el producto $X^{t} X$ y $X^{t}y$ a partir de las siguientes expresiones:
 
-$$X^{t} X = \left(
-\begin{array}{cccc}
-            n & \sum \limits_{t=1}^{n} X_{2i} & \cdots & \sum \limits_{i=1}^{n} X_{ki} \\
-            \sum \limits_{i=1}^{n} X_{2i} & \sum \limits_{i=1}^{n} X_{2i}^{2} & \cdots & \sum \limits_{i=1}^{n} X_{2i} X_{ki} \\
-            \vdots & \vdots & \ddots & \vdots \\
-            \sum \limits_{i=1}^{n} X_{ki} & \sum \limits_{i=1}^{n} X_{ki} X_{2i} & \cdots & \sum \limits_{i=1}^{n} X_{ki}^{2} \\
-\end{array} \right),$$
-\noindent y
-$$X^{t} y = \left(
-        \begin{array}{c}
-            \sum \limits_{i=1}^{n} Y_{i} \\
-            \sum \limits_{i=1}^{n} X_{2i} Y_{i} \\
-            \vdots \\
-            \sum \limits_{i=1}^{n} X_{ki} Y_{i} \\
-        \end{array} \right).$$
-        
 Como consecuencia de la estimación mediante MCO se derivan las siguientes propiedades algebraicas de los estimadores:
 
 | Propiedad         | Interpretación                                                     |
@@ -1391,6 +1392,7 @@ Para ello, se pueden estimar modelos que permitan que los parámetros varíen en
 
 ## Prácticas resueltas
 
+
 ### Obtención de los estimadores mediante el sumatorio de las variables {-}
 
 A partir de los datos del modelo de la rentabilidad, se tienen los siguientes sumatorios:
@@ -1421,7 +1423,7 @@ $$\hat{\beta} = \left(
             -0,1522\\
             -0,3133\\
         \end{array} \right).$$
-
+        
 ### Función de producción. Importancia de una buena especificación. {.unnumbered}
 
 Vamos a trabajar con la base de datos de @Greene2003 denominada `BD_FUNCIONPRODUCCION'  para realizar una práctica cuyo objetivo es introducir la estimación en R y comprender la importancia de realizar una adecuada especificación del modelo econométrico.
@@ -1541,6 +1543,259 @@ ggplot(df, aes(x = año, y = valor, color = variable)) +
 ```
 
 **¿Encuentras algún patrón de comportamiento en los residuos? ¿A qué crees que puede deberse?**
+
+### Obtención de los estimadores mediante el sumatorio de las variables {-}
+
+Se dispone de una muestra de $n=8$ auditores. Para cada uno de ellos se conoce:
+
+-   $Y$: la nota obtenida en el examen a auditor.
+-   $X_1$: las horas de estudio dedicadas.
+-   $X_2$: la planta del edificio en la que vive el auditor.
+
+La variable $X_2$ no guarda ninguna relación causal con la nota obtenida: se incluye únicamente con fines didácticos, para comprobar qué ocurre con la bondad del ajuste cuando se incorpora al modelo una variable explicativa sin sentido económico. Los datos de partida son los siguientes:
+
+| Auditor | $Y$ | $X_1$ | $X_2$ |
+|:------:|:---:|:-----:|:-----:|
+| 1 | 3.0 | 2  | 0 |
+| 2 | 4.5 | 3  | 1 |
+| 3 | 5.0 | 5  | 0 |
+| 4 | 6.5 | 6  | 2 |
+| 5 | 7.0 | 7  | 1 |
+| 6 | 8.0 | 8  | 0 |
+| 7 | 9.0 | 10 | 3 |
+| 8 | 9.5 | 11 | 1 |
+
+El ejercicio se resuelve **sin código de R**, obteniendo a mano, a partir de los sumatorios, todas las matrices y operaciones necesarias para estimar el modelo por mínimos cuadrados ordinarios y calcular su bondad del ajuste.
+
+Vamos a estimar dos modelos: uno con las dos variables explicativas ($X_1$ y $X_2$) y otro eliminando la variable "absurda" ($X_2$), para comparar su $R^2$ y su $R^2$ corregido.
+
+**Modelo 1: especificación completa**\\
+
+$$Y_i=\beta_1+\beta_2X_{1i}+\beta_3X_{2i}+u_i$$
+
+A partir de los datos de partida se obtienen las siguientes columnas auxiliares:
+
+| $Y$ | $X_1$ | $X_2$ | $X_1^2$ | $X_2^2$ | $X_1X_2$ | $X_1Y$ | $X_2Y$ | $Y^2$ |
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| 3.0 | 2  | 0 | 4   | 0 | 0  | 6.0   | 0.0  | 9.00   |
+| 4.5 | 3  | 1 | 9   | 1 | 3  | 13.5  | 4.5  | 20.25  |
+| 5.0 | 5  | 0 | 25  | 0 | 0  | 25.0  | 0.0  | 25.00  |
+| 6.5 | 6  | 2 | 36  | 4 | 12 | 39.0  | 13.0 | 42.25  |
+| 7.0 | 7  | 1 | 49  | 1 | 7  | 49.0  | 7.0  | 49.00  |
+| 8.0 | 8  | 0 | 64  | 0 | 0  | 64.0  | 0.0  | 64.00  |
+| 9.0 | 10 | 3 | 100 | 9 | 30 | 90.0  | 27.0 | 81.00  |
+| 9.5 | 11 | 1 | 121 | 1 | 11 | 104.5 | 9.5  | 90.25  |
+| **$\sum$ = 52.5** | **$\sum$ = 52** | **$\sum$ = 8** | **$\sum$ = 408** | **$\sum$ = 16** | **$\sum$ = 63** | **$\sum$ = 391** | **$\sum$ = 61** | **$\sum$ = 380.75** |
+
+Con $n=8$, resumimos las magnitudes necesarias:
+
+$$
+n=8 \quad \sum Y_i=52.5 \quad \sum X_{1i}=52 \quad \sum X_{2i}=8
+$$
+
+$$
+\sum X_{1i}^2=408 \quad \sum X_{2i}^2=16 \quad \sum X_{1i}X_{2i}=63
+$$
+
+$$
+\sum X_{1i}Y_i=391 \quad \sum X_{2i}Y_i=61 \quad \sum Y_i^2=380.75
+$$
+
+Obtenemos las matrices $X^tX$ y $X^ty$:
+
+$$
+X^tX=\begin{bmatrix} n & \sum X_{1i} & \sum X_{2i}\\ \sum X_{1i} & \sum X_{1i}^2 & \sum X_{1i}X_{2i}\\ \sum X_{2i} & \sum X_{1i}X_{2i} & \sum X_{2i}^2 \end{bmatrix}=\begin{bmatrix} 8 & 52 & 8\\ 52 & 408 & 63\\ 8 & 63 & 16 \end{bmatrix}
+$$
+
+$$
+X^ty=\begin{bmatrix} \sum Y_i\\ \sum X_{1i}Y_i\\ \sum X_{2i}Y_i \end{bmatrix}=\begin{bmatrix} 52.5\\ 391\\ 61 \end{bmatrix}
+$$
+
+Para obtener la inversa, calculamos primero el determinante desarrollando por la primera fila. Los adjuntos (cofactores) que necesitamos son:
+
+$$
+C_{11}=\begin{vmatrix}408 & 63\\63 & 16\end{vmatrix}=408\cdot16-63\cdot63=6528-3969=2559
+$$
+
+$$
+C_{12}=-\begin{vmatrix}52 & 63\\8 & 16\end{vmatrix}=-(52\cdot16-63\cdot8)=-(832-504)=-328
+$$
+
+$$
+C_{13}=\begin{vmatrix}52 & 408\\8 & 63\end{vmatrix}=52\cdot63-408\cdot8=3276-3264=12
+$$
+
+$$
+|X^tX|=8\cdot C_{11}+52\cdot C_{12}+8\cdot C_{13}=8(2559)+52(-328)+8(12)=20472-17056+96=3512
+$$
+
+Procediendo del mismo modo con el resto de filas y columnas se obtiene la matriz completa de adjuntos (que, al ser $X^tX$ simétrica, resulta también simétrica):
+
+$$
+\text{Adj}(X^tX)=\begin{bmatrix} 2559 & -328 & 12\\ -328 & 64 & -88\\ 12 & -88 & 560 \end{bmatrix}
+$$
+
+Por tanto:
+
+$$
+(X^tX)^{-1}=\frac{1}{|X^tX|}\,\text{Adj}(X^tX)^t=\frac{1}{3512}\begin{bmatrix} 2559 & -328 & 12\\ -328 & 64 & -88\\ 12 & -88 & 560 \end{bmatrix}=\begin{bmatrix} 0.728645 & -0.093394 & 0.003417\\ -0.093394 & 0.018223 & -0.025057\\ 0.003417 & -0.025057 & 0.159453 \end{bmatrix}
+$$
+
+Para obtener los estimadores $\widehat{\beta}=(X^tX)^{-1}X^ty$, multiplicamos cada fila de $(X^tX)^{-1}$ por el vector $X^ty$:
+
+$$
+\widehat{\beta}_1=0.728645(52.5)-0.093394(391)+0.003417(61)=38.253844-36.517084+0.208428=1.945188
+$$
+
+$$
+\widehat{\beta}_2=-0.093394(52.5)+0.018223(391)-0.025057(61)=-4.903189+7.125285-1.528474=0.693622
+$$
+
+$$
+\widehat{\beta}_3=0.003417(52.5)-0.025057(391)+0.159453(61)=0.179385-9.797267+9.726651=0.108770
+$$
+
+Por lo que finalmente, el modelo estimado queda:
+
+$$
+\widehat{Y}_i=1.945188+0.693622\,X_{1i}+0.108770\,X_{2i}
+$$
+
+Se pueden obtener los valores estimados y los residuos:
+
+| $Y$ | $\widehat{Y}$ | $e=Y-\widehat{Y}$ | $e^2$ |
+|:---:|:---:|:---:|:---:|
+| 3.0 | 3.332432 | -0.332432 | 0.110511 |
+| 4.5 | 4.134823 | 0.365177  | 0.133354 |
+| 5.0 | 5.413297 | -0.413297 | 0.170815 |
+| 6.5 | 6.324459 | 0.175541  | 0.030815 |
+| 7.0 | 6.909311 | 0.090689  | 0.008225 |
+| 8.0 | 7.494163 | 0.505837  | 0.255871 |
+| 9.0 | 9.207716 | -0.207716 | 0.043146 |
+| 9.5 | 9.683798 | -0.183798 | 0.033782 |
+| 52.5 | **$\sum$ = 52.5** | **$\sum \approx 0$** | **$\sum$ = 0.786519** |
+
+A continuación, calculamos la suma de cuadrados:
+$$
+SCT=y^ty-n\overline{Y}^2=380.75-8(6.5625)^2=380.75-344.53125=36.21875
+$$
+
+$$
+SCE=\widehat{\beta}^tX^ty-n\overline{Y}^2=\big[1.945188(52.5)+0.693622(391)+0.108770(61)\big]-344.53125=379.963482-344.53125=35.432232
+$$
+
+$$
+SCR=SCT-SCE=36.21875-35.432232=0.786518
+$$
+
+(obsérvese que $SCR$ coincide, salvo redondeo, con $\sum e^2=0.786519$ calculado en la tabla anterior).
+
+$$
+R^2=\frac{SCE}{SCT}=\frac{35.432232}{36.21875}=0.978284
+$$
+
+Para el $R^2$ corregido, con $k=3$ parámetros estimados ($\widehat{\beta}_1,\widehat{\beta}_2,\widehat{\beta}_3$):
+
+$$
+\overline{R}^2=1-(1-R^2)\frac{n-1}{n-k}=1-(1-0.978284)\frac{7}{5}=1-0.021716(1.4)=0.969598
+$$
+
+**Modelo 2: eliminando la variable absurda ($X_2$)**\\
+
+Vamos a estimar ahora el siguiente modelo:
+
+$$Y_i=\beta_1+\beta_2X_{1i}+u_i$$
+
+Reutilizamos las magnitudes ya calculadas que involucran únicamente a $Y$ y $X_1$:
+
+$$
+n=8 \quad \sum Y_i=52.5 \quad \sum X_{1i}=52 \quad \sum X_{1i}^2=408 \quad \sum X_{1i}Y_i=391 \quad \sum Y_i^2=380.75
+$$
+
+Se obtienen las matrices $X^tX$ y $X^ty$:
+
+$$
+X^tX=\begin{bmatrix} n & \sum X_{1i}\\ \sum X_{1i} & \sum X_{1i}^2 \end{bmatrix}=\begin{bmatrix} 8 & 52\\ 52 & 408 \end{bmatrix} \qquad X^ty=\begin{bmatrix} \sum Y_i\\ \sum X_{1i}Y_i \end{bmatrix}=\begin{bmatrix} 52.5\\ 391 \end{bmatrix}
+$$
+
+Se obtiene la inversa de $X^tX$ (matriz $2\times2$)
+
+$$
+|X^tX|=8(408)-52(52)=3264-2704=560
+$$
+
+$$
+(X^tX)^{-1}=\frac{1}{560}\begin{bmatrix} 408 & -52\\ -52 & 8 \end{bmatrix}=\begin{bmatrix} 0.728571 & -0.092857\\ -0.092857 & 0.014286 \end{bmatrix}
+$$
+
+Y multiplicando se obtienen los estimadores:
+
+$$
+\widehat{\beta}_1=0.728571(52.5)-0.092857(391)=38.25-36.307143=1.942857
+$$
+
+$$
+\widehat{\beta}_2=-0.092857(52.5)+0.014286(391)=-4.875+5.585714=0.710714
+$$
+
+Por lo que finalmente el modelo estimado queda:
+
+$$
+\widehat{Y}_i=1.942857+0.710714\,X_{1i}
+$$
+
+Y los valores estimados y los residuos se recogen en esta tabla:
+
+| $Y$ | $\widehat{Y}$ | $e=Y-\widehat{Y}$ | $e^2$ |
+|:---:|:---:|:---:|:---:|
+| 3.0 | 3.364286 | -0.364286 | 0.132704 |
+| 4.5 | 4.075000 | 0.425000  | 0.180625 |
+| 5.0 | 5.496429 | -0.496429 | 0.246441 |
+| 6.5 | 6.207143 | 0.292857  | 0.085765 |
+| 7.0 | 6.917857 | 0.082143  | 0.006747 |
+| 8.0 | 7.628571 | 0.371429  | 0.137959 |
+| 9.0 | 9.050000 | -0.050000 | 0.002500 |
+| 9.5 | 9.760714 | -0.260714 | 0.067972 |
+| 52.5 | **$\sum$ = 52.5** | **$\sum \approx 0$** | **$\sum$ = 0.860713** |
+
+Igual que en el caso anterior se pueden obtener la suma de cuadrados:
+
+$$
+SCT=380.75-344.53125=36.21875
+$$
+
+$$
+SCE=\big[1.942857(52.5)+0.710714(391)\big]-344.53125=379.889286-344.53125=35.358036
+$$
+
+$$
+SCR=SCT-SCE=36.21875-35.358036=0.860714
+$$
+Y, a partir de ellas, el coeficiente de determinación ordinario y corregido:
+$$
+R^2=\frac{SCE}{SCT}=\frac{35.358036}{36.21875}=0.976236
+$$
+
+Con $k=2$ parámetros estimados ($\widehat{\beta}_1,\widehat{\beta}_2$):
+
+$$
+\overline{R}^2=1-(1-R^2)\frac{n-1}{n-k}=1-(1-0.976236)\frac{7}{6}=1-0.023764(1.1\overline{6})=0.972275
+$$
+
+**Comparación de los dos modelos**\\
+
+La siguiente tabla compara ambos modelos:
+
+| Modelo | Variables | $k$ | $R^2$ | $\overline{R}^2$ |
+|:---|:---:|:---:|:---:|:---:|
+| Modelo 1 (completo) | $X_1, X_2$ | 3 | 0.978284 | 0.969598 |
+| Modelo 2 (reducido) | $X_1$ | 2 | 0.976236 | **0.972275** |
+
+Al incorporar la variable $X_2$ (la planta en la que vive el auditor, sin ninguna relación causal con la nota) el $R^2$ aumenta ligeramente, de 0.976236 a 0.978284. Esto no debe sorprender: el $R^2$ ordinario nunca puede disminuir cuando se añade un regresor adicional al modelo, por muy irrelevante que sea, porque el ajuste por mínimos cuadrados siempre puede aprovechar cualquier variación adicional, aunque sea espuria.
+
+Sin embargo, el $R^2$ corregido se comporta de forma justamente contraria: disminuye, de 0.972275 a 0.969598, al pasar del modelo reducido al modelo completo. Al penalizar la pérdida de un grado de libertad por cada parámetro adicional estimado, el $\overline{R}^2$ detecta que la variable $X_2$ no aporta suficiente capacidad explicativa para compensar el coste de incluirla en el modelo.
+
+Esta discrepancia entre $R^2$ y $\overline{R}^2$ ilustra por qué no debe utilizarse el $R^2$ ordinario para comparar o seleccionar modelos con distinto número de regresores, y por qué el $R^2$ corregido —o, en su lugar, criterios como los de Akaike o Schwarz— constituye un criterio más adecuado para valorar si una variable adicional realmente mejora la especificación del modelo o simplemente lo sobrecarga sin justificación económica.
 
 ### Demanda de productos lacteos: Estimación y selección de modelos. Interpretación de coeficientes con logaritmos. {.unnumbered}
 
@@ -1720,4 +1975,233 @@ BIC(m_linlin,m_loglin,m_linlog,m_loglog,m_linlin_ratio,m_loglin_ratio,m_linlog_r
 c. Selecciona un modelo para el caso de trabajar con la variable dependiente y otro para trabajar el modelo con la variable dependiente en su unidad original, y realiza predicciones de la esperanza de vida al nacer en el año 2025, suponiendo que el gasto sanitario es de 99.500 millones de euros, que supone un 8% del PIB y que la renta per capita es de 36.000 euros. 
 
 d. Construye el intervalo de predicción del valor individual de la variable dependiente y concluye en relación a la permanencia estructural del modelo sabiendo que la esperanza de vida al nacer en el año 2025 es de 84 años. 
+
+4. Tenemos un modelo que explica el precio de la vivienda (en miles de euros) en función de los metros cuadrados, el número de habitaciones y el número de baños. Tenemos diez viviendas con los siguientes datos:
+
+| Vivienda | Metros cuadrados | Habitaciones | Baños | Precio (miles de €) |
+|:--------:|-----------------:|-------------:|------:|---------------------:|
+| 1        | 65               | 2            | 1     | 145                  |
+| 2        | 80               | 3            | 2     | 180                  |
+| 3        | 95               | 3            | 2     | 210                  |
+| 4        | 110              | 4            | 3     | 250                  |
+| 5        | 125              | 4            | 3     | 285                  |
+| 6        | 140              | 5            | 4     | 320                  |
+| 7        | 75               | 2            | 1     | 165                  |
+| 8        | 100              | 3            | 2     | 225                  |
+| 9        | 130              | 4            | 3     | 300                  |
+| 10       | 150              | 5            | 4     | 350                  |
+
+a. Construye la matriz de diseño $X$ del modelo, incluyendo una columna de unos para el término independiente. Indica el número de filas y columnas de la matriz.
+
+b. Calcula el rango de la matriz $X$. Compara el rango obtenido con el número de columnas de $X$. ¿Qué conclusión puedes extraer sobre la independencia lineal de las variables explicativas? 
+
+c. A partir de los resultados anteriores, determina si es posible estimar de forma única los coeficientes del modelo de regresión mediante Mínimos Cuadrados Ordinarios. Justifica tu respuesta.
+
+d. Estima un modelo usando solo la variable metros cuadrados y otro modelo alternativo, usando la variable metros cuadrados y el número de habitaciones. Compara ambos modelos en términos de bondad de ajuste. 
+
+5. Dado el modelo de regresión lineal simple $\mathbf{S} = \beta_{1} + \beta_{2} \cdot \mathbf{E} + \mathbf{u}$, donde $\mathbf{S}$ es el salario medio por hora (medido en euros) y $\mathbf{E}$ son los años de escolarización, obtenga (usando, al menos, cuatro decimales) la estimación de las cantidades constantes del modelo (interpretando las estimaciones obtenidas) y el coeficiente de determinación corregido, a partir de la siguiente información:
+
+```{r}
+Salario = c(4.45, 5.77, 7.31, 7.81, 10.67, 13.61)
+Escolaridad = c(6, 7, 10, 12, 15, 17)
+
+datos = data.frame(Salario, Escolaridad)
+names(datos) = c("Salario medio (euros/hora)", "Escolarización (años)")
+
+kable(datos, align="c")
+```
+
+```{r}
+y = Salario
+cte = rep(1, length(y))
+X = cbind(cte, Escolaridad)
+# 
+n = nrow(X)
+k = ncol(X)
+XX = crossprod(X)
+XXinv = solve(XX)
+Xy = crossprod(X, y)
+colnames(Xy) = c("Salario")
+#
+beta = as.matrix(XXinv%*%Xy)
+e = y - X%*%beta
+sigma = crossprod(e)/(n-k)
+SCT = crossprod(y) - n*mean(y)*mean(y)
+SCE = crossprod(beta, Xy) - n*mean(y)*mean(y)
+SCR = crossprod(y) - crossprod(beta, Xy)
+R2_1 = SCE/SCT
+R2_2 = 1 - SCR/SCT
+R2 = R2_1
+R2c = 1 - (1-R2)*((n-1)/(n-k))
+solucion = list(XX, XXinv, Xy, beta, e, as.double(sigma), as.double(SCT), as.double(SCE), as.double(SCR), as.double(R2_1), as.double(R2_2), as.double(R2c))
+names(solucion) = c("XtX", "inversa XtX", "Xty", "beta", "e", "sigma", "SCT", "SCE", "SCR", "R2 = SCE/SCT", "R2 = 1 - SCR/SCT", "R2 corregido")
+solucion0 = solucion
+```
+
+¿Qué interpretación tiene un residuo positivo/negativo?
+
+6. Dado el modelo de regresión lineal múltiple $\mathbf{y} = \beta_{1} + \beta_{2} \cdot \mathbf{V} + \beta_{3} \cdot \mathbf{Z} + \mathbf{u}$ con $n=15$ observaciones y $k=3$ variables independientes, en los siguientes casos, calcule:
+
+a. La estimación de los coeficientes de las variables independientes: $\widehat{\boldsymbol{\beta}} = \left( \mathbf{X}^{t} \mathbf{X} \right)^{-1} \mathbf{X}^{t} \mathbf{y}$. Interpretación.
+b. Los errores de la estimación realizada: $\mathbf{e} = \mathbf{y} - \widehat{\mathbf{y}} = \mathbf{y} - \mathbf{X} \widehat{\boldsymbol{\beta}}$.
+c. La estimación de la varianza de la perturbación aleatoria: $\widehat{\sigma} = \frac{\mathbf{e}^{t} \mathbf{e}}{n-k}$.
+d. La suma de cuadrados totales: $SCT = \mathbf{y}^{t}\mathbf{y} - n \cdot \overline{\mathbf{y}}^{2}$.
+e. La suma de cuadrados explicada: $SCE = \widehat{\boldsymbol{\beta}}^{t} \mathbf{X}^{t} \mathbf{y} - n \cdot \overline{\mathbf{y}}^{2}$.
+f. La suma de cuadrados de los residuos: $SCR = \mathbf{y}^{t}\mathbf{y} - \widehat{\boldsymbol{\beta}}^{t} \mathbf{X}^{t} \mathbf{y}$.
+g. El coeficiente de determinación: $R^{2} = \frac{SCE}{SCT} = 1 - \frac{SCR}{SCT}$. ¿Se verifica la igualdad? ¿Por qué? Interpretación.
+h. El coeficiente de determinación corregido: $\overline{R}^{2} = 1 - (1-R^{2}) \cdot \frac{n-1}{n-k}$.
+
+Responda de forma razonada todas las cuestiones planteadas usando, al menos, cuatro decimales.
+
+**([Caso A]{.underline})**
+
+$\left( \mathbf{y}, \mathbf{X} \right) =$
+
+```{r}
+X = read.table("ortogonal 1.txt", header=TRUE, sep=";", dec = ".")  # muy importante indicar el delimitador decimal (si no se dice nada, es el punto)
+X = as.matrix(X)
+y = 3*X[,1] + 2*X[,2] - 3*X[,3] + round(rnorm(nrow(X), 0, 2), 0)
+
+data.frame(y, X)
+```
+
+$\left( \mathbf{X}^{t} \mathbf{X} \right)^{-1} =$
+
+```{r}
+XX = crossprod(X)
+XXinv = solve(XX)
+XXinv
+```
+
+$\mathbf{X}^{t} \mathbf{y} =$
+
+```{r}
+Xy = crossprod(X, y)
+colnames(Xy) = c("y")
+Xy 
+```
+
+```{r}
+# soluciones
+n = nrow(X)
+k = ncol(X)
+beta = as.matrix(XXinv%*%Xy)
+e = y - X%*%beta
+sigma = crossprod(e)/(n-k)
+SCT = crossprod(y) - n*mean(y)*mean(y)
+SCE = crossprod(beta, Xy) - n*mean(y)*mean(y)
+SCR = crossprod(y) - crossprod(beta, Xy)
+R2_1 = SCE/SCT
+R2_2 = 1 - SCR/SCT
+R2 = R2_1
+R2c = 1 - (1-R2)*((n-1)/(n-k))
+solucion = list(beta, e, as.double(sigma), as.double(SCT), as.double(SCE), as.double(SCR), as.double(R2_1), as.double(R2_2), as.double(R2c))
+names(solucion) = c("beta", "e", "sigma", "SCT", "SCE", "SCR", "R2 = SCE/SCT", "R2 = 1 - SCR/SCT", "R2 corregido")
+solucionA = solucion
+```
+
+**([Caso B]{.underline})**
+
+$\left( \mathbf{y}, \mathbf{X} \right) =$
+
+```{r}
+X = read.table("ortogonal 2.txt", header=TRUE, sep=";", dec = ".")  # muy importante indicar el delimitador decimal (si no se dice nada, es el punto)
+X = as.matrix(X)
+y = 3*X[,1] + 2*X[,2] - 3*X[,3] + round(rnorm(nrow(X), 0, 2), 0)
+
+data.frame(y, X)
+```
+
+$\left( \mathbf{X}^{t} \mathbf{X} \right)^{-1} =$
+
+```{r}
+XX = crossprod(X)
+XXinv = solve(XX)
+XXinv
+```
+
+$\mathbf{X}^{t} \mathbf{y} =$
+
+```{r}
+Xy = crossprod(X, y)
+colnames(Xy) = c("y")
+Xy 
+```
+
+```{r}
+# soluciones
+n = nrow(X)
+k = ncol(X)
+beta = as.matrix(XXinv%*%Xy)
+e = y - X%*%beta
+sigma = crossprod(e)/(n-k)
+SCT = crossprod(y) - n*mean(y)*mean(y)
+SCE = crossprod(beta, Xy) - n*mean(y)*mean(y)
+SCR = crossprod(y) - crossprod(beta, Xy)
+R2_1 = SCE/SCT
+R2_2 = 1 - SCR/SCT
+R2 = R2_1
+R2c = 1 - (1-R2)*((n-1)/(n-k))
+solucion = list(beta, e, as.double(sigma), as.double(SCT), as.double(SCE), as.double(SCR), as.double(R2_1), as.double(R2_2), as.double(R2c))
+names(solucion) = c("beta", "e", "sigma", "SCT", "SCE", "SCR", "R2 = SCE/SCT", "R2 = 1 - SCR/SCT", "R2 corregido")
+solucionB = solucion
+```
+
+**([Caso C]{.underline})**
+
+$\left( \mathbf{y}, \mathbf{X} \right) =$
+
+```{r}
+X = read.table("ortogonal 3.txt", header=TRUE, sep=";", dec = ".")  # muy importante indicar el delimitador decimal (si no se dice nada, es el punto)
+X = as.matrix(X)
+y = 3*X[,1] + 2*X[,2] - 3*X[,3] + round(rnorm(nrow(X), 0, 2), 0)
+
+data.frame(y, X)
+```
+
+$\left( \mathbf{X}^{t} \mathbf{X} \right)^{-1} =$
+
+```{r}
+XX = crossprod(X)
+XXinv = solve(XX)
+XXinv
+```
+
+$\mathbf{X}^{t} \mathbf{y} =$
+
+```{r}
+Xy = crossprod(X, y)
+colnames(Xy) = c("y")
+Xy 
+```
+
+```{r}
+# soluciones
+n = nrow(X)
+k = ncol(X)
+beta = as.matrix(XXinv%*%Xy)
+e = y - X%*%beta
+sigma = crossprod(e)/(n-k)
+SCT = crossprod(y) - n*mean(y)*mean(y)
+SCE = crossprod(beta, Xy) - n*mean(y)*mean(y)
+SCR = crossprod(y) - crossprod(beta, Xy)
+R2_1 = SCE/SCT
+R2_2 = 1 - SCR/SCT
+R2 = R2_1
+R2c = 1 - (1-R2)*((n-1)/(n-k))
+solucion = list(beta, e, as.double(sigma), as.double(SCT), as.double(SCE), as.double(SCR), as.double(R2_1), as.double(R2_2), as.double(R2c))
+names(solucion) = c("beta", "e", "sigma", "SCT", "SCE", "SCR", "R2 = SCE/SCT", "R2 = 1 - SCR/SCT", "R2 corregido")
+solucionC = solucion
+```
+
+7. Dado el modelo de regresión lineal multiple $\mathbf{PA} = \beta_{1} + \beta_{2} \cdot \mathbf{P} + \beta_{3} \cdot \mathbf{A} + \mathbf{u}$ donde $\mathbf{PA}$ es la presión arterial (medida en milímetros de mercurio), $\mathbf{P}$ el peso (medido en kilogramos) y $\mathbf{A}$ la altura (medida en metros). Interprete los coeficientes de las variables independientes. ¿Es intuitivo que la altura cambie y el peso no varie?
+
+8. Dado el modelo de regresión lineal multiple $\mathbf{S} = \beta_{1} + \beta_{2} \cdot \mathbf{E} + \beta_{3} \cdot \mathbf{G} + \mathbf{u}$ donde $\mathbf{S}$ es el salario medio por hora (medido en euros), $\mathbf{E}$ son los años de escolarización y $\mathbf{E}$ es el género (donde masculino se codifica como 1 y en cualquier otro caso se usa el 0), interprete $\beta_{1}$, $\beta_{2}$, $\beta_{3}$ y $\beta_{1}+\beta_{3}$
+
+9. Dado el modelo de regresión lineal multiple: $$\mathbf{S} = \beta_{1} + \beta_{2} \cdot \mathbf{E} + \beta_{3} \cdot \mathbf{G} + \beta_{4} \cdot \mathbf{G} \times \mathbf{E} + \mathbf{u},$$ donde $\mathbf{S}$ es el salario medio por hora (medido en euros), $\mathbf{E}$ son los años de escolarización y $\mathbf{E}$ es el género (donde masculino se codifica como 1 y en cualquier otro caso se usa el 0). Se pide contestar de forma razonada las siguientes cuestiones:
+
+a. Obtenga el efecto de la escolarización sobre el salario medio si $(\widehat{\beta}_{2}, \widehat{\beta}_{4}) = (4, 2)$ ó $(\widehat{\beta}_{2}, \widehat{\beta}_{4}) = (4, -3)$.
+b. ¿Cuál sería la interpretación de $\beta_{1}$? ¿Esta interpretación cambia si se centra la variable referente a los años de escolarización?
+c. ¿Cómo se obtendría el efecto del género sobre el salario medio?
+
 

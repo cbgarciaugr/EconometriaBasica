@@ -2058,7 +2058,7 @@ Responda de forma razonada todas las cuestiones planteadas usando, al menos, cua
 $\left( \mathbf{y}, \mathbf{X} \right) =$
 
 ```{r}
-X = read.table("ortogonal 1.txt", header=TRUE, sep=";", dec = ".")  # muy importante indicar el delimitador decimal (si no se dice nada, es el punto)
+X = read.table("data/ortogonal1.txt", header=TRUE, sep=";", dec = ".")  # muy importante indicar el delimitador decimal (si no se dice nada, es el punto)
 X = as.matrix(X)
 y = 3*X[,1] + 2*X[,2] - 3*X[,3] + round(rnorm(nrow(X), 0, 2), 0)
 
@@ -2105,7 +2105,7 @@ solucionA = solucion
 $\left( \mathbf{y}, \mathbf{X} \right) =$
 
 ```{r}
-X = read.table("ortogonal 2.txt", header=TRUE, sep=";", dec = ".")  # muy importante indicar el delimitador decimal (si no se dice nada, es el punto)
+X = read.table("data/ortogonal2.txt", header=TRUE, sep=";", dec = ".")  # muy importante indicar el delimitador decimal (si no se dice nada, es el punto)
 X = as.matrix(X)
 y = 3*X[,1] + 2*X[,2] - 3*X[,3] + round(rnorm(nrow(X), 0, 2), 0)
 
@@ -2152,7 +2152,7 @@ solucionB = solucion
 $\left( \mathbf{y}, \mathbf{X} \right) =$
 
 ```{r}
-X = read.table("ortogonal 3.txt", header=TRUE, sep=";", dec = ".")  # muy importante indicar el delimitador decimal (si no se dice nada, es el punto)
+X = read.table("data/ortogonal3.txt", header=TRUE, sep=";", dec = ".")  # muy importante indicar el delimitador decimal (si no se dice nada, es el punto)
 X = as.matrix(X)
 y = 3*X[,1] + 2*X[,2] - 3*X[,3] + round(rnorm(nrow(X), 0, 2), 0)
 

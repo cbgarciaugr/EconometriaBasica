@@ -1451,8 +1451,8 @@ b_{q}
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>ROA_i=_0+_1LEV_i+_2LIQ_i+u_i</p>
-<p>Suponiendo que queremos analizar conjuntamente ambas hipótesis $ _1=0$ y $ _1=_2$, se reescribiría como $ _1=0$ y $ _1-_2=0$ y la matriz de restricciones se definiria como: <span class="math display">\[
+<p><span class="math display">\[ROA_i=\beta_0+\beta_1LEV_i+\beta_2LIQ_i+u_i\]</span></p>
+<p>Suponiendo que queremos analizar conjuntamente ambas hipótesis <span class="math inline">\(\beta_1=0\)</span> y <span class="math inline">\(\beta_1=\beta_2\)</span>, se reescribiría como <span class="math inline">\(\beta_1=0\)</span> y <span class="math inline">\(\beta_1-\beta_2=0\)</span> y la matriz de restricciones se definiria como: <span class="math display">\[
 R=
 \begin{pmatrix}
 0 &amp; 1 &amp; 0 \\
@@ -1479,7 +1479,7 @@ r=
 <div class="callout-body-container callout-body">
 <p><span class="math display">\[
 IBEX35_t=\beta_0+\beta_1SP500_t+\beta_2EUROSTOXX50_t+u_t
-\]</span> Suponiendo que queremos analizar $ _1=1$ <span class="math display">\[
+\]</span> Suponiendo que queremos analizar <span class="math inline">\(\beta_1=1\)</span> <span class="math display">\[
 R=
 \begin{pmatrix}
 0 &amp; 1 &amp; 0
@@ -1512,8 +1512,8 @@ r=1
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Partiendo del modelo: ROA_i=_0+_1LEV_i+_2LIQ_i+u_i</p>
-<p>para contrastar conjuntamente $ _1=0$ y $ _1-_2=0$, obtenemos previamente:</p>
+<p>Partiendo del modelo: <span class="math display">\[ROA_i=\beta_0+\beta_1LEV_i+\beta_2LIQ_i+u_i\]</span></p>
+<p>para contrastar conjuntamente <span class="math inline">\(\beta_1=0\)</span> y <span class="math inline">\(\beta_1-\beta_2=0\)</span>, obtenemos previamente:</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Código</summary>
@@ -5231,9 +5231,9 @@ William H, Greene. 2003. <em>ECONOMETRIC ANALYSIS FIFTH EDITION</em>.
 <span id="cb131-833"><a href="#cb131-833" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb131-834"><a href="#cb131-834" aria-hidden="true" tabindex="-1"></a>::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}</span>
 <span id="cb131-835"><a href="#cb131-835" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb131-836"><a href="#cb131-836" aria-hidden="true" tabindex="-1"></a>ROA_i=\beta_0+\beta_1LEV_i+\beta_2LIQ_i+u_i</span>
+<span id="cb131-836"><a href="#cb131-836" aria-hidden="true" tabindex="-1"></a>$$ROA_i=\beta_0+\beta_1LEV_i+\beta_2LIQ_i+u_i$$</span>
 <span id="cb131-837"><a href="#cb131-837" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb131-838"><a href="#cb131-838" aria-hidden="true" tabindex="-1"></a>Suponiendo que queremos analizar conjuntamente ambas hipótesis $ \beta_1=0$ y $ \beta_1=\beta_2$, se reescribiría como $ \beta_1=0$ y $ \beta_1-\beta_2=0$ y la matriz de restricciones se definiria como:</span>
+<span id="cb131-838"><a href="#cb131-838" aria-hidden="true" tabindex="-1"></a>Suponiendo que queremos analizar conjuntamente ambas hipótesis $\beta_1=0$ y $\beta_1=\beta_2$, se reescribiría como $\beta_1=0$ y $\beta_1-\beta_2=0$ y la matriz de restricciones se definiria como:</span>
 <span id="cb131-839"><a href="#cb131-839" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb131-840"><a href="#cb131-840" aria-hidden="true" tabindex="-1"></a>R=</span>
 <span id="cb131-841"><a href="#cb131-841" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix}</span>
@@ -5257,7 +5257,7 @@ William H, Greene. 2003. <em>ECONOMETRIC ANALYSIS FIFTH EDITION</em>.
 <span id="cb131-859"><a href="#cb131-859" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb131-860"><a href="#cb131-860" aria-hidden="true" tabindex="-1"></a>IBEX35_t=\beta_0+\beta_1SP500_t+\beta_2EUROSTOXX50_t+u_t</span>
 <span id="cb131-861"><a href="#cb131-861" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb131-862"><a href="#cb131-862" aria-hidden="true" tabindex="-1"></a>Suponiendo que queremos analizar $ \beta_1=1$</span>
+<span id="cb131-862"><a href="#cb131-862" aria-hidden="true" tabindex="-1"></a>Suponiendo que queremos analizar $\beta_1=1$</span>
 <span id="cb131-863"><a href="#cb131-863" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb131-864"><a href="#cb131-864" aria-hidden="true" tabindex="-1"></a>R=</span>
 <span id="cb131-865"><a href="#cb131-865" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix}</span>
@@ -5292,9 +5292,9 @@ William H, Greene. 2003. <em>ECONOMETRIC ANALYSIS FIFTH EDITION</em>.
 <span id="cb131-894"><a href="#cb131-894" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb131-895"><a href="#cb131-895" aria-hidden="true" tabindex="-1"></a>::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}</span>
 <span id="cb131-896"><a href="#cb131-896" aria-hidden="true" tabindex="-1"></a>Partiendo del modelo:</span>
-<span id="cb131-897"><a href="#cb131-897" aria-hidden="true" tabindex="-1"></a>ROA_i=\beta_0+\beta_1LEV_i+\beta_2LIQ_i+u_i</span>
+<span id="cb131-897"><a href="#cb131-897" aria-hidden="true" tabindex="-1"></a>$$ROA_i=\beta_0+\beta_1LEV_i+\beta_2LIQ_i+u_i$$</span>
 <span id="cb131-898"><a href="#cb131-898" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb131-899"><a href="#cb131-899" aria-hidden="true" tabindex="-1"></a>para contrastar conjuntamente $ \beta_1=0$ y $ \beta_1-\beta_2=0$, obtenemos previamente:</span>
+<span id="cb131-899"><a href="#cb131-899" aria-hidden="true" tabindex="-1"></a>para contrastar conjuntamente $\beta_1=0$ y $\beta_1-\beta_2=0$, obtenemos previamente:</span>
 <span id="cb131-900"><a href="#cb131-900" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb131-903"><a href="#cb131-903" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb131-904"><a href="#cb131-904" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">coef</span>(modelo)</span>

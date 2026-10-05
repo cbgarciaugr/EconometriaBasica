@@ -801,9 +801,9 @@ $$
 
 ::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
 
-ROA_i=\beta_0+\beta_1LEV_i+\beta_2LIQ_i+u_i
+$$ROA_i=\beta_0+\beta_1LEV_i+\beta_2LIQ_i+u_i$$
 
-Suponiendo que queremos analizar conjuntamente ambas hipótesis $ \beta_1=0$ y $ \beta_1=\beta_2$, se reescribiría como $ \beta_1=0$ y $ \beta_1-\beta_2=0$ y la matriz de restricciones se definiria como:
+Suponiendo que queremos analizar conjuntamente ambas hipótesis $\beta_1=0$ y $\beta_1=\beta_2$, se reescribiría como $\beta_1=0$ y $\beta_1-\beta_2=0$ y la matriz de restricciones se definiria como:
 $$
 R=
 \begin{pmatrix}
@@ -827,7 +827,7 @@ $$
 $$
 IBEX35_t=\beta_0+\beta_1SP500_t+\beta_2EUROSTOXX50_t+u_t
 $$
-Suponiendo que queremos analizar $ \beta_1=1$
+Suponiendo que queremos analizar $\beta_1=1$
 $$
 R=
 \begin{pmatrix}
@@ -862,9 +862,9 @@ donde $F_{q,n-k} (1 - \alpha)$ es el cuantil de la distribución $F$ de Snedecor
 
 ::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
 Partiendo del modelo:
-ROA_i=\beta_0+\beta_1LEV_i+\beta_2LIQ_i+u_i
+$$ROA_i=\beta_0+\beta_1LEV_i+\beta_2LIQ_i+u_i$$
 
-para contrastar conjuntamente $ \beta_1=0$ y $ \beta_1-\beta_2=0$, obtenemos previamente:
+para contrastar conjuntamente $\beta_1=0$ y $\beta_1-\beta_2=0$, obtenemos previamente:
 
 ```{r}
 b <- coef(modelo)

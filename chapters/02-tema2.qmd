@@ -752,7 +752,7 @@ Una restricción lineal consiste en imponer una determinada condición sobre uno
 
 ::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
 
-ROA_i=\beta_0+\beta_1LEV_i+\beta_2LIQ_i+u_i
+$$ROA_i=\beta_0+\beta_1LEV_i+\beta_2LIQ_i+u_i$$
 
 - ¿Influye realmente el endeudamiento sobre la rentabilidad de las empresas?
 $$ \beta_1=0$$

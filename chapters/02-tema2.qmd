@@ -1908,13 +1908,13 @@ Se dispone de información sobre la producción ($Y$), el factor trabajo ($L$) y
 | 14 | 50  | 26 | 31  |
 | 15 | 120 | 52 | 98  |
 
-Se supone que la tecnología del sector viene descrita por una función de producción Cobb-Douglas:
+Se describe la siguiente función de producción Cobb-Douglas:
 
 $$
 Y_i = A\,L_i^{\beta_2}\,K_i^{\beta_3}\,e^{u_i}, \qquad i = 1,\dots,15,
 $$
 
-donde $u_i$ cumple las hipótesis clásicas del modelo lineal general, incluida la normalidad: $u_i \sim N(0,\sigma^2)$ i.i.d.
+donde $u_i$ cumple las hipótesis clásicas del modelo lineal general, incluida la normalidad: $u_i \sim N(0,\sigma^2)$.
 
 Se pide:
 
@@ -1929,7 +1929,7 @@ h) Resolver todos los apartados en **R**.
 
 Valores críticos que pueden necesitarse: $t_{12;\,0{,}025} = 2{,}1788$; $F_{1,12;\,0{,}05} = 4{,}7472$; $F_{2,12;\,0{,}05} = 3{,}8853$; $\chi^2_{12;\,0{,}975} = 4{,}4038$ y $\chi^2_{12;\,0{,}025} = 23{,}3367$ (cola superior).
 
-a) Linealización y forma matricial
+**a) Linealización y forma matricial**
 
 Tomando logaritmos neperianos:
 
@@ -1966,7 +1966,7 @@ Datos transformados (4 decimales):
 | 14 | 3,9120 | 3,2581 | 3,4340 |
 | 15 | 4,7875 | 3,9512 | 4,5850 |
 
-b) Estimación MCO
+**b) Estimación MCO**
 
 El estimador MCO es $\hat{\boldsymbol\beta} = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{y}$. Con los datos transformados:
 
@@ -1982,8 +1982,9 @@ n & \sum l_i & \sum k_i\\
 15 & 55{,}7694 & 63{,}5886\\
 55{,}7694 & 209{,}0024 & 236{,}5094\\
 63{,}5886 & 236{,}5094 & 272{,}3385
-\end{pmatrix},
-\qquad
+\end{pmatrix}
+$$
+$$
 \mathbf{X}'\mathbf{y} =
 \begin{pmatrix}
 \sum y_i\\ \sum l_i y_i\\ \sum k_i y_i
@@ -2018,12 +2019,12 @@ $$
 
 **Interpretación:**
 
-* $\hat\beta_2 = 0{,}6025$ es la **elasticidad de la producción respecto al trabajo**: si $L$ aumenta un 1 % (con $K$ constante), la producción aumenta aproximadamente un 0,60 %.
+* $\hat\beta_2 = 0{,}6025$ es la **elasticidad de la producción respecto al trabajo**: si $L$ aumenta un 1 % (con $K$ constante), la producción aumenta aproximadamente un 0,60 %, *ceteris paribus*.
 * $\hat\beta_3 = 0{,}3485$ es la **elasticidad de la producción respecto al capital**: un aumento del 1 % en $K$ eleva la producción en un 0,35 %, *ceteris paribus*.
 * $\hat\beta_2 + \hat\beta_3 = 0{,}9510$ mide los **rendimientos a escala**: si ambos factores aumentan un 1 %, la producción aumenta un 0,95 %. La estimación puntual sugiere rendimientos ligeramente decrecientes, pero habrá que contrastar si la diferencia respecto a 1 es significativa (apartado e).
 * $\hat\beta_1 = 0{,}7964$ estima $\ln A$, de modo que $\hat A = e^{0{,}7964} \approx 2{,}22$ (parámetro de eficiencia o productividad total de los factores).
 
-c) SCR, $\hat\sigma^2$, $R^2$, $\bar R^2$ y significación global
+**c) SCR, $\hat\sigma^2$, $R^2$, $\bar R^2$ y significación global**
 
 **Suma de cuadrados de los residuos:**
 
@@ -2043,15 +2044,16 @@ $$
 **Suma de cuadrados total:**
 
 $$
-STC = \mathbf{y}'\mathbf{y} - n\bar y^2 = 306{,}661254 - 15\cdot(4{,}513952)^2 = 306{,}661254 - 305{,}636374 = 1{,}024880 .
+SCT = \mathbf{y}'\mathbf{y} - n\bar y^2 = 306{,}661254 - 15\cdot(4{,}513952)^2 = 306{,}661254 - 305{,}636374 = 1{,}024880 .
 $$
 
 **Coeficiente de determinación y coeficiente corregido:**
 
 $$
-R^2 = 1 - \frac{SCR}{STC} = 1 - \frac{0{,}050308}{1{,}024880} = 0{,}9509,
-\qquad
-\bar R^2 = 1 - \frac{SCR/(n-k)}{STC/(n-1)} = 1 - \frac{0{,}050308/12}{1{,}024880/14} = 0{,}9427 .
+R^2 = 1 - \frac{SCR}{SCT} = 1 - \frac{0{,}050308}{1{,}024880} = 0{,}9509,
+$$
+$$
+\bar R^2 = 1 - \frac{SCR/(n-k)}{SCT/(n-1)} = 1 - \frac{0{,}050308/12}{1{,}024880/14} = 0{,}9427 .
 $$
 
 El 95,1 % de la variabilidad del logaritmo de la producción queda explicada por los logaritmos de trabajo y capital.
@@ -2064,7 +2066,7 @@ $$
 
 Se rechaza $H_0$: el modelo es globalmente significativo.
 
-d) Intervalos de confianza al 95 %
+**d) Intervalos de confianza al 95 %**
 
 La matriz de varianzas-covarianzas estimada es $\widehat{\mathrm{Var}}(\hat{\boldsymbol\beta}) = \hat\sigma^2(\mathbf{X}'\mathbf{X})^{-1}$:
 
@@ -2097,7 +2099,7 @@ $$
 = [\,0{,}002156;\; 0{,}011424\,].
 $$
 
-e) Rendimientos constantes a escala: test general $F$
+**e) Rendimientos constantes a escala: test general $F$**
 
 La hipótesis típica en una Cobb-Douglas es la de **rendimientos constantes a escala**:
 
@@ -2128,26 +2130,7 @@ $$
 
 Como $F = 0{,}6163 < F_{1,12;\,0{,}05} = 4{,}7472$ (p-valor $= 0{,}448$), **no se rechaza** la hipótesis de rendimientos constantes a escala.
 
-*Equivalencia con el contraste $t$:* al haber una sola restricción,
-
-$$
-t = \frac{\hat\beta_2+\hat\beta_3-1}{\sqrt{\widehat{\mathrm{Var}}(\hat\beta_2)+\widehat{\mathrm{Var}}(\hat\beta_3)+2\,\widehat{\mathrm{Cov}}(\hat\beta_2,\hat\beta_3)}}
-= \frac{-0{,}048969}{\sqrt{0{,}003891}} = -0{,}785, \qquad t^2 = 0{,}6163 = F .
-$$
-
-f) Estimación restringida (MCR) y contraste vía SCR
-
-**Método 1: sustitución de la restricción.** Si $\beta_2 = 1-\beta_3$:
-
-$$
-\ln Y_i - \ln L_i = \beta_1 + \beta_3(\ln K_i - \ln L_i) + u_i
-\quad\Longleftrightarrow\quad
-\ln\frac{Y_i}{L_i} = \beta_1 + \beta_3 \ln\frac{K_i}{L_i} + u_i ,
-$$
-
-es decir, la productividad media del trabajo depende de la relación capital/trabajo. Estimando por MCO este modelo se obtiene $\tilde\beta_1 = 0{,}6049$, $\tilde\beta_3 = 0{,}3665$ y, por la restricción, $\tilde\beta_2 = 1 - 0{,}3665 = 0{,}6335$.
-
-**Método 2: fórmula del estimador MCR.**
+**f) Estimación restringida (MCR) y contraste vía SCR**
 
 $$
 \tilde{\boldsymbol\beta} = \hat{\boldsymbol\beta} - (\mathbf{X}'\mathbf{X})^{-1}\mathbf{R}'\left[\mathbf{R}(\mathbf{X}'\mathbf{X})^{-1}\mathbf{R}'\right]^{-1}(\mathbf{R}\hat{\boldsymbol\beta}-\mathbf{r}).
@@ -2172,9 +2155,7 @@ $$
 
 idéntico al obtenido en el apartado e). La conclusión es la misma: los datos son compatibles con rendimientos constantes a escala.
 
-> **Ojo:** en el modelo restringido la variable dependiente es $\ln(Y/L)$, no $\ln Y$, por lo que **no** se puede usar la fórmula del $F$ basada en los $R^2$ de ambos modelos; sí la basada en las SCR.
-
-g) Contraste de la restricción $\beta_2 = \beta_3$
+**g) Contraste de la restricción $\beta_2 = \beta_3$**
 
 $$
 H_0: \beta_2 - \beta_3 = 0, \qquad \mathbf{R} = (0\;\; 1\;\; -1),\quad r = 0 .
@@ -2195,9 +2176,9 @@ $$
 F = \frac{0{,}114435 - 0{,}050308}{0{,}004192} = 15{,}30 .
 $$
 
-# Parte II. Resolución en R
+**h) Resolución en R**
 
-## Datos y transformación logarítmica
+Partimos de los datos originales a partir de los que calculamos su logarítmo:
 
 ```{r datos}
 datos <- data.frame(
@@ -2213,14 +2194,14 @@ datos$k <- log(datos$K)
 round(datos, 4)
 ```
 
-h) Resolver en R
-
-Estimación con `lm()`:
+En primer lugar procedemos a la estimación con `lm()`:
 
 ```{r lm}
 modelo <- lm(log(Y) ~ log(L) + log(K), data = datos)
 summary(modelo)
 ```
+
+Se obtienen los intervalos de confianza (se puede cambiar el nivel de confianza modificando `level`) y la matriz de varianzas-covarianzas de los estimadores. También, se calcula la suma de los estimadores para ver si suman 1 y se obtiene la estimación de la variable $A$:
 
 ```{r lm-extra}
 confint(modelo, level = 0.95)                 # IC de los coeficientes
@@ -2229,9 +2210,7 @@ sum(coef(modelo)[2:3])                        # rendimientos a escala estimados
 exp(coef(modelo)[1])                          # estimación de A
 ```
 
-Contraste general de rendimientos constantes a escala:
-
-Función genérica para el test $F$ de $H_0:\mathbf{R}\boldsymbol\beta=\mathbf{r}$:
+Para realizar el contraste general de rendimientos constantes a escala, se puede hacer con una función genérica para el test $F$ de $H_0:\mathbf{R}\boldsymbol\beta=\mathbf{r}$:
 
 ```{r test-general}
 test_F <- function(modelo, R, r) {
@@ -2250,39 +2229,19 @@ test_F <- function(modelo, R, r) {
 test_F(modelo, R = c(0, 1, 1), r = 1)
 ```
 
-Equivalente con el contraste $t$:
-
-```{r test-t}
-Rv  <- c(0, 1, 1)
-t_c <- (sum(Rv * coef(modelo)) - 1) / sqrt(t(Rv) %*% vcov(modelo) %*% Rv)
-c(t = t_c, t2 = t_c^2, p_valor = 2 * pt(-abs(t_c), df.residual(modelo)))
-```
-
 Si está instalado el paquete **car**, el mismo contraste se obtiene directamente:
 
 ```{r car, eval = requireNamespace("car", quietly = TRUE)}
 car::linearHypothesis(modelo, "log(L) + log(K) = 1")
 ```
 
-Estimación restringida (rendimientos constantes a escala):
-
-```{r restringido}
-# Modelo transformado: ln(Y/L) = b1 + b3 ln(K/L)
-modelo_R <- lm(log(Y / L) ~ log(K / L), data = datos)
-summary(modelo_R)
-
-b_restr <- c(coef(modelo_R)[1], 1 - coef(modelo_R)[2], coef(modelo_R)[2])
-names(b_restr) <- c("b1", "b2", "b3")
-b_restr
-```
-
-Contraste de $\beta_2 = \beta_3$
+Para realizar el contraste de $\beta_2 = \beta_3$, volvemos a usar la misma función:
 
 ```{r b2-igual-b3}
 test_F(modelo, R = c(0, 1, -1), r = 0)
 ```
 
-Gráfico: valores observados frente a ajustados
+A continuación, se obtiene el gráfico de los valores observados frente a ajustados:
 
 ```{r grafico, fig.width = 6, fig.height = 4.5}
 plot(fitted(modelo), log(datos$Y), pch = 19, col = "steelblue",

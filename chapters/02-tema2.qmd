@@ -2280,6 +2280,7 @@ Contraste de $\beta_2 = \beta_3$
 
 ```{r b2-igual-b3}
 test_F(modelo, R = c(0, 1, -1), r = 0)
+```
 
 Gráfico: valores observados frente a ajustados
 

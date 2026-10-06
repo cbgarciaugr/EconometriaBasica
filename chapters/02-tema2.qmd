@@ -1400,7 +1400,7 @@ A partir de los datos del modelo de la rentabilidad, se tienen los siguientes su
 
 $$\sum ROA_i=768,54; \sum LEV_i=6379,76;\sum LIQ_i=34.707$$
 $$\sum LEV_i^2=461145,61;\sum LIQ_i^2=38.468; \sum LEV_i\times LIQ_i=1353,61$$
-$$\sum ROA_i \times LEV_i=41060,34; \sum ROA_i \times LIQ_i=389,47$$
+$$\sum ROA_i \times LEV_i=41060,34; \sum ROA_i \times LIQ_i=389,47; \Ssum ROA_i^1=10.456,08$$
 Con estos datos se pueden construir las siguientes matrices:
 
 $$X^{t} X = \left(

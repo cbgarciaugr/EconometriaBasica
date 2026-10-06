@@ -1886,6 +1886,8 @@ En cuanto a los modelos 6, 7 y 8, el modelo 8 nuevamente carece de término inde
 
 Cabe destacar que los criterios de información cuentan con una versión ajustada que permite comparar modelos con la misma variable endógena, pero con distinta forma funcional, como ocurre en este caso (véase @Uriel2019).
 
+### Estimación y contraste de una función de producción Cobb-Douglas {.unnumbered}
+
 Se dispone de información sobre la producción ($Y$), el factor trabajo ($L$) y el factor capital ($K$) de 15 empresas de un mismo sector:
 
 | Empresa | $Y$ | $L$ | $K$ |
@@ -1927,11 +1929,7 @@ h) Resolver todos los apartados en **R**.
 
 Valores críticos que pueden necesitarse: $t_{12;\,0{,}025} = 2{,}1788$; $F_{1,12;\,0{,}05} = 4{,}7472$; $F_{2,12;\,0{,}05} = 3{,}8853$; $\chi^2_{12;\,0{,}975} = 4{,}4038$ y $\chi^2_{12;\,0{,}025} = 23{,}3367$ (cola superior).
 
----
-
-# Parte I. Resolución "a mano"
-
-## a) Linealización y forma matricial
+a) Linealización y forma matricial
 
 Tomando logaritmos neperianos:
 
@@ -1968,7 +1966,7 @@ Datos transformados (4 decimales):
 | 14 | 3,9120 | 3,2581 | 3,4340 |
 | 15 | 4,7875 | 3,9512 | 4,5850 |
 
-## b) Estimación MCO
+b) Estimación MCO
 
 El estimador MCO es $\hat{\boldsymbol\beta} = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{y}$. Con los datos transformados:
 
@@ -2025,7 +2023,7 @@ $$
 * $\hat\beta_2 + \hat\beta_3 = 0{,}9510$ mide los **rendimientos a escala**: si ambos factores aumentan un 1 %, la producción aumenta un 0,95 %. La estimación puntual sugiere rendimientos ligeramente decrecientes, pero habrá que contrastar si la diferencia respecto a 1 es significativa (apartado e).
 * $\hat\beta_1 = 0{,}7964$ estima $\ln A$, de modo que $\hat A = e^{0{,}7964} \approx 2{,}22$ (parámetro de eficiencia o productividad total de los factores).
 
-## c) SCR, $\hat\sigma^2$, $R^2$, $\bar R^2$ y significación global
+c) SCR, $\hat\sigma^2$, $R^2$, $\bar R^2$ y significación global
 
 **Suma de cuadrados de los residuos:**
 
@@ -2066,7 +2064,7 @@ $$
 
 Se rechaza $H_0$: el modelo es globalmente significativo.
 
-## d) Intervalos de confianza al 95 %
+d) Intervalos de confianza al 95 %
 
 La matriz de varianzas-covarianzas estimada es $\widehat{\mathrm{Var}}(\hat{\boldsymbol\beta}) = \hat\sigma^2(\mathbf{X}'\mathbf{X})^{-1}$:
 
@@ -2099,7 +2097,7 @@ $$
 = [\,0{,}002156;\; 0{,}011424\,].
 $$
 
-## e) Rendimientos constantes a escala: test general $F$
+e) Rendimientos constantes a escala: test general $F$
 
 La hipótesis típica en una Cobb-Douglas es la de **rendimientos constantes a escala**:
 
@@ -2137,7 +2135,7 @@ t = \frac{\hat\beta_2+\hat\beta_3-1}{\sqrt{\widehat{\mathrm{Var}}(\hat\beta_2)+\
 = \frac{-0{,}048969}{\sqrt{0{,}003891}} = -0{,}785, \qquad t^2 = 0{,}6163 = F .
 $$
 
-## f) Estimación restringida (MCR) y contraste vía SCR
+f) Estimación restringida (MCR) y contraste vía SCR
 
 **Método 1: sustitución de la restricción.** Si $\beta_2 = 1-\beta_3$:
 
@@ -2176,7 +2174,7 @@ idéntico al obtenido en el apartado e). La conclusión es la misma: los datos s
 
 > **Ojo:** en el modelo restringido la variable dependiente es $\ln(Y/L)$, no $\ln Y$, por lo que **no** se puede usar la fórmula del $F$ basada en los $R^2$ de ambos modelos; sí la basada en las SCR.
 
-## g) Contraste de la restricción $\beta_2 = \beta_3$
+g) Contraste de la restricción $\beta_2 = \beta_3$
 
 $$
 H_0: \beta_2 - \beta_3 = 0, \qquad \mathbf{R} = (0\;\; 1\;\; -1),\quad r = 0 .
@@ -2197,8 +2195,6 @@ $$
 F = \frac{0{,}114435 - 0{,}050308}{0{,}004192} = 15{,}30 .
 $$
 
----
-
 # Parte II. Resolución en R
 
 ## Datos y transformación logarítmica
@@ -2217,54 +2213,9 @@ datos$k <- log(datos$K)
 round(datos, 4)
 ```
 
-## Estimación con álgebra matricial (réplica del cálculo a mano)
+h) Resolver en R
 
-```{r matricial}
-n <- nrow(datos)
-X <- cbind(1, datos$l, datos$k)
-colnames(X) <- c("cte", "lnL", "lnK")
-y <- datos$y
-k <- ncol(X)
-
-XtX    <- t(X) %*% X
-Xty    <- t(X) %*% y
-XtXinv <- solve(XtX)
-
-XtX
-Xty
-XtXinv
-
-beta_hat <- XtXinv %*% Xty
-beta_hat
-```
-
-```{r scr-r2}
-e      <- y - X %*% beta_hat
-SCR    <- sum(e^2)
-STC    <- sum((y - mean(y))^2)
-sigma2 <- SCR / (n - k)
-R2     <- 1 - SCR / STC
-R2adj  <- 1 - (SCR / (n - k)) / (STC / (n - 1))
-F_glob <- ((STC - SCR) / (k - 1)) / (SCR / (n - k))
-
-round(c(SCR = SCR, STC = STC, sigma2 = sigma2, R2 = R2, R2_corr = R2adj,
-        F_global = F_glob, p_valor = pf(F_glob, k - 1, n - k, lower.tail = FALSE)), 6)
-```
-
-```{r ic-matricial}
-V  <- sigma2 * XtXinv          # matriz de varianzas-covarianzas estimada
-se <- sqrt(diag(V))
-tc <- qt(0.975, df = n - k)
-
-cbind(Estimacion = beta_hat[, 1], Error_est = se,
-      Inf_95 = beta_hat[, 1] - tc * se, Sup_95 = beta_hat[, 1] + tc * se)
-
-# Intervalo para sigma^2
-c(Inf_95 = (n - k) * sigma2 / qchisq(0.975, n - k),
-  Sup_95 = (n - k) * sigma2 / qchisq(0.025, n - k))
-```
-
-## Estimación con `lm()`
+Estimación con `lm()`:
 
 ```{r lm}
 modelo <- lm(log(Y) ~ log(L) + log(K), data = datos)
@@ -2278,7 +2229,7 @@ sum(coef(modelo)[2:3])                        # rendimientos a escala estimados
 exp(coef(modelo)[1])                          # estimación de A
 ```
 
-## Contraste general de rendimientos constantes a escala
+Contraste general de rendimientos constantes a escala:
 
 Función genérica para el test $F$ de $H_0:\mathbf{R}\boldsymbol\beta=\mathbf{r}$:
 
@@ -2313,7 +2264,7 @@ Si está instalado el paquete **car**, el mismo contraste se obtiene directament
 car::linearHypothesis(modelo, "log(L) + log(K) = 1")
 ```
 
-## Estimación restringida (rendimientos constantes a escala)
+Estimación restringida (rendimientos constantes a escala):
 
 ```{r restringido}
 # Modelo transformado: ln(Y/L) = b1 + b3 ln(K/L)
@@ -2333,35 +2284,12 @@ beta_R <- beta_hat - XtXinv %*% t(R) %*% solve(R %*% XtXinv %*% t(R)) %*% (R %*%
 beta_R
 ```
 
-Contraste $F$ basado en las sumas de cuadrados residuales:
-
-```{r F-scr}
-SCR_R <- sum(resid(modelo_R)^2)
-SCR_U <- sum(resid(modelo)^2)
-F_scr <- ((SCR_R - SCR_U) / 1) / (SCR_U / df.residual(modelo))
-c(SCR_R = SCR_R, SCR_NR = SCR_U, F = F_scr,
-  p_valor = pf(F_scr, 1, df.residual(modelo), lower.tail = FALSE))
-```
-
-> `anova(modelo_R, modelo)` **no** es aplicable aquí porque la variable dependiente de los dos modelos es distinta ($\ln(Y/L)$ frente a $\ln Y$). Para usar `anova()` hay que expresar el restringido con la misma variable dependiente mediante `offset()`:
-
-```{r anova-offset}
-modelo_R2 <- lm(log(Y) ~ offset(log(L)) + I(log(K) - log(L)), data = datos)
-anova(modelo_R2, modelo)
-```
-
-## Contraste de $\beta_2 = \beta_3$
+Contraste de $\beta_2 = \beta_3$
 
 ```{r b2-igual-b3}
 test_F(modelo, R = c(0, 1, -1), r = 0)
 
-# Vía modelo restringido: ln Y = b1 + b (ln L + ln K)
-modelo_R3 <- lm(log(Y) ~ I(log(L) + log(K)), data = datos)
-coef(modelo_R3)
-anova(modelo_R3, modelo)    # aquí sí: misma variable dependiente
-```
-
-## Gráfico: valores observados frente a ajustados
+Gráfico: valores observados frente a ajustados
 
 ```{r grafico, fig.width = 6, fig.height = 4.5}
 plot(fitted(modelo), log(datos$Y), pch = 19, col = "steelblue",

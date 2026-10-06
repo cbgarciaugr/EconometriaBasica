@@ -1410,6 +1410,14 @@ $$X^{t} X = \left(
              34,707 & 1353,61 & 38,468 \\
 \end{array} \right),$$
 \noindent y
+$$(X^{t} X)^{-1} = \left(
+\begin{array}{cccc}
+0,23066	&-0,00288&	-0,10686\\
+-0,00288&	0,00004&	0,00125\\
+-0,10686&	0,00125&	0,07849\\
+\end{array} \right),$$
+\noindent
+
 $$X^{t} y = \left(
         \begin{array}{c}
             768,54 \\
@@ -1417,7 +1425,6 @@ $$X^{t} y = \left(
             389,47\\
         \end{array} \right).$$
 Se puede calcular la inversa de la matriz $X'X$ y se obtendrán los siguientes estimadores que coinciden con los obtenidos mediante la función `lm`.
-
 $$\hat{\beta} = \left(
         \begin{array}{c}
             17,5053 \\

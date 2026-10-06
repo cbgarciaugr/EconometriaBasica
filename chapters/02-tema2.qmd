@@ -2228,14 +2228,16 @@ test_F <- function(modelo, R, r) {
 # H0: beta2 + beta3 = 1
 test_F(modelo, R = c(0, 1, 1), r = 1)
 ```
+Se concluye que no se puede rechazar la hipótesis nula con los niveles de confianza habituales. 
 
 Si está instalado el paquete **car**, el mismo contraste se obtiene directamente:
 
 ```{r car, eval = requireNamespace("car", quietly = TRUE)}
 car::linearHypothesis(modelo, "log(L) + log(K) = 1")
 ```
+Se observa que se obtiene exactamente el mismo resultado. 
 
-Para realizar el contraste de $\beta_2 = \beta_3$, volvemos a usar la misma función:
+Por otro lado, para realizar el contraste de $\beta_2 = \beta_3$, volvemos a usar la misma función:
 
 ```{r b2-igual-b3}
 test_F(modelo, R = c(0, 1, -1), r = 0)

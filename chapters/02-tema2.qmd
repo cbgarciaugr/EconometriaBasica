@@ -1400,7 +1400,7 @@ A partir de los datos del modelo de la rentabilidad, se tienen los siguientes su
 
 $$\sum ROA_i=768,54; \sum LEV_i=6379,76;\sum LIQ_i=34.707$$
 $$\sum LEV_i^2=461145,61;\sum LIQ_i^2=38.468; \sum LEV_i\times LIQ_i=1353,61$$
-$$\sum ROA_i \times LEV_i=41060,34; \sum ROA_i \times LIQ_i=389,47; \Ssum ROA_i^1=10.456,08$$
+$$\sum ROA_i \times LEV_i=41060,34; \sum ROA_i \times LIQ_i=389,47; \sum ROA_i^1=10.456,08$$
 Con estos datos se pueden construir las siguientes matrices:
 
 $$X^{t} X = \left(
@@ -2274,14 +2274,6 @@ summary(modelo_R)
 b_restr <- c(coef(modelo_R)[1], 1 - coef(modelo_R)[2], coef(modelo_R)[2])
 names(b_restr) <- c("b1", "b2", "b3")
 b_restr
-```
-
-Comprobación con la fórmula del estimador MCR:
-
-```{r mcr-formula}
-R <- matrix(c(0, 1, 1), nrow = 1); r <- 1
-beta_R <- beta_hat - XtXinv %*% t(R) %*% solve(R %*% XtXinv %*% t(R)) %*% (R %*% beta_hat - r)
-beta_R
 ```
 
 Contraste de $\beta_2 = \beta_3$

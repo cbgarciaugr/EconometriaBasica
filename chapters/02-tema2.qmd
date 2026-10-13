@@ -1128,19 +1128,6 @@ $$
 {SCR/(n-k)}.
 $$
 
-::: {.callout-tip appearance="simple" icon=false title="Base de datos 2: El IBEX35"}
-Usando la función `anova()` sobre el modelo estimado, se obtiene la tabla ANOVA, obteniendo los siguientes resultados:
-
-```{r}
-datos <- read_excel("data/BD_IBEX.xlsx", sheet = "Datos")
-modeloIBEX <- lm(
-    Rend_IBEX ~ Rend_SP500+ Rend_EUROSTOXX50,
-    data = datos
-)
-anova(modeloIBEX, type = 2)
-```
-:::
-
 #### Relación con el coeficiente de determinación {.unnumbered}
 
 Teniendo en cuenta que $R^2=\frac{SCE}{SCT}$, otra forma equivalente de expresar la región de rechazo es:

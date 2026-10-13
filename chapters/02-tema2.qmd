@@ -1128,6 +1128,19 @@ $$
 {SCR/(n-k)}.
 $$
 
+::: {.callout-tip appearance="simple" icon=false title="Base de datos 2: El IBEX35"}
+Usando la función `anova()` sobre el modelo estimado, se obtiene la tabla ANOVA, obteniendo los siguientes resultados:
+
+```{r}
+datos <- read_excel("data/BD_IBEX.xlsx", sheet = "Datos")
+modeloIBEX <- lm(
+    Rend_IBEX ~ Rend_SP500+ Rend_EUROSTOXX50,
+    data = datos
+)
+anova(modeloIBEX)
+```
+:::
+
 #### Relación con el coeficiente de determinación {.unnumbered}
 
 Teniendo en cuenta que $R^2=\frac{SCE}{SCT}$, otra forma equivalente de expresar la región de rechazo es:
@@ -1190,9 +1203,10 @@ donde:
 
 ::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
 Partiendo del modelo:
-ROA_i=\beta_0+\beta_1LEV_i+\beta_2LIQ_i+u_i
 
-para contrastar conjuntamente $ \beta_1=0$ y $ \beta_1-\beta_2=0$ se puede usar la función `linearHypothesis` del paquete `car` que no exige construir la matriz de restricciones ni resultados. 
+$$ROA_i=\beta_0+\beta_1LEV_i+\beta_2LIQ_i+u_i$$
+
+para contrastar conjuntamente $\beta_1=0$ y $\beta_1-\beta_2=0$ se puede usar la función `linearHypothesis` del paquete `car` que no exige construir la matriz de restricciones ni resultados. 
 
 
 ```{r}

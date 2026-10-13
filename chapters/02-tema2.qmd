@@ -1137,7 +1137,7 @@ modeloIBEX <- lm(
     Rend_IBEX ~ Rend_SP500+ Rend_EUROSTOXX50,
     data = datos
 )
-anova(modeloIBEX)
+anova(modeloIBEX, type = 2)
 ```
 :::
 

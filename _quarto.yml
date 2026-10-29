@@ -6,8 +6,17 @@ project:
 lang: es
 
 book:
-  title: "Econometría para Finanzas y Contabilidad con R"
-  author: "Catalina B. García-García y Román Salmerón-Gómez"
+title: "Econometría para Finanzas y Contabilidad con R"
+  author:
+    - name: "Catalina B. García-García"
+      email: "cbgarcia@ugr.es"
+      affiliations:
+        - name: "Departamento de Métodos Cuantitativos para la Economía y la Empresa. Universidad de Granada"
+    - name: "Román Salmerón-Gómez"
+      email: "romansg@ugr.es"
+      affiliations:
+        - name: "Departamento de Métodos Cuantitativos para la Economía y la Empresa. Universidad de Granada"
+
   page-navigation: true
   repo-url: https://github.com/cbgarciaugr/EconometriaBasica
   repo-actions: [edit]

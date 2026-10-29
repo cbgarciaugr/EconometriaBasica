@@ -32,7 +32,7 @@ Al finalizar este tema, el estudiante será capaz de:
 - Interpretar los resultados obtenidos en un contexto económico y financiero.
 ::: 
 
-### Concepto, causas y consecuencias de autocorrelación
+## Concepto, causas y consecuencias de autocorrelación
 
 En el modelo lineal general,
 

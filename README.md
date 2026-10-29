@@ -1,6 +1,6 @@
 # Econometría para Finanzas y Contabilidad con R
 
-Material docente para la asignatura de Econometría del Grado en Finanzas y Contabilidad, escrito por **Catalina B. García-García** y **Román Salmerón-Gómez** (Universidad de Granada).
+Material docente para la asignatura de Econometría del Grado en Finanzas y Contabilidad, escrito por **Catalina B. García-García** (cbgarcia@ugr.es) y **Román Salmerón-Gómez** (romansg@ugr.es), ambos profesores del Departamento de Métodos Cuantitativos para la Economía y la Empresa de la Universidad de Granada (España).
 
 El libro introduce los fundamentos de la Econometría (regresión lineal, variables dicotómicas y cambio estructural, colinealidad, heterocedasticidad y autocorrelación) aplicados a problemas reales de análisis financiero y contable, con ejemplos y código en R.
 
@@ -63,6 +63,11 @@ Cada `push` a `main` dispara el workflow [`quarto-publish.yml`](.github/workflow
 
 Las bases de datos empleadas en los ejemplos se encuentran en [`data/`](data/) y se describen con detalle en el apéndice *Bases de datos utilizadas en el libro*.
 
-## Licencia y cita
+## Licencia y Uso
+
+El contenido de este libro está sujeto a una doble licencia para proteger tanto el texto como el código de R:
+
+*   **Texto y Gráficos:** Todo el contenido literario, explicaciones teóricas y gráficos están bajo la licencia [Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0)](https://creativecommons.org). Eres libre de compartir, copiar y adaptar el material siempre que des crédito al autor, no lo uses con fines comerciales y distribuyas tus versiones bajo la misma licencia.
+*   **Código de R:** Todos los fragmentos de código, scripts de análisis y funciones incluidas en este repositorio están bajo la [Licencia MIT](LICENSE-CODE). Puedes usar, copiar y modificar el código libremente para tus propios análisis o proyectos.
 
 Este material está pensado para uso docente. Si lo utilizas o citas, referencia a los autores: García-García, C.B. y Salmerón-Gómez, R., *Econometría para Finanzas y Contabilidad con R*.

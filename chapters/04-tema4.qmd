@@ -258,20 +258,20 @@ Así, en este ejemplo, se verifica:
 $$\begin{pmatrix}
 4 & 0\\ 
 0 & 2\\
-\end{vmatrix}\begin{pmatrix}
+\end{pmatrix}\begin{pmatrix}
 1\\ 
 0\\
-\end{vmatrix}=4\begin{pmatrix}
+\end{pmatrix}=4\begin{pmatrix}
 1\\ 
 0\\
 \end{pmatrix}$$
 $$\begin{pmatrix}
 4 & 0\\ 
 0 & 2\\
-\end{vmatrix}\begin{pmatrix}
+\end{pmatrix}\begin{pmatrix}
 0\\ 
 2\\
-\end{vmatrix}=0\begin{pmatrix}
+\end{pmatrix}=0\begin{pmatrix}
 0\\ 
 2\\
 \end{pmatrix}$$

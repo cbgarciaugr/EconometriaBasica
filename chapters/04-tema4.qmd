@@ -239,8 +239,18 @@ $\lambda$ es un número real o complejo denominado autovalor.
 
 Para calcular los autovalores de una matriz, partimos de $Av = \lambda v$, reordenando $(A-\lambda I)v=0$. Para que exista una solución distinta de cero, el determinante debe ser igual a cero $\boxed{|A-\lambda I|=0}$. Veamos un ejemplo:
 
-**Ejemplo 1:** Consideremos la siguiente matriz $A=\begin{pmatrix}4 & 0\\0 & 2\\end{pmatrix}$. Para obtener sus autovalores, calculamos:
-$|A-\lambda I|=0$. Sustituyendo: $\begin{vmatrix}4-\lambda & 0\\0 & 2-\lambda\\end{vmatrix}=0$. Desarrollamos el determinante: $(4-\lambda)(2-\lambda)=0$. Por tanto, los autovalores son:
+**Ejemplo 1:** Consideremos la siguiente matriz 
+$$A=\begin{pmatrix}
+4 & 0\\ 
+0 & 2\\
+\end{pmatrix}$$
+Para obtener sus autovalores, calculamos:
+$|A-\lambda I|=0$. Sustituyendo: 
+$$\begin{vmatrix}
+4-\lambda & 0\\ 
+0 & 2-\lambda\\
+end{vmatrix}=0$$
+Desarrollamos el determinante: $(4-\lambda)(2-\lambda)=0$. Por tanto, los autovalores son:
 $$
 \boxed{\lambda_1=4,\quad \lambda_2=2}
 $$
@@ -249,12 +259,12 @@ $$
 $$
 B=
 \begin{pmatrix}
-1000 & 0\
-0 & 0.01
+1000 & 0\\
+0 & 0.01 \\
 \end{pmatrix}
 $$
 
-Si no existe mucha diferencia entre los autovalores de una matriz, significa que esta transforma las distintas direcciones del espacio de una forma relativamente similar. Por el contrario, si existe una gran diferencia entre los autovalores, significa que la matriz estira o comprime mucho más en unas direcciones que en otras. Esto indica que la matriz está mal condicionada y que puede ser más sensible a pequeños errores o perturbaciones en los datos. 
+Si no existe mucha diferencia entre los autovalores de una matriz, significa que esta transforma las distintas direcciones del espacio de una forma relativamente similar. Por el contrario, si existe una gran diferencia entre los autovalores, significa que la matriz estira o comprime mucho más en unas direcciones que en otras. Esto indica que la matriz está mal condicionada y que puede ser más sensible a pequeños errores o perturbaciones en los datos. Para que la comparación entre los autovalores sea adecuada, es conveniente normalizar previamente las variables explicativas, de manera que se expresen en una escala comparable o longitud unitaria, evitando así que las diferencias en las unidades de medida influyan artificialmente.
 
 En Econometría, esta situación puede ser indicativa de problemas de multicolinealidad entre las variables explicativas y puede diagnosticarse mediante el número de condición que se calcula como la raíz cuadrada del cociente entre el máximo y el mínimo autovalor, denotados como $\lambda_{\max}$ y $\lambda_{\min}$, respectivamente:
 

@@ -361,7 +361,7 @@ El centrado modifica la interpretación del término independiente, pero no alte
 
 - Eliminar o combinar variables explicativas. Cuando la multicolinealidad es **esencial**, puede existir una relación lineal elevada entre dos o más variables explicativas. Si desde el punto de vista económico o teórico algunas variables aportan información muy similar, una alternativa consiste en eliminar una de ellas o construir una medida conjunta que recoja la información común.
 
-Estas soluciones son las primeras que deben considerarse porque mantienen, en la medida de lo posible, la interpretación habitual de los estimadores MCO. Alternativamente, pueden usarse estimadores alternativos como el estimador de mínimos cuadrados restringidos (si existen restricciones teóricas) o el **estimador cresta    (ridge )** [@Hoerl1970b], la **estimador alzado (raise)**  [@Garcia2010] o el **estimador residualizado**.
+Estas soluciones son las primeras que deben considerarse porque mantienen, en la medida de lo posible, la interpretación habitual de los estimadores MCO. Alternativamente, pueden usarse estimadores alternativos como el estimador de mínimos cuadrados restringidos (si existen restricciones teóricas), el **estimador cresta    (ridge )** [@Hoerl1970b], el **estimador alzado (raise)**  [@Garcia2010] o el **estimador residualizado**.
 
 
 ### Soluciones avanzadas

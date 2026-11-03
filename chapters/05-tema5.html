@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.19">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -75,14 +75,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../chapters/04-tema4.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-bcae718ed38fb51adf324a3c235abf9b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-2d1f7ff00ad8d5256a73a8ae8bdc4958.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -144,17 +145,17 @@ window.Quarto = {
 <link rel="stylesheet" href="../style.css">
 </head>
 
-<body class="nav-sidebar floating quarto-light">
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Saltar al contenido principal</a>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Barra de herramientas">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/05-tema5.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Heterocedasticidad</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/05-tema5.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Heterocedasticidad</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -165,7 +166,7 @@ window.Quarto = {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Sitio web">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Econometría para Finanzas y Contabilidad con R</a> 
@@ -225,13 +226,10 @@ window.Quarto = {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
- <span class="menu-text">Apéndices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Apéndices</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/apendice-basesdatos.html" class="sidebar-item-text sidebar-link">
@@ -264,7 +262,7 @@ window.Quarto = {
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">Tabla de contenidos</h2>
    
   <ul>
@@ -296,7 +294,7 @@ window.Quarto = {
 <div class="toc-actions"><ul><li><a href="https://github.com/cbgarciaugr/EconometriaBasica/edit/main/chapters/05-tema5.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -317,7 +315,7 @@ window.Quarto = {
 </header>
 
 
-<div class="callout callout-style-default callout-important callout-titled" title="Objetivos de aprendizaje">
+<div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
@@ -356,7 +354,7 @@ Var(u_i \mid X)=\sigma_i^2,
 <p>La heterocedasticidad adquiere especial importancia cuando se trabaja con <strong>datos transversales</strong>, es decir, cuando se observan distintas unidades económicas en un mismo periodo o en un periodo determinado. En estos casos, las unidades analizadas suelen presentar diferencias importantes entre sí.</p>
 <p>En nuestro ejemplo, las empresas de la muestra pueden diferir considerablemente en términos de tamaño, liquidez, endeudamiento, número de empleados y otras características. Por ello, resulta razonable plantearse si la variabilidad de los factores no observados que afectan al ROA es realmente la misma para todas ellas.</p>
 <p>Esta es una de las razones por las que la heterocedasticidad es un problema frecuente en modelos aplicados a empresas, hogares, países u otras unidades económicas observadas en sección cruzada.</p>
-<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -487,7 +485,7 @@ Var(v_i)
 <p>Una primera posibilidad consiste en representar los residuos estimados <span class="math inline">\(e_i\)</span> o sus cuadrados <span class="math inline">\(e_i^2\)</span> frente al número de observación <span class="math inline">\(i\)</span>.</p>
 <p>El objetivo es comprobar si la dispersión de los residuos parece mantenerse aproximadamente constante a lo largo de la muestra. Si se observan zonas en las que los residuos presentan una dispersión claramente diferente de otras, puede existir evidencia gráfica de heterocedasticidad.</p>
 <p>Por ejemplo, si al avanzar en las observaciones los residuos pasan de estar muy concentrados alrededor de cero a presentar una dispersión cada vez mayor, podría aparecer un patrón similar a un <strong>abanico</strong>, lo que constituiría una primera indicación de que la varianza de la perturbación no es constante.</p>
-<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -539,7 +537,7 @@ Var(v_i)
 <section id="gráfico-de-los-residuos-frente-a-las-variables-explicativas" class="level4 unnumbered">
 <h4 class="unnumbered anchored" data-anchor-id="gráfico-de-los-residuos-frente-a-las-variables-explicativas">Gráfico de los residuos frente a las variables explicativas</h4>
 <p>Una herramienta especialmente útil consiste en representar los residuos estimados, o sus cuadrados, frente a cada una de las variables explicativas del modelo. Esta representación permite analizar no solo si existe heterocedasticidad, sino también obtener una primera indicación sobre <strong>qué variable puede estar relacionada con el cambio en la varianza de los residuos</strong>.</p>
-<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -668,7 +666,7 @@ F_{exp}=\frac{SCR_2}{SCR_1}.
 \]</span></p>
 <p>Si la varianza es mayor en el segundo grupo, el estadístico tomará valores elevados. Bajo la hipótesis nula, el estadístico sigue una distribución <span class="math inline">\(F\)</span> con los grados de libertad correspondientes a los dos grupos. Una cuestión importante en este contraste es la elección de las observaciones centrales que deben eliminarse. No existe una única elección, aunque tradicionalmente se ha propuesto eliminar aproximadamente un tercio de la muestra. En cualquier caso, los dos grupos deben tener el mismo número de observaciones y disponer de suficientes grados de libertad para estimar el modelo.</p>
 <p>En R, el contraste puede realizarse mediante la función <code>gqtest()</code> del paquete <code>lmtest</code>.</p>
-<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -764,7 +762,7 @@ BP = 3.735, df = 2, p-value = 0.1545</code></pre>
 <li>Si <code>p-value ≥ α</code>, no se rechaza <span class="math inline">\(H_0\)</span> y no se dispone de evidencia suficiente para afirmar que existe heteroscedasticidad.</li>
 </ul>
 <p>La principal ventaja del test de White es su <strong>flexibilidad</strong>, ya que no es necesario establecer previamente cuál es la variable que provoca el cambio en la varianza ni cuál es la forma funcional concreta de dicha relación. Sin embargo, esta misma generalidad constituye también una limitación: si se rechaza la hipótesis nula, el contraste indica que existe evidencia de heteroscedasticidad, pero <strong>no identifica por sí mismo cuál es su causa ni proporciona necesariamente una forma concreta para modelar la varianza</strong>.</p>
-<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -841,7 +839,7 @@ BP = 3.0002, df = 3, p-value = 0.3916</code></pre>
 <p>Esto resulta especialmente útil en el ejemplo del ROA porque permite plantear directamente la hipótesis de que la variabilidad de la rentabilidad empresarial puede depender de variables como la liquidez, el endeudamiento o el tamaño de la empresa, aproximado mediante el número de empleados.</p>
 <p>La interpretación se realiza nuevamente mediante el p-valor. Si este es inferior al nivel de significación elegido, se rechaza la hipótesis nula de homoscedasticidad.</p>
 <p>Una diferencia importante respecto al test de White es, por tanto, que <strong>Breusch-Pagan plantea una estructura más concreta para la varianza</strong>, mientras que White permite una especificación mucho más general mediante cuadrados y productos cruzados de las variables explicativas.</p>
-<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -890,7 +888,7 @@ h\in{-2,-1,-1/2,1/2,1,2}.
 <p>Por el contrario, si el coeficiente resulta significativo, existe evidencia de que la magnitud de los residuos depende de dicha variable y, por tanto, de que puede existir heteroscedasticidad.</p>
 <p>Si varias especificaciones resultan significativas, puede compararse su capacidad explicativa, por ejemplo mediante el <span class="math inline">\(R^2\)</span>, para determinar cuál proporciona un mejor ajuste de la magnitud de los residuos.</p>
 <p>Es importante señalar que Glejser <strong>no constituye un contraste de hipótesis de heteroscedasticidad en el mismo sentido que Breusch-Pagan o White</strong>. Su conclusión se basa en contrastes de significación de los parámetros de las regresiones auxiliares. Su interés reside en que, además de proporcionar evidencia sobre la existencia de heteroscedasticidad, puede aportar información sobre la <strong>forma que podría adoptar la varianza</strong>.</p>
-<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -1109,7 +1107,7 @@ Var(u_i)=\sigma^2w_i,
 <li>Estimar el modelo transformado mediante MCO.</li>
 </ol>
 <p>Este procedimiento recibe el nombre de <strong>mínimos cuadrados generalizados factibles (MCGF)</strong>, ya que la matriz de varianzas y covarianzas desconocida se sustituye por una estimación de la misma.</p>
-<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -1421,7 +1419,8 @@ R^2=0.8441\]</span></p>
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -1430,8 +1429,69 @@ R^2=0.8441\]</span></p>
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -1445,6 +1505,7 @@ R^2=0.8441\]</span></p>
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -1607,44 +1668,54 @@ R^2=0.8441\]</span></p>
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -1743,7 +1814,10 @@ R^2=0.8441\]</span></p>
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Código desplazable","output":"Salida desplazable"};
+  </script>
+<nav class="page-navigation" aria-label="Página">
   <div class="nav-page nav-page-previous">
       <a href="../chapters/04-tema4.html" class="pagination-link" aria-label="Colinealidad">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Colinealidad</span></span>

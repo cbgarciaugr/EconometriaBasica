@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.19">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -94,14 +94,15 @@ div.csl-indent {
 <link href="../chapters/01-tema1.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-bcae718ed38fb51adf324a3c235abf9b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-2d1f7ff00ad8d5256a73a8ae8bdc4958.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -163,17 +164,17 @@ window.Quarto = {
 <link rel="stylesheet" href="../style.css">
 </head>
 
-<body class="nav-sidebar floating quarto-light">
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Saltar al contenido principal</a>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Barra de herramientas">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/02-tema2.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Modelo de regresión lineal</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/02-tema2.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Modelo de regresión lineal</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -184,7 +185,7 @@ window.Quarto = {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Sitio web">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Econometría para Finanzas y Contabilidad con R</a> 
@@ -244,13 +245,10 @@ window.Quarto = {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
- <span class="menu-text">Apéndices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Apéndices</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/apendice-basesdatos.html" class="sidebar-item-text sidebar-link">
@@ -283,7 +281,7 @@ window.Quarto = {
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">Tabla de contenidos</h2>
    
   <ul>
@@ -328,7 +326,7 @@ window.Quarto = {
 <div class="toc-actions"><ul><li><a href="https://github.com/cbgarciaugr/EconometriaBasica/edit/main/chapters/02-tema2.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -349,7 +347,7 @@ window.Quarto = {
 </header>
 
 
-<div class="callout callout-style-default callout-important callout-titled" title="Objetivos de aprendizaje">
+<div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
@@ -380,7 +378,7 @@ window.Quarto = {
 <p><span class="math display">\[Y_{i} = \beta_{1} + \beta_{2} X_{2i} + \beta_{3} X_{3i} +
         \cdots + \beta_{k} X_{ki} + u_{i}, \quad i=1,\dots,n,\]</span></p>
 <p>donde se ha considerado que hay término constante, es decir, <span class="math inline">\(X_{1i} = 1\)</span>, <span class="math inline">\(\forall i\)</span>. Normalmente se usa el subíndice <span class="math inline">\(i\)</span> para trabajar con datos de caracter transversal y el subíndice <span class="math inline">\(t\)</span> para trabajar con datos de caracter temporal.</p>
-<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -395,7 +393,7 @@ ROA_i=\beta_0+\beta_1LEV_i+\beta_2LIQ_i+u_i
 \]</span> Notese que el parámetro <span class="math inline">\(\beta_0\)</span> no esta multiplicado por ninguna variable explicativa por lo que podría considerarse que esta multiplicada por 1, que es a lo que llamamos el término independiente o intercepto. Tengase en cuenta tambien que el subindice <span class="math inline">\(i\)</span> se usa para denotar que tenemos <span class="math inline">\(n=100\)</span> observaciones, de manera que en esa ecuación se esta representando una observación (empresa) concreta <span class="math inline">\(i\)</span>. En cambio, los parámetros no tienen subindice porque son constantes desconocidas que describen la relación entre las variables y se supone que son comunes a todas las observaciones de la muestra.</p>
 </div>
 </div>
-<div class="callout callout-style-simple callout-tip no-icon callout-titled" title="Base de datos 2: El IBEX35">
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -416,7 +414,7 @@ IBEX35_t=\beta_0+\beta_1SP500_t+\beta_2EUROSTOXX50_t+u_t
 <ol type="1">
 <li>El vector <span class="math inline">\(y\)</span> se puede expresar como combinación lineal de las variables explicativas más un vector de perturbación.</li>
 </ol>
-<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -432,7 +430,7 @@ IBEX35_t=\beta_0+\beta_1SP500_t+\beta_2EUROSTOXX50_t+u_t
 <ol start="2" type="1">
 <li>No hay relación entre variables independientes y la perturbación aleatoria, es decir, <span class="math display">\[Cov ( u_{n \times 1}, X_{j} ) = 0_{n\times n}.\]</span></li>
 </ol>
-<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -448,7 +446,7 @@ IBEX35_t=\beta_0+\beta_1SP500_t+\beta_2EUROSTOXX50_t+u_t
 <ol start="3" type="1">
 <li>La matriz <span class="math inline">\(X\)</span> es no estocástica y de rango completo por columnas, es decir, <span class="math inline">\(rg(X) = k\)</span> (como consecuencia <span class="math inline">\(n &gt; k\)</span> y las columnas de <span class="math inline">\(X\)</span>, es decir, <span class="math inline">\(X_{i}\)</span>, <span class="math inline">\(i=1,\dots,n\)</span>, son linealmente independientes).</li>
 </ol>
-<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -467,7 +465,7 @@ IBEX35_t=\beta_0+\beta_1SP500_t+\beta_2EUROSTOXX50_t+u_t
 <p>4.1 Está centrada: <span class="math display">\[E[u_{i}] =0, \ i=1,\dots,n\]</span></p>
 <p>4.2 Es homoscedástica: <span class="math display">\[Var(u_{i}) =  E[u_{i}^{2} ] = \sigma^{2},  \ i=1,\dots,n \]</span></p>
 <p>4.3 Es incorrelada: <span class="math display">\[Cov(u_{i}, u_{j}) = E[u_{i} \cdot u_{j}] = 0,  \ \forall i \not= j, i,j=1,\dots,n \]</span> El incumplimiento de la hipótesis (3) da lugar a la existencia de colinealidad perfecta. Igualmente, el incumplimiento de las hipótesis (4.b) y (4.c) dan lugar a la existencia de heterocedasticidad y autocorrelación, respectivamente.</p>
-<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -510,7 +508,7 @@ IBEX35_t=\beta_0+\beta_1SP500_t+\beta_2EUROSTOXX50_t+u_t
 <section id="estimación-de-los-parámetros-del-modelo-por-mínimos-cuadrados-ordinarios.-propiedades" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="estimación-de-los-parámetros-del-modelo-por-mínimos-cuadrados-ordinarios.-propiedades"><span class="header-section-number">2.2</span> Estimación de los parámetros del modelo por mínimos cuadrados ordinarios. Propiedades</h2>
 <p>El método de mínimos cuadrados ordinarios (MCO) es el procedimiento más utilizado para estimar un modelo de regresión lineal. Su objetivo consiste en encontrar los valores de los parámetros que hacen que las predicciones del modelo sean lo más próximas posible a los datos observados. En otras palabras, busca la recta (o, en el caso de varias variables, el hiperplano) que mejor se ajusta a la información disponible.</p>
-<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -620,7 +618,7 @@ IBEX35_t=\beta_0+\beta_1SP500_t+\beta_2EUROSTOXX50_t+u_t
             \sum \limits_{i=1}^{n} X_{ki} Y_{i} \\
         \end{array} \right).\]</span></p>
 <p>Esta expresión proporciona los estimadores de los parámetros del modelo utilizando únicamente la información contenida en la matriz de variables explicativas y en el vector de la variable dependiente. Aunque su cálculo puede realizarse manualmente en ejemplos sencillos mediante el producto de matrices y el cálculo de la inversa de una matriz, en la práctica usaremos programas estadísticos como R mediante la función <code>lm</code>. Sin embargo, el conocimiento de la expresión anterior permite comprender el fundamento matemático del método de estimación.</p>
-<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -893,7 +891,7 @@ Var\left(\widehat{\beta}\right).
 \]</span></p>
 <p>Una vez estimada la varianza residual, puede obtenerse la matriz estimada de varianzas y covarianzas de los estimadores MCO <span class="math inline">\(\widehat{\beta}\)</span>:</p>
 <p><span class="math display">\[\widehat{Var \left( \widehat{\beta} \right)} = \widehat{\sigma}^{2} \cdot \left( X^{t} X \right)^{-1}.\]</span> Los elementos de la diagonal principal de esta matriz contienen las <strong>varianzas</strong> de cada uno de los coeficientes estimados, mientras que los elementos situados fuera de la diagonal representan las <strong>covarianzas</strong> entre ellos. A partir de esta matriz se obtienen los <strong>errores estándar</strong> de los coeficientes, que desempeñan un papel esencial en la inferencia estadística y permiten construir intervalos de confianza y realizar contrastes de significación sobre los parámetros del modelo, aspectos que se estudiarán en las siguientes secciones.</p>
-<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -971,7 +969,7 @@ LIQUIDEZ_INMEDIATA  -3.7175669   0.043415389         2.73076377</code></pre>
 <p>Si partimos de un modelo de regresión estimado con dos variables explicativas más un termino independiente:</p>
 <p><span class="math display">\[\hat{y}_t=\hat{\beta}_1+\hat{\beta}_2x_{2t}+\hat{\beta}_3x_{3_t}\]</span> Si expresamos el modelo en diferencias:</p>
 <p><span class="math display">\[\hat{y}_i-\hat{y}_{i-1}=(\hat{\beta}_1+\hat{\beta}_2x_{2t}+\hat{\beta}_3x_{3_t})-(\hat{\beta}_1+\hat{\beta}_2x_{2t-1}+\hat{\beta}_3x_{3t-1})=\]</span> <span class="math display">\[\Delta\hat{y}_t= \hat{\beta}_2\Delta x_{2t}+ \hat{\beta}_3 \Delta x_{3t}\]</span> Por tanto, si el incremento en <span class="math inline">\(x_3\)</span> es cero (<span class="math inline">\(\Delta x_3=0\)</span>), entonces: <span class="math display">\[\hat{\beta}_2=\frac{\Delta \hat{y}_t}{\Delta X_{2t}}\]</span> por lo que <span class="math inline">\(\hat{\beta}_2\)</span> se interpreta como el cambio en <span class="math inline">\(y\)</span> producido por un cambio en <span class="math inline">\(x_2\)</span> manteniendose <span class="math inline">\(x_3\)</span> constante.</p>
-<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -1080,7 +1078,7 @@ SCR=y^{t}y - \widehat{\beta}^{t} X^{t} y
 </li>
 <li>Por otra parte, cuando la SCR es nula, el modelo explica el 100% de la varianza y, por tanto, el coeficiente de determinación toma el valor 1.</li>
 </ul>
-<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -1111,7 +1109,7 @@ SCR=y^{t}y - \widehat{\beta}^{t} X^{t} y
 \overline{R}^{2} = 1 - (1 - R^{2}) \cdot \frac{n-1}{n-k}.
 \]</span></p>
 <p>A diferencia del coeficiente de determinación, esta medida incorpora una penalización por el número de parámetros estimados. En consecuencia, únicamente aumenta cuando la incorporación de nuevas variables mejora realmente la capacidad explicativa del modelo.</p>
-<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -1167,7 +1165,7 @@ SCR=y^{t}y - \widehat{\beta}^{t} X^{t} y
     BIC = - 2 \cdot \mathfrak{L}  + k \cdot \ln (n),
 \]</span> donde <span class="math inline">\(\mathfrak{L} = - \frac{n}{2} \cdot \left( 1 + \ln (2 \cdot \pi) - \ln (n) \right) - \frac{n}{2} \cdot \ln (SCR).\)</span></p>
 <p>Ambos criterios penalizan la incorporación de nuevas variables explicativas. Aunque añadir variables suele reducir la suma de cuadrados de los residuos, también incrementa la complejidad del modelo. El AIC y el BIC buscan un equilibrio entre ambas cuestiones. Por tanto, cuando se comparan varios modelos estimados sobre la misma muestra y con la misma variable dependiente, será preferible aquel que presente el menor valor de AIC o BIC.</p>
-<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -1295,7 +1293,7 @@ Var \left( \widehat{\beta} \right) = \sigma^{2} \cdot \left( X^{t} X \right)^{-1
 \cdot \sqrt{\widehat{var}(\hat{\beta_i})}, \quad i=1,\dots,k.
 \]</span></p>
 <p>siendo <span class="math inline">\(\widehat{var}(\hat{\beta_i})=\hat{\sigma}^2\times w_{i}\)</span> donde <span class="math inline">\(w_{i}\)</span> es el elemento <span class="math inline">\((i,i)\)</span> de la matriz <span class="math inline">\((X'X)^{-1}\)</span>. El intervalo de confianza proporciona un conjunto de valores plausibles para el verdadero parámetro poblacional. Cuanto menor sea la variabilidad del estimador, más estrecho será el intervalo y mayor será la precisión de la estimación.</p>
-<div class="callout callout-style-default callout-caution callout-titled" title="Error habitual interpretación del intervalor de confianza">
+<div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
@@ -1314,7 +1312,7 @@ Var \left( \widehat{\beta} \right) = \sigma^{2} \cdot \left( X^{t} X \right)^{-1
        \frac{(n-k) \cdot \widehat{\sigma}^{2}}{\chi^{2}_{n-k} \left( \frac{\alpha}{2} \right)} \right]
 \]</span></p>
 <p>donde <span class="math inline">\(\chi^{2}_{n-k} \left( 1 - \frac{\alpha}{2} \right)\)</span> y <span class="math inline">\(\chi^{2}_{n-k} \left( \frac{\alpha}{2} \right)\)</span> son los puntos de una distribución chi-cuadrado con <span class="math inline">\(n-k\)</span> grados de libertad que dejan a su izquierda, respectivamente, una probabilidad <span class="math inline">\(1 - \frac{\alpha}{2}\)</span> y <span class="math inline">\(\frac{\alpha}{2}\)</span>.</p>
-<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -1388,7 +1386,7 @@ EBIT                0.003347332  0.006593218</code></pre>
 <section id="estadístico-general-de-contraste" class="level3" data-number="2.5.1">
 <h3 data-number="2.5.1" class="anchored" data-anchor-id="estadístico-general-de-contraste"><span class="header-section-number">2.5.1</span> Estadístico general de contraste</h3>
 <p>Una restricción lineal consiste en imponer una determinada condición sobre uno o varios parámetros del modelo. Por ejemplo, las preguntas anteriores se podrían formular en forma de restricción de la siguiente manera:</p>
-<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -1405,7 +1403,7 @@ EBIT                0.003347332  0.006593218</code></pre>
 </ul>
 </div>
 </div>
-<div class="callout callout-style-simple callout-tip no-icon callout-titled" title="Base de datos 2: El IBEX35">
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -1442,7 +1440,7 @@ b_{2} \\
 b_{q}
 \end{pmatrix}
 \]</span></p>
-<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -1468,7 +1466,7 @@ r=
 \]</span></p>
 </div>
 </div>
-<div class="callout callout-style-simple callout-tip no-icon callout-titled" title="Base de datos 2: El IBEX35">
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -1503,7 +1501,7 @@ r=1
 \left( R \widehat{\beta} - r \right) &gt; F_{q,n-k} (1 - \alpha)
 \]</span></p>
 <p>donde <span class="math inline">\(F_{q,n-k} (1 - \alpha)\)</span> es el cuantil de la distribución <span class="math inline">\(F\)</span> de Snedecor con <span class="math inline">\(q\)</span> y <span class="math inline">\(n-k\)</span> grados de libertad.</p>
-<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -1564,7 +1562,7 @@ r=1
 </section>
 <section id="contraste-de-una-única-restricción-lineal" class="level3" data-number="2.5.2">
 <h3 data-number="2.5.2" class="anchored" data-anchor-id="contraste-de-una-única-restricción-lineal"><span class="header-section-number">2.5.2</span> Contraste de una única restricción lineal</h3>
-<div class="callout callout-style-simple callout-tip no-icon callout-titled" title="Base de datos 2: El IBEX35">
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -1597,7 +1595,7 @@ H_{0}: \beta_{i} = b_{i}, \quad i=1,\dots,k
 \left| \frac{\widehat{\beta}_{i} - b_{i}}{\widehat{\sigma} \cdot \sqrt{w_{i}}} \right|
 &gt; t_{n-k}\left(1 - \frac{\alpha}{2}\right)
 \]</span></p>
-<div class="callout callout-style-simple callout-tip no-icon callout-titled" title="Base de datos 2: El IBEX35">
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -1661,7 +1659,7 @@ LIQUIDEZ_INMEDIATA  -3.7175669   0.043415389         2.73076377</code></pre>
 <h3 data-number="2.5.3" class="anchored" data-anchor-id="contraste-de-significación-individual"><span class="header-section-number">2.5.3</span> Contraste de significación individual</h3>
 <p>El contraste de significación individual que se utiliza habitualmente es simplemente un caso particular del contraste anterior. La diferencia está en el valor que asignamos a la restricción. En lugar de preguntarnos si un parámetro es igual a un valor concreto, nos preguntamos si es igual a cero. Este último contraste permite determinar si el efecto asociado a una variable explicativa es estadísticamente diferente de cero. Por tanto, el contraste de significación individual no es un contraste distinto del que acabamos de estudiar, sino el caso particular de una única restricción lineal en el que el valor hipotetizado del parámetro es cero. Es decir, la hipótesis nula quedaría formulada:</p>
 <p><span class="math display">\[H_{0}: \beta_{i} = 0\]</span> Si la hipótesis nula no se rechaza, no existe evidencia estadística suficiente para afirmar que la variable explicativa tiene un efecto distinto de cero sobre la variable dependiente, una vez controlado el efecto del resto de variables del modelo. Por el contrario, si la hipótesis nula se rechaza, puede concluirse que dicha variable contribuye de forma significativa a explicar la variable dependiente.</p>
-<div class="callout callout-style-simple callout-tip no-icon callout-titled" title="Base de datos 2: El IBEX35">
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -1714,7 +1712,7 @@ LIQUIDEZ_INMEDIATA  -3.7175669   0.043415389         2.73076377</code></pre>
 <p>En cualquier caso, a mayor <em>valor-p</em> menor la evidencia contra la hipótesis nula, y por el contrario, a menor <em>valor-p</em>, mayor evidencia contra la hipótesis nula.</p>
 <p><strong>Regla de decisión:</strong><br>
 Rechazar la hipótesis nula si el <em>valor-p</em> es menor que el nivel de significación elegido, y no rechazarla en caso contrario.</p>
-<div class="callout callout-style-default callout-caution callout-titled" title="Error habitual en la interpretación del p-valor">
+<div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
@@ -1728,7 +1726,7 @@ Rechazar la hipótesis nula si el <em>valor-p</em> es menor que el nivel de sign
 </div>
 </div>
 <p>Por ejemplo, si un contraste presenta un p-valor de (0.03), la hipótesis nula se rechazaría al 5 %, ya que (0.03&lt;0.05), pero no al 1 %, ya que (0.03&gt;0.01). De este modo, el p-valor proporciona más información que una simple decisión de rechazo o no rechazo, ya que permite valorar hasta qué nivel de significación los datos permiten rechazar la hipótesis nula.</p>
-<div class="callout callout-style-simple callout-tip no-icon callout-titled" title="Base de datos 2: El IBEX35">
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -1838,7 +1836,7 @@ F_{exp} = \frac{\frac{SCE}{k-1}}{\frac{SCR}{n-k}}
 <p>El estadístico compara la variabilidad explicada por el modelo con la variabilidad que permanece sin explicar. Si el modelo no aporta capacidad explicativa, ambas cantidades serán relativamente similares y el estadístico (F) tomará un valor reducido. Por el contrario, si las variables explicativas permiten explicar una parte importante de la variabilidad de la variable dependiente, el numerador será grande en relación con el denominador y el estadístico (F) tomará un valor elevado.</p>
 <p>Por tanto, para un nivel de significación (<span class="math inline">\(\alpha\)</span>), la regla de decisión es:</p>
 <p><span class="math display">\[F_{exp}&gt; F_{k-1,n-k}(1-\alpha)\]</span> Si el estadístico experimental supera el valor crítico, existe evidencia suficiente para rechazar la hipótesis de que todos los coeficientes de las variables explicativas son simultáneamente iguales a cero. En consecuencia, se concluye que el modelo es globalmente significativo.</p>
-<div class="callout callout-style-simple callout-tip no-icon callout-titled" title="Base de datos 2: El IBEX35">
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -1979,7 +1977,7 @@ R_R^2\leq R^2.
 <li><span class="math inline">\(q\)</span> es el número de restricciones;</li>
 <li><span class="math inline">\(SCR/(n−k)\)</span> es la estimación de la varianza de la perturbación en el modelo no restringido.</li>
 </ul>
-<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -2080,7 +2078,7 @@ t_{n-k}\left(1-\frac{\alpha}{2}\right)
 <blockquote class="blockquote">
 <p><strong>¿Entre qué valores puede encontrarse una nueva observación individual de (Y) con esas características?</strong></p>
 </blockquote>
-<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Base de datos 1: Top 100 empresas andaluzas del transporte">
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -2170,7 +2168,7 @@ SCR_P-(SCR_1+SCR_2)
 \]</span></p>
 <p>El numerador mide cuánto empeora el ajuste cuando obligamos a que los dos grupos compartan los mismos parámetros. Si la diferencia entre el ajuste restringido y el no restringido es pequeña, no tendremos evidencia suficiente para rechazar la permanencia estructural. Si, por el contrario, la imposición de unos mismos parámetros provoca un aumento importante de la suma de cuadrados de los residuos, tendremos evidencia de un cambio estructural.</p>
 <p>La hipótesis nula se rechaza cuando el estadístico experimental supera el valor crítico de la distribución (F) correspondiente o, de forma equivalente, cuando su p-valor es inferior al nivel de significación elegido. En ese caso, concluiremos que existen evidencias de que los parámetros no son estables entre los dos grupos analizados.</p>
-<div class="callout callout-style-simple callout-tip no-icon callout-titled" title="Base de datos 2: El IBEX35">
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -4703,7 +4701,8 @@ William H, Greene. 2003. <em>ECONOMETRIC ANALYSIS FIFTH EDITION</em>.
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -4712,8 +4711,69 @@ William H, Greene. 2003. <em>ECONOMETRIC ANALYSIS FIFTH EDITION</em>.
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -4727,6 +4787,7 @@ William H, Greene. 2003. <em>ECONOMETRIC ANALYSIS FIFTH EDITION</em>.
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -4889,44 +4950,54 @@ William H, Greene. 2003. <em>ECONOMETRIC ANALYSIS FIFTH EDITION</em>.
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -5025,7 +5096,10 @@ William H, Greene. 2003. <em>ECONOMETRIC ANALYSIS FIFTH EDITION</em>.
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Código desplazable","output":"Salida desplazable"};
+  </script>
+<nav class="page-navigation" aria-label="Página">
   <div class="nav-page nav-page-previous">
       <a href="../chapters/01-tema1.html" class="pagination-link" aria-label="Introducción a la Econometría">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducción a la Econometría</span></span>

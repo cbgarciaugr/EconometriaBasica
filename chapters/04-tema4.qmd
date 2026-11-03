@@ -255,26 +255,26 @@ $$
 \boxed{\lambda_1=4,\quad \lambda_2=2}
 $$
 Así, en este ejemplo, se verifica:
-$$\begin{vmatrix}
+$$\begin{pmatrix}
 4 & 0\\ 
 0 & 2\\
-\end{vmatrix}\begin{vmatrix}
+\end{vmatrix}\begin{pmatrix}
 1\\ 
 0\\
-\end{vmatrix}=4\begin{vmatrix}
+\end{vmatrix}=4\begin{pmatrix}
 1\\ 
 0\\
-\end{vmatrix}$$
-$$\begin{vmatrix}
+\end{pmatrix}$$
+$$\begin{pmatrix}
 4 & 0\\ 
 0 & 2\\
-\end{vmatrix}\begin{vmatrix}
+\end{vmatrix}\begin{pmatrix}
 0\\ 
 2\\
-\end{vmatrix}=0\begin{vmatrix}
+\end{vmatrix}=0\begin{pmatrix}
 0\\ 
 2\\
-\end{vmatrix}$$
+\end{pmatrix}$$
 
 **Ejemplo propuesto:** Obtenga los autovalores de la siguiente matriz: 
 $$
@@ -394,20 +394,234 @@ El centrado modifica la interpretación del término independiente, pero no alte
 
 Estas soluciones son las primeras que deben considerarse porque mantienen, en la medida de lo posible, la interpretación habitual de los estimadores MCO. Alternativamente, pueden usarse estimadores alternativos como el estimador de mínimos cuadrados restringidos (si existen restricciones teóricas), el **estimador cresta    (ridge )** [@Hoerl1970b], el **estimador alzado (raise)**  [@Garcia2010] o el **estimador residualizado**.
 
-    ---------------------------------------------------------------------------------------
-  Tipo de problema        Colinealidad sistemática                  Colinealidad errática
-  ----------------------- --------------------------------------- -----------------------
-  **Colinealidad exacta** \- Eliminar variables.`<br>`{=html}-    Mejorar la muestra:
-                          Sustituir la combinación lineal.        (aumentar el tamaño
-                                                                  muestral y/o la
-                                                                  variabilidad).
+```{=html}
+<style>
+.tabla-colinealidad {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 0.95em;
+}
+.tabla-colinealidad th,
+.tabla-colinealidad td {
+  border: 1px solid #b8b8b8;
+  padding: 12px 14px;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+.tabla-colinealidad th {
+  background-color: #f0f2f4;
+  text-align: left;
+}
+.tabla-colinealidad th:nth-child(1),
+.tabla-colinealidad td:nth-child(1) { width: 22%; }
+.tabla-colinealidad th:nth-child(2),
+.tabla-colinealidad td:nth-child(2) { width: 39%; }
+.tabla-colinealidad th:nth-child(3),
+.tabla-colinealidad td:nth-child(3) { width: 39%; }
+.tabla-colinealidad ul {
+  margin: 0;
+  padding-left: 18px;
+}
+.tabla-colinealidad li + li {
+  margin-top: 7px;
+}
+</style>
+```
+## 3. Soluciones
 
-  **Colinealidad          **Si es no esencial:** centrar la       Mejorarr la muestra:
-  aproximada**            variable que la                         (aumentar el tamaño
-                          genera.`<br>`{=html}`<br>`{=html}**Si   muestral y/o la
-                          es esencial:** eliminar alguna variable variabilidad).
-                          o recurrir a soluciones avanzadas.      
-  ---------------------------------------------------------------------------------------
+```{=html}
+<table class="tabla-colinealidad">
+```
+```{=html}
+<thead>
+```
+```{=html}
+<tr>
+```
+```{=html}
+<th>
+```
+Tipo de problema
+```{=html}
+</th>
+```
+```{=html}
+<th>
+```
+Colinealidad sistemática
+```{=html}
+</th>
+```
+```{=html}
+<th>
+```
+Colinealidad errática
+```{=html}
+</th>
+```
+```{=html}
+</tr>
+```
+```{=html}
+</thead>
+```
+```{=html}
+<tbody>
+```
+```{=html}
+<tr>
+```
+```{=html}
+<td>
+```
+`<strong>`{=html}Colinealidad exacta`</strong>`{=html}
+```{=html}
+</td>
+```
+```{=html}
+<td>
+```
+```{=html}
+<ul>
+```
+```{=html}
+<li>
+```
+Eliminar variables.
+```{=html}
+</li>
+```
+```{=html}
+<li>
+```
+Sustituir la combinación lineal.
+```{=html}
+</li>
+```
+```{=html}
+</ul>
+```
+```{=html}
+</td>
+```
+```{=html}
+<td>
+```
+Mejorar la muestra:
+```{=html}
+<ul>
+```
+```{=html}
+<li>
+```
+Aumentar el tamaño muestral.
+```{=html}
+</li>
+```
+```{=html}
+<li>
+```
+Aumentar la variabilidad.
+```{=html}
+</li>
+```
+```{=html}
+</ul>
+```
+```{=html}
+</td>
+```
+```{=html}
+</tr>
+```
+```{=html}
+<tr>
+```
+```{=html}
+<td>
+```
+`<strong>`{=html}Colinealidad aproximada`</strong>`{=html}
+```{=html}
+</td>
+```
+```{=html}
+<td>
+```
+```{=html}
+<p>
+```
+`<strong>`{=html}Si no es esencial:`</strong>`{=html} centrar la
+variable que la genera.
+```{=html}
+</p>
+```
+```{=html}
+<p>
+```
+`<strong>`{=html}Si es esencial:`</strong>`{=html}
+```{=html}
+</p>
+```
+```{=html}
+<ul>
+```
+```{=html}
+<li>
+```
+Eliminar alguna variable.
+```{=html}
+</li>
+```
+```{=html}
+<li>
+```
+Recurrir a soluciones avanzadas.
+```{=html}
+</li>
+```
+```{=html}
+</ul>
+```
+```{=html}
+</td>
+```
+```{=html}
+<td>
+```
+Mejorar la muestra:
+```{=html}
+<ul>
+```
+```{=html}
+<li>
+```
+Aumentar el tamaño muestral.
+```{=html}
+</li>
+```
+```{=html}
+<li>
+```
+Aumentar la variabilidad.
+```{=html}
+</li>
+```
+```{=html}
+</ul>
+```
+```{=html}
+</td>
+```
+```{=html}
+</tr>
+```
+```{=html}
+</tbody>
+```
+```{=html}
+</table>
+```
 
 ### Soluciones avanzadas
 

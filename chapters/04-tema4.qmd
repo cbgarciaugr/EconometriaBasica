@@ -394,6 +394,20 @@ El centrado modifica la interpretación del término independiente, pero no alte
 
 Estas soluciones son las primeras que deben considerarse porque mantienen, en la medida de lo posible, la interpretación habitual de los estimadores MCO. Alternativamente, pueden usarse estimadores alternativos como el estimador de mínimos cuadrados restringidos (si existen restricciones teóricas), el **estimador cresta    (ridge )** [@Hoerl1970b], el **estimador alzado (raise)**  [@Garcia2010] o el **estimador residualizado**.
 
+    ---------------------------------------------------------------------------------------
+  Tipo de problema        Colinealidad sistemática                  Colinealidad errática
+  ----------------------- --------------------------------------- -----------------------
+  **Colinealidad exacta** \- Eliminar variables.`<br>`{=html}-    Mejorar la muestra:
+                          Sustituir la combinación lineal.        (aumentar el tamaño
+                                                                  muestral y/o la
+                                                                  variabilidad).
+
+  **Colinealidad          **Si es no esencial:** centrar la       Mejorarr la muestra:
+  aproximada**            variable que la                         (aumentar el tamaño
+                          genera.`<br>`{=html}`<br>`{=html}**Si   muestral y/o la
+                          es esencial:** eliminar alguna variable variabilidad).
+                          o recurrir a soluciones avanzadas.      
+  ---------------------------------------------------------------------------------------
 
 ### Soluciones avanzadas
 

@@ -273,7 +273,7 @@ Como se ha señalado, ninguno de los indicadores de multicolinealidad debe inter
 
 Además, la combinación de estos indicadores permite distinguir entre diferentes situaciones. Por ejemplo, un FIV elevado puede indicar una relación lineal importante entre una variable y el resto de regresores, mientras que la comparación del número de condición con y sin término independiente puede aportar información adicional sobre la posible existencia de multicolinealidad no esencial. Por ello, el diagnóstico debe realizarse considerando conjuntamente los distintos indicadores y teniendo en cuenta la estructura concreta del modelo.
 
-Para facilitar este diagnóstico conjunto puede utilizarse el paquete `multicoll` de R. Este paquete reúne diferentes indicadores que permiten analizar tanto la intensidad de la multicolinealidad como su posible origen, complementando los procedimientos presentados anteriormente.
+Para facilitar este diagnóstico conjunto puede utilizarse el paquete `Multicoll` de R. Este paquete reúne diferentes indicadores que permiten analizar tanto la intensidad de la multicolinealidad como su posible origen, complementando los procedimientos presentados anteriormente.
 
 Entre sus principales funciones se encuentran:
 
@@ -302,7 +302,7 @@ Además de proporcionar los distintos indicadores numéricos, la función multiC
 La principal ventaja de esta representación es que incorpora visualmente los umbrales de referencia utilizados para interpretar ambos indicadores. De esta forma, es posible identificar rápidamente qué variables pueden presentar problemas de multicolinealidad y distinguir, de manera orientativa, entre una posible multicolinealidad esencial, asociada a valores elevados del FIV, y una posible multicolinealidad no esencial, relacionada con una reducida variabilidad de la variable explicativa.
 
 ::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
-Para utilizar el paquete `multiCol` hay que crear la matriz de variables explicativas del modelo y, posteriormente, se pueden obtener globalmente todas las medidas mediante la función `multiCol`. Se observa que en este caso concreto, todos los indicadores presentan valroes por debajo de los ubrales preocupantes. 
+Para utilizar el paquete `multiColl` hay que crear la matriz de variables explicativas del modelo y, posteriormente, se pueden obtener globalmente todas las medidas mediante la función `multiCol`. Se observa que en este caso concreto, todos los indicadores presentan valroes por debajo de los ubrales preocupantes. 
 ```{r}
 n <- length(datos$ROA)
 
@@ -441,7 +441,7 @@ summary(reg)
 ```
 
 2.  Perturbar las variables explicativas un 1% con la función *perturb*
-    del paquete *multiCol* y analizar la variación en los estimadores:
+    del paquete *multiColl* y analizar la variación en los estimadores:
 
 ```{r}
 C_p=perturb(I,1,1,0.01)
@@ -504,10 +504,10 @@ Igualmente, se podría calcular el coeficiente de variación de las
 variables explicativas:
 
 ```{r}
-cv <- function(x) { (sd(x) / mean(x)) * 100 }
+cv <- function(x) {(sd(x) / mean(x))}
 cv(Wissel$C)
 cv(Wissel$I)
-cv(Wissel$Cr)
+cv(Wissel$CP)
 ```
 
 8.  Usa la función *multiCol* para obtener todas las medidas de
@@ -740,9 +740,9 @@ CN(X_r)
 
 ## Prácticas propuestas
 
-1. Usar el paquete multiColl para analizar la posible existecia de multicolinealidad en el modelo $ROA_i=\beta_0+\beta_1LIQUIDEZ_i+\beta_2ENDEUDAMIENTO_i+\beta_3INDICEFINACIEROAPROX_i+u_i$.
+1. Usar el paquete `multiColl` para analizar la posible existecia de multicolinealidad en el modelo $ROA_i=\beta_0+\beta_1LIQUIDEZ_i+\beta_2ENDEUDAMIENTO_i+\beta_3INDICEFINACIEROAPROX_i+u_i$.
 
-2.  Usar el paquete multiColl para analizar la posible existecia de multicolinealidad en el modelo $IBEX35_i=\beta_0+\beta_1SP500+\beta_2EUROSTOXX50_i+u_i$.
+2.  Usar el paquete `multiColl` para analizar la posible existecia de multicolinealidad en el modelo $IBEX35_i=\beta_0+\beta_1SP500+\beta_2EUROSTOXX50_i+u_i$.
 
 3. A partir de la base de datos Inditex que relaciona las ventas con el número de empleados y el número de tiendas para el periodo 2006-2020, se pide: 
 a.	Obtener la matriz de correlaciones de las variables. Comentar el signo de los coeficientes esperados.
@@ -755,8 +755,10 @@ g.	Obtén a través del software el factor inflactor de la varianza y el número
 
 Vamos a realizar los siguientes modelos alternativos:
 
-Modelo 2: Construye la variable ratio de empleado por tienda e introdúcela en el modelo.\\ 
-Modelo 3: A partir del año 2010 el grupo comienza el comercio electrónico. Crea una variable ficticia que recoja este efecto e introdúcela en el modelo junto con la anterior.\\ 
-Modelo 4 (Residualización): Realizamos la regresión del número de empleados en función del número de tiendas y nos quedamos con los residuos. De manera que sustituimos en el modelo 1, el número de empleados por dichos residuos (parte de la variable número de empleados que no está relacionada con el número de tiendas) y se estima nuevamente el modelo.
+**Modelo 2**: Construye la variable ratio de empleado por tienda e introdúcela en el modelo.
+
+**Modelo 3**: A partir del año 2010 el grupo comienza el comercio electrónico. Crea una variable ficticia que recoja este efecto e introdúcela en el modelo junto con la anterior.
+
+**Modelo 4** (Residualización): Realizamos la regresión del número de empleados en función del número de tiendas y nos quedamos con los residuos. De manera que sustituimos en el modelo 1, el número de empleados por dichos residuos (parte de la variable número de empleados que no está relacionada con el número de tiendas) y se estima nuevamente el modelo.
 
 Comparar todos los modelos en función de la bondad del ajuste. 

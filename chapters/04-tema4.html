@@ -595,10 +595,23 @@ FIV(\widehat{\beta}_i)=\frac{1}{1-R_i^2},
 </section>
 <section id="número-de-condición-kx" class="level3" data-number="4.2.4">
 <h3 data-number="4.2.4" class="anchored" data-anchor-id="número-de-condición-kx"><span class="header-section-number">4.2.4</span> Número de condición (<span class="math inline">\(k(X)\)</span>)</h3>
-<p>Otro procedimiento consiste en analizar el número de condición de la matriz de variables explicativas. Este indicador permite evaluar el grado de dependencia lineal existente en el conjunto de regresores.</p>
-<p>Se obtiene a partir de los autovalores de la matriz correspondiente. Si <span class="math inline">\(\lambda_{\max}\)</span> y <span class="math inline">\(\lambda_{\min}\)</span> representan, respectivamente, el mayor y el menor autovalor, el número de condición se define como:</p>
+<p>Otro procedimiento consiste en analizar el número de condición de la matriz de variables explicativas. Este indicador permite evaluar el grado de dependencia lineal existente en el conjunto de regresores y se calcula a partir de los autovalores de la matriz <span class="math inline">\(X'X\)</span>.</p>
+<p>Recordemos, en primer lugar, el concepto de autovalor partiendo de la siguiente expresión <span class="math inline">\(Av = \lambda v\)</span>, donde: <span class="math inline">\(A\)</span> es una matriz cuadrada. <span class="math inline">\(v\)</span> es un vector no nulo, denominado autovector. <span class="math inline">\(\lambda\)</span> es un número real o complejo denominado autovalor.</p>
+<p>Para calcular los autovalores de una matriz, partimos de <span class="math inline">\(Av = \lambda v\)</span>, reordenando <span class="math inline">\((A-\lambda I)v=0\)</span>. Para que exista una solución distinta de cero, el determinante debe ser igual a cero <span class="math inline">\(\boxed{|A-\lambda I|=0}\)</span>. Veamos un ejemplo:</p>
+<p><strong>Ejemplo 1:</strong> Consideremos la siguiente matriz <span class="math inline">\(A=\begin{pmatrix}4 &amp; 0\0 &amp; 2\end{pmatrix}\)</span>. Para obtener sus autovalores, calculamos: <span class="math inline">\(|A-\lambda I|=0\)</span>. Sustituyendo: <span class="math inline">\(\begin{vmatrix}4-\lambda &amp; 0\0 &amp; 2-\lambda\end{vmatrix}=0\)</span>. Desarrollamos el determinante: <span class="math inline">\((4-\lambda)(2-\lambda)=0\)</span>. Por tanto, los autovalores son: <span class="math display">\[
+\boxed{\lambda_1=4,\quad \lambda_2=2}
+\]</span></p>
+<p><strong>Ejemplo 2:</strong> Obtenga los autovalores de la siguiente matriz: <span class="math display">\[
+B=
+\begin{pmatrix}
+1000 &amp; 0\
+0 &amp; 0.01
+\end{pmatrix}
+\]</span></p>
+<p>Si no existe mucha diferencia entre los autovalores de una matriz, significa que esta transforma las distintas direcciones del espacio de una forma relativamente similar. Por el contrario, si existe una gran diferencia entre los autovalores, significa que la matriz estira o comprime mucho más en unas direcciones que en otras. Esto indica que la matriz está mal condicionada y que puede ser más sensible a pequeños errores o perturbaciones en los datos.</p>
+<p>En Econometría, esta situación puede ser indicativa de problemas de multicolinealidad entre las variables explicativas y puede diagnosticarse mediante el número de condición que se calcula como la raíz cuadrada del cociente entre el máximo y el mínimo autovalor, denotados como <span class="math inline">\(\lambda_{\max}\)</span> y <span class="math inline">\(\lambda_{\min}\)</span>, respectivamente:</p>
 <p><span class="math display">\[k(X) = \sqrt{\frac{\lambda_{max}}{\lambda_{min}}} \]</span></p>
-<p>Si <span class="math inline">\(k(X)\)</span> se sitúa entre 20 y 30, la colinealidad es probable; si supera 30, se considera grave (<span class="citation" data-cites="Belsley">Belsley (<a href="references.html#ref-Belsley" role="doc-biblioref">1982</a>)</span>). El número de condición si detecta la multicolinealidad de tipo no esencial, pero el indicador es una medida global para el modelo por lo que no detalla la variable causante.</p>
+<p>Si <span class="math inline">\(k(X)\)</span> se sitúa entre 20 y 30, la colinealidad es probable; si supera 30, se considera grave (<span class="citation" data-cites="Belsley">Belsley (<a href="references.html#ref-Belsley" role="doc-biblioref">1982</a>)</span>). El número de condición sí detecta la multicolinealidad de tipo no esencial, pero el indicador es una medida global para el modelo por lo que no detalla la variable causante.</p>
 <section id="detección-de-la-multicolinealidad-no-esencial" class="level4 unnumbered">
 <h4 class="unnumbered anchored" data-anchor-id="detección-de-la-multicolinealidad-no-esencial">Detección de la multicolinealidad no esencial</h4>
 <p>El número de condición puede utilizarse también para distinguir entre diferentes tipos de multicolinealidad. Para ello resulta útil comparar el número de condición calculado incluyendo el término independiente con el obtenido sin incluirlo.</p>
@@ -2474,538 +2487,563 @@ Wooldridge, Jeffrey. 2000. <em>Introductory econometrics: A modern approach (mas
 <span id="cb86-234"><a href="#cb86-234" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb86-235"><a href="#cb86-235" aria-hidden="true" tabindex="-1"></a><span class="fu">### Número de condición ($k(X)$)</span></span>
 <span id="cb86-236"><a href="#cb86-236" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-237"><a href="#cb86-237" aria-hidden="true" tabindex="-1"></a>Otro procedimiento consiste en analizar el número de condición de la matriz de variables explicativas. Este indicador permite evaluar el grado de dependencia lineal existente en el conjunto de regresores.</span>
+<span id="cb86-237"><a href="#cb86-237" aria-hidden="true" tabindex="-1"></a>Otro procedimiento consiste en analizar el número de condición de la matriz de variables explicativas. Este indicador permite evaluar el grado de dependencia lineal existente en el conjunto de regresores y se calcula a partir de los autovalores de la matriz $X'X$.</span>
 <span id="cb86-238"><a href="#cb86-238" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-239"><a href="#cb86-239" aria-hidden="true" tabindex="-1"></a>Se obtiene a partir de los autovalores de la matriz correspondiente. Si $\lambda_{\max}$ y $\lambda_{\min}$ representan, respectivamente, el mayor y el menor autovalor, el número de condición se define como:</span>
-<span id="cb86-240"><a href="#cb86-240" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-241"><a href="#cb86-241" aria-hidden="true" tabindex="-1"></a>$$k(X) = \sqrt{\frac{\lambda_{max}}{\lambda_{min}}} $$</span>
-<span id="cb86-242"><a href="#cb86-242" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-243"><a href="#cb86-243" aria-hidden="true" tabindex="-1"></a>Si $k(X)$ se sitúa entre 20 y 30, la colinealidad es probable; si supera</span>
-<span id="cb86-244"><a href="#cb86-244" aria-hidden="true" tabindex="-1"></a>30, se considera grave (@Belsley). El número de condición si detecta la</span>
-<span id="cb86-245"><a href="#cb86-245" aria-hidden="true" tabindex="-1"></a>multicolinealidad de tipo no esencial, pero el indicador es una medida</span>
-<span id="cb86-246"><a href="#cb86-246" aria-hidden="true" tabindex="-1"></a>global para el modelo por lo que no detalla la variable causante. </span>
-<span id="cb86-247"><a href="#cb86-247" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-248"><a href="#cb86-248" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Detección de la multicolinealidad no esencial {.unnumbered}</span></span>
-<span id="cb86-249"><a href="#cb86-249" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-250"><a href="#cb86-250" aria-hidden="true" tabindex="-1"></a>El número de condición puede utilizarse también para distinguir entre diferentes tipos de multicolinealidad. Para ello resulta útil comparar el número de condición calculado incluyendo el término independiente con el obtenido sin incluirlo.</span>
+<span id="cb86-239"><a href="#cb86-239" aria-hidden="true" tabindex="-1"></a>Recordemos, en primer lugar, el concepto de autovalor partiendo de la siguiente expresión $Av = \lambda v$, donde:</span>
+<span id="cb86-240"><a href="#cb86-240" aria-hidden="true" tabindex="-1"></a>$A$ es una matriz cuadrada.</span>
+<span id="cb86-241"><a href="#cb86-241" aria-hidden="true" tabindex="-1"></a>$v$ es un vector no nulo, denominado autovector.</span>
+<span id="cb86-242"><a href="#cb86-242" aria-hidden="true" tabindex="-1"></a>$\lambda$ es un número real o complejo denominado autovalor.</span>
+<span id="cb86-243"><a href="#cb86-243" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-244"><a href="#cb86-244" aria-hidden="true" tabindex="-1"></a>Para calcular los autovalores de una matriz, partimos de $Av = \lambda v$, reordenando $(A-\lambda I)v=0$. Para que exista una solución distinta de cero, el determinante debe ser igual a cero $\boxed{|A-\lambda I|=0}$. Veamos un ejemplo:</span>
+<span id="cb86-245"><a href="#cb86-245" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-246"><a href="#cb86-246" aria-hidden="true" tabindex="-1"></a>**Ejemplo 1:** Consideremos la siguiente matriz $A=\begin{pmatrix}4 &amp; 0\0 &amp; 2\end{pmatrix}$. Para obtener sus autovalores, calculamos:</span>
+<span id="cb86-247"><a href="#cb86-247" aria-hidden="true" tabindex="-1"></a>$|A-\lambda I|=0$. Sustituyendo: $\begin{vmatrix}4-\lambda &amp; 0\0 &amp; 2-\lambda\end{vmatrix}=0$. Desarrollamos el determinante: $(4-\lambda)(2-\lambda)=0$. Por tanto, los autovalores son:</span>
+<span id="cb86-248"><a href="#cb86-248" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb86-249"><a href="#cb86-249" aria-hidden="true" tabindex="-1"></a>\boxed{\lambda_1=4,\quad \lambda_2=2}</span>
+<span id="cb86-250"><a href="#cb86-250" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb86-251"><a href="#cb86-251" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-252"><a href="#cb86-252" aria-hidden="true" tabindex="-1"></a>La comparación permite detectar situaciones en las que una variable explicativa presenta una relación elevada con el término independiente como consecuencia de su escasa variabilidad. Este fenómeno se corresponde con la denominada multicolinealidad aproximada no esencial.</span>
-<span id="cb86-253"><a href="#cb86-253" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-254"><a href="#cb86-254" aria-hidden="true" tabindex="-1"></a>Cuando se detecta este problema, puede analizarse la variabilidad de las variables explicativas mediante, entre otros indicadores, el coeficiente de variación:</span>
-<span id="cb86-255"><a href="#cb86-255" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-256"><a href="#cb86-256" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb86-257"><a href="#cb86-257" aria-hidden="true" tabindex="-1"></a>CV=\frac{s_X}{\overline{X}},</span>
-<span id="cb86-258"><a href="#cb86-258" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb86-259"><a href="#cb86-259" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-260"><a href="#cb86-260" aria-hidden="true" tabindex="-1"></a>donde $s_X$ representa la desviación típica de la variable y $\overline{X}$ su media.</span>
-<span id="cb86-261"><a href="#cb86-261" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-262"><a href="#cb86-262" aria-hidden="true" tabindex="-1"></a>@salmeron2019diagnosis propone como referencia un valor de $CV$ inferior a 0.1002506 como indicativo de una variabilidad suficientemente reducida para que pueda aparecer una relación lineal fuerte con el término independiente.</span>
-<span id="cb86-263"><a href="#cb86-263" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-264"><a href="#cb86-264" aria-hidden="true" tabindex="-1"></a>En el caso de las variables dicotómicas, la situación debe analizarse de forma particular. Como estas variables únicamente pueden tomar los valores 0 y 1, su relación con el término independiente está estrechamente relacionada con la proporción de observaciones que toman el valor 1. Si una categoría es muy poco frecuente, la variable dicotómica presenta una variabilidad reducida y puede aparecer un problema de colinealidad no esencial.</span>
-<span id="cb86-265"><a href="#cb86-265" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-266"><a href="#cb86-266" aria-hidden="true" tabindex="-1"></a>Una posible solución cuando la colinealidad no esencial procede de una variable cuantitativa con una media elevada y poca variabilidad es centrar la variable, sustituyéndola por la diferencia respecto de su media:</span>
-<span id="cb86-267"><a href="#cb86-267" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-268"><a href="#cb86-268" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb86-269"><a href="#cb86-269" aria-hidden="true" tabindex="-1"></a>X_i^c=X_i-\overline{X}.</span>
-<span id="cb86-270"><a href="#cb86-270" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb86-252"><a href="#cb86-252" aria-hidden="true" tabindex="-1"></a>**Ejemplo 2:** Obtenga los autovalores de la siguiente matriz: </span>
+<span id="cb86-253"><a href="#cb86-253" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb86-254"><a href="#cb86-254" aria-hidden="true" tabindex="-1"></a>B=</span>
+<span id="cb86-255"><a href="#cb86-255" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix}</span>
+<span id="cb86-256"><a href="#cb86-256" aria-hidden="true" tabindex="-1"></a>1000 &amp; 0\</span>
+<span id="cb86-257"><a href="#cb86-257" aria-hidden="true" tabindex="-1"></a>0 &amp; 0.01</span>
+<span id="cb86-258"><a href="#cb86-258" aria-hidden="true" tabindex="-1"></a>\end{pmatrix}</span>
+<span id="cb86-259"><a href="#cb86-259" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb86-260"><a href="#cb86-260" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-261"><a href="#cb86-261" aria-hidden="true" tabindex="-1"></a>Si no existe mucha diferencia entre los autovalores de una matriz, significa que esta transforma las distintas direcciones del espacio de una forma relativamente similar. Por el contrario, si existe una gran diferencia entre los autovalores, significa que la matriz estira o comprime mucho más en unas direcciones que en otras. Esto indica que la matriz está mal condicionada y que puede ser más sensible a pequeños errores o perturbaciones en los datos. </span>
+<span id="cb86-262"><a href="#cb86-262" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-263"><a href="#cb86-263" aria-hidden="true" tabindex="-1"></a>En Econometría, esta situación puede ser indicativa de problemas de multicolinealidad entre las variables explicativas y puede diagnosticarse mediante el número de condición que se calcula como la raíz cuadrada del cociente entre el máximo y el mínimo autovalor, denotados como $\lambda_{\max}$ y $\lambda_{\min}$, respectivamente:</span>
+<span id="cb86-264"><a href="#cb86-264" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-265"><a href="#cb86-265" aria-hidden="true" tabindex="-1"></a>$$k(X) = \sqrt{\frac{\lambda_{max}}{\lambda_{min}}} $$</span>
+<span id="cb86-266"><a href="#cb86-266" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-267"><a href="#cb86-267" aria-hidden="true" tabindex="-1"></a>Si $k(X)$ se sitúa entre 20 y 30, la colinealidad es probable; si supera</span>
+<span id="cb86-268"><a href="#cb86-268" aria-hidden="true" tabindex="-1"></a>30, se considera grave (@Belsley). El número de condición sí detecta la</span>
+<span id="cb86-269"><a href="#cb86-269" aria-hidden="true" tabindex="-1"></a>multicolinealidad de tipo no esencial, pero el indicador es una medida</span>
+<span id="cb86-270"><a href="#cb86-270" aria-hidden="true" tabindex="-1"></a>global para el modelo por lo que no detalla la variable causante. </span>
 <span id="cb86-271"><a href="#cb86-271" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-272"><a href="#cb86-272" aria-hidden="true" tabindex="-1"></a>El centrado no modifica la información contenida en la variable ni altera el ajuste del modelo, pero puede reducir la relación entre dicha variable y el término independiente y, por tanto, mejorar el condicionamiento numérico de la matriz de regresores.</span>
-<span id="cb86-273"><a href="#cb86-273" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-274"><a href="#cb86-274" aria-hidden="true" tabindex="-1"></a><span class="fu">### Paquete *multiColl*</span></span>
-<span id="cb86-275"><a href="#cb86-275" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-276"><a href="#cb86-276" aria-hidden="true" tabindex="-1"></a>Como se ha señalado, ninguno de los indicadores de multicolinealidad debe interpretarse de forma aislada. Cada uno proporciona información diferente sobre el problema: las correlaciones permiten detectar relaciones lineales entre pares de variables, las regresiones auxiliares y los FIV permiten identificar qué variables están más relacionadas con el resto, mientras que el número de condición ofrece una visión global de la dependencia lineal existente en el modelo.</span>
-<span id="cb86-277"><a href="#cb86-277" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-278"><a href="#cb86-278" aria-hidden="true" tabindex="-1"></a>Además, la combinación de estos indicadores permite distinguir entre diferentes situaciones. Por ejemplo, un FIV elevado puede indicar una relación lineal importante entre una variable y el resto de regresores, mientras que la comparación del número de condición con y sin término independiente puede aportar información adicional sobre la posible existencia de multicolinealidad no esencial. Por ello, el diagnóstico debe realizarse considerando conjuntamente los distintos indicadores y teniendo en cuenta la estructura concreta del modelo.</span>
-<span id="cb86-279"><a href="#cb86-279" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-280"><a href="#cb86-280" aria-hidden="true" tabindex="-1"></a>Para facilitar este diagnóstico conjunto puede utilizarse el paquete <span class="in">`Multicoll`</span> de R. Este paquete reúne diferentes indicadores que permiten analizar tanto la intensidad de la multicolinealidad como su posible origen, complementando los procedimientos presentados anteriormente.</span>
-<span id="cb86-281"><a href="#cb86-281" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-282"><a href="#cb86-282" aria-hidden="true" tabindex="-1"></a>Entre sus principales funciones se encuentran:</span>
-<span id="cb86-283"><a href="#cb86-283" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-284"><a href="#cb86-284" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>*CN()*: Devuelve el número de condición de la matriz de diseño.</span>
-<span id="cb86-285"><a href="#cb86-285" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>*CNs()*: Calcula el número de condición considerando y sin</span>
-<span id="cb86-286"><a href="#cb86-286" aria-hidden="true" tabindex="-1"></a>    considerar el intercepto, y muestra el incremento porcentual. Esto</span>
-<span id="cb86-287"><a href="#cb86-287" aria-hidden="true" tabindex="-1"></a>    permite evaluar el efecto específico del intercepto sobre la</span>
-<span id="cb86-288"><a href="#cb86-288" aria-hidden="true" tabindex="-1"></a>    colinealidad.</span>
-<span id="cb86-289"><a href="#cb86-289" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>*CV()*: calcula el coeficiente de variación de una variable</span>
-<span id="cb86-290"><a href="#cb86-290" aria-hidden="true" tabindex="-1"></a>    cuantitativa.</span>
-<span id="cb86-291"><a href="#cb86-291" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>*CVs()*: calcula el coeficiente de variación de todas las variables</span>
-<span id="cb86-292"><a href="#cb86-292" aria-hidden="true" tabindex="-1"></a>    cuantitativas de la matriz, con la posibilidad de indicar variables</span>
-<span id="cb86-293"><a href="#cb86-293" aria-hidden="true" tabindex="-1"></a>    dummy que deben excluirse del cálculo.</span>
-<span id="cb86-294"><a href="#cb86-294" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>*VIF()*: Calcula los VIF para las variables cuantitativas.</span>
-<span id="cb86-295"><a href="#cb86-295" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>*multiCol()*: resume todas las medidas de diagnóstico disponibles</span>
-<span id="cb86-296"><a href="#cb86-296" aria-hidden="true" tabindex="-1"></a>    (CV, VIF, CN, ki, correlaciones, proporciones de dummies, etc.) y</span>
-<span id="cb86-297"><a href="#cb86-297" aria-hidden="true" tabindex="-1"></a>    puede incluir la representación gráfica de los coeficientes de</span>
-<span id="cb86-298"><a href="#cb86-298" aria-hidden="true" tabindex="-1"></a>    variación de cada variable explicativa en relación con su factor</span>
-<span id="cb86-299"><a href="#cb86-299" aria-hidden="true" tabindex="-1"></a>    inflactor de la varianza.</span>
-<span id="cb86-300"><a href="#cb86-300" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>*multiColLM()*: además de las medidas anteriores, proporciona las</span>
-<span id="cb86-301"><a href="#cb86-301" aria-hidden="true" tabindex="-1"></a>    estimaciones por MCO y analiza cómo cambian los coeficientes si se</span>
-<span id="cb86-302"><a href="#cb86-302" aria-hidden="true" tabindex="-1"></a>    perturban los datos, permitiendo evaluar la sensibilidad del modelo.</span>
-<span id="cb86-303"><a href="#cb86-303" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-304"><a href="#cb86-304" aria-hidden="true" tabindex="-1"></a>Además de proporcionar los distintos indicadores numéricos, la función multiCol() ofrece una representación gráfica del diagnóstico de multicolinealidad. En particular, el gráfico representa, para cada una de las variables explicativas, su factor de inflación de la varianza (FIV) y su coeficiente de variación (CV).</span>
-<span id="cb86-305"><a href="#cb86-305" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-306"><a href="#cb86-306" aria-hidden="true" tabindex="-1"></a>La principal ventaja de esta representación es que incorpora visualmente los umbrales de referencia utilizados para interpretar ambos indicadores. De esta forma, es posible identificar rápidamente qué variables pueden presentar problemas de multicolinealidad y distinguir, de manera orientativa, entre una posible multicolinealidad esencial, asociada a valores elevados del FIV, y una posible multicolinealidad no esencial, relacionada con una reducida variabilidad de la variable explicativa.</span>
-<span id="cb86-307"><a href="#cb86-307" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-308"><a href="#cb86-308" aria-hidden="true" tabindex="-1"></a>::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}</span>
-<span id="cb86-309"><a href="#cb86-309" aria-hidden="true" tabindex="-1"></a>Para utilizar el paquete <span class="in">`multiColl`</span> hay que crear la matriz de variables explicativas del modelo y, posteriormente, se pueden obtener globalmente todas las medidas mediante la función <span class="in">`multiCol`</span>. Se observa que en este caso concreto, todos los indicadores presentan valroes por debajo de los ubrales preocupantes. </span>
-<span id="cb86-312"><a href="#cb86-312" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb86-313"><a href="#cb86-313" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(datos<span class="sc">$</span>ROA)</span>
-<span id="cb86-314"><a href="#cb86-314" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-315"><a href="#cb86-315" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">cbind</span>(</span>
-<span id="cb86-316"><a href="#cb86-316" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rep</span>(<span class="dv">1</span>, n),</span>
-<span id="cb86-317"><a href="#cb86-317" aria-hidden="true" tabindex="-1"></a>  datos<span class="sc">$</span>LIQUIDEZ_INMEDIATA,</span>
-<span id="cb86-318"><a href="#cb86-318" aria-hidden="true" tabindex="-1"></a>  datos<span class="sc">$</span>ENDEUDAMIENTO,</span>
-<span id="cb86-319"><a href="#cb86-319" aria-hidden="true" tabindex="-1"></a>  datos<span class="sc">$</span>EMPLEADOS</span>
-<span id="cb86-320"><a href="#cb86-320" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb86-321"><a href="#cb86-321" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-322"><a href="#cb86-322" aria-hidden="true" tabindex="-1"></a><span class="fu">multiCol</span>(X)</span>
-<span id="cb86-323"><a href="#cb86-323" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb86-324"><a href="#cb86-324" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-325"><a href="#cb86-325" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb86-326"><a href="#cb86-326" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-327"><a href="#cb86-327" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-328"><a href="#cb86-328" aria-hidden="true" tabindex="-1"></a><span class="fu">## Soluciones al problema de multicolinealidad</span></span>
-<span id="cb86-329"><a href="#cb86-329" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-330"><a href="#cb86-330" aria-hidden="true" tabindex="-1"></a>La multicolinealidad dificulta la estimación precisa de los efectos individuales de las variables explicativas. Sin embargo, su tratamiento no debe plantearse de forma automática: antes de aplicar una solución es necesario identificar qué tipo de multicolinealidad existe y cuál es su origen. En primer lugar, vamos a presentar algunas soluciones habituales de caracter básico y luego presentaremos brevemente otros métodos de estimación alternativos a MCO como soluciones más avanzadas. </span>
-<span id="cb86-331"><a href="#cb86-331" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-332"><a href="#cb86-332" aria-hidden="true" tabindex="-1"></a><span class="fu">### Soluciones básicas habituales</span></span>
-<span id="cb86-333"><a href="#cb86-333" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-334"><a href="#cb86-334" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Mejorar el diseño muestral. Cuando la multicolinealidad tiene un **componente errático**, puede estar relacionada con las características particulares de la muestra. En este caso, una posible solución consiste en aumentar el tamaño muestral y, cuando sea posible, incrementar la variabilidad de las variables explicativas. De esta forma, se obtiene una mayor cantidad de información para identificar los efectos individuales de los regresores.</span>
-<span id="cb86-335"><a href="#cb86-335" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Centrar las variables explicativas. Cuando la multicolinealidad aproximada es **no esencial**, es decir, está relacionada con una escasa variabilidad de alguna variable y su relación con el término independiente, puede ser conveniente centrar dicha variable respecto de su media:</span>
-<span id="cb86-336"><a href="#cb86-336" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-337"><a href="#cb86-337" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb86-338"><a href="#cb86-338" aria-hidden="true" tabindex="-1"></a>X_i^c=X_i-\overline{X}_i.</span>
-<span id="cb86-339"><a href="#cb86-339" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb86-340"><a href="#cb86-340" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-341"><a href="#cb86-341" aria-hidden="true" tabindex="-1"></a>El centrado modifica la interpretación del término independiente, pero no altera la información contenida en la variable. Esta transformación puede reducir los problemas asociados a la relación entre el regresor y el intercepto.</span>
-<span id="cb86-342"><a href="#cb86-342" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-343"><a href="#cb86-343" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Eliminar o combinar variables explicativas. Cuando la multicolinealidad es **esencial**, puede existir una relación lineal elevada entre dos o más variables explicativas. Si desde el punto de vista económico o teórico algunas variables aportan información muy similar, una alternativa consiste en eliminar una de ellas o construir una medida conjunta que recoja la información común.</span>
-<span id="cb86-344"><a href="#cb86-344" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-345"><a href="#cb86-345" aria-hidden="true" tabindex="-1"></a>Estas soluciones son las primeras que deben considerarse porque mantienen, en la medida de lo posible, la interpretación habitual de los estimadores MCO. Alternativamente, pueden usarse estimadores alternativos como el estimador de mínimos cuadrados restringidos (si existen restricciones teóricas) o el **estimador cresta    (ridge )** [@Hoerl1970b], la **estimador alzado (raise)**  [@Garcia2010] o el **estimador residualizado**.</span>
+<span id="cb86-272"><a href="#cb86-272" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-273"><a href="#cb86-273" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Detección de la multicolinealidad no esencial {.unnumbered}</span></span>
+<span id="cb86-274"><a href="#cb86-274" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-275"><a href="#cb86-275" aria-hidden="true" tabindex="-1"></a>El número de condición puede utilizarse también para distinguir entre diferentes tipos de multicolinealidad. Para ello resulta útil comparar el número de condición calculado incluyendo el término independiente con el obtenido sin incluirlo.</span>
+<span id="cb86-276"><a href="#cb86-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-277"><a href="#cb86-277" aria-hidden="true" tabindex="-1"></a>La comparación permite detectar situaciones en las que una variable explicativa presenta una relación elevada con el término independiente como consecuencia de su escasa variabilidad. Este fenómeno se corresponde con la denominada multicolinealidad aproximada no esencial.</span>
+<span id="cb86-278"><a href="#cb86-278" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-279"><a href="#cb86-279" aria-hidden="true" tabindex="-1"></a>Cuando se detecta este problema, puede analizarse la variabilidad de las variables explicativas mediante, entre otros indicadores, el coeficiente de variación:</span>
+<span id="cb86-280"><a href="#cb86-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-281"><a href="#cb86-281" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb86-282"><a href="#cb86-282" aria-hidden="true" tabindex="-1"></a>CV=\frac{s_X}{\overline{X}},</span>
+<span id="cb86-283"><a href="#cb86-283" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb86-284"><a href="#cb86-284" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-285"><a href="#cb86-285" aria-hidden="true" tabindex="-1"></a>donde $s_X$ representa la desviación típica de la variable y $\overline{X}$ su media.</span>
+<span id="cb86-286"><a href="#cb86-286" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-287"><a href="#cb86-287" aria-hidden="true" tabindex="-1"></a>@salmeron2019diagnosis propone como referencia un valor de $CV$ inferior a 0.1002506 como indicativo de una variabilidad suficientemente reducida para que pueda aparecer una relación lineal fuerte con el término independiente.</span>
+<span id="cb86-288"><a href="#cb86-288" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-289"><a href="#cb86-289" aria-hidden="true" tabindex="-1"></a>En el caso de las variables dicotómicas, la situación debe analizarse de forma particular. Como estas variables únicamente pueden tomar los valores 0 y 1, su relación con el término independiente está estrechamente relacionada con la proporción de observaciones que toman el valor 1. Si una categoría es muy poco frecuente, la variable dicotómica presenta una variabilidad reducida y puede aparecer un problema de colinealidad no esencial.</span>
+<span id="cb86-290"><a href="#cb86-290" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-291"><a href="#cb86-291" aria-hidden="true" tabindex="-1"></a>Una posible solución cuando la colinealidad no esencial procede de una variable cuantitativa con una media elevada y poca variabilidad es centrar la variable, sustituyéndola por la diferencia respecto de su media:</span>
+<span id="cb86-292"><a href="#cb86-292" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-293"><a href="#cb86-293" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb86-294"><a href="#cb86-294" aria-hidden="true" tabindex="-1"></a>X_i^c=X_i-\overline{X}.</span>
+<span id="cb86-295"><a href="#cb86-295" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb86-296"><a href="#cb86-296" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-297"><a href="#cb86-297" aria-hidden="true" tabindex="-1"></a>El centrado no modifica la información contenida en la variable ni altera el ajuste del modelo, pero puede reducir la relación entre dicha variable y el término independiente y, por tanto, mejorar el condicionamiento numérico de la matriz de regresores.</span>
+<span id="cb86-298"><a href="#cb86-298" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-299"><a href="#cb86-299" aria-hidden="true" tabindex="-1"></a><span class="fu">### Paquete *multiColl*</span></span>
+<span id="cb86-300"><a href="#cb86-300" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-301"><a href="#cb86-301" aria-hidden="true" tabindex="-1"></a>Como se ha señalado, ninguno de los indicadores de multicolinealidad debe interpretarse de forma aislada. Cada uno proporciona información diferente sobre el problema: las correlaciones permiten detectar relaciones lineales entre pares de variables, las regresiones auxiliares y los FIV permiten identificar qué variables están más relacionadas con el resto, mientras que el número de condición ofrece una visión global de la dependencia lineal existente en el modelo.</span>
+<span id="cb86-302"><a href="#cb86-302" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-303"><a href="#cb86-303" aria-hidden="true" tabindex="-1"></a>Además, la combinación de estos indicadores permite distinguir entre diferentes situaciones. Por ejemplo, un FIV elevado puede indicar una relación lineal importante entre una variable y el resto de regresores, mientras que la comparación del número de condición con y sin término independiente puede aportar información adicional sobre la posible existencia de multicolinealidad no esencial. Por ello, el diagnóstico debe realizarse considerando conjuntamente los distintos indicadores y teniendo en cuenta la estructura concreta del modelo.</span>
+<span id="cb86-304"><a href="#cb86-304" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-305"><a href="#cb86-305" aria-hidden="true" tabindex="-1"></a>Para facilitar este diagnóstico conjunto puede utilizarse el paquete <span class="in">`Multicoll`</span> de R. Este paquete reúne diferentes indicadores que permiten analizar tanto la intensidad de la multicolinealidad como su posible origen, complementando los procedimientos presentados anteriormente.</span>
+<span id="cb86-306"><a href="#cb86-306" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-307"><a href="#cb86-307" aria-hidden="true" tabindex="-1"></a>Entre sus principales funciones se encuentran:</span>
+<span id="cb86-308"><a href="#cb86-308" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-309"><a href="#cb86-309" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>*CN()*: Devuelve el número de condición de la matriz de diseño.</span>
+<span id="cb86-310"><a href="#cb86-310" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>*CNs()*: Calcula el número de condición considerando y sin</span>
+<span id="cb86-311"><a href="#cb86-311" aria-hidden="true" tabindex="-1"></a>    considerar el intercepto, y muestra el incremento porcentual. Esto</span>
+<span id="cb86-312"><a href="#cb86-312" aria-hidden="true" tabindex="-1"></a>    permite evaluar el efecto específico del intercepto sobre la</span>
+<span id="cb86-313"><a href="#cb86-313" aria-hidden="true" tabindex="-1"></a>    colinealidad.</span>
+<span id="cb86-314"><a href="#cb86-314" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>*CV()*: calcula el coeficiente de variación de una variable</span>
+<span id="cb86-315"><a href="#cb86-315" aria-hidden="true" tabindex="-1"></a>    cuantitativa.</span>
+<span id="cb86-316"><a href="#cb86-316" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>*CVs()*: calcula el coeficiente de variación de todas las variables</span>
+<span id="cb86-317"><a href="#cb86-317" aria-hidden="true" tabindex="-1"></a>    cuantitativas de la matriz, con la posibilidad de indicar variables</span>
+<span id="cb86-318"><a href="#cb86-318" aria-hidden="true" tabindex="-1"></a>    dummy que deben excluirse del cálculo.</span>
+<span id="cb86-319"><a href="#cb86-319" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>*VIF()*: Calcula los VIF para las variables cuantitativas.</span>
+<span id="cb86-320"><a href="#cb86-320" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>*multiCol()*: resume todas las medidas de diagnóstico disponibles</span>
+<span id="cb86-321"><a href="#cb86-321" aria-hidden="true" tabindex="-1"></a>    (CV, VIF, CN, ki, correlaciones, proporciones de dummies, etc.) y</span>
+<span id="cb86-322"><a href="#cb86-322" aria-hidden="true" tabindex="-1"></a>    puede incluir la representación gráfica de los coeficientes de</span>
+<span id="cb86-323"><a href="#cb86-323" aria-hidden="true" tabindex="-1"></a>    variación de cada variable explicativa en relación con su factor</span>
+<span id="cb86-324"><a href="#cb86-324" aria-hidden="true" tabindex="-1"></a>    inflactor de la varianza.</span>
+<span id="cb86-325"><a href="#cb86-325" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>*multiColLM()*: además de las medidas anteriores, proporciona las</span>
+<span id="cb86-326"><a href="#cb86-326" aria-hidden="true" tabindex="-1"></a>    estimaciones por MCO y analiza cómo cambian los coeficientes si se</span>
+<span id="cb86-327"><a href="#cb86-327" aria-hidden="true" tabindex="-1"></a>    perturban los datos, permitiendo evaluar la sensibilidad del modelo.</span>
+<span id="cb86-328"><a href="#cb86-328" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-329"><a href="#cb86-329" aria-hidden="true" tabindex="-1"></a>Además de proporcionar los distintos indicadores numéricos, la función multiCol() ofrece una representación gráfica del diagnóstico de multicolinealidad. En particular, el gráfico representa, para cada una de las variables explicativas, su factor de inflación de la varianza (FIV) y su coeficiente de variación (CV).</span>
+<span id="cb86-330"><a href="#cb86-330" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-331"><a href="#cb86-331" aria-hidden="true" tabindex="-1"></a>La principal ventaja de esta representación es que incorpora visualmente los umbrales de referencia utilizados para interpretar ambos indicadores. De esta forma, es posible identificar rápidamente qué variables pueden presentar problemas de multicolinealidad y distinguir, de manera orientativa, entre una posible multicolinealidad esencial, asociada a valores elevados del FIV, y una posible multicolinealidad no esencial, relacionada con una reducida variabilidad de la variable explicativa.</span>
+<span id="cb86-332"><a href="#cb86-332" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-333"><a href="#cb86-333" aria-hidden="true" tabindex="-1"></a>::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}</span>
+<span id="cb86-334"><a href="#cb86-334" aria-hidden="true" tabindex="-1"></a>Para utilizar el paquete <span class="in">`multiColl`</span> hay que crear la matriz de variables explicativas del modelo y, posteriormente, se pueden obtener globalmente todas las medidas mediante la función <span class="in">`multiCol`</span>. Se observa que en este caso concreto, todos los indicadores presentan valroes por debajo de los ubrales preocupantes. </span>
+<span id="cb86-337"><a href="#cb86-337" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb86-338"><a href="#cb86-338" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(datos<span class="sc">$</span>ROA)</span>
+<span id="cb86-339"><a href="#cb86-339" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-340"><a href="#cb86-340" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">cbind</span>(</span>
+<span id="cb86-341"><a href="#cb86-341" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rep</span>(<span class="dv">1</span>, n),</span>
+<span id="cb86-342"><a href="#cb86-342" aria-hidden="true" tabindex="-1"></a>  datos<span class="sc">$</span>LIQUIDEZ_INMEDIATA,</span>
+<span id="cb86-343"><a href="#cb86-343" aria-hidden="true" tabindex="-1"></a>  datos<span class="sc">$</span>ENDEUDAMIENTO,</span>
+<span id="cb86-344"><a href="#cb86-344" aria-hidden="true" tabindex="-1"></a>  datos<span class="sc">$</span>EMPLEADOS</span>
+<span id="cb86-345"><a href="#cb86-345" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb86-346"><a href="#cb86-346" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-347"><a href="#cb86-347" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-348"><a href="#cb86-348" aria-hidden="true" tabindex="-1"></a><span class="fu">### Soluciones avanzadas</span></span>
+<span id="cb86-347"><a href="#cb86-347" aria-hidden="true" tabindex="-1"></a><span class="fu">multiCol</span>(X)</span>
+<span id="cb86-348"><a href="#cb86-348" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb86-349"><a href="#cb86-349" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-350"><a href="#cb86-350" aria-hidden="true" tabindex="-1"></a>Cuando la multicolinealidad persiste y no resulta conveniente modificar la muestra, centrar las variables o eliminar alguno de los regresores, pueden utilizarse procedimientos de estimación alternativos a MCO.</span>
+<span id="cb86-350"><a href="#cb86-350" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb86-351"><a href="#cb86-351" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb86-352"><a href="#cb86-352" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-353"><a href="#cb86-353" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Estimación cresta {.unnumbered}</span></span>
+<span id="cb86-353"><a href="#cb86-353" aria-hidden="true" tabindex="-1"></a><span class="fu">## Soluciones al problema de multicolinealidad</span></span>
 <span id="cb86-354"><a href="#cb86-354" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-355"><a href="#cb86-355" aria-hidden="true" tabindex="-1"></a>@Hoerl1970b y @Hoerl1970a proponen la **estimación cresta**(ridge) cuyos</span>
-<span id="cb86-356"><a href="#cb86-356" aria-hidden="true" tabindex="-1"></a>estimadores se obtienen como:</span>
-<span id="cb86-357"><a href="#cb86-357" aria-hidden="true" tabindex="-1"></a>$$\hat{\boldsymbol{\beta}}_R(k)=\left(\mathbf{X}'\mathbf{X}+k\mathbf{I}\right)^{-1}\mathbf{X}'\mathbf{Y}, \quad k\geq 0.$$</span>
-<span id="cb86-358"><a href="#cb86-358" aria-hidden="true" tabindex="-1"></a>La idea fundamental consiste en introducir una cantidad positiva $k$ en la diagonal de $\mathbf{X}'\mathbf{X}$. De esta forma, se evita que la proximidad a la singularidad de dicha matriz genere varianzas excesivamente elevadas.</span>
-<span id="cb86-359"><a href="#cb86-359" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-360"><a href="#cb86-360" aria-hidden="true" tabindex="-1"></a>La principal característica de este procedimiento es que introduce un sesgo controlado en los estimadores a cambio de conseguir una reducción de su varianza. Por tanto, frente al estimador MCO, se establece un compromiso entre sesgo y varianza.</span>
+<span id="cb86-355"><a href="#cb86-355" aria-hidden="true" tabindex="-1"></a>La multicolinealidad dificulta la estimación precisa de los efectos individuales de las variables explicativas. Sin embargo, su tratamiento no debe plantearse de forma automática: antes de aplicar una solución es necesario identificar qué tipo de multicolinealidad existe y cuál es su origen. En primer lugar, vamos a presentar algunas soluciones habituales de caracter básico y luego presentaremos brevemente otros métodos de estimación alternativos a MCO como soluciones más avanzadas. </span>
+<span id="cb86-356"><a href="#cb86-356" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-357"><a href="#cb86-357" aria-hidden="true" tabindex="-1"></a><span class="fu">### Soluciones básicas habituales</span></span>
+<span id="cb86-358"><a href="#cb86-358" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-359"><a href="#cb86-359" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Mejorar el diseño muestral. Cuando la multicolinealidad tiene un **componente errático**, puede estar relacionada con las características particulares de la muestra. En este caso, una posible solución consiste en aumentar el tamaño muestral y, cuando sea posible, incrementar la variabilidad de las variables explicativas. De esta forma, se obtiene una mayor cantidad de información para identificar los efectos individuales de los regresores.</span>
+<span id="cb86-360"><a href="#cb86-360" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Centrar las variables explicativas. Cuando la multicolinealidad aproximada es **no esencial**, es decir, está relacionada con una escasa variabilidad de alguna variable y su relación con el término independiente, puede ser conveniente centrar dicha variable respecto de su media:</span>
 <span id="cb86-361"><a href="#cb86-361" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-362"><a href="#cb86-362" aria-hidden="true" tabindex="-1"></a>Una de las dificultades de la estimación cresta es la elección del parámetro $k$. Además, los estimadores obtenidos mediante este procedimiento deben interpretarse teniendo en cuenta que ya no son estimadores MCO insesgados.</span>
-<span id="cb86-363"><a href="#cb86-363" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-364"><a href="#cb86-364" aria-hidden="true" tabindex="-1"></a>Una vez aplicada la estimación cresta, también es necesario comprobar si efectivamente se ha reducido la multicolinealidad. Tradicionalmente se había extendido al estimador cresta la expresión del FIV utilizada en MCO. Sin embargo, esta extensión puede proporcionar valores inadecuados del FIV, incluso inferiores a uno, por lo que se recomienda usar la expresión presentada por @Garcia2015.</span>
+<span id="cb86-362"><a href="#cb86-362" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb86-363"><a href="#cb86-363" aria-hidden="true" tabindex="-1"></a>X_i^c=X_i-\overline{X}_i.</span>
+<span id="cb86-364"><a href="#cb86-364" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb86-365"><a href="#cb86-365" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-366"><a href="#cb86-366" aria-hidden="true" tabindex="-1"></a><span class="fu">### Estimación alzada</span></span>
+<span id="cb86-366"><a href="#cb86-366" aria-hidden="true" tabindex="-1"></a>El centrado modifica la interpretación del término independiente, pero no altera la información contenida en la variable. Esta transformación puede reducir los problemas asociados a la relación entre el regresor y el intercepto.</span>
 <span id="cb86-367"><a href="#cb86-367" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-368"><a href="#cb86-368" aria-hidden="true" tabindex="-1"></a>Otra alternativa es la estimación alzada (raise), propuesta por @Garcia2010 y @Garcia2016. Este procedimiento aborda la multicolinealidad desde una perspectiva geométrica.</span>
+<span id="cb86-368"><a href="#cb86-368" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Eliminar o combinar variables explicativas. Cuando la multicolinealidad es **esencial**, puede existir una relación lineal elevada entre dos o más variables explicativas. Si desde el punto de vista económico o teórico algunas variables aportan información muy similar, una alternativa consiste en eliminar una de ellas o construir una medida conjunta que recoja la información común.</span>
 <span id="cb86-369"><a href="#cb86-369" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-370"><a href="#cb86-370" aria-hidden="true" tabindex="-1"></a>Consideremos, para simplificar, un modelo con dos variables explicativas:</span>
+<span id="cb86-370"><a href="#cb86-370" aria-hidden="true" tabindex="-1"></a>Estas soluciones son las primeras que deben considerarse porque mantienen, en la medida de lo posible, la interpretación habitual de los estimadores MCO. Alternativamente, pueden usarse estimadores alternativos como el estimador de mínimos cuadrados restringidos (si existen restricciones teóricas) o el **estimador cresta    (ridge )** [@Hoerl1970b], la **estimador alzado (raise)**  [@Garcia2010] o el **estimador residualizado**.</span>
 <span id="cb86-371"><a href="#cb86-371" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-372"><a href="#cb86-372" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb86-373"><a href="#cb86-373" aria-hidden="true" tabindex="-1"></a>\beta_1\mathbf{x}_1+</span>
-<span id="cb86-374"><a href="#cb86-374" aria-hidden="true" tabindex="-1"></a>\beta_2\mathbf{x}_2+</span>
-<span id="cb86-375"><a href="#cb86-375" aria-hidden="true" tabindex="-1"></a>\mathbf{u}.</span>
-<span id="cb86-376"><a href="#cb86-376" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb86-372"><a href="#cb86-372" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-373"><a href="#cb86-373" aria-hidden="true" tabindex="-1"></a><span class="fu">### Soluciones avanzadas</span></span>
+<span id="cb86-374"><a href="#cb86-374" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-375"><a href="#cb86-375" aria-hidden="true" tabindex="-1"></a>Cuando la multicolinealidad persiste y no resulta conveniente modificar la muestra, centrar las variables o eliminar alguno de los regresores, pueden utilizarse procedimientos de estimación alternativos a MCO.</span>
+<span id="cb86-376"><a href="#cb86-376" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb86-377"><a href="#cb86-377" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-378"><a href="#cb86-378" aria-hidden="true" tabindex="-1"></a>La multicolinealidad aparece cuando los vectores $\mathbf{x}_1$ y $\mathbf{x}_2$ se encuentran próximos entre sí. Puede expresarse:</span>
+<span id="cb86-378"><a href="#cb86-378" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Estimación cresta {.unnumbered}</span></span>
 <span id="cb86-379"><a href="#cb86-379" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-380"><a href="#cb86-380" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb86-381"><a href="#cb86-381" aria-hidden="true" tabindex="-1"></a>\mathbf{x}_1=</span>
-<span id="cb86-382"><a href="#cb86-382" aria-hidden="true" tabindex="-1"></a>\rho\mathbf{x}_2+</span>
-<span id="cb86-383"><a href="#cb86-383" aria-hidden="true" tabindex="-1"></a>\mathbf{e}_1,</span>
-<span id="cb86-384"><a href="#cb86-384" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb86-385"><a href="#cb86-385" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-386"><a href="#cb86-386" aria-hidden="true" tabindex="-1"></a>donde $\mathbf{e}_1$ es ortogonal a $\mathbf{x}_2$.</span>
-<span id="cb86-387"><a href="#cb86-387" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-388"><a href="#cb86-388" aria-hidden="true" tabindex="-1"></a>La estimación alzada modifica el vector $\mathbf{x}_1$ mediante:</span>
-<span id="cb86-389"><a href="#cb86-389" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-390"><a href="#cb86-390" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb86-391"><a href="#cb86-391" aria-hidden="true" tabindex="-1"></a>\mathbf{x}_1+</span>
-<span id="cb86-392"><a href="#cb86-392" aria-hidden="true" tabindex="-1"></a>\lambda\mathbf{e}_1.</span>
-<span id="cb86-393"><a href="#cb86-393" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb86-380"><a href="#cb86-380" aria-hidden="true" tabindex="-1"></a>@Hoerl1970b y @Hoerl1970a proponen la **estimación cresta**(ridge) cuyos</span>
+<span id="cb86-381"><a href="#cb86-381" aria-hidden="true" tabindex="-1"></a>estimadores se obtienen como:</span>
+<span id="cb86-382"><a href="#cb86-382" aria-hidden="true" tabindex="-1"></a>$$\hat{\boldsymbol{\beta}}_R(k)=\left(\mathbf{X}'\mathbf{X}+k\mathbf{I}\right)^{-1}\mathbf{X}'\mathbf{Y}, \quad k\geq 0.$$</span>
+<span id="cb86-383"><a href="#cb86-383" aria-hidden="true" tabindex="-1"></a>La idea fundamental consiste en introducir una cantidad positiva $k$ en la diagonal de $\mathbf{X}'\mathbf{X}$. De esta forma, se evita que la proximidad a la singularidad de dicha matriz genere varianzas excesivamente elevadas.</span>
+<span id="cb86-384"><a href="#cb86-384" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-385"><a href="#cb86-385" aria-hidden="true" tabindex="-1"></a>La principal característica de este procedimiento es que introduce un sesgo controlado en los estimadores a cambio de conseguir una reducción de su varianza. Por tanto, frente al estimador MCO, se establece un compromiso entre sesgo y varianza.</span>
+<span id="cb86-386"><a href="#cb86-386" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-387"><a href="#cb86-387" aria-hidden="true" tabindex="-1"></a>Una de las dificultades de la estimación cresta es la elección del parámetro $k$. Además, los estimadores obtenidos mediante este procedimiento deben interpretarse teniendo en cuenta que ya no son estimadores MCO insesgados.</span>
+<span id="cb86-388"><a href="#cb86-388" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-389"><a href="#cb86-389" aria-hidden="true" tabindex="-1"></a>Una vez aplicada la estimación cresta, también es necesario comprobar si efectivamente se ha reducido la multicolinealidad. Tradicionalmente se había extendido al estimador cresta la expresión del FIV utilizada en MCO. Sin embargo, esta extensión puede proporcionar valores inadecuados del FIV, incluso inferiores a uno, por lo que se recomienda usar la expresión presentada por @Garcia2015.</span>
+<span id="cb86-390"><a href="#cb86-390" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-391"><a href="#cb86-391" aria-hidden="true" tabindex="-1"></a><span class="fu">### Estimación alzada</span></span>
+<span id="cb86-392"><a href="#cb86-392" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-393"><a href="#cb86-393" aria-hidden="true" tabindex="-1"></a>Otra alternativa es la estimación alzada (raise), propuesta por @Garcia2010 y @Garcia2016. Este procedimiento aborda la multicolinealidad desde una perspectiva geométrica.</span>
 <span id="cb86-394"><a href="#cb86-394" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-395"><a href="#cb86-395" aria-hidden="true" tabindex="-1"></a>De esta forma, se incrementa el ángulo entre los vectores explicativos y se reduce su relación lineal. Cuanto mayor sea el parámetro $\lambda$, mayor será la separación entre los vectores y, en consecuencia, menor será la correlación entre ellos.</span>
+<span id="cb86-395"><a href="#cb86-395" aria-hidden="true" tabindex="-1"></a>Consideremos, para simplificar, un modelo con dos variables explicativas:</span>
 <span id="cb86-396"><a href="#cb86-396" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-397"><a href="#cb86-397" aria-hidden="true" tabindex="-1"></a>El parámetro $\lambda$ debe seleccionarse cuidadosamente, ya que una modificación excesiva de los regresores puede afectar a las propiedades e interpretación de las estimaciones.</span>
-<span id="cb86-398"><a href="#cb86-398" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-399"><a href="#cb86-399" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-400"><a href="#cb86-400" aria-hidden="true" tabindex="-1"></a><span class="fu">### Estimador ortogonal (residualization)</span></span>
-<span id="cb86-401"><a href="#cb86-401" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-402"><a href="#cb86-402" aria-hidden="true" tabindex="-1"></a>Una tercera alternativa es la estimación residualizada, también denominada regresión ortogonal, presentada por @Novales y formalmente desarrollada por @garcia2020.</span>
-<span id="cb86-403"><a href="#cb86-403" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-404"><a href="#cb86-404" aria-hidden="true" tabindex="-1"></a>La idea consiste en mantener una de las variables explicativas, considerada más importante desde el punto de vista económico, y sustituir la otra por la parte que no puede explicarse mediante la primera.</span>
-<span id="cb86-405"><a href="#cb86-405" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-406"><a href="#cb86-406" aria-hidden="true" tabindex="-1"></a>Asi, partiendo del modelo </span>
-<span id="cb86-407"><a href="#cb86-407" aria-hidden="true" tabindex="-1"></a>$$\mathbf{y} = \beta_{1} \mathbf{x}_{1} + \beta_{2} \mathbf{x}_{2} + \mathbf{u}$$</span>
-<span id="cb86-408"><a href="#cb86-408" aria-hidden="true" tabindex="-1"></a>donde las variables están estandarizadas. Dicha metodología se basa en sustituir una de las variables exógenas del modelo de regresión (aquella considerada menos importante) por sus componentes no explicados por la otra variable exógena (considerada más relevante para el fenómeno que se está intentando explicar).</span>
-<span id="cb86-409"><a href="#cb86-409" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-410"><a href="#cb86-410" aria-hidden="true" tabindex="-1"></a>Considerando que $\mathbf{x}_{1}$ tiene mayor importancia que $\mathbf{x}_{2}$, por lo que se desea mantenerla intacta, se estima la regresión auxiliar en la que la $\mathbf{x}_{1}$ aparezca como independiente. Al estimar esta regresión auxiliar por MCO se consigue expresar la $\mathbf{x}_{2}$ como una combinación de $\mathbf{x}_{1}$ y los residuos del modelo, esto es, $\mathbf{x}_{2} = \widehat{\alpha} \mathbf{x}_{1} + \mathbf{e}$. </span>
-<span id="cb86-411"><a href="#cb86-411" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-412"><a href="#cb86-412" aria-hidden="true" tabindex="-1"></a>Dichos residuos, que son ortogonales a $\mathbf{x}_{1}$, sustituyen a $\mathbf{x}_{2}$ en el modelo original dando lugar al modelo ortogonal:</span>
-<span id="cb86-413"><a href="#cb86-413" aria-hidden="true" tabindex="-1"></a>$$\mathbf{y} = \beta_{1O} \mathbf{x}_{1} + \beta_{2O} \mathbf{e} + \mathbf{u}$$</span>
-<span id="cb86-414"><a href="#cb86-414" aria-hidden="true" tabindex="-1"></a>y se interpretan como la parte de la segunda variable que no tiene</span>
-<span id="cb86-415"><a href="#cb86-415" aria-hidden="true" tabindex="-1"></a>relación con la primera.</span>
-<span id="cb86-416"><a href="#cb86-416" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-417"><a href="#cb86-417" aria-hidden="true" tabindex="-1"></a><span class="fu">## Prácticas resueltas</span></span>
-<span id="cb86-418"><a href="#cb86-418" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-419"><a href="#cb86-419" aria-hidden="true" tabindex="-1"></a><span class="fu">### Crédito Estados Unidos. Análisis de los efectos de existencia de multicolinealidad aproximada y medidas de diagnóstico. {.unnumbered}</span></span>
-<span id="cb86-420"><a href="#cb86-420" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-421"><a href="#cb86-421" aria-hidden="true" tabindex="-1"></a>A partir de la base de datos de Wissel que incluye información sobre las</span>
-<span id="cb86-422"><a href="#cb86-422" aria-hidden="true" tabindex="-1"></a>siguientes variables:</span>
+<span id="cb86-397"><a href="#cb86-397" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb86-398"><a href="#cb86-398" aria-hidden="true" tabindex="-1"></a>\beta_1\mathbf{x}_1+</span>
+<span id="cb86-399"><a href="#cb86-399" aria-hidden="true" tabindex="-1"></a>\beta_2\mathbf{x}_2+</span>
+<span id="cb86-400"><a href="#cb86-400" aria-hidden="true" tabindex="-1"></a>\mathbf{u}.</span>
+<span id="cb86-401"><a href="#cb86-401" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb86-402"><a href="#cb86-402" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-403"><a href="#cb86-403" aria-hidden="true" tabindex="-1"></a>La multicolinealidad aparece cuando los vectores $\mathbf{x}_1$ y $\mathbf{x}_2$ se encuentran próximos entre sí. Puede expresarse:</span>
+<span id="cb86-404"><a href="#cb86-404" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-405"><a href="#cb86-405" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb86-406"><a href="#cb86-406" aria-hidden="true" tabindex="-1"></a>\mathbf{x}_1=</span>
+<span id="cb86-407"><a href="#cb86-407" aria-hidden="true" tabindex="-1"></a>\rho\mathbf{x}_2+</span>
+<span id="cb86-408"><a href="#cb86-408" aria-hidden="true" tabindex="-1"></a>\mathbf{e}_1,</span>
+<span id="cb86-409"><a href="#cb86-409" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb86-410"><a href="#cb86-410" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-411"><a href="#cb86-411" aria-hidden="true" tabindex="-1"></a>donde $\mathbf{e}_1$ es ortogonal a $\mathbf{x}_2$.</span>
+<span id="cb86-412"><a href="#cb86-412" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-413"><a href="#cb86-413" aria-hidden="true" tabindex="-1"></a>La estimación alzada modifica el vector $\mathbf{x}_1$ mediante:</span>
+<span id="cb86-414"><a href="#cb86-414" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-415"><a href="#cb86-415" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb86-416"><a href="#cb86-416" aria-hidden="true" tabindex="-1"></a>\mathbf{x}_1+</span>
+<span id="cb86-417"><a href="#cb86-417" aria-hidden="true" tabindex="-1"></a>\lambda\mathbf{e}_1.</span>
+<span id="cb86-418"><a href="#cb86-418" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb86-419"><a href="#cb86-419" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-420"><a href="#cb86-420" aria-hidden="true" tabindex="-1"></a>De esta forma, se incrementa el ángulo entre los vectores explicativos y se reduce su relación lineal. Cuanto mayor sea el parámetro $\lambda$, mayor será la separación entre los vectores y, en consecuencia, menor será la correlación entre ellos.</span>
+<span id="cb86-421"><a href="#cb86-421" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-422"><a href="#cb86-422" aria-hidden="true" tabindex="-1"></a>El parámetro $\lambda$ debe seleccionarse cuidadosamente, ya que una modificación excesiva de los regresores puede afectar a las propiedades e interpretación de las estimaciones.</span>
 <span id="cb86-423"><a href="#cb86-423" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-424"><a href="#cb86-424" aria-hidden="true" tabindex="-1"></a>$D$ = deuda pendiente de hipoteca (billones de dólares)</span>
-<span id="cb86-425"><a href="#cb86-425" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-426"><a href="#cb86-426" aria-hidden="true" tabindex="-1"></a>$C$ = consumo personal (billones de dólares)</span>
-<span id="cb86-427"><a href="#cb86-427" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-428"><a href="#cb86-428" aria-hidden="true" tabindex="-1"></a>$I$ = ingresos personales (billones de dólares)</span>
-<span id="cb86-429"><a href="#cb86-429" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-430"><a href="#cb86-430" aria-hidden="true" tabindex="-1"></a>$CP$ = crédito al consumidor pendiente (billones de dólares).</span>
-<span id="cb86-431"><a href="#cb86-431" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-432"><a href="#cb86-432" aria-hidden="true" tabindex="-1"></a>Se pide:</span>
-<span id="cb86-433"><a href="#cb86-433" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-434"><a href="#cb86-434" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
-<span id="cb86-435"><a href="#cb86-435" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(multiColl)</span>
-<span id="cb86-436"><a href="#cb86-436" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvif)</span>
-<span id="cb86-437"><a href="#cb86-437" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"Wissel"</span>)</span>
-<span id="cb86-438"><a href="#cb86-438" aria-hidden="true" tabindex="-1"></a><span class="fu">attach</span>(Wissel)</span>
-<span id="cb86-439"><a href="#cb86-439" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb86-440"><a href="#cb86-440" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-441"><a href="#cb86-441" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Estimar el modelo y comentar la significatividad individual y global</span>
-<span id="cb86-442"><a href="#cb86-442" aria-hidden="true" tabindex="-1"></a>    del modelo.</span>
+<span id="cb86-424"><a href="#cb86-424" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-425"><a href="#cb86-425" aria-hidden="true" tabindex="-1"></a><span class="fu">### Estimador ortogonal (residualization)</span></span>
+<span id="cb86-426"><a href="#cb86-426" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-427"><a href="#cb86-427" aria-hidden="true" tabindex="-1"></a>Una tercera alternativa es la estimación residualizada, también denominada regresión ortogonal, presentada por @Novales y formalmente desarrollada por @garcia2020.</span>
+<span id="cb86-428"><a href="#cb86-428" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-429"><a href="#cb86-429" aria-hidden="true" tabindex="-1"></a>La idea consiste en mantener una de las variables explicativas, considerada más importante desde el punto de vista económico, y sustituir la otra por la parte que no puede explicarse mediante la primera.</span>
+<span id="cb86-430"><a href="#cb86-430" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-431"><a href="#cb86-431" aria-hidden="true" tabindex="-1"></a>Asi, partiendo del modelo </span>
+<span id="cb86-432"><a href="#cb86-432" aria-hidden="true" tabindex="-1"></a>$$\mathbf{y} = \beta_{1} \mathbf{x}_{1} + \beta_{2} \mathbf{x}_{2} + \mathbf{u}$$</span>
+<span id="cb86-433"><a href="#cb86-433" aria-hidden="true" tabindex="-1"></a>donde las variables están estandarizadas. Dicha metodología se basa en sustituir una de las variables exógenas del modelo de regresión (aquella considerada menos importante) por sus componentes no explicados por la otra variable exógena (considerada más relevante para el fenómeno que se está intentando explicar).</span>
+<span id="cb86-434"><a href="#cb86-434" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-435"><a href="#cb86-435" aria-hidden="true" tabindex="-1"></a>Considerando que $\mathbf{x}_{1}$ tiene mayor importancia que $\mathbf{x}_{2}$, por lo que se desea mantenerla intacta, se estima la regresión auxiliar en la que la $\mathbf{x}_{1}$ aparezca como independiente. Al estimar esta regresión auxiliar por MCO se consigue expresar la $\mathbf{x}_{2}$ como una combinación de $\mathbf{x}_{1}$ y los residuos del modelo, esto es, $\mathbf{x}_{2} = \widehat{\alpha} \mathbf{x}_{1} + \mathbf{e}$. </span>
+<span id="cb86-436"><a href="#cb86-436" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-437"><a href="#cb86-437" aria-hidden="true" tabindex="-1"></a>Dichos residuos, que son ortogonales a $\mathbf{x}_{1}$, sustituyen a $\mathbf{x}_{2}$ en el modelo original dando lugar al modelo ortogonal:</span>
+<span id="cb86-438"><a href="#cb86-438" aria-hidden="true" tabindex="-1"></a>$$\mathbf{y} = \beta_{1O} \mathbf{x}_{1} + \beta_{2O} \mathbf{e} + \mathbf{u}$$</span>
+<span id="cb86-439"><a href="#cb86-439" aria-hidden="true" tabindex="-1"></a>y se interpretan como la parte de la segunda variable que no tiene</span>
+<span id="cb86-440"><a href="#cb86-440" aria-hidden="true" tabindex="-1"></a>relación con la primera.</span>
+<span id="cb86-441"><a href="#cb86-441" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-442"><a href="#cb86-442" aria-hidden="true" tabindex="-1"></a><span class="fu">## Prácticas resueltas</span></span>
 <span id="cb86-443"><a href="#cb86-443" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-446"><a href="#cb86-446" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb86-447"><a href="#cb86-447" aria-hidden="true" tabindex="-1"></a>reg <span class="ot">=</span> <span class="fu">lm</span>(D<span class="sc">~</span>C<span class="sc">+</span>I<span class="sc">+</span>CP, <span class="at">data=</span>Wissel)</span>
-<span id="cb86-448"><a href="#cb86-448" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg)</span>
-<span id="cb86-449"><a href="#cb86-449" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb86-444"><a href="#cb86-444" aria-hidden="true" tabindex="-1"></a><span class="fu">### Crédito Estados Unidos. Análisis de los efectos de existencia de multicolinealidad aproximada y medidas de diagnóstico. {.unnumbered}</span></span>
+<span id="cb86-445"><a href="#cb86-445" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-446"><a href="#cb86-446" aria-hidden="true" tabindex="-1"></a>A partir de la base de datos de Wissel que incluye información sobre las</span>
+<span id="cb86-447"><a href="#cb86-447" aria-hidden="true" tabindex="-1"></a>siguientes variables:</span>
+<span id="cb86-448"><a href="#cb86-448" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-449"><a href="#cb86-449" aria-hidden="true" tabindex="-1"></a>$D$ = deuda pendiente de hipoteca (billones de dólares)</span>
 <span id="cb86-450"><a href="#cb86-450" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-451"><a href="#cb86-451" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Perturbar las variables explicativas un 1% con la función *perturb*</span>
-<span id="cb86-452"><a href="#cb86-452" aria-hidden="true" tabindex="-1"></a>    del paquete *multiColl* y analizar la variación en los estimadores:</span>
-<span id="cb86-453"><a href="#cb86-453" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-456"><a href="#cb86-456" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb86-457"><a href="#cb86-457" aria-hidden="true" tabindex="-1"></a>C_p<span class="ot">=</span><span class="fu">perturb</span>(I,<span class="dv">1</span>,<span class="dv">1</span>,<span class="fl">0.01</span>)</span>
-<span id="cb86-458"><a href="#cb86-458" aria-hidden="true" tabindex="-1"></a>valores<span class="ot">=</span><span class="fu">cbind</span>(C,C_p)</span>
-<span id="cb86-459"><a href="#cb86-459" aria-hidden="true" tabindex="-1"></a>reg_p <span class="ot">=</span> <span class="fu">lm</span>(D<span class="sc">~</span>C_p<span class="sc">+</span>I<span class="sc">+</span>CP, <span class="at">data=</span>Wissel)</span>
-<span id="cb86-460"><a href="#cb86-460" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_p)</span>
-<span id="cb86-461"><a href="#cb86-461" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb86-462"><a href="#cb86-462" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-463"><a href="#cb86-463" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Calcula la matriz de correlación y comenta los resultados.</span>
-<span id="cb86-464"><a href="#cb86-464" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-467"><a href="#cb86-467" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb86-468"><a href="#cb86-468" aria-hidden="true" tabindex="-1"></a>X<span class="ot">=</span><span class="fu">cbind</span>(D,C,I,CP)</span>
-<span id="cb86-469"><a href="#cb86-469" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(X)</span>
-<span id="cb86-470"><a href="#cb86-470" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb86-471"><a href="#cb86-471" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-472"><a href="#cb86-472" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>Calcular el factor inflactor de la varianza a partir de las</span>
-<span id="cb86-473"><a href="#cb86-473" aria-hidden="true" tabindex="-1"></a>    regresiones auxiliares.</span>
-<span id="cb86-474"><a href="#cb86-474" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-475"><a href="#cb86-475" aria-hidden="true" tabindex="-1"></a>Se puede realizar la regresión de cada una de las variables explicativas</span>
-<span id="cb86-476"><a href="#cb86-476" aria-hidden="true" tabindex="-1"></a>en función del resto y analizar a partir del coeficiente de</span>
-<span id="cb86-477"><a href="#cb86-477" aria-hidden="true" tabindex="-1"></a>determinación de dichas regresiones:</span>
+<span id="cb86-451"><a href="#cb86-451" aria-hidden="true" tabindex="-1"></a>$C$ = consumo personal (billones de dólares)</span>
+<span id="cb86-452"><a href="#cb86-452" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-453"><a href="#cb86-453" aria-hidden="true" tabindex="-1"></a>$I$ = ingresos personales (billones de dólares)</span>
+<span id="cb86-454"><a href="#cb86-454" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-455"><a href="#cb86-455" aria-hidden="true" tabindex="-1"></a>$CP$ = crédito al consumidor pendiente (billones de dólares).</span>
+<span id="cb86-456"><a href="#cb86-456" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-457"><a href="#cb86-457" aria-hidden="true" tabindex="-1"></a>Se pide:</span>
+<span id="cb86-458"><a href="#cb86-458" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-459"><a href="#cb86-459" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
+<span id="cb86-460"><a href="#cb86-460" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(multiColl)</span>
+<span id="cb86-461"><a href="#cb86-461" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvif)</span>
+<span id="cb86-462"><a href="#cb86-462" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"Wissel"</span>)</span>
+<span id="cb86-463"><a href="#cb86-463" aria-hidden="true" tabindex="-1"></a><span class="fu">attach</span>(Wissel)</span>
+<span id="cb86-464"><a href="#cb86-464" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb86-465"><a href="#cb86-465" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-466"><a href="#cb86-466" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Estimar el modelo y comentar la significatividad individual y global</span>
+<span id="cb86-467"><a href="#cb86-467" aria-hidden="true" tabindex="-1"></a>    del modelo.</span>
+<span id="cb86-468"><a href="#cb86-468" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-471"><a href="#cb86-471" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb86-472"><a href="#cb86-472" aria-hidden="true" tabindex="-1"></a>reg <span class="ot">=</span> <span class="fu">lm</span>(D<span class="sc">~</span>C<span class="sc">+</span>I<span class="sc">+</span>CP, <span class="at">data=</span>Wissel)</span>
+<span id="cb86-473"><a href="#cb86-473" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg)</span>
+<span id="cb86-474"><a href="#cb86-474" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb86-475"><a href="#cb86-475" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-476"><a href="#cb86-476" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Perturbar las variables explicativas un 1% con la función *perturb*</span>
+<span id="cb86-477"><a href="#cb86-477" aria-hidden="true" tabindex="-1"></a>    del paquete *multiColl* y analizar la variación en los estimadores:</span>
 <span id="cb86-478"><a href="#cb86-478" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb86-481"><a href="#cb86-481" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb86-482"><a href="#cb86-482" aria-hidden="true" tabindex="-1"></a>reg_aux_C <span class="ot">=</span> <span class="fu">lm</span>(C<span class="sc">~</span>I<span class="sc">+</span>CP, <span class="at">data=</span>Wissel)</span>
-<span id="cb86-483"><a href="#cb86-483" aria-hidden="true" tabindex="-1"></a>reg_aux_I <span class="ot">=</span> <span class="fu">lm</span>(I<span class="sc">~</span>C<span class="sc">+</span>CP, <span class="at">data=</span>Wissel)</span>
-<span id="cb86-484"><a href="#cb86-484" aria-hidden="true" tabindex="-1"></a>reg_aux_CP <span class="ot">=</span> <span class="fu">lm</span>(CP<span class="sc">~</span>C<span class="sc">+</span>I, <span class="at">data=</span>Wissel)</span>
-<span id="cb86-485"><a href="#cb86-485" aria-hidden="true" tabindex="-1"></a>R2_C<span class="ot">=</span><span class="fu">summary</span>(reg_aux_C)<span class="sc">$</span>r.squared</span>
-<span id="cb86-486"><a href="#cb86-486" aria-hidden="true" tabindex="-1"></a>R2_I<span class="ot">=</span><span class="fu">summary</span>(reg_aux_I)<span class="sc">$</span>r.squared</span>
-<span id="cb86-487"><a href="#cb86-487" aria-hidden="true" tabindex="-1"></a>R2_CP<span class="ot">=</span><span class="fu">summary</span>(reg_aux_CP)<span class="sc">$</span>r.squared</span>
-<span id="cb86-488"><a href="#cb86-488" aria-hidden="true" tabindex="-1"></a>FIV_C<span class="ot">=</span><span class="dv">1</span><span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span>R2_C)</span>
-<span id="cb86-489"><a href="#cb86-489" aria-hidden="true" tabindex="-1"></a>FIV_I<span class="ot">=</span><span class="dv">1</span><span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span>R2_I)</span>
-<span id="cb86-490"><a href="#cb86-490" aria-hidden="true" tabindex="-1"></a>FIV_CP<span class="ot">=</span><span class="dv">1</span><span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span>R2_CP)</span>
-<span id="cb86-491"><a href="#cb86-491" aria-hidden="true" tabindex="-1"></a>vif<span class="ot">=</span><span class="fu">c</span>(FIV_C,FIV_I,FIV_CP)</span>
-<span id="cb86-492"><a href="#cb86-492" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb86-493"><a href="#cb86-493" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-494"><a href="#cb86-494" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>Calcula el factor inflactor de la varianza usando la función</span>
-<span id="cb86-495"><a href="#cb86-495" aria-hidden="true" tabindex="-1"></a>    correspondiente del paquete multiCol.</span>
+<span id="cb86-482"><a href="#cb86-482" aria-hidden="true" tabindex="-1"></a>C_p<span class="ot">=</span><span class="fu">perturb</span>(I,<span class="dv">1</span>,<span class="dv">1</span>,<span class="fl">0.01</span>)</span>
+<span id="cb86-483"><a href="#cb86-483" aria-hidden="true" tabindex="-1"></a>valores<span class="ot">=</span><span class="fu">cbind</span>(C,C_p)</span>
+<span id="cb86-484"><a href="#cb86-484" aria-hidden="true" tabindex="-1"></a>reg_p <span class="ot">=</span> <span class="fu">lm</span>(D<span class="sc">~</span>C_p<span class="sc">+</span>I<span class="sc">+</span>CP, <span class="at">data=</span>Wissel)</span>
+<span id="cb86-485"><a href="#cb86-485" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_p)</span>
+<span id="cb86-486"><a href="#cb86-486" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb86-487"><a href="#cb86-487" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-488"><a href="#cb86-488" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Calcula la matriz de correlación y comenta los resultados.</span>
+<span id="cb86-489"><a href="#cb86-489" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-492"><a href="#cb86-492" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb86-493"><a href="#cb86-493" aria-hidden="true" tabindex="-1"></a>X<span class="ot">=</span><span class="fu">cbind</span>(D,C,I,CP)</span>
+<span id="cb86-494"><a href="#cb86-494" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(X)</span>
+<span id="cb86-495"><a href="#cb86-495" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb86-496"><a href="#cb86-496" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-499"><a href="#cb86-499" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb86-500"><a href="#cb86-500" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(D)</span>
-<span id="cb86-501"><a href="#cb86-501" aria-hidden="true" tabindex="-1"></a>cte <span class="ot">=</span> <span class="fu">rep</span>(<span class="dv">1</span>, n)</span>
-<span id="cb86-502"><a href="#cb86-502" aria-hidden="true" tabindex="-1"></a>X<span class="ot">=</span><span class="fu">cbind</span>(cte,C,I,CP)</span>
-<span id="cb86-503"><a href="#cb86-503" aria-hidden="true" tabindex="-1"></a><span class="fu">VIF</span>(X)</span>
-<span id="cb86-504"><a href="#cb86-504" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb86-505"><a href="#cb86-505" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-506"><a href="#cb86-506" aria-hidden="true" tabindex="-1"></a><span class="ss">6.  </span>Calcular el número de condición a partir del paquete *multiCol*</span>
-<span id="cb86-507"><a href="#cb86-507" aria-hidden="true" tabindex="-1"></a>    teniendo y sin tener en cuenta el termino independiente e interpreta</span>
-<span id="cb86-508"><a href="#cb86-508" aria-hidden="true" tabindex="-1"></a>    los resultados.</span>
-<span id="cb86-509"><a href="#cb86-509" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-512"><a href="#cb86-512" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb86-513"><a href="#cb86-513" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(D)</span>
-<span id="cb86-514"><a href="#cb86-514" aria-hidden="true" tabindex="-1"></a>cte <span class="ot">=</span> <span class="fu">rep</span>(<span class="dv">1</span>, n)</span>
-<span id="cb86-515"><a href="#cb86-515" aria-hidden="true" tabindex="-1"></a>X<span class="ot">=</span><span class="fu">cbind</span>(cte,C,I,CP)</span>
-<span id="cb86-516"><a href="#cb86-516" aria-hidden="true" tabindex="-1"></a><span class="fu">CNs</span>(X)</span>
+<span id="cb86-497"><a href="#cb86-497" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>Calcular el factor inflactor de la varianza a partir de las</span>
+<span id="cb86-498"><a href="#cb86-498" aria-hidden="true" tabindex="-1"></a>    regresiones auxiliares.</span>
+<span id="cb86-499"><a href="#cb86-499" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-500"><a href="#cb86-500" aria-hidden="true" tabindex="-1"></a>Se puede realizar la regresión de cada una de las variables explicativas</span>
+<span id="cb86-501"><a href="#cb86-501" aria-hidden="true" tabindex="-1"></a>en función del resto y analizar a partir del coeficiente de</span>
+<span id="cb86-502"><a href="#cb86-502" aria-hidden="true" tabindex="-1"></a>determinación de dichas regresiones:</span>
+<span id="cb86-503"><a href="#cb86-503" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-506"><a href="#cb86-506" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb86-507"><a href="#cb86-507" aria-hidden="true" tabindex="-1"></a>reg_aux_C <span class="ot">=</span> <span class="fu">lm</span>(C<span class="sc">~</span>I<span class="sc">+</span>CP, <span class="at">data=</span>Wissel)</span>
+<span id="cb86-508"><a href="#cb86-508" aria-hidden="true" tabindex="-1"></a>reg_aux_I <span class="ot">=</span> <span class="fu">lm</span>(I<span class="sc">~</span>C<span class="sc">+</span>CP, <span class="at">data=</span>Wissel)</span>
+<span id="cb86-509"><a href="#cb86-509" aria-hidden="true" tabindex="-1"></a>reg_aux_CP <span class="ot">=</span> <span class="fu">lm</span>(CP<span class="sc">~</span>C<span class="sc">+</span>I, <span class="at">data=</span>Wissel)</span>
+<span id="cb86-510"><a href="#cb86-510" aria-hidden="true" tabindex="-1"></a>R2_C<span class="ot">=</span><span class="fu">summary</span>(reg_aux_C)<span class="sc">$</span>r.squared</span>
+<span id="cb86-511"><a href="#cb86-511" aria-hidden="true" tabindex="-1"></a>R2_I<span class="ot">=</span><span class="fu">summary</span>(reg_aux_I)<span class="sc">$</span>r.squared</span>
+<span id="cb86-512"><a href="#cb86-512" aria-hidden="true" tabindex="-1"></a>R2_CP<span class="ot">=</span><span class="fu">summary</span>(reg_aux_CP)<span class="sc">$</span>r.squared</span>
+<span id="cb86-513"><a href="#cb86-513" aria-hidden="true" tabindex="-1"></a>FIV_C<span class="ot">=</span><span class="dv">1</span><span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span>R2_C)</span>
+<span id="cb86-514"><a href="#cb86-514" aria-hidden="true" tabindex="-1"></a>FIV_I<span class="ot">=</span><span class="dv">1</span><span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span>R2_I)</span>
+<span id="cb86-515"><a href="#cb86-515" aria-hidden="true" tabindex="-1"></a>FIV_CP<span class="ot">=</span><span class="dv">1</span><span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span>R2_CP)</span>
+<span id="cb86-516"><a href="#cb86-516" aria-hidden="true" tabindex="-1"></a>vif<span class="ot">=</span><span class="fu">c</span>(FIV_C,FIV_I,FIV_CP)</span>
 <span id="cb86-517"><a href="#cb86-517" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb86-518"><a href="#cb86-518" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-519"><a href="#cb86-519" aria-hidden="true" tabindex="-1"></a><span class="ss">7.  </span>Calcular los coeficientes de variación de las variables:</span>
-<span id="cb86-520"><a href="#cb86-520" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-521"><a href="#cb86-521" aria-hidden="true" tabindex="-1"></a>Igualmente, se podría calcular el coeficiente de variación de las</span>
-<span id="cb86-522"><a href="#cb86-522" aria-hidden="true" tabindex="-1"></a>variables explicativas:</span>
-<span id="cb86-523"><a href="#cb86-523" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-526"><a href="#cb86-526" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb86-527"><a href="#cb86-527" aria-hidden="true" tabindex="-1"></a>cv <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {(<span class="fu">sd</span>(x) <span class="sc">/</span> <span class="fu">mean</span>(x))}</span>
-<span id="cb86-528"><a href="#cb86-528" aria-hidden="true" tabindex="-1"></a><span class="fu">cv</span>(Wissel<span class="sc">$</span>C)</span>
-<span id="cb86-529"><a href="#cb86-529" aria-hidden="true" tabindex="-1"></a><span class="fu">cv</span>(Wissel<span class="sc">$</span>I)</span>
-<span id="cb86-530"><a href="#cb86-530" aria-hidden="true" tabindex="-1"></a><span class="fu">cv</span>(Wissel<span class="sc">$</span>CP)</span>
-<span id="cb86-531"><a href="#cb86-531" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb86-532"><a href="#cb86-532" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-533"><a href="#cb86-533" aria-hidden="true" tabindex="-1"></a><span class="ss">8.  </span>Usa la función *multiCol* para obtener todas las medidas de</span>
-<span id="cb86-534"><a href="#cb86-534" aria-hidden="true" tabindex="-1"></a>    diagnóstico conjuntamente e interpretalas:</span>
-<span id="cb86-535"><a href="#cb86-535" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-538"><a href="#cb86-538" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb86-539"><a href="#cb86-539" aria-hidden="true" tabindex="-1"></a><span class="fu">multiCol</span>(X)</span>
-<span id="cb86-540"><a href="#cb86-540" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb86-541"><a href="#cb86-541" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-542"><a href="#cb86-542" aria-hidden="true" tabindex="-1"></a><span class="fu">### Wooldridge. Aplicación de la estimación residualizada. {.unnumbered}</span></span>
-<span id="cb86-543"><a href="#cb86-543" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb86-544"><a href="#cb86-544" aria-hidden="true" tabindex="-1"></a>A partir de los datos de @Wooldrigde2000 se estima un modelo que analiza</span>
-<span id="cb86-545"><a href="#cb86-545" aria-hidden="true" tabindex="-1"></a>los tipos de interés a 12 meses en función de los tipos de interés a 3 y</span>
-<span id="cb86-546"><a href="#cb86-546" aria-hidden="true" tabindex="-1"></a>6 meses. Se pide:</span>
-<span id="cb86-547"><a href="#cb86-547" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-550"><a href="#cb86-550" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb86-551"><a href="#cb86-551" aria-hidden="true" tabindex="-1"></a>TI <span class="ot">=</span> <span class="fu">read.table</span>(<span class="st">"data/WooldrigdeTI.txt"</span>, <span class="at">header=</span>T)</span>
-<span id="cb86-552"><a href="#cb86-552" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb86-553"><a href="#cb86-553" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-554"><a href="#cb86-554" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Estima el modelo que explique los rendimientos a doce meses en</span>
-<span id="cb86-555"><a href="#cb86-555" aria-hidden="true" tabindex="-1"></a>    función de los rendimientos a 3 y a 6 meses e intepreta los</span>
-<span id="cb86-556"><a href="#cb86-556" aria-hidden="true" tabindex="-1"></a>    coeficientes estimados.</span>
+<span id="cb86-519"><a href="#cb86-519" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>Calcula el factor inflactor de la varianza usando la función</span>
+<span id="cb86-520"><a href="#cb86-520" aria-hidden="true" tabindex="-1"></a>    correspondiente del paquete multiCol.</span>
+<span id="cb86-521"><a href="#cb86-521" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-524"><a href="#cb86-524" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb86-525"><a href="#cb86-525" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(D)</span>
+<span id="cb86-526"><a href="#cb86-526" aria-hidden="true" tabindex="-1"></a>cte <span class="ot">=</span> <span class="fu">rep</span>(<span class="dv">1</span>, n)</span>
+<span id="cb86-527"><a href="#cb86-527" aria-hidden="true" tabindex="-1"></a>X<span class="ot">=</span><span class="fu">cbind</span>(cte,C,I,CP)</span>
+<span id="cb86-528"><a href="#cb86-528" aria-hidden="true" tabindex="-1"></a><span class="fu">VIF</span>(X)</span>
+<span id="cb86-529"><a href="#cb86-529" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb86-530"><a href="#cb86-530" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-531"><a href="#cb86-531" aria-hidden="true" tabindex="-1"></a><span class="ss">6.  </span>Calcular el número de condición a partir del paquete *multiCol*</span>
+<span id="cb86-532"><a href="#cb86-532" aria-hidden="true" tabindex="-1"></a>    teniendo y sin tener en cuenta el termino independiente e interpreta</span>
+<span id="cb86-533"><a href="#cb86-533" aria-hidden="true" tabindex="-1"></a>    los resultados.</span>
+<span id="cb86-534"><a href="#cb86-534" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-537"><a href="#cb86-537" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb86-538"><a href="#cb86-538" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(D)</span>
+<span id="cb86-539"><a href="#cb86-539" aria-hidden="true" tabindex="-1"></a>cte <span class="ot">=</span> <span class="fu">rep</span>(<span class="dv">1</span>, n)</span>
+<span id="cb86-540"><a href="#cb86-540" aria-hidden="true" tabindex="-1"></a>X<span class="ot">=</span><span class="fu">cbind</span>(cte,C,I,CP)</span>
+<span id="cb86-541"><a href="#cb86-541" aria-hidden="true" tabindex="-1"></a><span class="fu">CNs</span>(X)</span>
+<span id="cb86-542"><a href="#cb86-542" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb86-543"><a href="#cb86-543" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-544"><a href="#cb86-544" aria-hidden="true" tabindex="-1"></a><span class="ss">7.  </span>Calcular los coeficientes de variación de las variables:</span>
+<span id="cb86-545"><a href="#cb86-545" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-546"><a href="#cb86-546" aria-hidden="true" tabindex="-1"></a>Igualmente, se podría calcular el coeficiente de variación de las</span>
+<span id="cb86-547"><a href="#cb86-547" aria-hidden="true" tabindex="-1"></a>variables explicativas:</span>
+<span id="cb86-548"><a href="#cb86-548" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-551"><a href="#cb86-551" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb86-552"><a href="#cb86-552" aria-hidden="true" tabindex="-1"></a>cv <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {(<span class="fu">sd</span>(x) <span class="sc">/</span> <span class="fu">mean</span>(x))}</span>
+<span id="cb86-553"><a href="#cb86-553" aria-hidden="true" tabindex="-1"></a><span class="fu">cv</span>(Wissel<span class="sc">$</span>C)</span>
+<span id="cb86-554"><a href="#cb86-554" aria-hidden="true" tabindex="-1"></a><span class="fu">cv</span>(Wissel<span class="sc">$</span>I)</span>
+<span id="cb86-555"><a href="#cb86-555" aria-hidden="true" tabindex="-1"></a><span class="fu">cv</span>(Wissel<span class="sc">$</span>CP)</span>
+<span id="cb86-556"><a href="#cb86-556" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb86-557"><a href="#cb86-557" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-560"><a href="#cb86-560" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb86-561"><a href="#cb86-561" aria-hidden="true" tabindex="-1"></a>reg <span class="ot">=</span> <span class="fu">lm</span>(r12<span class="sc">~</span>r3<span class="sc">+</span>r6, <span class="at">data=</span>TI)</span>
-<span id="cb86-562"><a href="#cb86-562" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg)</span>
-<span id="cb86-563"><a href="#cb86-563" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb86-564"><a href="#cb86-564" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-565"><a href="#cb86-565" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Estima por separado el modelo que explique los rendimientos a doce</span>
-<span id="cb86-566"><a href="#cb86-566" aria-hidden="true" tabindex="-1"></a>    meses en función de los rendimientos a tres meses, y otro en fución</span>
-<span id="cb86-567"><a href="#cb86-567" aria-hidden="true" tabindex="-1"></a>    de los rendimientos a seis meses. Interpreta los coeficientes</span>
-<span id="cb86-568"><a href="#cb86-568" aria-hidden="true" tabindex="-1"></a>    estimados y comenta si ves incoherencias con el modelo estimado en</span>
-<span id="cb86-569"><a href="#cb86-569" aria-hidden="true" tabindex="-1"></a>    el punto anterior.</span>
-<span id="cb86-570"><a href="#cb86-570" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-573"><a href="#cb86-573" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb86-574"><a href="#cb86-574" aria-hidden="true" tabindex="-1"></a>reg_r3 <span class="ot">=</span> <span class="fu">lm</span>(r12<span class="sc">~</span>r3, <span class="at">data=</span>TI)</span>
-<span id="cb86-575"><a href="#cb86-575" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_r3)</span>
-<span id="cb86-576"><a href="#cb86-576" aria-hidden="true" tabindex="-1"></a>reg_r6 <span class="ot">=</span> <span class="fu">lm</span>(r12<span class="sc">~</span>r6, <span class="at">data=</span>TI)</span>
-<span id="cb86-577"><a href="#cb86-577" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_r6)</span>
-<span id="cb86-578"><a href="#cb86-578" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb86-579"><a href="#cb86-579" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-580"><a href="#cb86-580" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Obtén las principales medidas de diagnóstico de multicolinealidad.</span>
-<span id="cb86-581"><a href="#cb86-581" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-584"><a href="#cb86-584" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb86-585"><a href="#cb86-585" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(multiColl)</span>
-<span id="cb86-586"><a href="#cb86-586" aria-hidden="true" tabindex="-1"></a><span class="fu">attach</span>(TI)</span>
-<span id="cb86-587"><a href="#cb86-587" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(r3)</span>
-<span id="cb86-588"><a href="#cb86-588" aria-hidden="true" tabindex="-1"></a>cte <span class="ot">=</span> <span class="fu">rep</span>(<span class="dv">1</span>, n)</span>
-<span id="cb86-589"><a href="#cb86-589" aria-hidden="true" tabindex="-1"></a>X<span class="ot">=</span><span class="fu">cbind</span>(cte,r3,r6)</span>
-<span id="cb86-590"><a href="#cb86-590" aria-hidden="true" tabindex="-1"></a><span class="fu">multiCol</span>(X)</span>
-<span id="cb86-591"><a href="#cb86-591" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb86-592"><a href="#cb86-592" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Aplicación el estimador residualizado para estimar el modelo.</span>
-<span id="cb86-593"><a href="#cb86-593" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-594"><a href="#cb86-594" aria-hidden="true" tabindex="-1"></a>Como se comento anteriormente, el signo obtenido en el estimador que acompaña a la variable r3 no es coherente. Podemos considerar que r3 esta contenida dentro de r6 y aplicar el método de estimación de residualización:</span>
+<span id="cb86-558"><a href="#cb86-558" aria-hidden="true" tabindex="-1"></a><span class="ss">8.  </span>Usa la función *multiCol* para obtener todas las medidas de</span>
+<span id="cb86-559"><a href="#cb86-559" aria-hidden="true" tabindex="-1"></a>    diagnóstico conjuntamente e interpretalas:</span>
+<span id="cb86-560"><a href="#cb86-560" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-563"><a href="#cb86-563" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb86-564"><a href="#cb86-564" aria-hidden="true" tabindex="-1"></a><span class="fu">multiCol</span>(X)</span>
+<span id="cb86-565"><a href="#cb86-565" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb86-566"><a href="#cb86-566" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-567"><a href="#cb86-567" aria-hidden="true" tabindex="-1"></a><span class="fu">### Wooldridge. Aplicación de la estimación residualizada. {.unnumbered}</span></span>
+<span id="cb86-568"><a href="#cb86-568" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb86-569"><a href="#cb86-569" aria-hidden="true" tabindex="-1"></a>A partir de los datos de @Wooldrigde2000 se estima un modelo que analiza</span>
+<span id="cb86-570"><a href="#cb86-570" aria-hidden="true" tabindex="-1"></a>los tipos de interés a 12 meses en función de los tipos de interés a 3 y</span>
+<span id="cb86-571"><a href="#cb86-571" aria-hidden="true" tabindex="-1"></a>6 meses. Se pide:</span>
+<span id="cb86-572"><a href="#cb86-572" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-575"><a href="#cb86-575" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb86-576"><a href="#cb86-576" aria-hidden="true" tabindex="-1"></a>TI <span class="ot">=</span> <span class="fu">read.table</span>(<span class="st">"data/WooldrigdeTI.txt"</span>, <span class="at">header=</span>T)</span>
+<span id="cb86-577"><a href="#cb86-577" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb86-578"><a href="#cb86-578" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-579"><a href="#cb86-579" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Estima el modelo que explique los rendimientos a doce meses en</span>
+<span id="cb86-580"><a href="#cb86-580" aria-hidden="true" tabindex="-1"></a>    función de los rendimientos a 3 y a 6 meses e intepreta los</span>
+<span id="cb86-581"><a href="#cb86-581" aria-hidden="true" tabindex="-1"></a>    coeficientes estimados.</span>
+<span id="cb86-582"><a href="#cb86-582" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-585"><a href="#cb86-585" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb86-586"><a href="#cb86-586" aria-hidden="true" tabindex="-1"></a>reg <span class="ot">=</span> <span class="fu">lm</span>(r12<span class="sc">~</span>r3<span class="sc">+</span>r6, <span class="at">data=</span>TI)</span>
+<span id="cb86-587"><a href="#cb86-587" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg)</span>
+<span id="cb86-588"><a href="#cb86-588" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb86-589"><a href="#cb86-589" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-590"><a href="#cb86-590" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Estima por separado el modelo que explique los rendimientos a doce</span>
+<span id="cb86-591"><a href="#cb86-591" aria-hidden="true" tabindex="-1"></a>    meses en función de los rendimientos a tres meses, y otro en fución</span>
+<span id="cb86-592"><a href="#cb86-592" aria-hidden="true" tabindex="-1"></a>    de los rendimientos a seis meses. Interpreta los coeficientes</span>
+<span id="cb86-593"><a href="#cb86-593" aria-hidden="true" tabindex="-1"></a>    estimados y comenta si ves incoherencias con el modelo estimado en</span>
+<span id="cb86-594"><a href="#cb86-594" aria-hidden="true" tabindex="-1"></a>    el punto anterior.</span>
 <span id="cb86-595"><a href="#cb86-595" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb86-598"><a href="#cb86-598" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb86-599"><a href="#cb86-599" aria-hidden="true" tabindex="-1"></a>reg_aux <span class="ot">=</span> <span class="fu">lm</span>(r6<span class="sc">~</span>r3)</span>
-<span id="cb86-600"><a href="#cb86-600" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_aux)</span>
-<span id="cb86-601"><a href="#cb86-601" aria-hidden="true" tabindex="-1"></a>e<span class="ot">=</span><span class="fu">residuals</span>(reg_aux)</span>
-<span id="cb86-602"><a href="#cb86-602" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb86-603"><a href="#cb86-603" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-604"><a href="#cb86-604" aria-hidden="true" tabindex="-1"></a>Esos residuos se pueden interpretar como la parte de r6 que no esta explicada por r3. Tengase en cuenta que r3 y los residuos (e) van a ser variables ortogonales entre si. </span>
-<span id="cb86-605"><a href="#cb86-605" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-606"><a href="#cb86-606" aria-hidden="true" tabindex="-1"></a>Sustituimos en la regresión original la variable r6 por la variable residuos (e) que se podrá interpretar como la parte de r6 no explicada por r3.</span>
-<span id="cb86-607"><a href="#cb86-607" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-610"><a href="#cb86-610" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb86-611"><a href="#cb86-611" aria-hidden="true" tabindex="-1"></a>reg_r <span class="ot">=</span> <span class="fu">lm</span>(r12<span class="sc">~</span>r3<span class="sc">+</span>e)</span>
-<span id="cb86-612"><a href="#cb86-612" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_r)</span>
-<span id="cb86-613"><a href="#cb86-613" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb86-614"><a href="#cb86-614" aria-hidden="true" tabindex="-1"></a>Notesé que en este caso, la variable que se ha ortogonalizado mantiene el mismo valor para el estimador del parámetro que la acompaña, sin embargo es importante destacar que ha cambiado la interpretación de la variable ya que no sería la variable r6 original, sino la parte de r6 no explicada por r3. Esta metodología no podría usarse de forma automática sino que debe tenerse en cuenta si la variable ortogonalizada tiene una interpretación coherente dentro del contexto de la investigación que se este realizando. </span>
-<span id="cb86-615"><a href="#cb86-615" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-616"><a href="#cb86-616" aria-hidden="true" tabindex="-1"></a><span class="fu">### Tratamiento de la multicolinealidad exacta en R. Trampa de las variables ficticias. {.unnumbered}</span></span>
-<span id="cb86-617"><a href="#cb86-617" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-618"><a href="#cb86-618" aria-hidden="true" tabindex="-1"></a>Usando la base de datos *mtcars* que contiene las siguientes variables:</span>
-<span id="cb86-619"><a href="#cb86-619" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-620"><a href="#cb86-620" aria-hidden="true" tabindex="-1"></a>mpg = millas por galón</span>
-<span id="cb86-621"><a href="#cb86-621" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-622"><a href="#cb86-622" aria-hidden="true" tabindex="-1"></a>cyl = cilindros</span>
-<span id="cb86-623"><a href="#cb86-623" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-624"><a href="#cb86-624" aria-hidden="true" tabindex="-1"></a>hp = caballos de fuerza</span>
-<span id="cb86-625"><a href="#cb86-625" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-626"><a href="#cb86-626" aria-hidden="true" tabindex="-1"></a>disp = Mide el volumen del motor y representa el poder que genera el</span>
-<span id="cb86-627"><a href="#cb86-627" aria-hidden="true" tabindex="-1"></a>motor</span>
+<span id="cb86-599"><a href="#cb86-599" aria-hidden="true" tabindex="-1"></a>reg_r3 <span class="ot">=</span> <span class="fu">lm</span>(r12<span class="sc">~</span>r3, <span class="at">data=</span>TI)</span>
+<span id="cb86-600"><a href="#cb86-600" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_r3)</span>
+<span id="cb86-601"><a href="#cb86-601" aria-hidden="true" tabindex="-1"></a>reg_r6 <span class="ot">=</span> <span class="fu">lm</span>(r12<span class="sc">~</span>r6, <span class="at">data=</span>TI)</span>
+<span id="cb86-602"><a href="#cb86-602" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_r6)</span>
+<span id="cb86-603"><a href="#cb86-603" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb86-604"><a href="#cb86-604" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-605"><a href="#cb86-605" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Obtén las principales medidas de diagnóstico de multicolinealidad.</span>
+<span id="cb86-606"><a href="#cb86-606" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-609"><a href="#cb86-609" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb86-610"><a href="#cb86-610" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(multiColl)</span>
+<span id="cb86-611"><a href="#cb86-611" aria-hidden="true" tabindex="-1"></a><span class="fu">attach</span>(TI)</span>
+<span id="cb86-612"><a href="#cb86-612" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(r3)</span>
+<span id="cb86-613"><a href="#cb86-613" aria-hidden="true" tabindex="-1"></a>cte <span class="ot">=</span> <span class="fu">rep</span>(<span class="dv">1</span>, n)</span>
+<span id="cb86-614"><a href="#cb86-614" aria-hidden="true" tabindex="-1"></a>X<span class="ot">=</span><span class="fu">cbind</span>(cte,r3,r6)</span>
+<span id="cb86-615"><a href="#cb86-615" aria-hidden="true" tabindex="-1"></a><span class="fu">multiCol</span>(X)</span>
+<span id="cb86-616"><a href="#cb86-616" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb86-617"><a href="#cb86-617" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Aplicación el estimador residualizado para estimar el modelo.</span>
+<span id="cb86-618"><a href="#cb86-618" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-619"><a href="#cb86-619" aria-hidden="true" tabindex="-1"></a>Como se comento anteriormente, el signo obtenido en el estimador que acompaña a la variable r3 no es coherente. Podemos considerar que r3 esta contenida dentro de r6 y aplicar el método de estimación de residualización:</span>
+<span id="cb86-620"><a href="#cb86-620" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-623"><a href="#cb86-623" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb86-624"><a href="#cb86-624" aria-hidden="true" tabindex="-1"></a>reg_aux <span class="ot">=</span> <span class="fu">lm</span>(r6<span class="sc">~</span>r3)</span>
+<span id="cb86-625"><a href="#cb86-625" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_aux)</span>
+<span id="cb86-626"><a href="#cb86-626" aria-hidden="true" tabindex="-1"></a>e<span class="ot">=</span><span class="fu">residuals</span>(reg_aux)</span>
+<span id="cb86-627"><a href="#cb86-627" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb86-628"><a href="#cb86-628" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-629"><a href="#cb86-629" aria-hidden="true" tabindex="-1"></a>wt = peso (1000 lbs)</span>
+<span id="cb86-629"><a href="#cb86-629" aria-hidden="true" tabindex="-1"></a>Esos residuos se pueden interpretar como la parte de r6 que no esta explicada por r3. Tengase en cuenta que r3 y los residuos (e) van a ser variables ortogonales entre si. </span>
 <span id="cb86-630"><a href="#cb86-630" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-631"><a href="#cb86-631" aria-hidden="true" tabindex="-1"></a>*qsec = 1/4 milla de tiempo (Tiempo que se demora el carro en recorrer</span>
-<span id="cb86-632"><a href="#cb86-632" aria-hidden="true" tabindex="-1"></a>1/4 de milla)*</span>
-<span id="cb86-633"><a href="#cb86-633" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-634"><a href="#cb86-634" aria-hidden="true" tabindex="-1"></a>vs = tipo de cilindros (en V; en línea o Serie)</span>
-<span id="cb86-635"><a href="#cb86-635" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-636"><a href="#cb86-636" aria-hidden="true" tabindex="-1"></a>am = Trasmisión (0=automático, 1=manual)</span>
-<span id="cb86-637"><a href="#cb86-637" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-638"><a href="#cb86-638" aria-hidden="true" tabindex="-1"></a>gear = número de engranajes de la trasmisión</span>
-<span id="cb86-639"><a href="#cb86-639" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-640"><a href="#cb86-640" aria-hidden="true" tabindex="-1"></a>carb = número de carburadores</span>
-<span id="cb86-641"><a href="#cb86-641" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-642"><a href="#cb86-642" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Estima un modelo que explique las millas por galon en función de los caballos y el peso expresado en libras y en kilogramos. Comenta el resultado obtenido.</span>
-<span id="cb86-643"><a href="#cb86-643" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-646"><a href="#cb86-646" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb86-647"><a href="#cb86-647" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(mtcars)</span>
-<span id="cb86-648"><a href="#cb86-648" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mtcars)</span>
-<span id="cb86-649"><a href="#cb86-649" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mtcars)</span>
-<span id="cb86-650"><a href="#cb86-650" aria-hidden="true" tabindex="-1"></a>mtcars<span class="sc">$</span>wt_kg <span class="ot">&lt;-</span> mtcars<span class="sc">$</span>wt<span class="sc">*</span><span class="dv">100</span><span class="sc">/</span><span class="dv">2</span></span>
-<span id="cb86-651"><a href="#cb86-651" aria-hidden="true" tabindex="-1"></a>modelo <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> hp <span class="sc">+</span> wt<span class="sc">+</span>wt_kg, <span class="at">data =</span> mtcars)</span>
-<span id="cb86-652"><a href="#cb86-652" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo)</span>
-<span id="cb86-653"><a href="#cb86-653" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb86-654"><a href="#cb86-654" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-655"><a href="#cb86-655" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Convierte la variable cyl en una variable cualitativa y estima el modelo incluyendo la variable dicótomica de cada una de las categorias.</span>
-<span id="cb86-656"><a href="#cb86-656" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-659"><a href="#cb86-659" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb86-660"><a href="#cb86-660" aria-hidden="true" tabindex="-1"></a>mtcars<span class="sc">$</span>cyl <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(mtcars<span class="sc">$</span>cyl)</span>
-<span id="cb86-661"><a href="#cb86-661" aria-hidden="true" tabindex="-1"></a>dummies <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="sc">~</span> cyl <span class="sc">-</span> <span class="dv">1</span>, <span class="at">data =</span> mtcars)</span>
-<span id="cb86-662"><a href="#cb86-662" aria-hidden="true" tabindex="-1"></a>modelo <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> hp <span class="sc">+</span> wt <span class="sc">+</span> dummies, <span class="at">data =</span> mtcars)</span>
-<span id="cb86-663"><a href="#cb86-663" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb86-631"><a href="#cb86-631" aria-hidden="true" tabindex="-1"></a>Sustituimos en la regresión original la variable r6 por la variable residuos (e) que se podrá interpretar como la parte de r6 no explicada por r3.</span>
+<span id="cb86-632"><a href="#cb86-632" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-635"><a href="#cb86-635" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb86-636"><a href="#cb86-636" aria-hidden="true" tabindex="-1"></a>reg_r <span class="ot">=</span> <span class="fu">lm</span>(r12<span class="sc">~</span>r3<span class="sc">+</span>e)</span>
+<span id="cb86-637"><a href="#cb86-637" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_r)</span>
+<span id="cb86-638"><a href="#cb86-638" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb86-639"><a href="#cb86-639" aria-hidden="true" tabindex="-1"></a>Notesé que en este caso, la variable que se ha ortogonalizado mantiene el mismo valor para el estimador del parámetro que la acompaña, sin embargo es importante destacar que ha cambiado la interpretación de la variable ya que no sería la variable r6 original, sino la parte de r6 no explicada por r3. Esta metodología no podría usarse de forma automática sino que debe tenerse en cuenta si la variable ortogonalizada tiene una interpretación coherente dentro del contexto de la investigación que se este realizando. </span>
+<span id="cb86-640"><a href="#cb86-640" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-641"><a href="#cb86-641" aria-hidden="true" tabindex="-1"></a><span class="fu">### Tratamiento de la multicolinealidad exacta en R. Trampa de las variables ficticias. {.unnumbered}</span></span>
+<span id="cb86-642"><a href="#cb86-642" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-643"><a href="#cb86-643" aria-hidden="true" tabindex="-1"></a>Usando la base de datos *mtcars* que contiene las siguientes variables:</span>
+<span id="cb86-644"><a href="#cb86-644" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-645"><a href="#cb86-645" aria-hidden="true" tabindex="-1"></a>mpg = millas por galón</span>
+<span id="cb86-646"><a href="#cb86-646" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-647"><a href="#cb86-647" aria-hidden="true" tabindex="-1"></a>cyl = cilindros</span>
+<span id="cb86-648"><a href="#cb86-648" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-649"><a href="#cb86-649" aria-hidden="true" tabindex="-1"></a>hp = caballos de fuerza</span>
+<span id="cb86-650"><a href="#cb86-650" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-651"><a href="#cb86-651" aria-hidden="true" tabindex="-1"></a>disp = Mide el volumen del motor y representa el poder que genera el</span>
+<span id="cb86-652"><a href="#cb86-652" aria-hidden="true" tabindex="-1"></a>motor</span>
+<span id="cb86-653"><a href="#cb86-653" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-654"><a href="#cb86-654" aria-hidden="true" tabindex="-1"></a>wt = peso (1000 lbs)</span>
+<span id="cb86-655"><a href="#cb86-655" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-656"><a href="#cb86-656" aria-hidden="true" tabindex="-1"></a>*qsec = 1/4 milla de tiempo (Tiempo que se demora el carro en recorrer</span>
+<span id="cb86-657"><a href="#cb86-657" aria-hidden="true" tabindex="-1"></a>1/4 de milla)*</span>
+<span id="cb86-658"><a href="#cb86-658" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-659"><a href="#cb86-659" aria-hidden="true" tabindex="-1"></a>vs = tipo de cilindros (en V; en línea o Serie)</span>
+<span id="cb86-660"><a href="#cb86-660" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-661"><a href="#cb86-661" aria-hidden="true" tabindex="-1"></a>am = Trasmisión (0=automático, 1=manual)</span>
+<span id="cb86-662"><a href="#cb86-662" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-663"><a href="#cb86-663" aria-hidden="true" tabindex="-1"></a>gear = número de engranajes de la trasmisión</span>
 <span id="cb86-664"><a href="#cb86-664" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-665"><a href="#cb86-665" aria-hidden="true" tabindex="-1"></a>3.Estima ahora el mismo modelo, pero sin incluir el termino constante. Comenta los resultados.</span>
+<span id="cb86-665"><a href="#cb86-665" aria-hidden="true" tabindex="-1"></a>carb = número de carburadores</span>
 <span id="cb86-666"><a href="#cb86-666" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-669"><a href="#cb86-669" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb86-670"><a href="#cb86-670" aria-hidden="true" tabindex="-1"></a>modelo <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> hp <span class="sc">+</span> wt <span class="sc">+</span> dummies<span class="dv">-1</span>, <span class="at">data =</span> mtcars)</span>
-<span id="cb86-671"><a href="#cb86-671" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb86-672"><a href="#cb86-672" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-673"><a href="#cb86-673" aria-hidden="true" tabindex="-1"></a><span class="fu">### Precio helado. Tratamiento y diagnóstico de la multicolinealidad de tipo no esencial. {.unnumbered}</span></span>
-<span id="cb86-674"><a href="#cb86-674" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-675"><a href="#cb86-675" aria-hidden="true" tabindex="-1"></a>A partir de los datos del ejemplo 9.1 de Ramanatahn que estudia durante períodos de cuatro semanas desde el 18 de marzo de 1951 hasta el 11 de julio de 1953 el consumo per cápita de helado en pintas (demand) en función del ingreso familiar semanal en dólares (income), el precio del helado en dólares por pinta (price) y la temperatura media en grados Fahrenheit (temp), se pide:</span>
-<span id="cb86-676"><a href="#cb86-676" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-677"><a href="#cb86-677" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Estime el modelo: </span>
-<span id="cb86-678"><a href="#cb86-678" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-681"><a href="#cb86-681" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb86-682"><a href="#cb86-682" aria-hidden="true" tabindex="-1"></a>icecream <span class="ot">=</span> <span class="fu">read.table</span>(<span class="st">"data/data9-1.txt"</span>, <span class="at">header=</span>T, <span class="at">sep=</span><span class="st">""</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb86-683"><a href="#cb86-683" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(icecream)</span>
-<span id="cb86-684"><a href="#cb86-684" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(icecream)</span>
-<span id="cb86-685"><a href="#cb86-685" aria-hidden="true" tabindex="-1"></a>modelo<span class="ot">=</span><span class="fu">lm</span>(demand<span class="sc">~</span>income<span class="sc">+</span>price<span class="sc">+</span>temp, <span class="at">data=</span>icecream)</span>
-<span id="cb86-686"><a href="#cb86-686" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo)</span>
-<span id="cb86-687"><a href="#cb86-687" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb86-688"><a href="#cb86-688" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-689"><a href="#cb86-689" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Uso del paquete multiColl para el diagnóstico de la multicolinealidad:</span>
-<span id="cb86-690"><a href="#cb86-690" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-691"><a href="#cb86-691" aria-hidden="true" tabindex="-1"></a><span class="in">```{r Calculo del VIF}</span></span>
-<span id="cb86-692"><a href="#cb86-692" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(multiColl)</span>
-<span id="cb86-693"><a href="#cb86-693" aria-hidden="true" tabindex="-1"></a>cte <span class="ot">=</span> <span class="fu">array</span>(<span class="dv">1</span>,<span class="fu">length</span>(icecream<span class="sc">$</span>demand))</span>
-<span id="cb86-694"><a href="#cb86-694" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">cbind</span>(cte,icecream[,<span class="sc">-</span>(<span class="dv">1</span>)])</span>
-<span id="cb86-695"><a href="#cb86-695" aria-hidden="true" tabindex="-1"></a>FIV<span class="ot">=</span><span class="fu">VIF</span>(X)</span>
+<span id="cb86-667"><a href="#cb86-667" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Estima un modelo que explique las millas por galon en función de los caballos y el peso expresado en libras y en kilogramos. Comenta el resultado obtenido.</span>
+<span id="cb86-668"><a href="#cb86-668" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-671"><a href="#cb86-671" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb86-672"><a href="#cb86-672" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(mtcars)</span>
+<span id="cb86-673"><a href="#cb86-673" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mtcars)</span>
+<span id="cb86-674"><a href="#cb86-674" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mtcars)</span>
+<span id="cb86-675"><a href="#cb86-675" aria-hidden="true" tabindex="-1"></a>mtcars<span class="sc">$</span>wt_kg <span class="ot">&lt;-</span> mtcars<span class="sc">$</span>wt<span class="sc">*</span><span class="dv">100</span><span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb86-676"><a href="#cb86-676" aria-hidden="true" tabindex="-1"></a>modelo <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> hp <span class="sc">+</span> wt<span class="sc">+</span>wt_kg, <span class="at">data =</span> mtcars)</span>
+<span id="cb86-677"><a href="#cb86-677" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo)</span>
+<span id="cb86-678"><a href="#cb86-678" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb86-679"><a href="#cb86-679" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-680"><a href="#cb86-680" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Convierte la variable cyl en una variable cualitativa y estima el modelo incluyendo la variable dicótomica de cada una de las categorias.</span>
+<span id="cb86-681"><a href="#cb86-681" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-684"><a href="#cb86-684" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb86-685"><a href="#cb86-685" aria-hidden="true" tabindex="-1"></a>mtcars<span class="sc">$</span>cyl <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(mtcars<span class="sc">$</span>cyl)</span>
+<span id="cb86-686"><a href="#cb86-686" aria-hidden="true" tabindex="-1"></a>dummies <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="sc">~</span> cyl <span class="sc">-</span> <span class="dv">1</span>, <span class="at">data =</span> mtcars)</span>
+<span id="cb86-687"><a href="#cb86-687" aria-hidden="true" tabindex="-1"></a>modelo <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> hp <span class="sc">+</span> wt <span class="sc">+</span> dummies, <span class="at">data =</span> mtcars)</span>
+<span id="cb86-688"><a href="#cb86-688" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb86-689"><a href="#cb86-689" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-690"><a href="#cb86-690" aria-hidden="true" tabindex="-1"></a>3.Estima ahora el mismo modelo, pero sin incluir el termino constante. Comenta los resultados.</span>
+<span id="cb86-691"><a href="#cb86-691" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-694"><a href="#cb86-694" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb86-695"><a href="#cb86-695" aria-hidden="true" tabindex="-1"></a>modelo <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> hp <span class="sc">+</span> wt <span class="sc">+</span> dummies<span class="dv">-1</span>, <span class="at">data =</span> mtcars)</span>
 <span id="cb86-696"><a href="#cb86-696" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb86-697"><a href="#cb86-697" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-698"><a href="#cb86-698" aria-hidden="true" tabindex="-1"></a><span class="in">```{r Calculo del NC}</span></span>
-<span id="cb86-699"><a href="#cb86-699" aria-hidden="true" tabindex="-1"></a><span class="fu">CNs</span>(X)</span>
-<span id="cb86-700"><a href="#cb86-700" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb86-698"><a href="#cb86-698" aria-hidden="true" tabindex="-1"></a><span class="fu">### Precio helado. Tratamiento y diagnóstico de la multicolinealidad de tipo no esencial. {.unnumbered}</span></span>
+<span id="cb86-699"><a href="#cb86-699" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-700"><a href="#cb86-700" aria-hidden="true" tabindex="-1"></a>A partir de los datos del ejemplo 9.1 de Ramanatahn que estudia durante períodos de cuatro semanas desde el 18 de marzo de 1951 hasta el 11 de julio de 1953 el consumo per cápita de helado en pintas (demand) en función del ingreso familiar semanal en dólares (income), el precio del helado en dólares por pinta (price) y la temperatura media en grados Fahrenheit (temp), se pide:</span>
 <span id="cb86-701"><a href="#cb86-701" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-702"><a href="#cb86-702" aria-hidden="true" tabindex="-1"></a><span class="in">```{r Calculo del CV}</span></span>
-<span id="cb86-703"><a href="#cb86-703" aria-hidden="true" tabindex="-1"></a><span class="fu">CV</span>(icecream<span class="sc">$</span>income)</span>
-<span id="cb86-704"><a href="#cb86-704" aria-hidden="true" tabindex="-1"></a><span class="fu">CV</span>(icecream<span class="sc">$</span>price)</span>
-<span id="cb86-705"><a href="#cb86-705" aria-hidden="true" tabindex="-1"></a><span class="fu">CV</span>(icecream<span class="sc">$</span>temp)</span>
-<span id="cb86-706"><a href="#cb86-706" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb86-707"><a href="#cb86-707" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-708"><a href="#cb86-708" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Proponga una solución para mitigar la multicolinealidad detectada y compruebe que se ha mitigado. </span>
-<span id="cb86-709"><a href="#cb86-709" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-710"><a href="#cb86-710" aria-hidden="true" tabindex="-1"></a>Dado que se ha detectado multicolinealidad de tipo no esencial, la propuesta es centrar la variable que la ocasiona. Para ello:</span>
-<span id="cb86-711"><a href="#cb86-711" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-714"><a href="#cb86-714" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb86-715"><a href="#cb86-715" aria-hidden="true" tabindex="-1"></a>icecream<span class="sc">$</span>price<span class="ot">=</span>icecream<span class="sc">$</span>price<span class="sc">-</span><span class="fu">mean</span>(icecream<span class="sc">$</span>price)</span>
-<span id="cb86-716"><a href="#cb86-716" aria-hidden="true" tabindex="-1"></a>modelo1<span class="ot">=</span><span class="fu">lm</span>(demand<span class="sc">~</span>income<span class="sc">+</span>price<span class="sc">+</span>temp, <span class="at">data=</span>icecream)</span>
-<span id="cb86-717"><a href="#cb86-717" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo1)</span>
-<span id="cb86-718"><a href="#cb86-718" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">cbind</span>(cte,icecream[,<span class="sc">-</span>(<span class="dv">1</span>)])</span>
-<span id="cb86-719"><a href="#cb86-719" aria-hidden="true" tabindex="-1"></a>FIV<span class="ot">=</span><span class="fu">VIF</span>(X)</span>
-<span id="cb86-720"><a href="#cb86-720" aria-hidden="true" tabindex="-1"></a><span class="fu">CNs</span>(X)</span>
+<span id="cb86-702"><a href="#cb86-702" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Estime el modelo: </span>
+<span id="cb86-703"><a href="#cb86-703" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-706"><a href="#cb86-706" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb86-707"><a href="#cb86-707" aria-hidden="true" tabindex="-1"></a>icecream <span class="ot">=</span> <span class="fu">read.table</span>(<span class="st">"data/data9-1.txt"</span>, <span class="at">header=</span>T, <span class="at">sep=</span><span class="st">""</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb86-708"><a href="#cb86-708" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(icecream)</span>
+<span id="cb86-709"><a href="#cb86-709" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(icecream)</span>
+<span id="cb86-710"><a href="#cb86-710" aria-hidden="true" tabindex="-1"></a>modelo<span class="ot">=</span><span class="fu">lm</span>(demand<span class="sc">~</span>income<span class="sc">+</span>price<span class="sc">+</span>temp, <span class="at">data=</span>icecream)</span>
+<span id="cb86-711"><a href="#cb86-711" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo)</span>
+<span id="cb86-712"><a href="#cb86-712" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb86-713"><a href="#cb86-713" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-714"><a href="#cb86-714" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Uso del paquete multiColl para el diagnóstico de la multicolinealidad:</span>
+<span id="cb86-715"><a href="#cb86-715" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-716"><a href="#cb86-716" aria-hidden="true" tabindex="-1"></a><span class="in">```{r Calculo del VIF}</span></span>
+<span id="cb86-717"><a href="#cb86-717" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(multiColl)</span>
+<span id="cb86-718"><a href="#cb86-718" aria-hidden="true" tabindex="-1"></a>cte <span class="ot">=</span> <span class="fu">array</span>(<span class="dv">1</span>,<span class="fu">length</span>(icecream<span class="sc">$</span>demand))</span>
+<span id="cb86-719"><a href="#cb86-719" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">cbind</span>(cte,icecream[,<span class="sc">-</span>(<span class="dv">1</span>)])</span>
+<span id="cb86-720"><a href="#cb86-720" aria-hidden="true" tabindex="-1"></a>FIV<span class="ot">=</span><span class="fu">VIF</span>(X)</span>
 <span id="cb86-721"><a href="#cb86-721" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb86-722"><a href="#cb86-722" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-723"><a href="#cb86-723" aria-hidden="true" tabindex="-1"></a><span class="fu">### Modelo STIRPAT. Multicolinealidad no esencial y esencial. {.unnumbered} </span></span>
-<span id="cb86-724"><a href="#cb86-724" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-725"><a href="#cb86-725" aria-hidden="true" tabindex="-1"></a>Se trata de aplicar el modelo STIRPAT a datos de China (1990-2014) estimando el modelo que explica las emisiones de CO2 en función de la población total en miles de millones, el PIB per cápita (expresados en billones de dólares constantes de 2010) y la industrialización (como un porcentaje del PIB). </span>
-<span id="cb86-728"><a href="#cb86-728" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb86-729"><a href="#cb86-729" aria-hidden="true" tabindex="-1"></a>stirpatchina <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/stirpattchina.csv"</span>, <span class="at">row.names=</span><span class="dv">1</span>, <span class="at">sep=</span><span class="st">";"</span>)</span>
-<span id="cb86-730"><a href="#cb86-730" aria-hidden="true" tabindex="-1"></a><span class="fu">attach</span>(stirpatchina)</span>
-<span id="cb86-731"><a href="#cb86-731" aria-hidden="true" tabindex="-1"></a>x1<span class="ot">&lt;-</span>Pop</span>
-<span id="cb86-732"><a href="#cb86-732" aria-hidden="true" tabindex="-1"></a>x2<span class="ot">&lt;-</span>PIBpc_cte</span>
-<span id="cb86-733"><a href="#cb86-733" aria-hidden="true" tabindex="-1"></a>x3<span class="ot">&lt;-</span>Indust</span>
-<span id="cb86-734"><a href="#cb86-734" aria-hidden="true" tabindex="-1"></a>y<span class="ot">&lt;-</span>CarbonDiox</span>
-<span id="cb86-735"><a href="#cb86-735" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="fu">length</span>(y)</span>
-<span id="cb86-736"><a href="#cb86-736" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb86-737"><a href="#cb86-737" aria-hidden="true" tabindex="-1"></a>Se pide:</span>
-<span id="cb86-738"><a href="#cb86-738" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Calcular las medidas básicas de detección de multicolinealidad.</span>
-<span id="cb86-739"><a href="#cb86-739" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-742"><a href="#cb86-742" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb86-743"><a href="#cb86-743" aria-hidden="true" tabindex="-1"></a>cte <span class="ot">=</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">length</span>(n))</span>
-<span id="cb86-744"><a href="#cb86-744" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">cbind</span>(cte, x1, x2, x3)</span>
-<span id="cb86-745"><a href="#cb86-745" aria-hidden="true" tabindex="-1"></a><span class="fu">VIF</span>(X)</span>
-<span id="cb86-746"><a href="#cb86-746" aria-hidden="true" tabindex="-1"></a><span class="fu">CN</span>(X)</span>
-<span id="cb86-747"><a href="#cb86-747" aria-hidden="true" tabindex="-1"></a><span class="fu">CVs</span>(X)</span>
-<span id="cb86-748"><a href="#cb86-748" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb86-749"><a href="#cb86-749" aria-hidden="true" tabindex="-1"></a>Se observa que el NC es mayor que 30 mientras que los FIV son menores de 10, aunque mayor que 4 en el caso de la primera y segunda variable explicativa. Se concluye que existe multicolinealidad no esencial y según los coeficientes de variación son la primera y la tercera variables explicativas las que presentan un coeficiente de variación inferior a 0.10, </span>
-<span id="cb86-750"><a href="#cb86-750" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-751"><a href="#cb86-751" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Proponga una solución para el tipo de multicolinealidad detectada. Y compruebe si se ha mitigado. </span>
-<span id="cb86-752"><a href="#cb86-752" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-753"><a href="#cb86-753" aria-hidden="true" tabindex="-1"></a>De la conclusión anterior se obtiene que existe multicolinealidad no esencial generadas por la primera y tercera variable, por lo que se procede a centrar dichas variables:</span>
-<span id="cb86-754"><a href="#cb86-754" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-757"><a href="#cb86-757" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb86-758"><a href="#cb86-758" aria-hidden="true" tabindex="-1"></a>x1_c <span class="ot">=</span> x1 <span class="sc">-</span> <span class="fu">mean</span>(x1)</span>
-<span id="cb86-759"><a href="#cb86-759" aria-hidden="true" tabindex="-1"></a>x3_c <span class="ot">=</span> x3 <span class="sc">-</span> <span class="fu">mean</span>(x3)</span>
-<span id="cb86-760"><a href="#cb86-760" aria-hidden="true" tabindex="-1"></a>X_c <span class="ot">=</span> <span class="fu">cbind</span>(cte, x1_c, x2, x3_c)</span>
+<span id="cb86-723"><a href="#cb86-723" aria-hidden="true" tabindex="-1"></a><span class="in">```{r Calculo del NC}</span></span>
+<span id="cb86-724"><a href="#cb86-724" aria-hidden="true" tabindex="-1"></a><span class="fu">CNs</span>(X)</span>
+<span id="cb86-725"><a href="#cb86-725" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb86-726"><a href="#cb86-726" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-727"><a href="#cb86-727" aria-hidden="true" tabindex="-1"></a><span class="in">```{r Calculo del CV}</span></span>
+<span id="cb86-728"><a href="#cb86-728" aria-hidden="true" tabindex="-1"></a><span class="fu">CV</span>(icecream<span class="sc">$</span>income)</span>
+<span id="cb86-729"><a href="#cb86-729" aria-hidden="true" tabindex="-1"></a><span class="fu">CV</span>(icecream<span class="sc">$</span>price)</span>
+<span id="cb86-730"><a href="#cb86-730" aria-hidden="true" tabindex="-1"></a><span class="fu">CV</span>(icecream<span class="sc">$</span>temp)</span>
+<span id="cb86-731"><a href="#cb86-731" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb86-732"><a href="#cb86-732" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-733"><a href="#cb86-733" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Proponga una solución para mitigar la multicolinealidad detectada y compruebe que se ha mitigado. </span>
+<span id="cb86-734"><a href="#cb86-734" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-735"><a href="#cb86-735" aria-hidden="true" tabindex="-1"></a>Dado que se ha detectado multicolinealidad de tipo no esencial, la propuesta es centrar la variable que la ocasiona. Para ello:</span>
+<span id="cb86-736"><a href="#cb86-736" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-739"><a href="#cb86-739" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb86-740"><a href="#cb86-740" aria-hidden="true" tabindex="-1"></a>icecream<span class="sc">$</span>price<span class="ot">=</span>icecream<span class="sc">$</span>price<span class="sc">-</span><span class="fu">mean</span>(icecream<span class="sc">$</span>price)</span>
+<span id="cb86-741"><a href="#cb86-741" aria-hidden="true" tabindex="-1"></a>modelo1<span class="ot">=</span><span class="fu">lm</span>(demand<span class="sc">~</span>income<span class="sc">+</span>price<span class="sc">+</span>temp, <span class="at">data=</span>icecream)</span>
+<span id="cb86-742"><a href="#cb86-742" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo1)</span>
+<span id="cb86-743"><a href="#cb86-743" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">cbind</span>(cte,icecream[,<span class="sc">-</span>(<span class="dv">1</span>)])</span>
+<span id="cb86-744"><a href="#cb86-744" aria-hidden="true" tabindex="-1"></a>FIV<span class="ot">=</span><span class="fu">VIF</span>(X)</span>
+<span id="cb86-745"><a href="#cb86-745" aria-hidden="true" tabindex="-1"></a><span class="fu">CNs</span>(X)</span>
+<span id="cb86-746"><a href="#cb86-746" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb86-747"><a href="#cb86-747" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-748"><a href="#cb86-748" aria-hidden="true" tabindex="-1"></a><span class="fu">### Modelo STIRPAT. Multicolinealidad no esencial y esencial. {.unnumbered} </span></span>
+<span id="cb86-749"><a href="#cb86-749" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-750"><a href="#cb86-750" aria-hidden="true" tabindex="-1"></a>Se trata de aplicar el modelo STIRPAT a datos de China (1990-2014) estimando el modelo que explica las emisiones de CO2 en función de la población total en miles de millones, el PIB per cápita (expresados en billones de dólares constantes de 2010) y la industrialización (como un porcentaje del PIB). </span>
+<span id="cb86-753"><a href="#cb86-753" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb86-754"><a href="#cb86-754" aria-hidden="true" tabindex="-1"></a>stirpatchina <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/stirpattchina.csv"</span>, <span class="at">row.names=</span><span class="dv">1</span>, <span class="at">sep=</span><span class="st">";"</span>)</span>
+<span id="cb86-755"><a href="#cb86-755" aria-hidden="true" tabindex="-1"></a><span class="fu">attach</span>(stirpatchina)</span>
+<span id="cb86-756"><a href="#cb86-756" aria-hidden="true" tabindex="-1"></a>x1<span class="ot">&lt;-</span>Pop</span>
+<span id="cb86-757"><a href="#cb86-757" aria-hidden="true" tabindex="-1"></a>x2<span class="ot">&lt;-</span>PIBpc_cte</span>
+<span id="cb86-758"><a href="#cb86-758" aria-hidden="true" tabindex="-1"></a>x3<span class="ot">&lt;-</span>Indust</span>
+<span id="cb86-759"><a href="#cb86-759" aria-hidden="true" tabindex="-1"></a>y<span class="ot">&lt;-</span>CarbonDiox</span>
+<span id="cb86-760"><a href="#cb86-760" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="fu">length</span>(y)</span>
 <span id="cb86-761"><a href="#cb86-761" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb86-762"><a href="#cb86-762" aria-hidden="true" tabindex="-1"></a>se procede a recalcular las medidas de detección:</span>
-<span id="cb86-765"><a href="#cb86-765" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb86-766"><a href="#cb86-766" aria-hidden="true" tabindex="-1"></a><span class="fu">VIF</span>(X_c)</span>
-<span id="cb86-767"><a href="#cb86-767" aria-hidden="true" tabindex="-1"></a><span class="fu">CN</span>(X_c)</span>
-<span id="cb86-768"><a href="#cb86-768" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb86-769"><a href="#cb86-769" aria-hidden="true" tabindex="-1"></a>Observamos que se ha mitigado la multicolinealidad no esencial, pero la esencial parece seguir existiendo entre la primera y la segunda variable. </span>
-<span id="cb86-770"><a href="#cb86-770" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-771"><a href="#cb86-771" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Aplique el método de residualización:</span>
-<span id="cb86-772"><a href="#cb86-772" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-773"><a href="#cb86-773" aria-hidden="true" tabindex="-1"></a>Para ello se procede a estimar la variable x2 (PIB per cápita) en función de la variable X1 (Población) y la variable x3 (tecnología)</span>
-<span id="cb86-774"><a href="#cb86-774" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-777"><a href="#cb86-777" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb86-778"><a href="#cb86-778" aria-hidden="true" tabindex="-1"></a>aux <span class="ot">=</span> <span class="fu">lm</span>(x2 <span class="sc">~</span> x1<span class="sc">+</span>x3)</span>
-<span id="cb86-779"><a href="#cb86-779" aria-hidden="true" tabindex="-1"></a>x2resid <span class="ot">=</span> aux<span class="sc">$</span>residuals</span>
-<span id="cb86-780"><a href="#cb86-780" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb86-781"><a href="#cb86-781" aria-hidden="true" tabindex="-1"></a>La variable resultante se interpretaria como el PIB per cápita que no esta relacionado ni con la población ni con la tecnología. A continuación, se sustituye en el modelo la variable x2 por su residualización. </span>
-<span id="cb86-782"><a href="#cb86-782" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-785"><a href="#cb86-785" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb86-786"><a href="#cb86-786" aria-hidden="true" tabindex="-1"></a>modelo_residual <span class="ot">=</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1_c <span class="sc">+</span> x2resid <span class="sc">+</span> x3_c)</span>
-<span id="cb86-787"><a href="#cb86-787" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_residual)</span>
-<span id="cb86-788"><a href="#cb86-788" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb86-789"><a href="#cb86-789" aria-hidden="true" tabindex="-1"></a>Si analizamos las medidas de diagnóstico de la multicolinealidad para ese modelo se observa que se ha mitigado.</span>
-<span id="cb86-792"><a href="#cb86-792" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb86-793"><a href="#cb86-793" aria-hidden="true" tabindex="-1"></a>X_r <span class="ot">=</span> <span class="fu">cbind</span>(cte, x1_c, x2resid, x3_c)</span>
-<span id="cb86-794"><a href="#cb86-794" aria-hidden="true" tabindex="-1"></a><span class="fu">VIF</span>(X_r)</span>
-<span id="cb86-795"><a href="#cb86-795" aria-hidden="true" tabindex="-1"></a><span class="fu">CN</span>(X_r)</span>
-<span id="cb86-796"><a href="#cb86-796" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb86-762"><a href="#cb86-762" aria-hidden="true" tabindex="-1"></a>Se pide:</span>
+<span id="cb86-763"><a href="#cb86-763" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Calcular las medidas básicas de detección de multicolinealidad.</span>
+<span id="cb86-764"><a href="#cb86-764" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-767"><a href="#cb86-767" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb86-768"><a href="#cb86-768" aria-hidden="true" tabindex="-1"></a>cte <span class="ot">=</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">length</span>(n))</span>
+<span id="cb86-769"><a href="#cb86-769" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">cbind</span>(cte, x1, x2, x3)</span>
+<span id="cb86-770"><a href="#cb86-770" aria-hidden="true" tabindex="-1"></a><span class="fu">VIF</span>(X)</span>
+<span id="cb86-771"><a href="#cb86-771" aria-hidden="true" tabindex="-1"></a><span class="fu">CN</span>(X)</span>
+<span id="cb86-772"><a href="#cb86-772" aria-hidden="true" tabindex="-1"></a><span class="fu">CVs</span>(X)</span>
+<span id="cb86-773"><a href="#cb86-773" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb86-774"><a href="#cb86-774" aria-hidden="true" tabindex="-1"></a>Se observa que el NC es mayor que 30 mientras que los FIV son menores de 10, aunque mayor que 4 en el caso de la primera y segunda variable explicativa. Se concluye que existe multicolinealidad no esencial y según los coeficientes de variación son la primera y la tercera variables explicativas las que presentan un coeficiente de variación inferior a 0.10, </span>
+<span id="cb86-775"><a href="#cb86-775" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-776"><a href="#cb86-776" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Proponga una solución para el tipo de multicolinealidad detectada. Y compruebe si se ha mitigado. </span>
+<span id="cb86-777"><a href="#cb86-777" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-778"><a href="#cb86-778" aria-hidden="true" tabindex="-1"></a>De la conclusión anterior se obtiene que existe multicolinealidad no esencial generadas por la primera y tercera variable, por lo que se procede a centrar dichas variables:</span>
+<span id="cb86-779"><a href="#cb86-779" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-782"><a href="#cb86-782" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb86-783"><a href="#cb86-783" aria-hidden="true" tabindex="-1"></a>x1_c <span class="ot">=</span> x1 <span class="sc">-</span> <span class="fu">mean</span>(x1)</span>
+<span id="cb86-784"><a href="#cb86-784" aria-hidden="true" tabindex="-1"></a>x3_c <span class="ot">=</span> x3 <span class="sc">-</span> <span class="fu">mean</span>(x3)</span>
+<span id="cb86-785"><a href="#cb86-785" aria-hidden="true" tabindex="-1"></a>X_c <span class="ot">=</span> <span class="fu">cbind</span>(cte, x1_c, x2, x3_c)</span>
+<span id="cb86-786"><a href="#cb86-786" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb86-787"><a href="#cb86-787" aria-hidden="true" tabindex="-1"></a>se procede a recalcular las medidas de detección:</span>
+<span id="cb86-790"><a href="#cb86-790" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb86-791"><a href="#cb86-791" aria-hidden="true" tabindex="-1"></a><span class="fu">VIF</span>(X_c)</span>
+<span id="cb86-792"><a href="#cb86-792" aria-hidden="true" tabindex="-1"></a><span class="fu">CN</span>(X_c)</span>
+<span id="cb86-793"><a href="#cb86-793" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb86-794"><a href="#cb86-794" aria-hidden="true" tabindex="-1"></a>Observamos que se ha mitigado la multicolinealidad no esencial, pero la esencial parece seguir existiendo entre la primera y la segunda variable. </span>
+<span id="cb86-795"><a href="#cb86-795" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-796"><a href="#cb86-796" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Aplique el método de residualización:</span>
 <span id="cb86-797"><a href="#cb86-797" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-798"><a href="#cb86-798" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-799"><a href="#cb86-799" aria-hidden="true" tabindex="-1"></a><span class="fu">## Prácticas propuestas</span></span>
-<span id="cb86-800"><a href="#cb86-800" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-801"><a href="#cb86-801" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Usar el paquete <span class="in">`multiColl`</span> para analizar la posible existecia de multicolinealidad en el modelo $ROA_i=\beta_0+\beta_1LIQUIDEZ_i+\beta_2ENDEUDAMIENTO_i+\beta_3INDICEFINACIEROAPROX_i+u_i$.</span>
-<span id="cb86-802"><a href="#cb86-802" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-803"><a href="#cb86-803" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Usar el paquete <span class="in">`multiColl`</span> para analizar la posible existecia de multicolinealidad en el modelo $IBEX35_i=\beta_0+\beta_1SP500+\beta_2EUROSTOXX50_i+u_i$.</span>
-<span id="cb86-804"><a href="#cb86-804" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-805"><a href="#cb86-805" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>A partir de la base de datos Inditex que relaciona las ventas con el número de empleados y el número de tiendas para el periodo 2006-2020, se pide: </span>
-<span id="cb86-806"><a href="#cb86-806" aria-hidden="true" tabindex="-1"></a>a.  Obtener la matriz de correlaciones de las variables. Comentar el signo de los coeficientes esperados.</span>
-<span id="cb86-807"><a href="#cb86-807" aria-hidden="true" tabindex="-1"></a>b.  Estimar el modelo e interpretar los coeficientes.</span>
-<span id="cb86-808"><a href="#cb86-808" aria-hidden="true" tabindex="-1"></a>c.  Interpretar los estadísticos experimentales del test de significación individual a partir del p-valor. </span>
-<span id="cb86-809"><a href="#cb86-809" aria-hidden="true" tabindex="-1"></a>d.  Interpretar el estadístico experimental del test de significación global a partir del p-valor. </span>
-<span id="cb86-810"><a href="#cb86-810" aria-hidden="true" tabindex="-1"></a>e.  Realizar el contraste sobre si el efecto del número de tiendas puede ser igual al de número de empleados. </span>
-<span id="cb86-811"><a href="#cb86-811" aria-hidden="true" tabindex="-1"></a>f.  Calcula la regresión auxiliar del número de empleados en función del número de tiendas y obtén el factor inflactor de la varianza a partir de él. </span>
-<span id="cb86-812"><a href="#cb86-812" aria-hidden="true" tabindex="-1"></a>g.  Obtén a través del software el factor inflactor de la varianza y el número de condición.</span>
-<span id="cb86-813"><a href="#cb86-813" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-814"><a href="#cb86-814" aria-hidden="true" tabindex="-1"></a>Vamos a realizar los siguientes modelos alternativos:</span>
-<span id="cb86-815"><a href="#cb86-815" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-816"><a href="#cb86-816" aria-hidden="true" tabindex="-1"></a>**Modelo 2**: Construye la variable ratio de empleado por tienda e introdúcela en el modelo.</span>
-<span id="cb86-817"><a href="#cb86-817" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-818"><a href="#cb86-818" aria-hidden="true" tabindex="-1"></a>**Modelo 3**: A partir del año 2010 el grupo comienza el comercio electrónico. Crea una variable ficticia que recoja este efecto e introdúcela en el modelo junto con la anterior.</span>
-<span id="cb86-819"><a href="#cb86-819" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-820"><a href="#cb86-820" aria-hidden="true" tabindex="-1"></a>**Modelo 4** (Residualización): Realizamos la regresión del número de empleados en función del número de tiendas y nos quedamos con los residuos. De manera que sustituimos en el modelo 1, el número de empleados por dichos residuos (parte de la variable número de empleados que no está relacionada con el número de tiendas) y se estima nuevamente el modelo.</span>
-<span id="cb86-821"><a href="#cb86-821" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-822"><a href="#cb86-822" aria-hidden="true" tabindex="-1"></a>Comparar todos los modelos en función de la bondad del ajuste. </span>
+<span id="cb86-798"><a href="#cb86-798" aria-hidden="true" tabindex="-1"></a>Para ello se procede a estimar la variable x2 (PIB per cápita) en función de la variable X1 (Población) y la variable x3 (tecnología)</span>
+<span id="cb86-799"><a href="#cb86-799" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-802"><a href="#cb86-802" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb86-803"><a href="#cb86-803" aria-hidden="true" tabindex="-1"></a>aux <span class="ot">=</span> <span class="fu">lm</span>(x2 <span class="sc">~</span> x1<span class="sc">+</span>x3)</span>
+<span id="cb86-804"><a href="#cb86-804" aria-hidden="true" tabindex="-1"></a>x2resid <span class="ot">=</span> aux<span class="sc">$</span>residuals</span>
+<span id="cb86-805"><a href="#cb86-805" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb86-806"><a href="#cb86-806" aria-hidden="true" tabindex="-1"></a>La variable resultante se interpretaria como el PIB per cápita que no esta relacionado ni con la población ni con la tecnología. A continuación, se sustituye en el modelo la variable x2 por su residualización. </span>
+<span id="cb86-807"><a href="#cb86-807" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-810"><a href="#cb86-810" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb86-811"><a href="#cb86-811" aria-hidden="true" tabindex="-1"></a>modelo_residual <span class="ot">=</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1_c <span class="sc">+</span> x2resid <span class="sc">+</span> x3_c)</span>
+<span id="cb86-812"><a href="#cb86-812" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_residual)</span>
+<span id="cb86-813"><a href="#cb86-813" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb86-814"><a href="#cb86-814" aria-hidden="true" tabindex="-1"></a>Si analizamos las medidas de diagnóstico de la multicolinealidad para ese modelo se observa que se ha mitigado.</span>
+<span id="cb86-817"><a href="#cb86-817" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb86-818"><a href="#cb86-818" aria-hidden="true" tabindex="-1"></a>X_r <span class="ot">=</span> <span class="fu">cbind</span>(cte, x1_c, x2resid, x3_c)</span>
+<span id="cb86-819"><a href="#cb86-819" aria-hidden="true" tabindex="-1"></a><span class="fu">VIF</span>(X_r)</span>
+<span id="cb86-820"><a href="#cb86-820" aria-hidden="true" tabindex="-1"></a><span class="fu">CN</span>(X_r)</span>
+<span id="cb86-821"><a href="#cb86-821" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb86-822"><a href="#cb86-822" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-823"><a href="#cb86-823" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-824"><a href="#cb86-824" aria-hidden="true" tabindex="-1"></a><span class="fu">## Prácticas propuestas</span></span>
+<span id="cb86-825"><a href="#cb86-825" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-826"><a href="#cb86-826" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Usar el paquete <span class="in">`multiColl`</span> para analizar la posible existecia de multicolinealidad en el modelo $ROA_i=\beta_0+\beta_1LIQUIDEZ_i+\beta_2ENDEUDAMIENTO_i+\beta_3INDICEFINACIEROAPROX_i+u_i$.</span>
+<span id="cb86-827"><a href="#cb86-827" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-828"><a href="#cb86-828" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Usar el paquete <span class="in">`multiColl`</span> para analizar la posible existecia de multicolinealidad en el modelo $IBEX35_i=\beta_0+\beta_1SP500+\beta_2EUROSTOXX50_i+u_i$.</span>
+<span id="cb86-829"><a href="#cb86-829" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-830"><a href="#cb86-830" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>A partir de la base de datos Inditex que relaciona las ventas con el número de empleados y el número de tiendas para el periodo 2006-2020, se pide: </span>
+<span id="cb86-831"><a href="#cb86-831" aria-hidden="true" tabindex="-1"></a>a.  Obtener la matriz de correlaciones de las variables. Comentar el signo de los coeficientes esperados.</span>
+<span id="cb86-832"><a href="#cb86-832" aria-hidden="true" tabindex="-1"></a>b.  Estimar el modelo e interpretar los coeficientes.</span>
+<span id="cb86-833"><a href="#cb86-833" aria-hidden="true" tabindex="-1"></a>c.  Interpretar los estadísticos experimentales del test de significación individual a partir del p-valor. </span>
+<span id="cb86-834"><a href="#cb86-834" aria-hidden="true" tabindex="-1"></a>d.  Interpretar el estadístico experimental del test de significación global a partir del p-valor. </span>
+<span id="cb86-835"><a href="#cb86-835" aria-hidden="true" tabindex="-1"></a>e.  Realizar el contraste sobre si el efecto del número de tiendas puede ser igual al de número de empleados. </span>
+<span id="cb86-836"><a href="#cb86-836" aria-hidden="true" tabindex="-1"></a>f.  Calcula la regresión auxiliar del número de empleados en función del número de tiendas y obtén el factor inflactor de la varianza a partir de él. </span>
+<span id="cb86-837"><a href="#cb86-837" aria-hidden="true" tabindex="-1"></a>g.  Obtén a través del software el factor inflactor de la varianza y el número de condición.</span>
+<span id="cb86-838"><a href="#cb86-838" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-839"><a href="#cb86-839" aria-hidden="true" tabindex="-1"></a>Vamos a realizar los siguientes modelos alternativos:</span>
+<span id="cb86-840"><a href="#cb86-840" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-841"><a href="#cb86-841" aria-hidden="true" tabindex="-1"></a>**Modelo 2**: Construye la variable ratio de empleado por tienda e introdúcela en el modelo.</span>
+<span id="cb86-842"><a href="#cb86-842" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-843"><a href="#cb86-843" aria-hidden="true" tabindex="-1"></a>**Modelo 3**: A partir del año 2010 el grupo comienza el comercio electrónico. Crea una variable ficticia que recoja este efecto e introdúcela en el modelo junto con la anterior.</span>
+<span id="cb86-844"><a href="#cb86-844" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-845"><a href="#cb86-845" aria-hidden="true" tabindex="-1"></a>**Modelo 4** (Residualización): Realizamos la regresión del número de empleados en función del número de tiendas y nos quedamos con los residuos. De manera que sustituimos en el modelo 1, el número de empleados por dichos residuos (parte de la variable número de empleados que no está relacionada con el número de tiendas) y se estima nuevamente el modelo.</span>
+<span id="cb86-846"><a href="#cb86-846" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-847"><a href="#cb86-847" aria-hidden="true" tabindex="-1"></a>Comparar todos los modelos en función de la bondad del ajuste. </span>
 </code></pre></div><button title="Copiar al portapapeles" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

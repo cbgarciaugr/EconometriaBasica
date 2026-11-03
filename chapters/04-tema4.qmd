@@ -239,7 +239,7 @@ $\lambda$ es un número real o complejo denominado autovalor.
 
 Para calcular los autovalores de una matriz, partimos de $Av = \lambda v$, reordenando $(A-\lambda I)v=0$. Para que exista una solución distinta de cero, el determinante debe ser igual a cero $\boxed{|A-\lambda I|=0}$. Veamos un ejemplo:
 
-**Ejemplo 1:** Consideremos la siguiente matriz 
+**Ejemplo:** Consideremos la siguiente matriz 
 $$A=\begin{pmatrix}
 4 & 0\\ 
 0 & 2\\
@@ -249,13 +249,34 @@ $|A-\lambda I|=0$. Sustituyendo:
 $$\begin{vmatrix}
 4-\lambda & 0\\ 
 0 & 2-\lambda\\
-end{vmatrix}=0$$
+\end{vmatrix}=0$$
 Desarrollamos el determinante: $(4-\lambda)(2-\lambda)=0$. Por tanto, los autovalores son:
 $$
 \boxed{\lambda_1=4,\quad \lambda_2=2}
 $$
+Así, en este ejemplo, se verifica:
+$$\begin{vmatrix}
+4 & 0\\ 
+0 & 2\\
+\end{vmatrix}\begin{vmatrix}
+1\\ 
+0\\
+\end{vmatrix}=4\begin{vmatrix}
+1\\ 
+0\\
+\end{vmatrix}$$
+$$\begin{vmatrix}
+4 & 0\\ 
+0 & 2\\
+\end{vmatrix}\begin{vmatrix}
+0\\ 
+2\\
+\end{vmatrix}=0\begin{vmatrix}
+0\\ 
+2\\
+\end{vmatrix}$$
 
-**Ejemplo 2:** Obtenga los autovalores de la siguiente matriz: 
+**Ejemplo propuesto:** Obtenga los autovalores de la siguiente matriz: 
 $$
 B=
 \begin{pmatrix}

@@ -849,7 +849,7 @@ d. Sospechan que la inclusión de la variable superficie en el modelo ha generad
 Se pide analizar la posible presencia de heterocedasticidad en el modelo $\mathbf{CO} = \beta_{1} + \beta_{2} \mathbf{NE} + \beta_{3} \mathbf{OE} + \beta_{4} \mathbf{G} + \mathbf{u}$ a partir de las siguientes representaciones gráficas.
 
 ```{r}
-datos = read.table("Data/Ejercicio2 DATOS.csv", header=TRUE, sep=";")
+datos = read.table("data/Ejercicio2 DATOS.csv", header=TRUE, sep=";")
 # kable(datos, row.names = TRUE)
 
 reg = lm(datos$CO~datos$NE+datos$OE+datos$G)
@@ -898,7 +898,7 @@ Se pide analizar la posible presencia de heterocedasticidad en el modelo $\mathb
 Sabiendo que la regresión auxiliar en la que se tiene como variable dependiente el cuadrado de los residuos del modelo y como independientes todas las variables independientes del modelo original, sus cuadrados y productos cruzados (omitiendo repeticiones) tiene un coeficiente de determianción igual a 0.6372, ¿se confirman las intuiciones obtenidas a través de los medios gráficos?
 
 ```{r}
-datos = read.table("Data/Ejercicio3 DATOS.csv", header=TRUE, sep=";")
+datos = read.table("data/Ejercicio3 DATOS.csv", header=TRUE, sep=";")
 # kable(datos, row.names = TRUE)
 
 reg = lm(datos$CO~datos$EC+datos$EO+datos$TT)
@@ -952,7 +952,7 @@ bptest(reg, studentize = FALSE)
 Se pide analizar la posible presencia de heterocedasticidad en el modelo $\mathbf{C} = \beta_{1} + \beta_{2} \mathbf{I} + \beta_{3} \mathbf{D} + \beta_{4} \mathbf{H} + \mathbf{u}$ a partir de las siguientes representaciones gráficas.
 
 ```{r}
-datos = read.table("Data/Ejercicio6 DATOS.csv", header=TRUE, sep=";")
+datos = read.table("data/Ejercicio6 DATOS.csv", header=TRUE, sep=";")
 # kable(datos, row.names = TRUE)
 
 reg = lm(datos$C~datos$R+datos$C+datos$H)
@@ -1013,7 +1013,7 @@ summary(reg_aux)
 $$\mathbf{e}^{2} = \alpha_{1} + \alpha_{2} \mathbf{V} + \alpha_{3} \mathbf{B} + \alpha_{4} \mathbf{A} + \mathbf{w}_{t}, \quad R^{2} = 0.008122.$$ ¿Qué herramienta ha usado?
 
 ```{r eval=FALSE}
-datos = read.table("Data/Ejercicio7 DATOS.csv", header=TRUE, sep=";")
+datos = read.table("data/Ejercicio7 DATOS.csv", header=TRUE, sep=";")
 # kable(datos, row.names = TRUE)
 
 reg = lm(datos$Salario~datos$Ventas+datos$Beneficios+datos$Anos)
@@ -1039,7 +1039,7 @@ $$\mathbf{e}^{2} = \alpha_{1} + \alpha_{2} \mathbf{EC} + \alpha_{3} \mathbf{EL} 
 ¿Qué herramientas ha usado? ¿Por qué?
 
 ```{r eval=FALSE}
-datos = read.table("Data/Ejercicio10 DATOS.csv", header=TRUE, sep=";")
+datos = read.table("data/Ejercicio10 DATOS.csv", header=TRUE, sep=";")
 # kable(datos, row.names = TRUE)
 
 reg = lm(datos$D~datos$EC+datos$EL+datos$V)
@@ -1072,7 +1072,7 @@ Se pide analizar la presencia de heterocedasticidad en el modelo $\mathbf{S} = \
 Tras ordenar (de forma creciente) las observaciones a partir de la variable de horas de trabajo semanales, se contrasta la hipótesis nula de homocedasticidad obteniéndose un valor experimental igual a 1.428 con 463 y 462 grados de libertad. ¿Qué conclusiones obtiene? ¿Por qué se ordenan las observaciones de forma creciente (y no decreciente) según la variable de horas de trabajo semanales?
 
 ```{r}
-datos = read.table("Data/Ejercicio11 DATOS.csv", header=TRUE, sep=";")
+datos = read.table("data/Ejercicio11 DATOS.csv", header=TRUE, sep=";")
 # kable(datos, row.names = TRUE)
 
 reg = lm(datos$S~datos$E+datos$R+datos$H+datos$C) # p-valor contraste de White =  0.00120146

@@ -461,15 +461,6 @@ La interpretación se realiza nuevamente mediante el p-valor. Si este es inferio
 
 Una diferencia importante respecto al test de White es, por tanto, que **Breusch-Pagan plantea una estructura más concreta para la varianza**, mientras que White permite una especificación mucho más general mediante cuadrados y productos cruzados de las variables explicativas.
 
-::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
-Para el modelo del ROA, se puede realizar el test
-:
-```{r}
-bptest(modelo_roa, varformula = ~ datos$LIQUIDEZ_INMEDIATA + datos$ENDEUDAMIENTO + datos$EMPLEADOS)
-```
-Se observa que no se puede rechazar la hipótesis nula de homocesdasticidad a los distintos niveles de confianza habituales.
-:::
-
 
 ### Método de Glejser {.unnumbered} 
 
@@ -817,6 +808,7 @@ library(estimatr)
 ```
 
 Cargamos los datos. Se trata de una serie temporal mensual con datos simulados. Describe el salario medio y sus posibles determinantes:
+
 | Variable | Tipo | Descripción |
 |:--|:--|:----------------------------|
 | `date` | Texto (`AAAA-MM`) | Mes de la observación. Identifica la observación; **no** entra en el modelo. |

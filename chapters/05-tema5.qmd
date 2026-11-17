@@ -415,6 +415,7 @@ La principal ventaja del test de White es su **flexibilidad**, ya que no es nece
 
 ::: {.callout-note appearance="simple" icon=false title="Base de datos 1: Top 100 empresas andaluzas del transporte"}
 Para el modelo del ROA, si queremos analizar si la varianza depende de la **LIQUIDEZ_INMEDIATA**:
+
 ```{r}
 bptest(modelo_roa, studentize = FALSE)
 ```
@@ -954,7 +955,7 @@ bptest(modelo)
 
 **Comentario.** El estadístico es $BP \approx 15{,}36$, con 4 grados de libertad (uno por regresor), y un **p-valor de unos 0,004**. **Se rechaza la homocedasticidad** al 1 %: los regresores explican de forma conjunta una parte significativa de la magnitud de los residuos al cuadrado. A diferencia de Goldfeld-Quandt, este contraste no exige elegir una variable concreta ni descartar observaciones, aunque tampoco indica *cuál* de los regresores es el responsable (para eso sirve el contraste de Glejser). Si se añade la opción `studentize=FALSE` obtenemos el contraste de White con un resultado similar: 
 
-```{r bp}
+```{r white}
 bptest(modelo, studentize = FALSE)
 ```
 

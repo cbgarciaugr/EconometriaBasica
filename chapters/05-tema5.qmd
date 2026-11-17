@@ -434,11 +434,10 @@ Las variables $Z$ pueden coincidir con las variables explicativas del modelo ori
 
 El procedimiento se basa en los siguientes pasos:
 
-1. Estimar el modelo original por MCO y obtener los residuos $\hat u_i$.
-2. Obtener una medida de la varianza de los residuos.
-3. Construir una regresión auxiliar utilizando los residuos al cuadrado como variable dependiente.
-4. Explicar dicha variable mediante las variables $Z$.
-5. Contrastar si las variables de la regresión auxiliar tienen capacidad explicativa sobre la variabilidad de los residuos.
+1. Estimar el modelo original por MCO y obtener los residuos $e_i$.
+2. Obtener una medida de la varianza de los residuos ($\tilde{\sigma}^2=e'e/n$).
+3. Construir una regresión auxiliar utilizando los residuos al cuadrado estandarizados ($g_i=\frac{e_i^2}{\tilde{\sigma}^2}$) como variable dependiente y las variables $Z$ como variables explicativas.
+5. Calcular el estadístico experimental: $\Chi_{exp}=SCE/2$ y comparar con el estadístico teórico $\Chi_{k-1}$.
 
 En R, el contraste puede realizarse directamente mediante:
 

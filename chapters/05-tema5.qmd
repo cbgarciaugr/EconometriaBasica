@@ -836,3 +836,289 @@ d. Sospechan que la inclusión de la variable superficie en el modelo ha generad
     Realice el contraste necesario y obtenga las conclusiones al 95% de
     confianza.
 
+2. Supongamos que se tienen datos correspondientes a 47 alumnos que cursaron la asignatura Técnicas Cuantitativas 2 en el curso académico 2011/2012. Para dichos alumnos se dispone de las siguientes variables:
+
+- $\mathbf{CO}$ es la calificación obtenida en el examen final de la asignatura.
+
+- $\mathbf{NE}$ es la calificación esperada en el examen tras realizar el mismo.
+
+- $\mathbf{OE}$ es la opción elegida en el examen final. Puesto que el examen estaba formado por dos modelos, se ha codificado con 1 al modelo A y con 0 al modelo B.
+
+- $\mathbf{G}$ toma el valor 1 si el alumno en cuestión pertenece al doble grado en ADE-Derecho y 0 si pertenece al de Economía.
+
+Se pide analizar la posible presencia de heterocedasticidad en el modelo $\mathbf{CO} = \beta_{1} + \beta_{2} \mathbf{NE} + \beta_{3} \mathbf{OE} + \beta_{4} \mathbf{G} + \mathbf{u}$ a partir de las siguientes representaciones gráficas.
+
+```{r}
+datos = read.table("Data/Ejercicio2 DATOS.csv", header=TRUE, sep=";")
+# kable(datos, row.names = TRUE)
+
+reg = lm(datos$CO~datos$NE+datos$OE+datos$G)
+e = reg$residuals
+
+plot(e, ylab="Residuos", xlab="Observación", col="red", lwd=2)
+abline(h=0, col="black")
+
+e2 = e^2
+plot(e2, ylab="Residuos (al cuadrado)", xlab="Observación", col="red", lwd=2)
+abline(h=0, col="black")
+
+plot(datos$NE, e, ylab="Residuos", xlab="Calificación esperada", col="red", lwd=2)
+abline(h=0, col="black")
+
+plot(datos$OE, e, ylab="Residuos", xlab="Opción elegida", col="red", lwd=2)
+abline(h=0, col="black")
+
+plot(datos$G, e, ylab="Residuos", xlab="Género", col="red", lwd=2)
+abline(h=0, col="black")
+
+plot(datos$NE, e2, ylab="Residuos (al cuadrado)", xlab="Calificación esperada", col="red", lwd=2)
+abline(h=0, col="black")
+
+plot(datos$OE, e2, ylab="Residuos (al cuadrado)", xlab="Opción elegida", col="red", lwd=2)
+abline(h=0, col="black")
+
+plot(datos$G, e2, ylab="Residuos (al cuadrado)", xlab="Género", col="red", lwd=2)
+abline(h=0, col="black")
+
+# p-valor contraste de White =  0.653257
+```
+
+3. Supongamos que se tienen datos correspondientes a 47 alumnos que cursaron la asignatura Técnicas Cuantitativas 2 en el curso académico 2011/2012. En dicho curso académico se realizó una evaluación continua en el que el 30% de la calificación final estaba formado por un ejercicio a resolver en pizarra, otro en ordenador y distintos exámenes tipo test al final de cada tema. Por tanto, se dispone de las siguientes variables:
+
+- $\mathbf{CO}$ es la calificación obtenida en el examen final de la asignatura.
+
+- $\mathbf{EC}$ es la calificación obtenida en el ejercicio realizado en clase.
+
+- $\mathbf{EO}$ es la calificación obtenida en el ejercicio realizado con ordenador.
+
+- $\mathbf{TT}$ es la calificación obtenida en los exámenes tipo test realizados.
+
+Se pide analizar la posible presencia de heterocedasticidad en el modelo $\mathbf{CO} = \beta_{1} + \beta_{2} \mathbf{EC} + \beta_{3} \mathbf{EO} + \beta_{4} \mathbf{TT} + \mathbf{u}$ a partir de las siguientes representaciones gráficas.
+
+Sabiendo que la regresión auxiliar en la que se tiene como variable dependiente el cuadrado de los residuos del modelo y como independientes todas las variables independientes del modelo original, sus cuadrados y productos cruzados (omitiendo repeticiones) tiene un coeficiente de determianción igual a 0.6372, ¿se confirman las intuiciones obtenidas a través de los medios gráficos?
+
+```{r}
+datos = read.table("Data/Ejercicio3 DATOS.csv", header=TRUE, sep=";")
+# kable(datos, row.names = TRUE)
+
+reg = lm(datos$CO~datos$EC+datos$EO+datos$TT)
+e = reg$residuals
+
+plot(e, ylab="Residuos", xlab="Observación", col="red", lwd=2)
+abline(h=0, col="black")
+
+e2 = e^2
+plot(e2, ylab="Residuos (al cuadrado)", xlab="Observación", col="red", lwd=2)
+abline(h=0, col="black")
+
+plot(datos$EC, e, ylab="Residuos", xlab="Ejercicio pizarra", col="red", lwd=2)
+abline(h=0, col="black")
+
+plot(datos$EO, e, ylab="Residuos", xlab="Ejercicio ordenador", col="red", lwd=2)
+abline(h=0, col="black")
+
+plot(datos$TT, e, ylab="Residuos", xlab="Exámen tipo test", col="red", lwd=2)
+abline(h=0, col="black")
+
+plot(datos$EC, e2, ylab="Residuos (al cuadrado)", xlab="Ejercicio pizarra", col="red", lwd=2)
+abline(h=0, col="black")
+
+plot(datos$EO, e2, ylab="Residuos (al cuadrado)", xlab="Ejercicio ordenador", col="red", lwd=2)
+abline(h=0, col="black")
+
+plot(datos$TT, e2, ylab="Residuos (al cuadrado)", xlab="Exámen tipo test", col="red", lwd=2)
+abline(h=0, col="black")
+
+# p-valor contraste de White =  0.572439
+```
+
+```{r eval=FALSE}
+EC2 = datos$EC^2
+EO2 = datos$EO^2
+TT2 = datos$TT^2
+int1 = datos$EC*datos$EO
+int2 = datos$EC*datos$TT
+int3 = datos$EO*datos$TT
+reg_aux = lm(e2~datos$EC+datos$EO+datos$TT+EC2+EO2+TT2+int1+int2+int3) # White
+summary(reg_aux) # R2 = 0.6372
+
+47*0.672 > qchisq(0.95, 9) # contradictorio con lo que viene a continuación
+
+bptest(reg, studentize = FALSE)
+```
+
+4. Supongamos que se tienen datos sobre los ingresos, $\mathbf{I}$, y consumo, $\mathbf{C}$, mensual de 22 familias. También se dispone de información sobre el número de hijos de cada familia, $\mathbf{H}$, y de si las familias tienen algún préstamo con cuantía superior a los 400 euros mensuales, $D$ (que tomará el valor 1 en caso afirmativo y 0 en el negativo).
+
+Se pide analizar la posible presencia de heterocedasticidad en el modelo $\mathbf{C} = \beta_{1} + \beta_{2} \mathbf{I} + \beta_{3} \mathbf{D} + \beta_{4} \mathbf{H} + \mathbf{u}$ a partir de las siguientes representaciones gráficas.
+
+```{r}
+datos = read.table("Data/Ejercicio6 DATOS.csv", header=TRUE, sep=";")
+# kable(datos, row.names = TRUE)
+
+reg = lm(datos$C~datos$R+datos$C+datos$H)
+e = reg$residuals
+
+e2 = e^2
+plot(e2, ylab="Residuos (al cuadrado)", xlab="Observación", col="red", lwd=2)
+abline(h=0, col="black")
+
+plot(datos$R, e2, ylab="Residuos (al cuadrado)", xlab="Ingresos", col="red", lwd=2)
+abline(h=0, col="black")
+
+# p-valor contraste de White =  0.0311235
+```
+
+¿Se confirman las intuiciones obtenidas a través de los medios gráficos a partir de la siguiente información? En caso de detectar algún problema, ¿qué información puede aportar sobre el mismo? ¿Qué herramienta ha usado?
+
+$$\widehat{\mathbf{e}}^{2} = 0.057 + 0.005 \cdot \mathbf{I}^{2}, \quad R^{2} = 0.3574, \quad Std(pendiente) = 0.0015,$$
+
+$$\widehat{\mathbf{e}}^{2} = -0.1968 + 0.1832 \cdot \sqrt{\mathbf{I}}, \quad R^{2} = 0.3276, \quad Std(pendiente) = 0.0587,$$
+
+$$\widehat{\mathbf{e}}^{2} = -0.0263 + 0.04651 \cdot \mathbf{I}, \quad R^{2} = 0.3447, \quad t_{exp}(pendiente) = 3.243,$$
+
+$$\widehat{\mathbf{e}}^{2} = 0.3024 - 0.4744 \cdot \frac{1}{\mathbf{I}}, \quad R^{2} = 0.2367, \quad t_{exp}(pendiente) = 2.49,$$
+
+$$\widehat{\mathbf{e}}^{2} = 0.475 - 0.586 \cdot \frac{1}{\sqrt{\mathbf{I}}}, \quad R^{2} = 0.2714, \quad p-valor(pendiente) = 0.0129,$$
+
+$$\widehat{\mathbf{e}}^{2} = 0.2111 - 0.5257 \cdot \frac{1}{\mathbf{I}^{2}}, \quad R^{2} = 0.1703, \quad p-valor(pendiente) = 0.056.$$
+
+```{r eval=FALSE}
+R1 = datos$R^2 # h=2
+reg_aux = lm(e2~R1)
+summary(reg_aux)
+
+R2 = sqrt(datos$R) # h=1/2
+reg_aux = lm(e2~R2)
+summary(reg_aux)
+
+R3 = datos$R # h=1
+reg_aux = lm(e2~R3)
+summary(reg_aux)
+
+R4 = 1/R3 # h=-1
+reg_aux = lm(e2~R4)
+summary(reg_aux)
+
+R5 = 1/R2 # h=-1/2
+reg_aux = lm(e2~R5)
+summary(reg_aux)
+
+R6 = 1/R1 # h=-2
+reg_aux = lm(e2~R6)
+summary(reg_aux)
+```
+
+5. Supongamos que se tienen los salarios de un grupo de 177 individuos en el año 2025. Para cada uno de ellos se tiene información de su salario anual, $\mathbf{S}$ (medido en miles de euros), de las ventas de la empresa en la que trabaja, $\mathbf{V}$, y beneficios, $\mathbf{B}$ (medidos ambos en millones de euros), y de los años que lleva trabajando en la empresa, $\mathbf{A}$. Se pide analizar la presencia de heterocedasticidad en el modelo $\mathbf{S} = \beta_{1} + \beta_{2} \mathbf{V} + \beta_{3} \mathbf{B} + \beta_{4} \mathbf{A} + u_{t}$ sabiendo que:
+
+$$\mathbf{e}^{2} = \alpha_{1} + \alpha_{2} \mathbf{V} + \alpha_{3} \mathbf{B} + \alpha_{4} \mathbf{A} + \mathbf{w}_{t}, \quad R^{2} = 0.008122.$$ ¿Qué herramienta ha usado?
+
+```{r eval=FALSE}
+datos = read.table("Data/Ejercicio7 DATOS.csv", header=TRUE, sep=";")
+# kable(datos, row.names = TRUE)
+
+reg = lm(datos$Salario~datos$Ventas+datos$Beneficios+datos$Anos)
+e = reg$residuals
+
+e2 = e^2
+reg_aux = lm(e2~datos$Ventas+datos$Beneficios+datos$Anos) # Breusch-Pagan
+summary(reg_aux) # R2 = 0.008122
+
+177*0.008122 > qchisq(0.95, 3)
+
+# p-valor contraste de White =  0.91432
+```
+
+6. Supongamos que se tienen los dividendos, $\mathbf{D}$, repartidos por un conjunto de 100 empresas de un mismo sector, el ratio de endeudamiento a corto plazo, $\mathbf{EC}$, el ratio de endeudamiento a largo plazo, $\mathbf{EL}$, y las ventas medias diarias, $\mathbf{V}$. Se pide analizar la presencia de heterocedasticidad en el modelo $\mathbf{D} = \beta_{1} + \beta_{2} \mathbf{EC} + \beta_{3} \mathbf{EL} + \beta_{4} \mathbf{V} + \mathbf{u}$ sabiendo que:
+
+$$\mathbf{e}^{2} = \alpha_{1} + \alpha_{2} \mathbf{EC} + \alpha_{3} \mathbf{EL} + \alpha_{4} \mathbf{V} + \mathbf{w}_{t}, \quad R^{2} = 0.04149,$$ \begin{eqnarray*}
+  \mathbf{e}^{2} &=& \alpha_{1} + \alpha_{2} \mathbf{EC} + \alpha_{3} \mathbf{EL} + \alpha_{4} \mathbf{V} \\
+      & & + \alpha_{5} \mathbf{EC}^{2} + \alpha_{6} \mathbf{EL}^{2} + \alpha_{7} \mathbf{V}^{2} \\
+      & & + \alpha_{8} \mathbf{EC} \cdot  \mathbf{EC} + \alpha_{9} \mathbf{EC} \cdot  \mathbf{V} + \alpha_{10} \mathbf{EL} \cdot  \mathbf{V} + \mathbf{w}_{t}, \quad R^{2} = 0.1313.
+\end{eqnarray*}
+
+¿Qué herramientas ha usado? ¿Por qué?
+
+```{r eval=FALSE}
+datos = read.table("Data/Ejercicio10 DATOS.csv", header=TRUE, sep=";")
+# kable(datos, row.names = TRUE)
+
+reg = lm(datos$D~datos$EC+datos$EL+datos$V)
+e = reg$residuals
+
+e2 = e^2
+reg_aux = lm(e2~datos$EC+datos$EL+datos$V) # Breusch-Pagan
+summary(reg_aux) # R2 = 0.04149
+
+100*0.04149 > qchisq(0.95, 3)
+
+EC2 = datos$EC^2
+EL2 = datos$EL^2
+V2 = datos$V^2
+int1 = datos$EC*datos$EL
+int2 = datos$EC*datos$V
+int3 = datos$EL*datos$V
+reg_aux = lm(e2~datos$EC+datos$EL+datos$V+EC2+EL2+V2+int1+int2+int3) # White
+summary(reg_aux) # R2 = 0.1313
+
+100*0.1313 > qchisq(0.95, 9)
+
+# p-valor contraste de White =  0.156747
+```
+
+7. Supongamos que se tiene la siguiente información sobre 935 personas: $\mathbf{S}$ es el salario mensual (en euros), $\mathbf{E}$ es la edad (en años), $\mathbf{R}$ es la raza (0 blanco, 1 no blanco), $\mathbf{H}$ es el número de horas de trabajo semanales y $\mathbf{C}$ es el estado civil (1 casado, 0 caso contrario).
+
+Se pide analizar la presencia de heterocedasticidad en el modelo $\mathbf{S} = \beta_{1} + \beta_{2} \mathbf{E} + \beta_{3} \mathbf{R} + \beta_{4} \mathbf{H} + \beta_{5} \mathbf{C} + \mathbf{u}$ a partir de las siguientes representaciones gráficas.
+
+Tras ordenar (de forma creciente) las observaciones a partir de la variable de horas de trabajo semanales, se contrasta la hipótesis nula de homocedasticidad obteniéndose un valor experimental igual a 1.428 con 463 y 462 grados de libertad. ¿Qué conclusiones obtiene? ¿Por qué se ordenan las observaciones de forma creciente (y no decreciente) según la variable de horas de trabajo semanales?
+
+```{r}
+datos = read.table("Data/Ejercicio11 DATOS.csv", header=TRUE, sep=";")
+# kable(datos, row.names = TRUE)
+
+reg = lm(datos$S~datos$E+datos$R+datos$H+datos$C) # p-valor contraste de White =  0.00120146
+e = reg$residuals
+
+e2 = e^2
+
+plot(datos$E, e2, ylab="Residuos (al cuadrado)", xlab="Edad", col="red", lwd=2)
+abline(h=0, col="black")
+
+plot(datos$R, e2, ylab="Residuos (al cuadrado)", xlab="Raza", col="red", lwd=2)
+abline(h=0, col="black")
+
+plot(datos$H, e2, ylab="Residuos (al cuadrado)", xlab="Horas de trabajo", col="red", lwd=2)
+abline(h=0, col="black")
+
+plot(datos$C, e2, ylab="Residuos (al cuadrado)", xlab="Estado civil", col="red", lwd=2)
+abline(h=0, col="black")
+```
+
+```{r eval=FALSE}
+gqtest(reg, order.by = ~ datos$E)
+gqtest(reg, order.by = ~ datos$R)
+gqtest(reg, order.by = ~ datos$H)
+  qf(0.95, 463, 462)
+gqtest(reg, order.by = ~ datos$C)
+```
+
+8. Supongamos que se desea analizar la presencia de heterocedasticidad en un modelo en el que se estudian los dividendos de 20 empresas a partir de sus beneficios. ¿Qué concluiría teniendo en cuenta la siguiente información? ¿Qué herramienta ha usado?
+
+$$\widehat{\mathbf{e}}^{2} = 2.155 - 8633.51 \cdot \mathbf{B}^{-2}, \quad R^{2} = 3617, \quad Std(pendiente) = 2703.4,$$ $$\widehat{\mathbf{e}}^{2} = 3.1728 - 197.75 \cdot \mathbf{B}^{-1}, \quad R^{2} = 4163, \quad Std(pendiente) = 55.18,$$
+
+$$\widehat{\mathbf{e}}^{2} = 5.212 - 40.6989 \cdot \mathbf{B}^{-1/2}, \quad R^{2} = 0.4374, \quad Std(pendiente) = 10.8788,$$
+
+$$\widehat{\mathbf{e}}^{2} = -2.9345 + 0.3974 \cdot \mathbf{B}^{1/2}, \quad R^{2} = 4619, \quad Std(pendiente) = 0.1011,$$
+
+$$\widehat{\mathbf{e}}^{2} = -0.8918 + 0.01888 \cdot \mathbf{B}, \quad R^{2} = 0.4646, \quad Std(pendiente) = 0.0047,$$ $$\widehat{\mathbf{e}}^{2} = 0.1387 + 0.000079 \cdot \mathbf{B}^{2}, \quad R^{2} = 0.4536, \quad Std(pendiente) = 0.0000205.$$ Tras reordenadar de forma creciente los datos con respecto a la variable de los beneficios, se ajusta por Mínimos Cuadrados Ordinarios las regresiones formadas por las 7 primeras y últimas observaciones obteniéndose que sus correspondientes suma de cuadrados de los residuos son 1.1341 y 32.93. ¿Se verifica la hipótesis de homocedasticidad supuesta en el modelo de interés inicial? ¿Qué herramienta ha usado?
+
+9. A partir de una muestra con 80 observaciones se estima un modelo de regresión lineal con 3 variables explicativas, se obtienen los residuos de dicho modelo, y con éstos se estima por Mínimos Cuadrados Ordinarios la siguiente regresión auxiliar: $$\mathbf{e}^{2} = \alpha_{1} + \alpha_{2} \mathbf{X}_{3}^{h} + \mathbf{v},$$ de forma que para $h=1$ se obtiene un coeficiente de determinación igual a 0.61 y un valor experimental para el contraste de significación individual de la pendiente igual a 3.25. ¿Se incumple alguna de las hipótesis básicas del modelo? ¿Qué herramienta ha usado? ¿Qué tendría que hacer para estimar de forma eficiente los estimadores? Compruebe que con su propuesta queda solucionado el problema.
+
+10. Utilizando una muestra de 25 empresas se ha estimado el modelo que explica el beneficio de la empresa, $\mathbf{B}$, en función del número de empleados, $\mathbf{E}$, y el gasto en publicidad, $\mathbf{G}$. Tras ordenar la muestra en orden creciente según el número de empleados, se obtiene la siguiente estimación para las diez primeras y últimas empresas, respectivamente: $$\widehat{\mathbf{B}}_{i} = 80.5 + 0.93 \cdot \mathbf{E}_{i} - 0.87 \cdot \mathbf{G}_{i}, \ SCR = 125.7,$$ $$\widehat{\mathbf{B}}_{i} = 20.61 + 0.53 \cdot \mathbf{E}_{i} - 0.105 \cdot \mathbf{G}_{i}, \ \sigma^2 = 71.27.$$ Además, a partir de los residuos del modelo inicial, se dispone de la siguiente información donde se tiene que todos los coeficientes son significativamente distintos de cero: $$e_{i}^{2} = 6.81 - 625.17 \cdot \frac{1}{\mathbf{E}_{i}}, \quad R^{2} = 0.43,$$ $$e_{i}^{2} = 10.23 - 89.54 \cdot \frac{1}{\sqrt{\mathbf{E}_{i}}}, \quad R^{2} = 0.33.$$ Se pide detectar si hay presencia de heteroscedasticidad en el modelo indicando las herramientas que ha usado. En caso de que la hubiera, especificar cuál sería la matriz de transformación más adecuada para solucionarla.
+
+11. Suponiendo que existe heteroscedasticidad en un modelo lineal, $\mathbf{V} = \beta_{1} + \beta_{2} \cdot \mathbf{P} + \mathbf{u}$, que estudia las ventas en función del precio y que $var(\mathbf{u}) = \sigma^{2} \cdot \mathbf{P}^{4}$, indique como transformar el modelo para que sea homocedástico y comprobar que el problema ha sido resuelto.
+
+12. En el modelo lineal que analiza el gasto público en servicios sociales, $\mathbf{G}$, en función del producto interior bruto, $\mathbf{PIB}$, se verifica que $var (\mathbf{u}) = \frac{\sigma^{2}}{\sqrt{\mathbf{PIB}}}$. ¿Qué problema presentan las estimaciones por Mínimos Cuadrados Ordinarios de los coeficientes de las variables del modelo? Se pide especificar la matriz de transformación que corrija dicho problema y comprobar que se ha solucionado.
+
+13. Supongamos que en el modelo $\mathbf{precio} = \beta_{1} + \beta_{2} log(\mathbf{superficie}) + \beta_{3} \mathbf{habitaciones} + \mathbf{u}$ se verifica que $var (\mathbf{u}) = \sigma^{2} log(\mathbf{superficie})$. Indique qué problema tiene el modelo, cómo lo resolvería y compruebe que efectivamente queda resuelto.
+
+

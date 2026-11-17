@@ -796,6 +796,253 @@ Por tanto, si se dispone de información suficiente para justificar el esquema d
 
 ## Practicas resueltas
 
+1. En esta práctica se contrasta el supuesto de **homocedasticidad** de las perturbaciones del modelo lineal clásico, $\operatorname{Var}(u_t \mid X) = \sigma^2$ para todo $t$. Se sigue el esquema habitual de diagnóstico:
+
+1. Detección **gráfica** de heterocedasticidad.
+2. Contrastes formales: **Goldfeld-Quandt**, **Breusch-Pagan** y **Glejser**.
+3. Si se detecta el problema: **corrección** tomando logaritmos y con **errores estándar robustos** (HC1).
+
+En primer lugar, instalamos los paquetes que necesitamos:
+```{r paquetes}
+paquetes <- c("lmtest",    # Contrastes de heterocedasticidad (gqtest, bptest)
+              "ggplot2",   # Gráficos
+              "estimatr")  # Errores estándar robustos (lm_robust)
+
+nuevos <- paquetes[!paquetes %in% rownames(installed.packages())]
+if (length(nuevos) > 0) install.packages(nuevos)
+
+library(lmtest)
+library(ggplot2)
+library(estimatr)
+```
+
+Cargamos los datos. Se trata de una serie temporal mensual con datos simulados. Describe el salario medio y sus posibles determinantes:
+| Variable | Tipo | Descripción |
+|:--|:--|:----------------------------|
+| `date` | Texto (`AAAA-MM`) | Mes de la observación. Identifica la observación; **no** entra en el modelo. |
+| `salario` | Numérica continua | **Variable dependiente** ($y$). Salario medio mensual (en unidades monetarias). |
+| `experiencia` | Numérica continua | Experiencia media de los trabajadores. Se espera efecto **positivo** sobre el salario. |
+| `horas_trabajadas` | Numérica continua | Horas trabajadas en el periodo. Se espera efecto **positivo**. |
+| `educacion` | Numérica continua | Nivel de formación medio (escala continua, aprox. 1,5 a 8). Se espera efecto **positivo**. |
+| `recesion` | Binaria (0/1) | *Dummy* que vale 1 en los meses de recesión (marzo a junio de 2020) y 0 en el resto. |
+| `crisis_sectorial` | Binaria (0/1) | *Dummy* de crisis sectorial. Vale 0 en **todos** los meses, es decir, es **constante** y no aporta información; por eso **no se incluye** en el modelo. |
+| `fecha` | `Date` | Versión de `date` en formato fecha, creada para poder graficar la serie. |
+
+```{r datos}
+datos <- read.csv(text = "
+date,salario,experiencia,horas_trabajadas,educacion,recesion,crisis_sectorial
+2019-01,14569.13,58.00,2006.60,5.46,0,0
+2019-02,14571.53,64.88,2007.59,4.25,0,0
+2019-03,13870.92,28.00,1988.84,6.45,0,0
+2019-04,14321.28,46.69,2001.91,6.12,0,0
+2019-05,14488.73,57.63,1999.31,6.78,0,0
+2019-06,14571.73,60.85,2007.45,2.23,0,0
+2019-07,14068.76,54.21,1995.39,1.89,0,0
+2019-08,14703.11,62.22,2007.20,5.45,0,0
+2019-09,14364.63,50.75,2000.16,3.88,0,0
+2019-10,14323.33,53.24,1999.14,5.44,0,0
+2019-11,14239.84,49.70,1995.49,5.28,0,0
+2019-12,14021.30,37.80,1992.19,5.09,0,0
+2020-01,14153.04,39.96,1992.26,6.27,0,0
+2020-02,14366.17,51.61,2000.30,5.69,0,0
+2020-03,14215.82,42.49,1992.06,5.56,1,0
+2020-04,14620.05,60.08,2006.39,3.37,1,0
+2020-05,14739.26,60.28,2001.44,7.56,1,0
+2020-06,14551.69,65.09,2006.43,5.00,1,0
+2020-07,14266.52,47.75,1996.61,6.57,0,0
+2020-08,14549.63,61.15,2009.29,5.32,0,0
+2020-09,14013.41,39.39,1988.48,6.83,0,0
+2020-10,14049.51,40.25,1992.41,5.05,0,0
+2020-11,14203.11,48.77,2002.21,5.15,0,0
+2020-12,14321.79,50.67,1997.36,5.02,0,0
+2021-01,13729.50,32.81,1985.68,3.67,0,0
+2021-02,13756.51,31.56,1989.86,3.88,0,0
+2021-03,14148.11,51.37,1998.93,4.56,0,0
+2021-04,14078.94,39.81,1996.17,4.61,0,0
+2021-05,14508.55,59.48,2001.37,3.23,0,0
+2021-06,14569.97,51.75,2000.67,8.00,0,0
+2021-07,14315.78,50.92,2001.74,3.23,0,0
+2021-08,14307.20,49.98,2002.40,4.31,0,0
+2021-09,14626.97,56.51,1999.14,8.00,0,0
+2021-10,14027.75,46.55,2001.76,3.74,0,0
+2021-11,14520.66,58.31,2000.79,6.03,0,0
+2021-12,14089.13,43.00,1990.41,5.86,0,0
+2022-01,14101.24,45.86,1993.77,4.47,0,0
+2022-02,13877.94,41.54,1994.94,2.51,0,0
+2022-03,14316.77,53.68,2000.09,2.32,0,0
+2022-04,14227.52,48.34,1999.60,4.79,0,0
+2022-05,13985.09,39.81,1995.08,5.47,0,0
+2022-06,14548.62,67.02,2009.48,1.50,0,0
+2022-07,14125.99,44.54,1995.29,5.04,0,0
+2022-08,14082.59,46.90,2003.20,3.75,0,0
+2022-09,14298.87,51.74,1992.97,6.23,0,0
+2022-10,14469.46,64.60,2001.58,5.08,0,0
+2022-11,13944.54,46.59,1995.60,3.52,0,0
+2022-12,14159.60,54.68,1997.66,4.12,0,0
+2023-01,14218.51,48.94,1990.34,4.88,0,0
+2023-02,13988.07,34.09,1987.81,6.96,0,0
+2023-03,14540.13,55.52,1999.74,8.00,0,0
+2023-04,14288.31,57.70,1995.50,5.39,0,0
+2023-05,14129.07,45.72,1999.49,5.01,0,0
+2023-06,14272.85,47.85,2002.08,5.94,0,0
+2023-07,13917.66,33.74,1994.11,4.87,0,0
+2023-08,13887.06,33.53,1988.42,5.94,0,0
+2023-09,14087.48,44.28,1996.43,5.55,0,0
+2023-10,14417.79,53.95,1997.68,4.94,0,0
+2023-11,14043.38,43.54,1996.21,3.67,0,0
+2023-12,14236.98,50.77,1997.37,5.20,0,0
+", stringsAsFactors = FALSE)
+
+# Variable de fecha en formato Date (el mes se codifica como día 1)
+datos$fecha <- as.Date(paste0(datos$date, "-01"))
+
+head(datos)
+```
+Se estima el siguiente modelo:
+$$
+\text{salario}_t = \beta_0 + \beta_1\,\text{experiencia}_t + \beta_2\,\text{horas\_trabajadas}_t + \beta_3\,\text{educacion}_t + \beta_4\,\text{recesion}_t + u_t
+$$
+
+```{r modelo}
+modelo <- lm(salario ~ experiencia + horas_trabajadas + educacion + recesion,
+             data = datos)
+summary(modelo)
+```
+- Una unidad más de `experiencia` se asocia, *ceteris paribus*, con unos **18,5** de salario adicional ($p < 0{,}001$).
+- Cada hora trabajada adicional, con unos **11,6** ($p \approx 0{,}001$).
+- Un punto más de `educacion`, con unos **54,7** ($p < 0{,}001$).
+- Los meses de `recesion` presentan un salario unos **83** superior ($p \approx 0{,}047$), signo contrario al que cabría esperar a priori y apenas significativo al 5 %. Con solo 4 meses de recesión conviene ser prudente (y recordar que los datos son simulados).
+- El intercepto no es significativo ($p \approx 0{,}11$) y carece de interpretación económica directa.
+
+El modelo explica el 91 % de la variabilidad del salario ($R^2 \approx 0{,}908$, error estándar residual de unos 77). Pero **estos p-valores solo son fiables si las perturbaciones son homocedásticas**: si no lo son, los errores estándar clásicos están mal calculados y los contrastes $t$ y $F$ dejan de ser válidos. Eso es lo que se comprueba a continuación.
+
+Para detectar graficamente la heterocedasticidad, se guardan los residuos y los valores ajustados del modelo:
+
+```{r residuos}
+datos$residuos  <- resid(modelo)
+datos$ajustados <- fitted(modelo)
+```
+
+Se representan los residuos frente al número de observación:
+```{r residuos-vs-observaciones}
+ggplot(data.frame(observaciones = seq_along(datos$residuos),
+                  residuos = datos$residuos),
+       aes(x = observaciones, y = residuos)) +
+  geom_point() +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  xlab("Número de observación") +
+  ylab("Residuos") +
+  ggtitle("Residuos vs Número de Observaciones") +
+  theme_minimal()
+```
+y los residuos frente a una variable explicativa:
+```{r residuos-vs-experiencia}
+ggplot(datos, aes(x = experiencia, y = residuos)) +
+  geom_point() +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  xlab("Experiencia") +
+  ylab("Residuos") +
+  ggtitle("Residuos vs Variable Explicativa (experiencia)") +
+  theme_minimal()
+```
+```{r residuos-vs-ajustados}
+ggplot(datos, aes(x = ajustados, y = residuos)) +
+  geom_point() +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  xlab("Valores ajustados") +
+  ylab("Residuos") +
+  ggtitle("Residuos vs Valores Ajustados") +
+  theme_minimal()
+```
+Para realizar el contraste de Goldfeld-Quandt, se ordena la muestra según `experiencia` (la variable que se sospecha que gobierna la varianza), se omite una fracción central del 33 % y se comparan las varianzas residuales de los dos extremos.
+
+- $H_0$: homocedasticidad ($\sigma^2_1 = \sigma^2_2$).
+- $H_1$: la varianza es mayor en las observaciones con más experiencia (alternativa `greater`, por defecto).
+
+```{r gq}
+gq <- gqtest(modelo, order.by = ~ experiencia, fraction = 0.33, data = datos)
+gq
+```
+
+**Comentario.** El estadístico es $GQ \approx 3{,}92$ con un **p-valor de unos 0,006**, menor que 0,01. **Se rechaza $H_0$** incluso al 1 %: la varianza de las perturbaciones es significativamente mayor en el extremo de mayor experiencia. De hecho, la desviación típica residual del submodelo de experiencia alta (≈ 88) es aproximadamente el doble que la del de experiencia baja (≈ 45), y su cociente al cuadrado es, precisamente, el estadístico $GQ$.
+
+Para realizar el contraste de Breusch-Pagan, se regresan los residuos estandarizados al cuadrado sobre todas las variables explicativas del modelo y se contrasta su significatividad conjunta:
+
+- $H_0$: homocedasticidad.
+- $H_1$: $\operatorname{Var}(u_t) = h(\alpha_0 + \alpha_1 x_{1t} + \dots + \alpha_k x_{kt})$, es decir, la varianza depende de los regresores.
+
+```{r bp}
+bp <- bptest(modelo)
+bp
+```
+
+**Comentario.** El estadístico es $BP \approx 15{,}36$, con 4 grados de libertad (uno por regresor), y un **p-valor de unos 0,004**. **Se rechaza la homocedasticidad** al 1 %: los regresores explican de forma conjunta una parte significativa de la magnitud de los residuos al cuadrado. A diferencia de Goldfeld-Quandt, este contraste no exige elegir una variable concreta ni descartar observaciones, aunque tampoco indica *cuál* de los regresores es el responsable (para eso sirve el contraste de Glejser).
+
+Para realizar el contraste de Glesjer, se regresa el **valor absoluto** de los residuos sobre la variable que se sospecha relacionada con la varianza (aquí `experiencia`) con distintas formas funcionales ("esquemas"). Si el coeficiente de la pendiente es significativo, hay evidencia de heterocedasticidad.
+
+- Esquema 1 (lineal): $|\hat u_t| = \delta_0 + \delta_1\,\text{experiencia}_t + v_t$
+- Esquema 2 (cuadrático): $|\hat u_t| = \delta_0 + \delta_1\,\text{experiencia}_t^2 + v_t$
+
+En ambos, $H_0: \delta_1 = 0$ (homocedasticidad).
+
+```{r glejser}
+datos$abs_res      <- abs(datos$residuos)
+datos$experiencia2 <- datos$experiencia^2
+
+# Esquema 1: lineal
+modelo_h1 <- lm(abs_res ~ experiencia, data = datos)
+summary(modelo_h1)
+
+# Esquema 2: cuadrático
+modelo_h2 <- lm(abs_res ~ experiencia2, data = datos)
+summary(modelo_h2)
+```
+
+**Comentario.** En el esquema lineal, el coeficiente de `experiencia` es positivo (≈ 1,78) y significativo ($p \approx 0{,}005$): cada unidad adicional de experiencia aumenta en promedio en casi 2 unidades el tamaño absoluto del residuo. En el esquema cuadrático, el coeficiente también es positivo y significativo ($p \approx 0{,}006$). En ambos se **rechaza $H_0: \delta_1 = 0$**. El $R^2$ de las regresiones auxiliares es modesto (≈ 13 % y 12,5 %), lo cual es normal porque el valor absoluto de un residuo es una variable muy ruidosa. Lo relevante es que el signo es positivo: **la varianza crece con la experiencia**. Los dos esquemas dan resultados muy parecidos y no permiten distinguir claramente entre una relación lineal o cuadrática.
+
+Como posible solucións, se toman logaritmos de la variable dependiente, lo que suele estabilizar la varianza cuando esta crece con el *nivel* de la variable. Ahora los coeficientes se leen como **semielasticidades** (variación porcentual aproximada de `salario` ante un cambio de una unidad en el regresor).
+
+```{r log}
+modelolog <- lm(log(salario) ~ experiencia + horas_trabajadas + educacion + recesion,
+                data = datos)
+summary(modelolog)
+```
+
+Se repite el contraste de Breusch-Pagan sobre el modelo en logaritmos:
+
+```{r bp-log}
+bptest(modelolog)
+```
+
+**Comentario.** El estadístico es $BP \approx 15{,}45$ con un **p-valor de unos 0,004**: **se sigue rechazando la homocedasticidad**. La transformación logarítmica **no ha corregido el problema**. La razón es que aquí la varianza no depende del *nivel del salario* (que apenas varía, entre 13.730 y 14.739), sino de la `experiencia`. Tomar logaritmos de una variable que se mueve en un rango tan estrecho es prácticamente una transformación lineal y no cambia la forma de la dispersión. Este es un resultado importante: **los logaritmos no son una solución universal**, y siempre hay que volver a contrastar tras transformar. (Los coeficientes del modelo en logaritmos se interpretarían así: una unidad más de `experiencia` eleva el salario en torno a un 0,13 %, un punto más de `educacion` en torno a un 0,38 % y la recesión se asocia a un salario un 0,57 % superior, con $p \approx 0{,}053$.)
+
+Dado que la transformación no ha funcionado, se recurre a errores estándar robustos tipo **HC1** (la corrección de White con ajuste por grados de libertad, equivalente a la opción `robust` de Stata). Los coeficientes no cambian respecto a MCO; solo cambian los errores estándar y, por tanto, los estadísticos $t$ y p-valores.
+
+```{r robusto}
+modelo_robusto <- lm_robust(salario ~ experiencia + horas_trabajadas + educacion + recesion,
+                            data = datos, se_type = "HC1")
+summary(modelo_robusto)
+```
+
+Podemos comparar los errores estándar y p-valores de MCO clásicos y robustos:
+
+```{r comparacion}
+comparacion <- data.frame(
+  Coeficiente = round(coef(modelo), 4),
+  EE_MCO      = round(summary(modelo)$coefficients[, "Std. Error"], 4),
+  EE_HC1      = round(modelo_robusto$std.error, 4),
+  p_MCO       = round(summary(modelo)$coefficients[, "Pr(>|t|)"], 4),
+  p_HC1       = round(modelo_robusto$p.value, 4)
+)
+comparacion$Cociente_EE <- round(comparacion$EE_HC1 / comparacion$EE_MCO, 2)
+comparacion
+```
+
+**Comentario.** Los coeficientes son idénticos, pero los errores estándar cambian:
+
+- Para `experiencia`, `horas_trabajadas`, `educacion` y el intercepto, los errores robustos son muy parecidos a los clásicos (entre un 0 % y un 3 % mayores) y las conclusiones no cambian: `experiencia`, `horas_trabajadas` y `educacion` siguen siendo muy significativas, y el intercepto sigue sin serlo.
+- Para `recesion`, el error estándar robusto es **un 25 % mayor** (≈ 51 frente a ≈ 41) y el p-valor pasa de ≈ **0,048** a ≈ **0,105**. **La conclusión se invierte**: con errores clásicos el efecto de la recesión parecía significativo al 5 %, pero con errores robustos ya no lo es.
+
 ## Practicas propuestas
 
 1. La inmobiliaria InmoGranada S.A. desea realizar un estudio sobre el valor de la vivienda en la ciudad de Granada, con el objetivo de orientar futuras inversiones y decisiones comerciales. Para ello, ha recogido la siguiente información de las transacciones del último mes:

@@ -580,7 +580,7 @@ w_1 & 0 & \cdots & 0\\
 \end{pmatrix}.
 $$
 
-El objetivo es encontrar una transformación que permita convertir esta matriz de varianzas y covarianzas en una matriz proporcional a la identidad.
+Se verifica el Teorema de Aitken de manera que $\Omega=PP'$. El objetivo es encontrar una transformación que permita convertir esta matriz de varianzas y covarianzas en una matriz proporcional a la identidad.
 
 Para ello, definimos la matriz diagonal:
 

@@ -765,14 +765,14 @@ modelo_roa <- lm(
 )
 ```
 
-A continuación, podemos obtener errores estándar robustos mediante las funciones `vcovHC()` y `coeftest()`:
+A continuación, podemos obtener errores estándar robustos mediante las funciones `vcov()` y `coeftest()`:
 
 ```{r}
 
 
 coeftest(
   modelo_roa,
-  vcov = vcovHC(modelo_roa, type = "HC0")
+  vcov = vcov(modelo_roa, type = "hc1")
 )
 ```
 
@@ -787,246 +787,203 @@ Por tanto, si se dispone de información suficiente para justificar el esquema d
 
 ## Practicas resueltas
 
-1. En esta práctica se contrasta el supuesto de **homocedasticidad** de las perturbaciones del modelo lineal clásico, $\operatorname{Var}(u_t \mid X) = \sigma^2$ para todo $t$. Se sigue el esquema habitual de diagnóstico:
+1. Consideremos el siguiente conjunto de datos (simulados) sobre el salario medio anual (en euros) de 60 individuos dedicados a la sanidad y sus posibles determinantes: experiencia media de los trabajadores (medida como la edad del trabajador), horas trabajadas, nivel de formación medio específico en sanidad (años) y una variable binaria que identifica el género (donde se codifica el 1 como hombre y 0 a la mujer).
 
-- Detección gráfica de heterocedasticidad.
-- Contrastes formales: Goldfeld-Quandt, Breusch-Pagan, White y Glejser.
-- Si se detecta el problema: **corrección** tomando logaritmos y con **errores estándar robustos** (HC1).
+```{r}
+# salario
+S <- c(14569.13, 14571.53, 13870.92, 14321.28, 14488.73, 14571.73,
+  14068.76, 14703.11, 14364.63, 14323.33, 14239.84, 14021.30,
+  14153.04, 14366.17, 14215.82, 14620.05, 14739.26, 14551.69,
+  14266.52, 14549.63, 14013.41, 14049.51, 14203.11, 14321.79,
+  13729.50, 13756.51, 14148.11, 14078.94, 14508.55, 14569.97,
+  14315.78, 14307.20, 14626.97, 14027.75, 14520.66, 14089.13,
+  14101.24, 13877.94, 14316.77, 14227.52, 13985.09, 14548.62,
+  14125.99, 14082.59, 14298.87, 14469.46, 13944.54, 14159.60,
+  14218.51, 13988.07, 14540.13, 14288.31, 14129.07, 14272.85,
+  13917.66, 13887.06, 14087.48, 14417.79, 14043.38, 14236.98
+)
 
-En primer lugar, instalamos los paquetes que necesitamos y/o cargamos las librerias:
-```{r paquetes}
-install.packages("lmtest")    # Contrastes de heterocedasticidad (gqtest, bptest)
-install.packages("ggplot2")   # Gráficos
-install.packages("estimatr")  # Errores estándar robustos (lm_robust)
-library(lmtest)
-library(ggplot2)
-library(estimatr)
+# experiencia
+Ex <- c(58.00, 64.88, 28.00, 46.69, 57.63, 60.85, 54.21, 62.22, 50.75, 53.24,
+  49.70, 37.80, 39.96, 51.61, 42.49, 60.08, 60.28, 65.09, 47.75, 61.15,
+  39.39, 40.25, 48.77, 50.67, 32.81, 31.56, 51.37, 39.81, 59.48, 51.75,
+  50.92, 49.98, 56.51, 46.55, 58.31, 43.00, 45.86, 41.54, 53.68, 48.34,
+  39.81, 67.02, 44.54, 46.90, 51.74, 64.60, 46.59, 54.68, 48.94, 34.09,
+  55.52, 57.70, 45.72, 47.85, 33.74, 33.53, 44.28, 53.95, 43.54, 50.77
+)
+
+# horas trabajadas 
+ht <- c(2006.60, 2007.59, 1988.84, 2001.91, 1999.31, 2007.45, 1995.39, 2007.20,
+  2000.16, 1999.14, 1995.49, 1992.19, 1992.26, 2000.30, 1992.06, 2006.39,
+  2001.44, 2006.43, 1996.61, 2009.29, 1988.48, 1992.41, 2002.21, 1997.36,
+  1985.68, 1989.86, 1998.93, 1996.17, 2001.37, 2000.67, 2001.74, 2002.40,
+  1999.14, 2001.76, 2000.79, 1990.41, 1993.77, 1994.94, 2000.09, 1999.60,
+  1995.08, 2009.48, 1995.29, 2003.20, 1992.97, 2001.58, 1995.60, 1997.66,
+  1990.34, 1987.81, 1999.74, 1995.50, 1999.49, 2002.08, 1994.11, 1988.42,
+  1996.43, 1997.68, 1996.21, 1997.37
+)
+
+# educacion 
+Ed <- c(
+  5.46, 4.25, 6.45, 6.12, 6.78, 2.23, 1.89, 5.45, 3.88, 5.44,
+  5.28, 5.09, 6.27, 5.69, 5.56, 3.37, 7.56, 5.00, 6.57, 5.32,
+  6.83, 5.05, 5.15, 5.02, 3.67, 3.88, 4.56, 4.61, 3.23, 8.00,
+  3.23, 4.31, 8.00, 3.74, 6.03, 5.86, 4.47, 2.51, 2.32, 4.79,
+  5.47, 1.50, 5.04, 3.75, 6.23, 5.08, 3.52, 4.12, 4.88, 6.96,
+  8.00, 5.39, 5.01, 5.94, 4.87, 5.94, 5.55, 4.94, 3.67, 5.20
+)
+
+# género
+g <- c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+)
+
+datos = data.frame(S, Ex, ht, Ed, g)
+# colnames(datos) = c("Salario (S)", "Experiencia (Ex)", "Horas trabajadas (ht)", "Educación (Ed)", "Género (g)")
+
+kable(datos, align="c")
 ```
 
-Cargamos los datos que se tratan de una serie temporal mensual con datos simulados sobre el salario medio y sus posibles determinantes:
+Al estimar el modelo en el que la variable dependiente es el salario, se observa que, al 5% de significación, todos los coeficientes (excepto el del término independiente) son significativamente distintos de cero y el modelo es conjuntamente válido:
 
-| Variable | Tipo | Descripción |
-|:--|:--|:----------------------------|
-| `date` | Texto (`AAAA-MM`) | Mes de la observación. Identifica la observación; **no** entra en el modelo. |
-| `salario` | Numérica continua | **Variable dependiente** ($y$). Salario medio mensual (en unidades monetarias). |
-| `experiencia` | Numérica continua | Experiencia media de los trabajadores. Se espera efecto **positivo** sobre el salario. |
-| `horas_trabajadas` | Numérica continua | Horas trabajadas en el periodo. Se espera efecto **positivo**. |
-| `educacion` | Numérica continua | Nivel de formación medio (escala continua, aprox. 1,5 a 8). Se espera efecto **positivo**. |
-| `recesion` | Binaria (0/1) | *Dummy* que vale 1 en los meses de recesión (marzo a junio de 2020) y 0 en el resto. |
-| `fecha` | `Date` | Versión de `date` en formato fecha, creada para poder graficar la serie. |
-
-```{r datos}
-datos <- read.csv(text = "
-date,salario,experiencia,horas_trabajadas,educacion,recesion,
-2019-01,14569.13,58.00,2006.60,5.46,0
-2019-02,14571.53,64.88,2007.59,4.25,0
-2019-03,13870.92,28.00,1988.84,6.45,0
-2019-04,14321.28,46.69,2001.91,6.12,0
-2019-05,14488.73,57.63,1999.31,6.78,0
-2019-06,14571.73,60.85,2007.45,2.23,0
-2019-07,14068.76,54.21,1995.39,1.89,0
-2019-08,14703.11,62.22,2007.20,5.45,0
-2019-09,14364.63,50.75,2000.16,3.88,0
-2019-10,14323.33,53.24,1999.14,5.44,0
-2019-11,14239.84,49.70,1995.49,5.28,0
-2019-12,14021.30,37.80,1992.19,5.09,0
-2020-01,14153.04,39.96,1992.26,6.27,0
-2020-02,14366.17,51.61,2000.30,5.69,0
-2020-03,14215.82,42.49,1992.06,5.56,1
-2020-04,14620.05,60.08,2006.39,3.37,1
-2020-05,14739.26,60.28,2001.44,7.56,1
-2020-06,14551.69,65.09,2006.43,5.00,1
-2020-07,14266.52,47.75,1996.61,6.57,0
-2020-08,14549.63,61.15,2009.29,5.32,0
-2020-09,14013.41,39.39,1988.48,6.83,0
-2020-10,14049.51,40.25,1992.41,5.05,0
-2020-11,14203.11,48.77,2002.21,5.15,0
-2020-12,14321.79,50.67,1997.36,5.02,0
-2021-01,13729.50,32.81,1985.68,3.67,0
-2021-02,13756.51,31.56,1989.86,3.88,0
-2021-03,14148.11,51.37,1998.93,4.56,0
-2021-04,14078.94,39.81,1996.17,4.61,0
-2021-05,14508.55,59.48,2001.37,3.23,0
-2021-06,14569.97,51.75,2000.67,8.00,0
-2021-07,14315.78,50.92,2001.74,3.23,0
-2021-08,14307.20,49.98,2002.40,4.31,0
-2021-09,14626.97,56.51,1999.14,8.00,0
-2021-10,14027.75,46.55,2001.76,3.74,0
-2021-11,14520.66,58.31,2000.79,6.03,0
-2021-12,14089.13,43.00,1990.41,5.86,0
-2022-01,14101.24,45.86,1993.77,4.47,0
-2022-02,13877.94,41.54,1994.94,2.51,0
-2022-03,14316.77,53.68,2000.09,2.32,0
-2022-04,14227.52,48.34,1999.60,4.79,0
-2022-05,13985.09,39.81,1995.08,5.47,0
-2022-06,14548.62,67.02,2009.48,1.50,0
-2022-07,14125.99,44.54,1995.29,5.04,0
-2022-08,14082.59,46.90,2003.20,3.75,0
-2022-09,14298.87,51.74,1992.97,6.23,0
-2022-10,14469.46,64.60,2001.58,5.08,0
-2022-11,13944.54,46.59,1995.60,3.52,0
-2022-12,14159.60,54.68,1997.66,4.12,0
-2023-01,14218.51,48.94,1990.34,4.88,0
-2023-02,13988.07,34.09,1987.81,6.96,0
-2023-03,14540.13,55.52,1999.74,8.00,0
-2023-04,14288.31,57.70,1995.50,5.39,0
-2023-05,14129.07,45.72,1999.49,5.01,0
-2023-06,14272.85,47.85,2002.08,5.94,0
-2023-07,13917.66,33.74,1994.11,4.87,0
-2023-08,13887.06,33.53,1988.42,5.94,0
-2023-09,14087.48,44.28,1996.43,5.55,0
-2023-10,14417.79,53.95,1997.68,4.94,0
-2023-11,14043.38,43.54,1996.21,3.67,0
-2023-12,14236.98,50.77,1997.37,5.20,0
-", stringsAsFactors = FALSE)
-
-# Variable de fecha en formato Date (el mes se codifica como día 1)
-datos$fecha <- as.Date(paste0(datos$date, "-01"))
-
-head(datos)
-```
-Se estima el siguiente modelo:
-$$
-\text{salario}_t = \beta_0 + \beta_1\,\text{experiencia}_t + \beta_2\,\text{horas\_trabajadas}_t + \beta_3\,\text{educacion}_t + \beta_4\,\text{recesion}_t + u_t
-$$
-
-```{r modelo}
-modelo <- lm(salario ~ experiencia + horas_trabajadas + educacion + recesion,
-             data = datos)
+```{r}
+modelo=lm(S~Ex+ht+Ed+g, data=datos)
 summary(modelo)
 ```
-- Una unidad más de `experiencia` se asocia, *ceteris paribus*, con unos **18,5** de salario adicional ($p < 0{,}001$).
-- Cada hora trabajada adicional, con unos **11,6** ($p \approx 0{,}001$).
-- Un punto más de `educacion`, con unos **54,7** ($p < 0{,}001$).
-- Los meses de `recesion` presentan un salario unos **83** superior ($p \approx 0{,}047$), signo contrario al que cabría esperar a priori y apenas significativo al 5 %. Con solo 4 meses de recesión conviene ser prudente (y recordar que los datos son simulados).
-- El intercepto no es significativo ($p \approx 0{,}11$) y carece de interpretación económica directa.
 
-El modelo explica el 91 % de la variabilidad del salario ($R^2 \approx 0{,}908$, error estándar residual de unos 77). Pero **estos p-valores solo son fiables si las perturbaciones son homocedásticas**: si no lo son, los errores estándar clásicos están mal calculados y los contrastes $t$ y $F$ dejan de ser válidos. Eso es lo que se comprueba a continuación.
+Ahora bien, antes de interpretar estos resultados o usar el modelo para predecir, es conveniente comprobar que las hipótesis en las que se sustenta la estimación por Mínimos Cuadrados Ordinarios se cumplen.
 
-Para detectar graficamente la heterocedasticidad, se guardan los residuos y los valores ajustados del modelo:
+Al cuantificar el grado de multicolinealdiad existente en el modelo se aprecia que existe un problema de multicolinealidad de tipo no esencial debido a que la variable referente a las horas trabajadas tiene muy poca variabilidad:
 
-```{r residuos}
-datos$residuos  <- resid(modelo)
-datos$ajustados <- fitted(modelo)
+```{r}
+X = model.matrix(modelo)
+RdetR(X, dummy=TRUE, pos=5) # se elimina del análisis la variable binaria
+VIF(X, dummy=TRUE, pos=5)   # se elimina del análisis la variable binaria
+CNs(X)
+CVs(X)
 ```
 
-Se representan los residuos frente al número de observación:
-```{r residuos-vs-observaciones}
-ggplot(data.frame(observaciones = seq_along(datos$residuos),
-                  residuos = datos$residuos),
-       aes(x = observaciones, y = residuos)) +
-  geom_point() +
-  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
-  xlab("Número de observación") +
-  ylab("Residuos") +
-  ggtitle("Residuos vs Número de Observaciones") +
-  theme_minimal()
-```
-y los residuos frente a una variable explicativa:
-```{r residuos-vs-experiencia}
-ggplot(datos, aes(x = experiencia, y = residuos)) +
-  geom_point() +
-  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
-  xlab("Experiencia") +
-  ylab("Residuos") +
-  ggtitle("Residuos vs Variable Explicativa (experiencia)") +
-  theme_minimal()
-```
-Para realizar el contraste de Goldfeld-Quandt, se ordena la muestra según `experiencia` (la variable que se sospecha que causa la heterocedasticidad), se omite una fracción central del 33 % y se comparan las varianzas residuales de los dos extremos.
+Por tanto, se procede a estimar de nuevo el modelo tras centrar esta variable y se comprueba que el grado de multicolinealidad ha disminuido sustancialmente (aunque el número de condición puede considerarse que está en el límite):
 
-- $H_0$: homocedasticidad ($\sigma^2_1 = \sigma^2_2$).
-- $H_1$: la varianza es mayor en las observaciones con más experiencia (alternativa `greater`, por defecto).
+```{r}
+S = datos$S
+Ex = datos$Ex
+ht = datos$ht - mean(datos$ht)
+Ed = datos$Ed
+g = datos$g
+modelo_c=lm(S~Ex+ht+Ed+g)
+summary(modelo_c)
 
-```{r gq}
-gq <- gqtest(modelo, order.by = ~ experiencia, fraction = 0.33, data = datos)
-gq
+X = model.matrix(modelo_c)
+RdetR(X, dummy=TRUE, pos=5) # se elimina del análisis la variable binaria
+VIF(X, dummy=TRUE, pos=5)   # se elimina del análisis la variable binaria
+CNs(X)
+CVs(X)
 ```
 
-**Comentario.** El estadístico es $GQ \approx 3{,}92$ con un **p-valor de unos 0,006**, menor que 0,01. **Se rechaza $H_0$** incluso al 1 %: la varianza de las perturbaciones es significativamente mayor en el extremo de mayor experiencia. 
+Al observar los resultados del nuevo modelo, se parecia que el único cambio afecta a la estimación e inferencia del término independiente, todo lo demás permanece igual. Más adelante se apreciará que cambia también su interpretación:
 
-Para realizar el contraste de Breusch-Pagan, se regresan los residuos estandarizados al cuadrado sobre todas las variables explicativas del modelo y se contrasta su significatividad conjunta:
-
-- $H_0$: homocedasticidad.
-- $H_1$: $\operatorname{Var}(u_t) = h(\alpha_0 + \alpha_1 x_{1t} + \dots + \alpha_k x_{kt})$, es decir, la varianza depende de los regresores.
-
-```{r bp}
-bptest(modelo)
+```{r}
+summary(modelo_c)
 ```
 
-**Comentario.** El estadístico es $BP \approx 15{,}36$, con 4 grados de libertad (uno por regresor), y un **p-valor de unos 0,004**. **Se rechaza la homocedasticidad** al 1 %: los regresores explican de forma conjunta una parte significativa de la magnitud de los residuos al cuadrado. A diferencia de Goldfeld-Quandt, este contraste no exige elegir una variable concreta ni descartar observaciones, aunque tampoco indica *cuál* de los regresores es el responsable (para eso sirve el contraste de Glejser). Si se añade la opción `studentize=FALSE` obtenemos el contraste de White con un resultado similar: 
+Puesto que se tienen datos de sección cruzada, debería de comprobarse que se verifica la hipótesis de homocedasticidad. Así, en primer lugar, se representan los residuos del modelo estimado con respecto a cada observación y cada una de las variables independientes:
 
-```{r white}
-bptest(modelo, studentize = FALSE)
+```{r}
+e <- resid(modelo_c)
+e2 = e^2
+plot(e2, xlab="Observaciones", ylab="Residuos al cuadrado", col="red", lwd=2)
+abline(h=0, col="black")
+
+plot(Ex, e2, xlab="Experiencia", ylab="Residuos al cuadrado", col="red", lwd=2)
+abline(h=0, col="black")
+
+plot(ht, e2, xlab="Horas trabajadas", ylab="Residuos al cuadrado", col="red", lwd=2)
+abline(h=0, col="black")
+
+plot(Ed, e2, xlab="Educación", ylab="Residuos al cuadrado", col="red", lwd=2)
+abline(h=0, col="black")
+
+plot(g, e2, xlab="Género", ylab="Residuos al cuadrado", col="red", lwd=2)
+abline(h=0, col="black")
 ```
 
-Para realizar el contraste de Glesjer, se regresa el **valor absoluto** de los residuos sobre la variable que se sospecha relacionada con la varianza (aquí `experiencia`) con distintas formas funcionales ("esquemas"). Si el coeficiente de la pendiente es significativo, hay evidencia de heterocedasticidad.
+Se aprecia que a mayor experiencia y horas trabajadas hay mayor variabilidad en los residuos y a mayor educación menor variabilidad en los residuos. Es decir, las representaciones gráficas anteriores parecen indicar la existencia de un problema de heterocedasticidad.
 
-- Esquema 1 (lineal): $|\hat u_t| = \delta_0 + \delta_1\,\text{experiencia}_t + v_t$
-- Esquema 2 (cuadrático): $|\hat u_t| = \delta_0 + \delta_1\,\text{experiencia}_t^2 + v_t$
+Para confirmar esta sospecha, ya que son varias las variables que parecen provocar el problema, se realiza la prueba de Breusch-Pagan:
 
-En ambos, $H_0: \delta_1 = 0$ (homocedasticidad).
-
-```{r glejser}
-datos$abs_res      <- abs(datos$residuos)
-datos$experiencia2 <- datos$experiencia^2
-
-# Esquema 1: lineal
-modelo_h1 <- lm(abs_res ~ experiencia, data = datos)
-summary(modelo_h1)
-
-# Esquema 2: cuadrático
-modelo_h2 <- lm(abs_res ~ experiencia2, data = datos)
-summary(modelo_h2)
+```{r}
+bptest(modelo_c) # librería 'lmtest'
 ```
 
-**Comentario.** En el esquema lineal, el coeficiente de `experiencia` es positivo (≈ 1,78) y significativo ($p \approx 0{,}005$). En el esquema cuadrático, el coeficiente también es positivo y significativo ($p \approx 0{,}006$). En ambos se **rechaza $H_0: \delta_1 = 0$**. El $R^2$ de las regresiones auxiliares es modesto (≈ 13 % y 12,5 %), lo cual es normal porque el valor absoluto de un residuo es una variable muy ruidosa. Lo relevante es que el signo es positivo: **la varianza crece con la experiencia**. Los dos esquemas dan resultados muy parecidos y no permiten distinguir claramente entre una relación lineal o cuadrática, aunque en principio se selecciona el esquema con mayor $R^2$.
+El p-valor obtenido, 0.004014, lleva a rechazar la hipótesis nula de homocedasticidad al 5% de significación ya que es inferior a 0.05.
 
-Como posible solución, se toman logaritmos de la variable dependiente, lo que suele estabilizar la varianza cuando esta crece con el *nivel* de la variable. Ahora los coeficientes se leen como **semielasticidades** (variación porcentual aproximada de `salario` ante un cambio de una unidad en el regresor).
+A la misma cocnlcusión se llega si se compara el valor experimental obtenido, 15.358, con el teórico:
 
-```{r log}
-modelolog <- lm(log(salario) ~ experiencia + horas_trabajadas + educacion + recesion,
-                data = datos)
-summary(modelolog)
+```{r}
+qchisq(0.95, 14)
 ```
 
-Se repite el contraste de Breusch-Pagan sobre el modelo en logaritmos:
+Si se aplica el contraste de Goldfeld-Quandt tomando como referencia las variables experiencia, horas trabajadas y educación, se tiene que en los dos primeros casos se rechaza la hipótesis nula de homocedasticidad al 5% de significación al obtenerse p-valores, 0.005672 y 0.0008993, inferiores a 0.05; mientras que en el tercero no se descarta ya que el p-valor obtenido, 0.9984, es mayor que 0.05:
 
-```{r bp-log}
-bptest(modelolog)
+```{r}
+gqtest(modelo_c, order.by = ~Ex, fraction = 0.33)
+gqtest(modelo_c, order.by = ~ht, fraction = 0.33)
+gqtest(modelo_c, order.by = ~Ed, fraction = 0.33)
 ```
 
-**Comentario.** El estadístico es $BP \approx 15{,}45$ con un **p-valor de unos 0,004**: **se sigue rechazando la homocedasticidad**. La transformación logarítmica **no ha corregido el problema**. La razón es que aquí la varianza no depende del *nivel del salario* (que apenas varía, entre 13.730 y 14.739), sino de la `experiencia`. Tomar logaritmos de una variable que se mueve en un rango tan estrecho es prácticamente una transformación lineal y no cambia la forma de la dispersión. Este es un resultado importante: **los logaritmos no son una solución universal**, y siempre hay que volver a contrastar tras transformar. (Los coeficientes del modelo en logaritmos se interpretarían así: una unidad más de `experiencia` eleva el salario en torno a un 0,13 %, un punto más de `educacion` en torno a un 0,38 % y la recesión se asocia a un salario un 0,57 % superior, con $p \approx 0{,}053$.)
+Para corregir el problema detectado, se recurre a estimar el modelo con errores estándar robustos tipo **HC1**:
 
-Dado que la transformación no ha funcionado, se recurre a errores estándar robustos tipo **HC1**. Los coeficientes no cambian respecto a MCO; solo cambian los errores estándar y, por tanto, los estadísticos $t$ y p-valores.
-
-```{r robusto}
-modelo_robusto <- lm_robust(salario ~ experiencia + horas_trabajadas + educacion + recesion,
-                            data = datos, se_type = "HC1")
-summary(modelo_robusto)
+```{r}
+coeftest(modelo_c, vcov = hccm(modelo, type = "hc1"))
 ```
 
-Podemos comparar los errores estándar y p-valores de MCO clásicos y robustos:
+Lo primero que llama la atención es que el coeficiente de la variable género ya no es significativamente distinta de cero, debido a las diferencias observadas en las nuevas desviaciones típicas robustas obtenidas. Es decir, no se aprecian diferencias significativas entre el salrio medio anual de los hombres y las mujeres.
 
-```{r comparacion}
-comparacion <- data.frame(
-  Coeficiente = round(coef(modelo), 4),
-  EE_MCO      = round(summary(modelo)$coefficients[, "Std. Error"], 4),
-  EE_HC1      = round(modelo_robusto$std.error, 4),
-  p_MCO       = round(summary(modelo)$coefficients[, "Pr(>|t|)"], 4),
-  p_HC1       = round(modelo_robusto$p.value, 4)
-)
-comparacion$Cociente_EE <- round(comparacion$EE_HC1 / comparacion$EE_MCO, 2)
-comparacion
+Comparando con los modelos anteriores (original y original centrado, ambos sin corrección de la heterocedasticidad), no se parecia diferencia en las estimaciones de los coeficientes:
+
+```{r}
+export_summs(modelo, modelo_c, modelo_c, robust = list(FALSE, FALSE, "HC1"), model.names = c("  Original  ", "  CENTRADO  ", "  CENTRADO Robusto  "), number_format = "%.3f")
 ```
 
-**Comentario.** Los coeficientes son idénticos, pero los errores estándar cambian:
+Una vez corregidos los problemas detectados:
 
-- Para `experiencia`, `horas_trabajadas`, `educacion` y el intercepto, los errores robustos son muy parecidos a los clásicos (entre un 0 % y un 3 % mayores) y las conclusiones no cambian: `experiencia`, `horas_trabajadas` y `educacion` siguen siendo muy significativas, y el intercepto sigue sin serlo.
-- Para `recesion`, el error estándar robusto es **un 25 % mayor** (≈ 51 frente a ≈ 41) y el p-valor pasa de ≈ **0,048** a ≈ **0,105**. **La conclusión se invierte**: con errores clásicos el efecto de la recesión parecía significativo al 5 %, pero con errores robustos ya no lo es.
+- Se observa que el término independiente es significativamente distinto de cero, de forma que el salario medio de una mujer sin experiencia ni educación y con 1997.998 horas trabajadas es de 13061.345 euros anuales.
+
+```{r}
+mean(datos$ht)
+```
+
+- Adviértase como cambia esta interpretación con respecto al modelo en el que no se centra la variable de horas trabajadas.
+
+- A igual número de horas trabajadas, mismo nivel educativo medio y género (es decir, restantes variables del modelo constantes), se observa que un aumento de un año en la experiencia se asocia con un aumento del salario medio anual de 18'454 euros anuales.
+
+- A igual edad, mismo nivel educativo medio y género (es decir, restantes variables del modelo constantes), se observa que un aumento de una hora trabajada se asocia con un aumento del salario medio anual de 11'619 euros anuales.
+
+- A igual edad, número de horas trabajadas y género (es decir, restantes variables del modelo constantes), se observa que un aumento de un año en el nivel de formación se asocia con un aumento del salario medio anual de 54'664 euros anuales.
 
 ## Practicas propuestas
 
-1. La inmobiliaria InmoGranada S.A. desea realizar un estudio sobre el valor de la vivienda en la ciudad de Granada, con el objetivo de orientar futuras inversiones y decisiones comerciales. Para ello, ha recogido la siguiente información de las transacciones del último mes:
+1. A partir de los datos sobre la rentabilidad (**R**), liquidez (**L**) y endeudamiento (**E**) de 18 empresas, analiza la posible existencia de heterocedasticidad en el modelo:
+
+```{r}
+R = c(23.383, 12.789, 4.634, 9.017, 6.414, 4.724, 9.438, 10.233, 0.877, 13.491, 
+      2.469, -11.781, 9.435, 0.93, 3.098, 7.969, 6.626, 2.696) # Rentabilidad
+L = c(1.74, 0.012, 1.414, 0.502, 0.033, 0.127, 0.341, 0.346, 0.033, 0.875, 0.041, 
+      0.006, 0.053, 0.507, 0.043, 2.477, 0.508, 0.186) # Liquidez
+E = c(33.947, 77.601, 18.866, 72.055, 87.198, 65.57, 66.124, 57.028, 75.969, 
+      23.526, 64.938, 102.082, 81.047, 34.257, 57.313, 25.861, 11.257, 
+      51.99) # Endeudamiento
+
+datos = data.frame(R, L, E)
+names(datos) = c("Rentabilidad (%)", "Liquidez (%)", "Endeudamiento (%)")
+kable(datos, align="c")
+```
+
+2. La inmobiliaria InmoGranada S.A. desea realizar un estudio sobre el valor de la vivienda en la ciudad de Granada, con el objetivo de orientar futuras inversiones y decisiones comerciales. Para ello, ha recogido la siguiente información de las transacciones del último mes:
 el precio de venta en miles de euros ($precio_i$), el número de
 habitaciónes ($nhab_i$) y una variable que toma el valor 1 si la vivienda tiene una antigüedad de más de 10 años ($ant_i$), especificando el siguiente modelo:
 
@@ -1064,7 +1021,7 @@ d. Sospechan que la inclusión de la variable superficie en el modelo ha generad
     Realice el contraste necesario y obtenga las conclusiones al 95% de
     confianza.
 
-2. Supongamos que se tienen datos correspondientes a 47 alumnos que cursaron la asignatura Técnicas Cuantitativas 2 en el curso académico 2011/2012. Para dichos alumnos se dispone de las siguientes variables:
+3. Supongamos que se tienen datos correspondientes a 47 alumnos que cursaron la asignatura Técnicas Cuantitativas 2 en el curso académico 2011/2012. Para dichos alumnos se dispone de las siguientes variables:
 
 - $\mathbf{CO}$ es la calificación obtenida en el examen final de la asignatura.
 
@@ -1111,7 +1068,7 @@ abline(h=0, col="black")
 # p-valor contraste de White =  0.653257
 ```
 
-3. Supongamos que se tienen datos correspondientes a 47 alumnos que cursaron la asignatura Técnicas Cuantitativas 2 en el curso académico 2011/2012. En dicho curso académico se realizó una evaluación continua en el que el 30% de la calificación final estaba formado por un ejercicio a resolver en pizarra, otro en ordenador y distintos exámenes tipo test al final de cada tema. Por tanto, se dispone de las siguientes variables:
+4. Supongamos que se tienen datos correspondientes a 47 alumnos que cursaron la asignatura Técnicas Cuantitativas 2 en el curso académico 2011/2012. En dicho curso académico se realizó una evaluación continua en el que el 30% de la calificación final estaba formado por un ejercicio a resolver en pizarra, otro en ordenador y distintos exámenes tipo test al final de cada tema. Por tanto, se dispone de las siguientes variables:
 
 - $\mathbf{CO}$ es la calificación obtenida en el examen final de la asignatura.
 
@@ -1175,7 +1132,7 @@ summary(reg_aux) # R2 = 0.6372
 bptest(reg, studentize = FALSE)
 ```
 
-4. Supongamos que se tienen datos sobre los ingresos, $\mathbf{I}$, y consumo, $\mathbf{C}$, mensual de 22 familias. También se dispone de información sobre el número de hijos de cada familia, $\mathbf{H}$, y de si las familias tienen algún préstamo con cuantía superior a los 400 euros mensuales, $D$ (que tomará el valor 1 en caso afirmativo y 0 en el negativo).
+5. Supongamos que se tienen datos sobre los ingresos, $\mathbf{I}$, y consumo, $\mathbf{C}$, mensual de 22 familias. También se dispone de información sobre el número de hijos de cada familia, $\mathbf{H}$, y de si las familias tienen algún préstamo con cuantía superior a los 400 euros mensuales, $D$ (que tomará el valor 1 en caso afirmativo y 0 en el negativo).
 
 Se pide analizar la posible presencia de heterocedasticidad en el modelo $\mathbf{C} = \beta_{1} + \beta_{2} \mathbf{I} + \beta_{3} \mathbf{D} + \beta_{4} \mathbf{H} + \mathbf{u}$ a partir de las siguientes representaciones gráficas.
 
@@ -1236,7 +1193,7 @@ reg_aux = lm(e2~R6)
 summary(reg_aux)
 ```
 
-5. Supongamos que se tienen los salarios de un grupo de 177 individuos en el año 2025. Para cada uno de ellos se tiene información de su salario anual, $\mathbf{S}$ (medido en miles de euros), de las ventas de la empresa en la que trabaja, $\mathbf{V}$, y beneficios, $\mathbf{B}$ (medidos ambos en millones de euros), y de los años que lleva trabajando en la empresa, $\mathbf{A}$. Se pide analizar la presencia de heterocedasticidad en el modelo $\mathbf{S} = \beta_{1} + \beta_{2} \mathbf{V} + \beta_{3} \mathbf{B} + \beta_{4} \mathbf{A} + u_{t}$ sabiendo que:
+6. Supongamos que se tienen los salarios de un grupo de 177 individuos en el año 2025. Para cada uno de ellos se tiene información de su salario anual, $\mathbf{S}$ (medido en miles de euros), de las ventas de la empresa en la que trabaja, $\mathbf{V}$, y beneficios, $\mathbf{B}$ (medidos ambos en millones de euros), y de los años que lleva trabajando en la empresa, $\mathbf{A}$. Se pide analizar la presencia de heterocedasticidad en el modelo $\mathbf{S} = \beta_{1} + \beta_{2} \mathbf{V} + \beta_{3} \mathbf{B} + \beta_{4} \mathbf{A} + u_{t}$ sabiendo que:
 
 $$\mathbf{e}^{2} = \alpha_{1} + \alpha_{2} \mathbf{V} + \alpha_{3} \mathbf{B} + \alpha_{4} \mathbf{A} + \mathbf{w}_{t}, \quad R^{2} = 0.008122.$$ ¿Qué herramienta ha usado?
 
@@ -1256,7 +1213,7 @@ summary(reg_aux) # R2 = 0.008122
 # p-valor contraste de White =  0.91432
 ```
 
-6. Supongamos que se tienen los dividendos, $\mathbf{D}$, repartidos por un conjunto de 100 empresas de un mismo sector, el ratio de endeudamiento a corto plazo, $\mathbf{EC}$, el ratio de endeudamiento a largo plazo, $\mathbf{EL}$, y las ventas medias diarias, $\mathbf{V}$. Se pide analizar la presencia de heterocedasticidad en el modelo $\mathbf{D} = \beta_{1} + \beta_{2} \mathbf{EC} + \beta_{3} \mathbf{EL} + \beta_{4} \mathbf{V} + \mathbf{u}$ sabiendo que:
+7. Supongamos que se tienen los dividendos, $\mathbf{D}$, repartidos por un conjunto de 100 empresas de un mismo sector, el ratio de endeudamiento a corto plazo, $\mathbf{EC}$, el ratio de endeudamiento a largo plazo, $\mathbf{EL}$, y las ventas medias diarias, $\mathbf{V}$. Se pide analizar la presencia de heterocedasticidad en el modelo $\mathbf{D} = \beta_{1} + \beta_{2} \mathbf{EC} + \beta_{3} \mathbf{EL} + \beta_{4} \mathbf{V} + \mathbf{u}$ sabiendo que:
 
 $$\mathbf{e}^{2} = \alpha_{1} + \alpha_{2} \mathbf{EC} + \alpha_{3} \mathbf{EL} + \alpha_{4} \mathbf{V} + \mathbf{w}_{t}, \quad R^{2} = 0.04149,$$ \begin{eqnarray*}
   \mathbf{e}^{2} &=& \alpha_{1} + \alpha_{2} \mathbf{EC} + \alpha_{3} \mathbf{EL} + \alpha_{4} \mathbf{V} \\
@@ -1293,7 +1250,7 @@ summary(reg_aux) # R2 = 0.1313
 # p-valor contraste de White =  0.156747
 ```
 
-7. Supongamos que se tiene la siguiente información sobre 935 personas: $\mathbf{S}$ es el salario mensual (en euros), $\mathbf{E}$ es la edad (en años), $\mathbf{R}$ es la raza (0 blanco, 1 no blanco), $\mathbf{H}$ es el número de horas de trabajo semanales y $\mathbf{C}$ es el estado civil (1 casado, 0 caso contrario).
+8. Supongamos que se tiene la siguiente información sobre 935 personas: $\mathbf{S}$ es el salario mensual (en euros), $\mathbf{E}$ es la edad (en años), $\mathbf{R}$ es la raza (0 blanco, 1 no blanco), $\mathbf{H}$ es el número de horas de trabajo semanales y $\mathbf{C}$ es el estado civil (1 casado, 0 caso contrario).
 
 Se pide analizar la presencia de heterocedasticidad en el modelo $\mathbf{S} = \beta_{1} + \beta_{2} \mathbf{E} + \beta_{3} \mathbf{R} + \beta_{4} \mathbf{H} + \beta_{5} \mathbf{C} + \mathbf{u}$ a partir de las siguientes representaciones gráficas.
 
@@ -1329,7 +1286,7 @@ gqtest(reg, order.by = ~ datos$H)
 gqtest(reg, order.by = ~ datos$C)
 ```
 
-8. Supongamos que se desea analizar la presencia de heterocedasticidad en un modelo en el que se estudian los dividendos de 20 empresas a partir de sus beneficios. ¿Qué concluiría teniendo en cuenta la siguiente información? ¿Qué herramienta ha usado?
+9. Supongamos que se desea analizar la presencia de heterocedasticidad en un modelo en el que se estudian los dividendos de 20 empresas a partir de sus beneficios. ¿Qué concluiría teniendo en cuenta la siguiente información? ¿Qué herramienta ha usado?
 
 $$\widehat{\mathbf{e}}^{2} = 2.155 - 8633.51 \cdot \mathbf{B}^{-2}, \quad R^{2} = 3617, \quad Std(pendiente) = 2703.4,$$ $$\widehat{\mathbf{e}}^{2} = 3.1728 - 197.75 \cdot \mathbf{B}^{-1}, \quad R^{2} = 4163, \quad Std(pendiente) = 55.18,$$
 
@@ -1339,14 +1296,14 @@ $$\widehat{\mathbf{e}}^{2} = -2.9345 + 0.3974 \cdot \mathbf{B}^{1/2}, \quad R^{2
 
 $$\widehat{\mathbf{e}}^{2} = -0.8918 + 0.01888 \cdot \mathbf{B}, \quad R^{2} = 0.4646, \quad Std(pendiente) = 0.0047,$$ $$\widehat{\mathbf{e}}^{2} = 0.1387 + 0.000079 \cdot \mathbf{B}^{2}, \quad R^{2} = 0.4536, \quad Std(pendiente) = 0.0000205.$$ Tras reordenadar de forma creciente los datos con respecto a la variable de los beneficios, se ajusta por Mínimos Cuadrados Ordinarios las regresiones formadas por las 7 primeras y últimas observaciones obteniéndose que sus correspondientes suma de cuadrados de los residuos son 1.1341 y 32.93. ¿Se verifica la hipótesis de homocedasticidad supuesta en el modelo de interés inicial? ¿Qué herramienta ha usado?
 
-9. A partir de una muestra con 80 observaciones se estima un modelo de regresión lineal con 3 variables explicativas, se obtienen los residuos de dicho modelo, y con éstos se estima por Mínimos Cuadrados Ordinarios la siguiente regresión auxiliar: $$\mathbf{e}^{2} = \alpha_{1} + \alpha_{2} \mathbf{X}_{3}^{h} + \mathbf{v},$$ de forma que para $h=1$ se obtiene un coeficiente de determinación igual a 0.61 y un valor experimental para el contraste de significación individual de la pendiente igual a 3.25. ¿Se incumple alguna de las hipótesis básicas del modelo? ¿Qué herramienta ha usado? ¿Qué tendría que hacer para estimar de forma eficiente los estimadores? Compruebe que con su propuesta queda solucionado el problema.
+10. A partir de una muestra con 80 observaciones se estima un modelo de regresión lineal con 3 variables explicativas, se obtienen los residuos de dicho modelo, y con éstos se estima por Mínimos Cuadrados Ordinarios la siguiente regresión auxiliar: $$\mathbf{e}^{2} = \alpha_{1} + \alpha_{2} \mathbf{X}_{3}^{h} + \mathbf{v},$$ de forma que para $h=1$ se obtiene un coeficiente de determinación igual a 0.61 y un valor experimental para el contraste de significación individual de la pendiente igual a 3.25. ¿Se incumple alguna de las hipótesis básicas del modelo? ¿Qué herramienta ha usado? ¿Qué tendría que hacer para estimar de forma eficiente los estimadores? Compruebe que con su propuesta queda solucionado el problema.
 
-10. Utilizando una muestra de 25 empresas se ha estimado el modelo que explica el beneficio de la empresa, $\mathbf{B}$, en función del número de empleados, $\mathbf{E}$, y el gasto en publicidad, $\mathbf{G}$. Tras ordenar la muestra en orden creciente según el número de empleados, se obtiene la siguiente estimación para las diez primeras y últimas empresas, respectivamente: $$\widehat{\mathbf{B}}_{i} = 80.5 + 0.93 \cdot \mathbf{E}_{i} - 0.87 \cdot \mathbf{G}_{i}, \ SCR = 125.7,$$ $$\widehat{\mathbf{B}}_{i} = 20.61 + 0.53 \cdot \mathbf{E}_{i} - 0.105 \cdot \mathbf{G}_{i}, \ \sigma^2 = 71.27.$$ Además, a partir de los residuos del modelo inicial, se dispone de la siguiente información donde se tiene que todos los coeficientes son significativamente distintos de cero: $$e_{i}^{2} = 6.81 - 625.17 \cdot \frac{1}{\mathbf{E}_{i}}, \quad R^{2} = 0.43,$$ $$e_{i}^{2} = 10.23 - 89.54 \cdot \frac{1}{\sqrt{\mathbf{E}_{i}}}, \quad R^{2} = 0.33.$$ Se pide detectar si hay presencia de heteroscedasticidad en el modelo indicando las herramientas que ha usado. En caso de que la hubiera, especificar cuál sería la matriz de transformación más adecuada para solucionarla.
+11. Utilizando una muestra de 25 empresas se ha estimado el modelo que explica el beneficio de la empresa, $\mathbf{B}$, en función del número de empleados, $\mathbf{E}$, y el gasto en publicidad, $\mathbf{G}$. Tras ordenar la muestra en orden creciente según el número de empleados, se obtiene la siguiente estimación para las diez primeras y últimas empresas, respectivamente: $$\widehat{\mathbf{B}}_{i} = 80.5 + 0.93 \cdot \mathbf{E}_{i} - 0.87 \cdot \mathbf{G}_{i}, \ SCR = 125.7,$$ $$\widehat{\mathbf{B}}_{i} = 20.61 + 0.53 \cdot \mathbf{E}_{i} - 0.105 \cdot \mathbf{G}_{i}, \ \sigma^2 = 71.27.$$ Además, a partir de los residuos del modelo inicial, se dispone de la siguiente información donde se tiene que todos los coeficientes son significativamente distintos de cero: $$e_{i}^{2} = 6.81 - 625.17 \cdot \frac{1}{\mathbf{E}_{i}}, \quad R^{2} = 0.43,$$ $$e_{i}^{2} = 10.23 - 89.54 \cdot \frac{1}{\sqrt{\mathbf{E}_{i}}}, \quad R^{2} = 0.33.$$ Se pide detectar si hay presencia de heteroscedasticidad en el modelo indicando las herramientas que ha usado. En caso de que la hubiera, especificar cuál sería la matriz de transformación más adecuada para solucionarla.
 
-11. Suponiendo que existe heteroscedasticidad en un modelo lineal, $\mathbf{V} = \beta_{1} + \beta_{2} \cdot \mathbf{P} + \mathbf{u}$, que estudia las ventas en función del precio y que $var(\mathbf{u}) = \sigma^{2} \cdot \mathbf{P}^{4}$, indique como transformar el modelo para que sea homocedástico y comprobar que el problema ha sido resuelto.
+12. Suponiendo que existe heteroscedasticidad en un modelo lineal, $\mathbf{V} = \beta_{1} + \beta_{2} \cdot \mathbf{P} + \mathbf{u}$, que estudia las ventas en función del precio y que $var(\mathbf{u}) = \sigma^{2} \cdot \mathbf{P}^{4}$, indique como transformar el modelo para que sea homocedástico y comprobar que el problema ha sido resuelto.
 
-12. En el modelo lineal que analiza el gasto público en servicios sociales, $\mathbf{G}$, en función del producto interior bruto, $\mathbf{PIB}$, se verifica que $var (\mathbf{u}) = \frac{\sigma^{2}}{\sqrt{\mathbf{PIB}}}$. ¿Qué problema presentan las estimaciones por Mínimos Cuadrados Ordinarios de los coeficientes de las variables del modelo? Se pide especificar la matriz de transformación que corrija dicho problema y comprobar que se ha solucionado.
+13. En el modelo lineal que analiza el gasto público en servicios sociales, $\mathbf{G}$, en función del producto interior bruto, $\mathbf{PIB}$, se verifica que $var (\mathbf{u}) = \frac{\sigma^{2}}{\sqrt{\mathbf{PIB}}}$. ¿Qué problema presentan las estimaciones por Mínimos Cuadrados Ordinarios de los coeficientes de las variables del modelo? Se pide especificar la matriz de transformación que corrija dicho problema y comprobar que se ha solucionado.
 
-13. Supongamos que en el modelo $\mathbf{precio} = \beta_{1} + \beta_{2} log(\mathbf{superficie}) + \beta_{3} \mathbf{habitaciones} + \mathbf{u}$ se verifica que $var (\mathbf{u}) = \sigma^{2} log(\mathbf{superficie})$. Indique qué problema tiene el modelo, cómo lo resolvería y compruebe que efectivamente queda resuelto.
+14. Supongamos que en el modelo $\mathbf{precio} = \beta_{1} + \beta_{2} log(\mathbf{superficie}) + \beta_{3} \mathbf{habitaciones} + \mathbf{u}$ se verifica que $var (\mathbf{u}) = \sigma^{2} log(\mathbf{superficie})$. Indique qué problema tiene el modelo, cómo lo resolvería y compruebe que efectivamente queda resuelto.
 
 

@@ -940,7 +940,7 @@ gqtest(modelo_c, order.by = ~Ed, fraction = 0.33)
 Para corregir el problema detectado, se recurre a estimar el modelo con errores estándar robustos tipo **HC1**:
 
 ```{r}
-coeftest(modelo_c, vcov = hccm(modelo, type = "hc1"))
+coeftest(modelo_c, vcov = hccm(modelo_c, type = "hc1"))
 ```
 
 Lo primero que llama la atención es que el coeficiente de la variable género ya no es significativamente distinta de cero, debido a las diferencias observadas en las nuevas desviaciones típicas robustas obtenidas. Es decir, no se aprecian diferencias significativas entre el salrio medio anual de los hombres y las mujeres.

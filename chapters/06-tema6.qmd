@@ -7,6 +7,7 @@ library(car)
 library(strucchange)
 library(knitr)
 library(multiColl)
+library(jtools)
 
 datos <- read_excel("data/BD_IBEX.xlsx", sheet = "Datos")
 modeloIBEX <- lm(

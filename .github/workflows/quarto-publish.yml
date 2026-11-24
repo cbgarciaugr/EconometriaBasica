@@ -46,6 +46,7 @@ jobs:
             any::strucchange
             any::rmarkdown
             any::knitr
+            any::jtools
 
       # El paquete 'orcutt' fue retirado de CRAN (archivado el 2024-11-04)
       # y no se resuelve mediante los repositorios habituales; se instala

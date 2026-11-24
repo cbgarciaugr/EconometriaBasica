@@ -940,7 +940,7 @@ gqtest(modelo_c, order.by = ~Ed, fraction = 0.33)
 Para corregir el problema detectado, se recurre a estimar el modelo con errores estándar robustos tipo **HC1**:
 
 ```{r}
-coeftest(modelo_c, vcov = hccm(modelo_c, type = "hc1"))
+modelo_c_robusto <- coeftest(modelo_c, vcov = hccm(modelo_c, type = "hc1"))
 ```
 
 Lo primero que llama la atención es que el coeficiente de la variable género ya no es significativamente distinta de cero, debido a las diferencias observadas en las nuevas desviaciones típicas robustas obtenidas. Es decir, no se aprecian diferencias significativas entre el salrio medio anual de los hombres y las mujeres.
@@ -948,7 +948,7 @@ Lo primero que llama la atención es que el coeficiente de la variable género y
 Comparando con los modelos anteriores (original y original centrado, ambos sin corrección de la heterocedasticidad), no se parecia diferencia en las estimaciones de los coeficientes:
 
 ```{r}
-export_summs(modelo, modelo_c, modelo_c, robust = list(FALSE, FALSE, "HC1"), model.names = c("  Original  ", "  CENTRADO  ", "  CENTRADO Robusto  "), number_format = "%.3f")
+export_summs(modelo, modelo_c, modelo_c_robusto, model.names = c("  Original  ", "  CENTRADO  ", "  CENTRADO Robusto  "), number_format = "%.3f")
 ```
 
 Una vez corregidos los problemas detectados:

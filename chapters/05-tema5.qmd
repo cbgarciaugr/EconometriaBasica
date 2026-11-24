@@ -6,6 +6,7 @@ library(ggplot2)
 library(car)
 library(lmtest)
 library(knitr)
+library(multiColl)
 
 datos <- read_excel("data/BD_SABI.xlsx", sheet = "Datos")
 modelo_roa <- lm(

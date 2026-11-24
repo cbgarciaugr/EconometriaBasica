@@ -694,6 +694,232 @@ relación con la primera.
 
 ## Prácticas resueltas
 
+## # *Ceteris paribus*: multicolinealidad
+
+Al interpretar las estimaciones de un modelo de regresión lineal múltiple se hace bajo la suposición de que se verifica el *ceteris paribus*, es decir, cuando una variable independiente aumenta el resto no cambian. Pero, ¿esto es cierto? Todo indica que si el grado de multicolinealidad existente es alto la respuesta es negativa.
+
+A continuación se aborda si el grado de multicolinealidad existente en los modelos analizados en [Análisis de modelos de regresión lineal múltiple con R (parte I)](https://www.ugr.es/%7Eromansg/material/WebEco/02-Eco/OrdenadorR/03%20estimacion_con_R.html) es preocupante y se debe pensar que, entre otras cuestiones, la condición *ceteris paribus* no se verifica.
+
+Con tal objetivo se usará el paquete [multiColl](https://cran.r-project.org/web/packages/multiColl/index.html).
+
+### Análisis de la rentabilidad de una empresa {.unnumbered}
+
+Recordemos que se tienen los siguientes datos sobre la rentabilidad (**R**), liquidez (**L**) y endeudamiento (**E**) de 18 empresas:
+
+```{r}
+R = c(23.383, 12.789, 4.634, 9.017, 6.414, 4.724, 9.438, 10.233, 0.877, 13.491, 
+      2.469, -11.781, 9.435, 0.93, 3.098, 7.969, 6.626, 2.696) # Rentabilidad
+L = c(1.74, 0.012, 1.414, 0.502, 0.033, 0.127, 0.341, 0.346, 0.033, 0.875, 0.041, 
+      0.006, 0.053, 0.507, 0.043, 2.477, 0.508, 0.186) # Liquidez
+E = c(33.947, 77.601, 18.866, 72.055, 87.198, 65.57, 66.124, 57.028, 75.969, 
+      23.526, 64.938, 102.082, 81.047, 34.257, 57.313, 25.861, 11.257, 
+      51.99) # Endeudamiento
+
+datos = data.frame(R, L, E)
+names(datos) = c("Rentabilidad (%)", "Liquidez (%)", "Endeudamiento (%)")
+kable(datos, align="c")
+```
+
+Siendo la estimación del modelo que estudia la rentabilidad en función de la liquidez y el endeudamiento la siguiente:
+
+```{r}
+modelo = lm(R~L+E)    
+summary(modelo)
+```
+
+Aunque se tiene que el modelo no es válido (y no sería apto para su explotación), a continuación se aborda el análisis del grado de multicolinealidad existente.
+
+En primer lugar se obtiene la matriz de diseño $\mathbf{X}$ del modelo mediante el comando *model.matrix* y se calcula su matriz de correlaciones y el determinante de ésta:
+
+```{r}
+X = model.matrix(modelo)
+RdetR(X)
+```
+
+Se observa que el coeficiente de correlación lineal simple entre la liquidez y el endeudamiento no es excesivamente alto (inferior a la cota de $\sqrt{0.9}$ exigida para pensar en problemas) y que el determinante está alejado del cero (lo que indicaría multicolinealidad perfecta).
+
+Si se calcula el factor de inflación de la varianza (FIV) se obtiene un valor muy cercano al mínimo de 1 (e inferior a la cota de 10 establecida como preocupante):
+
+```{r}
+VIF(X)
+```
+
+Adviértsa que el valor anterior se puede obtener a partir del coeficiente de correlación simple ya que, cuando la regresión auxiliar que se usa para calcular el FIV es una regresión simple, su coeficiente de determinación coincide con el cuadrado del coeficiente de correlación lineal simple de las variables que la forman:
+
+```{r}
+1/(1-0.6859843^2)
+```
+
+Los resultados anteriores indican que el grado de multicolinealidad existente de tipo esencial (relación entre las variables independientes excluido el término independiente) no es preocupante. ¿Qué ocurre con la no esencial?
+
+Para cuantificar el grado de relación lineal entre el término independiente y el resto de variables independientes (multicolinealidad de tipo no esencial) se usará en primer lugar el número de condición (NC) con y sin término independiente:
+
+```{r}
+CNs(X)
+```
+
+Se observa que en ambos casos el valor obtenido está cercano a su mínimo valor de 1 (especialmente si no se considera el término independiente) y está alejado del umbral establecido como preocupante (20).
+
+Igualmente, el considerar al término independiente no parece tener un papel importante, por lo que se considera que el grado de multicolinealidad existente de tipo no esencial no es alto.
+
+Finalmente, para confirmar lo anterior, se calcula el coeficiente de variación (CV) de las variables independientes:
+
+```{r}
+CVs(X)
+```
+
+Puesto que los valores obtenidos son altos (superiores a la cota considerada como preocupante de 0.1), se confirma lo anterior.
+
+En definitiva, en este caso, el grado de multicolinealidad existente (tanto esencial como no esencial) no se considera como preocupante; por lo que, en caso de que los coeficientes de las variables independientes hubiesen sido significativamente distintos de cero, no hubiese sido incorrecto realizar su interpretación bajo el supuesto de *ceteris paribus*.
+
+### Análisis de un modelo de producción {.unnumbered}
+
+A continuación se repite el análisis anterior para un modelo de producción regido por una ecuación de Cobb-Douglas linealizada como sigue: $$log \textbf{P} = \beta_{1} +  \beta_{2} \cdot log \textbf{T} + \beta_{3} \cdot log \textbf{W} + \textbf{u}.$$
+
+Para el análisis del grado de multicolinealidad existente se considerará la siguiente información disponible para los años 1980 a 2007:
+
+```{r}
+P = c(37641114, 42620804, 37989413, 40464915, 41002031, 45135601, 39748030, 
+      40708136, 37171183, 36728430, 41901143, 41503828, 44329866, 43924072, 
+      46334199, 46697539, 48888741, 48141320, 50883107, 50084943, 51429861, 
+      55248539, 55048964, 57174488, 58391982, 55159985, 54484149, 61912943) # producción
+K = c(61671750, 66444000, 64876500, 66121000, 67176000, 69239250, 68410000, 
+      69174250, 66720000, 65730250, 70208500, 71918250, 70438750, 72629000, 
+      73222250, 74101750, 76706500, 76821750, 77334000, 80031500, 80529500, 
+      83348750, 83581250, 86221750, 89120500, 87714250, 91848500, 93730000) # capital
+W = c(5700000, 5989000, 5637000, 5874000, 5931000, 6096000, 5890000, 5930000, 
+      5911000, 6058000, 5779000, 6214512, 6157699, 6244883, 6318703, 6193512, 
+      6309359, 6116378, 6345504, 6392005, 6286195, 6356448, 6281631, 6394984, 
+      6547140, 6279000, 5995000, 5843000) # trabajo
+
+logP = log(P)
+logK = log(K)
+logW = log(W)
+log_datos = data.frame(logP, logK, logW)
+names(log_datos) = c("Producción (log P)", "Capital (log K)", "Trabajo (log W)")
+kable(log_datos, align="c")
+```
+
+A partir de la siguiente información se deduce que el grado de multicolinealidad existente de tipo esencial no es preocupante ya que todos los índices calculados están lejos de sus umbrales:
+
+```{r}
+RdetR(log_datos)
+VIF(log_datos)
+```
+
+Ahora bien, tanto el NC como los CV hacen pensar que el grado de multicolinealidad no esencial es preocupante:
+
+```{r}
+CNs(log_datos)
+CVs(log_datos)
+```
+
+Concretamente, los CV indican que tanto el logaritmo del capital como del trabajo tienen muy poca variabilidad (son inferiores a 0.1), haciendo que estén fuertemente relacionados con el término independiente.
+
+En este caso, es bien conocido que el resultado es el de centrar las variables que provocan el problema. Ahora bien, puesto que las variables independientes están transformadas mediante logaritmos, centrarlas no tiene una interpretación sencilla.
+
+En cualquier caso, a continuación se centran ambas variables y se recalculas las medidas de detección para ver la eficacia de esta solución:
+
+```{r}
+logP_c = logP - mean(logP)
+logK_c = logK - mean(logK)
+logW_c = logW - mean(logW)
+log_datos_c = data.frame(logP_c, logK_c, logW_c)
+
+RdetR(log_datos_c)
+VIF(log_datos_c)
+CNs(log_datos_c)
+CVs(log_datos_c)
+```
+
+Se observa que tanto las correlaciones lineales simples, como el determinante de la matriz de correlaciones como los FIV no han cambiado, lo cual concuerda con la incapacidad de estas medidas de detectar la multicolinealdiad de tipo no esencial.
+
+Por otro lado, se tiene que los valores obtenidos tanto para el NC como para los CV indican que el grado de multicolinealidad de tipo no esencial ya no es preocupante.
+
+### Análisis del endeudamiento de una empresa {.unnumbered}
+
+A partir de los siguientes datos, se desea estudiar qué factores influyen en el endeudamiento de una empresa. Concretamente, se dispone del nivel de endeudamiento (**E**, medido como el cociente entre el total de deuda de la empresa y el total de recursos de la misma), la estructura de activos (**A**, medida como el cociente entre los activos fijos netos de la empresa y los activos totales) y rentabilidad (**R**, medida el ratio entre el beneficio antes de intereses e impuestos y el activo total de la empresa) de 10 empresas en los años 2004 a 2007.
+
+```{r}
+# identificador de empresa
+
+empresa = c(1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6,
+	6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10)
+
+# identificador de año
+
+year = c(2004, 2005, 2006, 2007, 2004, 2005, 2006, 2007, 2004, 2005, 2006, 2007,
+	2004, 2005, 2006, 2007, 2004, 2005, 2006, 2007, 2004, 2005, 2006, 2007,
+	2004, 2005, 2006, 2007, 2004, 2005, 2006, 2007, 2004, 2005, 2006, 2007,
+	2004, 2005, 2006, 2007)
+
+# nivel de endeudamiento de las empresas (medido como el cociente entre el total 
+# de deuda de la empresa y el total de recursos de la misma)
+
+E = c(0.569336416, 0.62919426, 0.606436907, 0.575674665, 0.805961248, 0.743372591,
+	0.720266835, 0.691038542, 0.346267495, 0.354744963, 0.350523887, 0.292410797,
+	0.757365421, 0.660743315, 0.655413869, 0.657625928, 0.20444059, 0.20197927,
+	0.288223783, 0.291823664, 0.663949829, 0.62654866, 0.590083334, 0.510040344,
+	0.756287229, 0.77028614, 0.816162146, 0.820644046, 0.298435951, 0.299139888,
+	0.343854695, 0.383520718, 0.880476013, 0.887412652, 0.870084622, 0.868691282,
+	0.466981605, 0.488419408, 0.444395382, 0.365960681)
+
+# estructura de activos de las empresas (medido como el cociente entre los activos 
+# fijos netos de la empresa y los activos totales)
+
+A = c(0.25822393, 0.248589335, 0.279420988, 0.276673216, 0.064444056, 0.059948296, 
+      0.054782023, 0.053882592, 0.137597682, 0.119820791, 0.131954593, 0.14057451, 
+      0.072470573, 0.092789462, 0.086383409, 0.089591022, 0.198048778, 0.177098417, 
+      0.146790498, 0.107970115, 0.92471439, 0.917683347, 0.90587619, 0.913656968, 
+      0.00272991, 0.001335686, 0.001381958, 0.001108374, 0.363603924, 0.358798117, 
+      0.351042903, 0.320110904, 0.442905969, 0.43471641, 0.45732639, 0.403546205, 
+      0.281917374, 0.260217797, 0.224700785, 0.274300478)
+
+# rentabilidad de las empresas (medida el  ratio entre el beneficio antes de 
+# intereses e impuestos y el activo total de la empresa)
+
+R = c(0.028295538, 0.030961864, 0.016334841, 0.03975665, 0.091359317, 0.105148522, 
+      0.087920395, 0.072392518, 0.118007911, 0.159566779, 0.252967062, 0.24125603, 
+      0.083301052, 0.125749891, 0.053917194, 0.030602531, 0.156263569, 0.136310151, 
+      0.253308203, 0.207986368, 0.023143016, 0.048487079, 0.051867341, 0.044065108, 
+      0.01813841, 0.023197553, 0.036090328, 0.05842748, 0.057938099, 0.026488599, 
+      0.022434026, 0.009461337, 0.017295493, 0.017063052, 0.043743695, 0.043924576, 
+      0.252565282, 0.038002912, 0.15737554, 0.016625428)
+
+datos = data.frame(empresa, year, E, A, R)
+names(datos) = c("Empresa", "Año (Y)", "Endeudamiento (E)", "Activos (A)", "Rentabilidad (R)")
+
+kable(datos, align="c")
+```
+
+Para analizar el grado de multicolinealidad existente en el modelo econométrico que estudia el endeudamiento a partir de la estructura de activos, la rentabilidad y el año (ignorando la estructura de datos de panel existente); en primer lugar se construye la matriz de diseño $\mathbf{X}$. Puesto que en el modelo se introducen variables binarias a partir de una variable cualitativa, la forma más sencilla de obtener la matriz $\mathbf{X}$ es usando el comando *model.matrix*:
+
+```{r}
+modelo = lm(E~A+R+factor(year))
+X = model.matrix(modelo)
+```
+
+En este caso, los siguientes valores obtenidos indican que el grado de multicolinealidad existente (tanto del tipo esencial como no esencial) no es preocupante ya que están lejos de los umbrales establecidos como preocupantes:
+
+```{r}
+RdetR(X)
+VIF(X)
+CNs(X)
+CVs(X)
+```
+
+Concretamente, no hay ninguna correlación lineal simple superior a $\sqrt{0.9}$, el coeficiente de determinación de la matriz de correlaciones es superior a 0.1, ningún FIV es superior a 10, ni los CN son superiores a 20 y los CV son superiores a 0.1:
+
+```{r}
+RdetR(X)[[1]] > sqrt(0.9)
+RdetR(X)[[2]] < 0.1
+VIF(X) > 10
+CNs(X) > 10
+CVs(X) < 0.1
+```
+
+Finalmente, téngase en cuenta que los FIV para las variables binarias no deberían haberse calculado ya que se está usando el coeficiente de determinación de un modelo que no es lineal.
+
 ### Crédito Estados Unidos. Análisis de los efectos de existencia de multicolinealidad aproximada y medidas de diagnóstico. {.unnumbered}
 
 A partir de la base de datos de Wissel que incluye información sobre las

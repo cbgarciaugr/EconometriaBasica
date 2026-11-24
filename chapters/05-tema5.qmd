@@ -4,8 +4,8 @@ library(readxl)
 library(dplyr)
 library(ggplot2)
 library(car)
-library(sandwich)
 library(lmtest)
+library(knitr)
 
 datos <- read_excel("data/BD_SABI.xlsx", sheet = "Datos")
 modelo_roa <- lm(

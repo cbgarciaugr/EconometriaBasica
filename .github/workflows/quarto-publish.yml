@@ -58,7 +58,8 @@ jobs:
       # Compatibilidad temporal mientras se corrige el capítulo y su comparación
       # robusta. export_summs necesita lm/lm-compatible; modelo_c_robusto es coeftest.
       - name: Corregir comparación robusta de modelos
-        run: python3 - <<'PY'
+        run: |
+          python3 - <<'PY'
           from pathlib import Path
           p = Path("chapters/05-tema5.qmd")
           s = p.read_text()

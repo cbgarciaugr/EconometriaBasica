@@ -774,7 +774,7 @@ A continuación, podemos obtener errores estándar robustos mediante las funcion
 
 coeftest(
   modelo_roa,
-  vcov = vcov(modelo_roa, type = "hc1")
+  vcov = hccm(modelo_roa, type = "hc1")
 )
 ```
 

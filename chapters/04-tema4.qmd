@@ -6,6 +6,7 @@ library(ggplot2)
 library(car)
 library(knitr)
 library(multiColl)
+library(jtools)
 ```
 
 # Colinealidad

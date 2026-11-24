@@ -527,7 +527,7 @@ summary(modelo_pw)
 
 ### Función de producción. Diagóstico de autocorrelación. {.unnumbered}
 
-1. A partir de la base de datos de @Greene2003 denominada `BD_FUNCIONPRODUCCION' vamos a realizar una práctica para el diagóstico de la autocorrelación. En primer lugar, se estima el modelo:
+A partir de la base de datos de @Greene2003 denominada `BD_FUNCIONPRODUCCION' vamos a realizar una práctica para el diagóstico de la autocorrelación. En primer lugar, se estima el modelo:
 
 ```{r}
 library(readxl)
@@ -581,6 +581,137 @@ modelo1_co <- cochrane.orcutt(modelo1)
 summary(modelo1_co)
 ```
 
+### Análisis del crédito de los Estados Unidos {.unnumbered}
+
+A continuacion se analiza la deuda pendiente de hipoteca, $\mathbf{D}$, a partir del consumo personal, $\mathbf{C}$, los ingresos personales, $\mathbf{I}$, y el crédito pendiente, $\mathbf{CP}$, de forma que se dispone de la siguiente información para 17 años (desde 2004 a 2020):
+
+```{r}
+data(Wissel) # datos disponibles en el paquete 'rvif'
+# names(datos) = c("Consumo", "Ingreso", "Riqueza")
+
+kable(Wissel[,-c(1,3)], row.names = FALSE, align="c")
+```
+
+Al estimar el modelo planteado se observa que ningún coeficiente es significativamente distinto de cero al mismo tiempo que se establece que el modelo es válido conjuntamente:
+
+```{r}
+modelo=lm(D~C+I+CP, data=Wissel)
+summary(modelo)
+```
+
+Todo lo anterior es síntoma de la existencia de un problema de multicolinealidad aproximada preocupante en el modelo, hecho que se confirma al obtener las medidas habituales de detección de este problema:
+
+```{r}
+X = model.matrix(modelo)
+RdetR(X)
+VIF(X)  
+CNs(X)
+CVs(X)
+```
+
+Los coeficientes de correlación lineal simple, valores de los factores de inflación de la varianza y de los coeficientes de variación indican la existencia de un problema de multicolinealidad esencial preocupante en el que están involucradas todas las variables independientes (a excepción del término independiente, claro).
+
+Para mitigar este problema no sería efectivo el centrado de ninguna de las variables independientes (esta solución sólo es efectiva cuando la multicolinealidad detectada es de tipo no esencial), por lo que se podría optar por aumentar el tamaño de la muestra (ver si están disponibles los datos para 2021 en adelante) o usar técnicas de estimación alternativas a los Mínimos Cuadrados Ordinarios (cuestión que se escapa del objetivo del presente documento).
+
+Con la cuestión pendiente de mitigar el problema de multicolinealdiad detectado, puesto que se disponen de datos de series temporales, sería combeniente estudiar si se cumple la hipótesis de incorrelación.
+
+En la repersentación de los residuos frente a la observación se aprecia que las primeras y últimas observaciones tienen residuos positivos, mientras que las observaciones centrales los tienen negativos:
+
+```{r}
+e = resid(modelo)
+plot(e, type="b", col = "red", lwd=2, xlab="Observación", ylab="Residuos")
+abline(h=0, col="black")
+```
+
+Al mismo tiempo, cuando se representan los residuos frente a un retardo suyo se aprecia una clara tendencia creciente:
+
+```{r}
+e_retardo = c(NA, e[-length(e)])
+plot(e_retardo, e, xlab = "Resitudos retardados", ylab = "Residuos", lwd=2, col="red")
+abline(h=0, col="black")
+abline(lm(e ~ e_retardo), col = "lightblue", lwd = 2)
+```
+
+Todo lo anterior apunta a la existencia de un problema de autocorrelación positiva. Esta sospecha se confirma al obtener un p-valor de 0.000000013 en el contraste de Durbin-Watson, de forma que al ser menor que 0.05 se rechaza la hipótesis nula de incorrelación al 5% de significación:
+
+```{r}
+dwtest(modelo)
+```
+
+Además, teniendo presente que se tienen 17 observaciones y 4 variables independientes (término independiente incluido), los valores para las [cotas del contraste de Durbin-Watson](https://www.ugr.es/%7Eromansg/material/WebEco/01-comunes/dw.pdf) son $d_{l} = 0.897$ y $d_{U} = 1.71$. Como se verifica que $0 < d=0.25911 < d_{L} = 0.897$, se confirma (al 5% de signifcación) la existencia de autocorrelación positiva en el modelo analizado.
+
+Para corregir el problema detectado, se usa el algoritmo de Prais-Winsten ya que al haber pocas observaciones es importante no perder una de ellas:
+
+```{r}
+modelo_pw <- prais_winsten(D~C+I+CP, data=Wissel, index="t") # es necesario indicar la variable que ordenada en el tiempo, en este caso 't'
+summary(modelo_pw)
+```
+
+Se aprecia que persisten los problemas de multicolinealidad detectados inicialmente y no corregidos; a pesar de la disminución que se ha producido en las desviaciones típicas estimadas:
+
+```{r}
+dv = cbind(summary(modelo)[[4]][,2], summary(modelo_pw)[[4]][,2])
+colnames(dv) = c("MCO", "Prais-Winsten")
+
+kable(dv, row.names = TRUE, align="c")
+```
+
+Igualmente, también se han experimentado cambios sustanciales en las estimaciones de los coeficientes de las variables independientes:
+
+```{r}
+estimaciones = cbind(summary(modelo)[[4]][,1], summary(modelo_pw)[[4]][,1])
+colnames(estimaciones) = c("MCO", "Prais-Winsten")
+
+kable(estimaciones, row.names = TRUE, align="c")
+```
+
+Esto seguramente se deba a que las observaciones usadas en la corrección de Prains-Winsten se obtienen de acuerdo a: $$\sqrt{1-\rho^{2}} \cdot \mathbf{D}_{1} \mbox{ y } \mathbf{D}_{t} - \rho \cdot \mathbf{D}_{t-1} \mbox{ para } t > 1,$$ $$\sqrt{1-\rho^{2}} \cdot \mathbf{C}_{1} \mbox{ y } \mathbf{C}_{t} - \rho \cdot \mathbf{C}_{t-1} \mbox{ para } t > 1,$$ $$\sqrt{1-\rho^{2}} \cdot \mathbf{I}_{1} \mbox{ y } \mathbf{I}_{t} - \rho \cdot \mathbf{I}_{t-1} \mbox{ para } t > 1,$$ $$\sqrt{1-\rho^{2}} \cdot \mathbf{CP}_{1} \mbox{ y } \mathbf{CP}_{t} - \rho \cdot \mathbf{CP}_{t-1} \mbox{ para } t > 1,$$
+
+donde $\rho = 0'9578$.
+
+```{r}
+modelo_pw
+```
+
+Teniendo en cuenta lo anterior, los datos usados en el algoritmo de Prais-Winsten son los siguientes:
+
+```{r}
+rho = 0.9578
+n <- nrow(X)
+
+X_pw <- rbind(
+  sqrt(1 - rho^2) * X[1, ],
+  X[2:n, ] - rho * X[1:(n-1), ]
+)
+
+Y = Wissel$D
+Y_pw <- c(
+  sqrt(1 - rho^2) * Y[1],
+  Y[2:n] - rho * Y[1:(n-1)]
+)
+
+datos_pw = cbind(Y_pw, X_pw)
+colnames(datos_pw) = c("D", "cte", "C", "I", "CP")
+kable(datos_pw, row.names = FALSE, align="c")
+```
+
+De forma que sería posible analizar el grado de multicolinealidad existente a partir de la matriz de diseño $\mathbf{X}_{pw}$:
+
+```{r eval=FALSE}
+model_cutre = lm(Y_pw~X_pw+0) # se obtiene lo mismo que para 'prais_winsten' salvo el coeficiente de determinción y significación conjunta; esto se deberá seguramente porque aquí estoy usando un modelo no centrado (sin término independiente)
+summary(model_cutre)
+```
+
+```{r}
+RdetR(X_pw)
+VIF(X_pw)  
+CNs(X_pw)
+CVs(X_pw)
+```
+
+Tanto los coeficientes de correlación lineal simple, como determinante de la matriz de correlaciones lineales simples como los factores de inflación de la varianza indican que el grado de multicolinealidad aproximada esencial existente no es preocupante. Afirmación similar se puede hacer sobre la de tipo no esencial observando los coeficientes de variación.
+
+Ahora bien, el número de condición está muy cercano al 30, umbral establecido como preocupante, luego sería recomendable seguir trabajando con este modelo.
 
 ## Prácticas propuestas
 

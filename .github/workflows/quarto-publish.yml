@@ -55,6 +55,20 @@ jobs:
         run: |
           Rscript -e 'install.packages("https://cran.r-project.org/src/contrib/Archive/orcutt/orcutt_2.3.tar.gz", repos = NULL, type = "source")'
 
+      # Compatibilidad temporal mientras se corrige el capítulo y su comparación
+      # robusta. export_summs necesita lm/lm-compatible; modelo_c_robusto es coeftest.
+      - name: Corregir comparación robusta de modelos
+        run: python3 - <<'PY'
+          from pathlib import Path
+          p = Path("chapters/05-tema5.qmd")
+          s = p.read_text()
+          s = s.replace(
+              'export_summs(modelo, modelo_c, modelo_c_robusto, model.names = c("  Original  ", "  CENTRADO  ", "  CENTRADO Robusto  "), number_format = "%.3f")',
+              'export_summs(modelo, modelo_c, modelo_c, robust = list(FALSE, FALSE, "HC1"), model.names = c("  Original  ", "  CENTRADO  ", "  CENTRADO Robusto  "), number_format = "%.3f")'
+          )
+          p.write_text(s)
+          PY
+
       # El libro publicado en Pages solo necesita el formato HTML;
       # se evita renderizar el PDF (xelatex) para no instalar TinyTeX en CI.
       - name: Renderizar el libro (HTML)

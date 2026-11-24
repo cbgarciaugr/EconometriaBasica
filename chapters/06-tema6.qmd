@@ -6,6 +6,7 @@ library(ggplot2)
 library(car)
 library(strucchange)
 library(knitr)
+library(multiColl)
 
 datos <- read_excel("data/BD_IBEX.xlsx", sheet = "Datos")
 modeloIBEX <- lm(
@@ -716,9 +717,225 @@ Ahora bien, el número de condición está muy cercano al 30, umbral establecido
 
 ## Prácticas propuestas
 
-1. Crear el código en R para reproducir el procedimiento de Cochrane–Orcutt y comprobar que sale el mismo resultado. 
+1. En el [modelo de crédito de los Estados Unidos](https://cbgarciaugr.github.io/EconometriaBasica/chapters/04-tema4.html#cr%C3%A9dito-estados-unidos.-an%C3%A1lisis-de-los-efectos-de-existencia-de-multicolinealidad-aproximada-y-medidas-de-diagn%C3%B3stico.) se estima por Mínimos Cuadrados Ordinarios la deuda pendiente de hipoteca a partir del consumo personal, los ingresos personales y el crédito pendiente, $\mathbf{D} = \beta_{1} + \beta_{2} \mathbf{C} + \beta_{3} \mathbf{I} + \beta_{4} \mathbf{CP} + \mathbf{u}$, a partir de la siguiente información:
 
-2. InmoGranada S.A. quiere analizar la evolución del precio de la vivienda en Granada a lo largo del tiempo. Para ello construye una base de datos del precio medio de la vivienda en euros/m$^2$ para los ultimos 120 meses en función de la población (número de habitantes) y de la renta media (euros/mes), obteniendo el siguiente modelo estimado:
+```{r}
+data(Wissel)
+# names(datos) = c("Consumo", "Ingreso", "Riqueza")
+
+kable(Wissel[,-c(1,3)], row.names = TRUE)
+```
+
+Indique si considera que se incumple la hipótesis de incorrelación teniendo presente las siguientes representaciones gráficas:
+
+```{r echo=FALSE}
+reg = lm(Wissel$D~Wissel$C+Wissel$I+Wissel$CP)
+e = reg$residuals
+
+plot(e, ylab="Residuos", xlab="Observación", lwd=2, col="red", type="b")
+abline(h=0, col="black")
+
+e_retardo = c(NA, e[-length(e)])
+plot(e_retardo, e, xlab = "Resitudos retardados", ylab = "Residuos", lwd=2, col="red")
+abline(h=0, col="black")
+abline(lm(e ~ e_retardo), col = "lightblue", lwd = 2)
+```
+
+```{r eval=FALSE}
+dwtest(reg)
+```
+
+Sabiendo que el p-valor asociado al contraste de Durbin-Watson es igual a 0.000000013, ¿se confirman sus sospechas?
+
+2. En el [modelo de rendimientos de tipos de interés](https://cbgarciaugr.github.io/EconometriaBasica/chapters/04-tema4.html#wooldridge.-aplicaci%C3%B3n-de-la-estimaci%C3%B3n-residualizada.) se estima por Mínimos Cuadrados Ordinarios los tipo de interés a 12 meses a partir de los de 3 y 6 meses, $\mathbf{r12} = \beta_{1} + \beta_{2} \mathbf{r3} + \beta_{3} \mathbf{r6} + \mathbf{u}$. Indique si considera que se incumple la hipótesis de incorrelación teniendo presente las siguientes representaciones gráficas:
+
+```{r echo=FALSE}
+datos = read.table("Ejercicios Ordenador/INTQRT.txt", header=TRUE, sep=";")
+
+reg = lm(datos$r12~datos$r3+datos$r6)
+e = reg$residuals
+
+plot(e, ylab="Residuos", xlab="Observación", lwd=2, col="red", type="b")
+abline(h=0, col="black")
+
+e_retardo = c(NA, e[-length(e)])
+plot(e_retardo, e, xlab = "Resitudos retardados", ylab = "Residuos", lwd=2, col="red")
+abline(h=0, col="black")
+abline(lm(e ~ e_retardo), col = "lightblue", lwd = 2)
+```
+
+```{r eval=FALSE}
+dwtest(reg)
+```
+
+Sabiendo que el p-valor asociado al contraste de Durbin-Watson es igual a 0.000001957, ¿se confirman sus sospechas?
+
+3. En el [modelo STIRPAT sobre emisiones de CO2](https://cbgarciaugr.github.io/EconometriaBasica/chapters/04-tema4.html#modelo-stirpat.-multicolinealidad-no-esencial-y-esencial.) se estima por Mínimos Cuadrados Ordinarios las emisiones de CO2 a partir de la población total (en miles de millones de habitantes), el PIB per cápita (en billones de dólares) y la industrialización (como porcentaje del PIB), $\mathbf{E} = \beta_{1} + \beta_{2} \mathbf{PIBpc} + \beta_{3} \mathbf{I} + \mathbf{u}$, a partir de la siguiente información:
+
+```{r}
+datos = read.table("Ejercicios Ordenador/stirpattchina.csv", header=TRUE, sep=";")
+datos = datos[, c(5, 3, 7)]
+names(datos) = c("E", "PIBpc", "I")
+
+kable(datos, row.names = TRUE)
+```
+
+Indique si considera que se incumple la hipótesis de incorrelación teniendo presente las siguientes representaciones gráficas:
+
+```{r echo=FALSE}
+reg = lm(datos$E~datos$PIBpc+datos$I)
+e = reg$residuals
+
+plot(e, ylab="Residuos", xlab="Observación", lwd=2, col="red", type="b")
+abline(h=0, col="black")
+
+e_retardo = c(NA, e[-length(e)])
+plot(e_retardo, e, xlab = "Resitudos retardados", ylab = "Residuos", lwd=2, col="red")
+abline(h=0, col="black")
+abline(lm(e ~ e_retardo), col = "lightblue", lwd = 2)
+```
+
+```{r eval=FALSE}
+dwtest(reg)
+```
+
+Sabiendo que el p-valor asociado al contraste de Durbin-Watson es igual a 0.0003633, ¿se confirman sus sospechas?
+
+4. Se tiene el número de unidades de turismos fabricados, $\mathbf{TF}$, en España desde 1994 hasta 2011 y el valor de la producción anual, $\mathbf{VP}$ (en miles de euros). Se pide comprobar si se verifica la hipótesis de incorrrelación en el modelo $\mathbf{VP} = \beta_{1} + \beta_{2} \mathbf{TF} + \mathbf{u}$ teniendo en cuenta que $\rho = 0.9589633$.
+
+```{r eval=FALSE}
+datos = read.table("Ejercicios Ordenador/Ejercicio4 DATOS.csv", header=TRUE, sep=";")
+
+reg = lm(datos$VP~datos$UP)
+e = reg$residuals
+e_retardo = e[-length(e)]
+e = e[-1]
+
+ro = cor(e, e_retardo) # 0.9589633
+
+sum(e*e_retardo)/sum(e^2)
+```
+
+5. Se tienen los datos (desde enero de 2008 hasta junio de 2012) correpondientes al precio del gasóleo (en euros/litro), $\mathbf{G}$, y del barril de Brent (en dólares/barril), $\mathbf{BB}$. Se pide especificar el modelo econométrico que analiza el precio del gasóleo a partir del precio del barril de Brent y analice si se incumple la hipótesis de incorrelación sabiendo que $\sum \limits_{t=2}^{54} e_{t} e_{t-1} = 0.1482$ y $\sum \limits_{t=1}^{54} e_{t}^{2} = 0.175$.
+
+```{r eval=FALSE}
+datos = read.table("Ejercicios Ordenador/Ejercicio5 DATOS.csv", header=TRUE, sep=";")
+
+reg = lm(datos$G~datos$BB)
+e = reg$residuals
+e_retardo = e[-length(e)]
+e = e[-1]
+
+ro = cor(e, e_retardo) # 0.8921157
+
+sum(e*e_retardo) # 0.1481824
+sum(e^2)         # 0.1750166
+```
+
+6. Se tienen datos anuales, desde 1976 a 2009, relativos al conjunto de importaciones de España, al producto interior bruto y a la inversión. Se pide especificar el modelo económico y econométrico del modelo que explica el comportamiento de las importaciones como función del producto interior bruto y de la inversión. ¿Se verifican en dicho modelo las hipótesis de homocedasticidad y autocorrelación? Tenga en cuenta que $\sum \limits_{t=2}^{34} (e_{t} - e_{t-1})^{2} = 1.376$ y $\sum \limits_{t=1}^{34} e_{t}^{2} = 1.418$.
+
+```{r eval=FALSE}
+datos = read.table("Ejercicios Ordenador/Ejercicio8 DATOS.csv", header=TRUE, sep=";")
+
+reg = lm(datos$Importaciones~datos$PIB+datos$Inversion)
+e = reg$residuals
+e_retardo = e[-length(e)]
+e = e[-1]
+
+ro = cor(e, e_retardo) # 0.5107426
+
+sum(e*e_retardo)     # 0.716334
+sum(e^2)             # 1.418121
+sum((e-e_retardo)^2) # 1.376
+```
+
+7. Se tienen datos (desde 1970 hasta 2010) sobre el consumo de energía per cápita de la economía española, $\mathbf{C}$, la renta per cápita, $\mathbf{R}$, y la temperatura media para el año correspondiente, $\mathbf{T}$. Se pide analizar si se verifica la hipótesis de incorrelación en el modelo $\mathbf{C} = \beta_{1} + \beta_{2} \mathbf{R} + \beta_{3} \mathbf{T} + \mathbf{u}$ teniendo presente la siguiente información:
+
+```{r}
+datos = read.table("Ejercicios Ordenador/Ejercicio9 DATOS.csv", header=TRUE, sep=";")
+
+reg = lm(datos$C~datos$R+datos$T)
+e = reg$residuals
+e_retardo = e[-length(e)]
+e = e[-1]
+
+plot(e_retardo, e, xlab = "Resitudos retardados", ylab = "Residuos", lwd=2, col="red")
+abline(h=0, col="black")
+abline(lm(e ~ e_retardo), col = "lightblue", lwd = 2)
+```
+
+```{r eval=FALSE}
+ro = cor(e, e_retardo) # -0.6501473
+
+sum(e*e_retardo)     # -245286606
+sum(e^2)             # 375597601
+sum((e-e_retardo)^2) # 1245109515
+```
+
+$$\sum \limits_{t=2}^{34} (e_{t} - e_{t-1})^{2} = 1245109515, \quad \sum \limits_{t=1}^{34} e_{t}^{2} = 375597601.$$
+
+8. Se tiene, desde el primer trimestre del año 2003 al segundo trimestre del año 2011, la tasa de desempleo, $\mathbf{P}$, y de ocupación hotelera, $\mathbf{O}$, trimestral. Se pide contrastar la hipótesis de incorrelación en el modelo que analiza la tasa de ocupación hotelera a partir de la tasa de paro a partir de la siguiente representación gráfica y sabiendo que $\rho = -0.1056687$.
+
+```{r}
+datos = read.table("Ejercicios Ordenador/Ejercicio13 DATOS.csv", header=TRUE, sep=";")
+
+reg = lm(datos$O~datos$P)
+e = reg$residuals
+e_retardo = e[-length(e)]
+e = e[-1]
+
+plot(e_retardo, e, xlab = "Resitudos retardados", ylab = "Residuos", lwd=2, col="red")
+abline(h=0, col="black")
+abline(lm(e ~ e_retardo), col = "lightblue", lwd = 2)
+```
+
+```{r eval=FALSE}
+ro = cor(e, e_retardo) # -0.1056687
+
+sum(e*e_retardo)     # -182.7467
+sum(e^2)             # 1720.974
+sum((e-e_retardo)^2) # 3804.273
+```
+
+9. Dado el modelo $\mathbf{P}_{t} = \beta_{1} + \beta_{2} \mathbf{S} + \beta_{3} \mathbf{P}_{t-1} + \mathbf{u}$, con $t=1,\dots,15$, contrastar si se incumple la hipótesis de incorrelación sabiendo que $d = 1.7502$ y: $$\widehat{var} \left( \widehat{\boldsymbol{\beta}} \right) = \left(
+  \begin{array}{ccc}
+    19.39 & & \\
+     & 0.0153 & \\
+      & & 0.03577
+  \end{array} \right).$$
+
+10. El número de accidentes ocurridos en las calles de una ciudad y el número de coches matriculados en la misma conducen a un modelo econométrico que incumple la hipótesis de incorrelación. Supuesto que se tiene información para 20 años, indique cómo transformaría las variables que forman el modelo para solventar el problema detectado.
+
+11. Al ajustar por Mínimos Cuadrados Ordinarios el modelo en el que se analiza el consumo de una familia en función de sus ingresos a partir de la información disponible para 7 meses, se obtienen los siguientes residuos/errores para el modelo estimado: $$4.63, 3.21, -6.58, ¿?, -0.42, 1.37, 0.79.$$ Se pide especificar el modelo econométrico y comprobar si se verifican las hipótesis de heterocedasticidad e incorrelación.
+
+12. Sabiendo que en el modelo $\mathbf{Y}_{t} = \beta_{1} + \beta_{2} \mathbf{Y}_{t-1} + \beta_{3} \mathbf{X}_{t} + \mathbf{u}_{t}$ se obtiene (a partir de 50 observaciones) que $d = 1.21$, ¿podría indicar si se verifica la hipótesis de incorrelación?
+
+13. Utilizando una muestra de 30 observaciones anuales, se estima mediante Mínimos Cuadrados Ordinarios el siguiente modelo que estudia la demanda, $\mathbf{D}$, en función del precio, $\mathbf{P}$, y la renta, $\mathbf{R}$: $$\widehat{\mathbf{D}}_{t} = 80.48 - 0.93 \mathbf{P}_{t} + 0.89 \mathbf{R}_{t} + 0.415 \mathbf{D}_{t-1}.$$ Sabiendo que las desviaciones típicas estimadas asociadas a cada coeficiente son 32.1, 0.15, 16.1 y 0.05, respectivamente, ¿se incumple la hipótesis de incorrelación? Tenga en cuenta que $\sum \limits_{t=2}^{30} (e_{t} - e_{t-1})^{2} = 15.2$ y $\sum \limits_{t=1}^{30} e_{t}^{2} = 7.5$.
+
+14. Se disponen de las ventas de cierta empresa desde el año 2006 al 2024, siendo éstas analizadas en función del número de empleados y de tiendas. Sabiendo que en el modelo anterior se tiene un problema de autocorrelación, especifique el modelo econométrico y explique cómo trnsformaría la primera y segunda observación de las siguientes observaciones originales para obtener estimadores eficientes:
+
+```{r}
+Año = c(2006, 2007)
+Ventas = c(8196, 9435)
+Empleados = c(69240, 79517)
+Tiendas = c(3131, 3691)
+
+datos = data.frame(Año, Ventas, Empleados, Tiendas)
+# names(datos) = c("Consumo", "Ingreso", "Riqueza")
+# rownames(datos) = c("Consumo", "Ingreso", "Riqueza")
+
+kable(datos, align = "c") # , row.names = TRUE)
+```
+
+15. Para analizar el consumo total de gasolina en U.S.A. ($\textbf{G}$) desde 1960 a 1995 (36 observaciones), se usa un retardo del cosumo, el índice de precios referentes a la gasolina ($\textbf{PG}$) y la renta disponible per cápita ($\textbf{R}$). Más específicamente, se obtienen los siguientes resultados: $$\widehat{\textbf{G}}_{t} = -49.6167 + 0.430841 \cdot \textbf{G}_{t-1} - 11.1398 \cdot \textbf{PG}_{t} + 0.0223276 \cdot \textbf{R}_{t},$$ $$\qquad \quad (9.30627) \qquad (0.085544) \qquad \quad (1.66365) \qquad \quad (0.00309094)$$ donde entre paréntesis se tienen a las desviaciones típicas estimadas.
+
+Puesto que se disponen de datos de tiempo, se sospecha que puede existir un problema de autocorrelación, por lo que se estima el modelo $\mathbf{e}_{t} = \rho \cdot \mathbf{e}_{t-1} + \mathbf{v}_{t}$ obteniéndose que $\widehat{\rho} = 0.366907$. ¿Se puede afirmar, al 5% de significación, que la perturbación aleatoria del modelo estimado está incorrelada?
+
+16. Al estimar un modelo econométrico que estudia el consumo de energía per cápita a partir de la renta per cápita y de la temperatura media del año a partir de 40 observaciones, se obtiene que los residuos verifican que $\widehat{\mathbf{e}}_{t} = -0.647299 \mathbf{e}_{t-1}$. ¿Se incumple alguna de las hipótesis básicas del modelo de regresión lineal múltiple? En caso afirmativo, especifique la ecuación que usaría para obtener estimaciones eficientes de los parámetros del modelo.
+
+17. Crear el código en R para reproducir el procedimiento de Cochrane–Orcutt y comprobar que sale el mismo resultado. 
+
+18. InmoGranada S.A. quiere analizar la evolución del precio de la vivienda en Granada a lo largo del tiempo. Para ello construye una base de datos del precio medio de la vivienda en euros/m$^2$ para los ultimos 120 meses en función de la población (número de habitantes) y de la renta media (euros/mes), obteniendo el siguiente modelo estimado:
 
 ```{r , echo=FALSE, include=FALSE}
 set.seed(123)

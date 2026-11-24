@@ -150,6 +150,7 @@ install.packages(c(
   "car",         # contrastes y herramientas para regresión
   "lmtest",      # contrastes de hipótesis
   "sandwich"     # errores estándar robustos
+  "jtools"
 ))
 ```
 
